@@ -1,0 +1,34 @@
+{%- comment -%}
+  JSON blob consumed by assets/od-card.js (product card + quick-add drawer).
+  Params: product (required), color_name, short_desc, material (optional; computed here when missing).
+{%- endcomment -%}
+{%- liquid
+  if color_name == blank
+    assign color_name = settings.color_option_name | default: 'Color'
+  endif
+  if short_desc == blank
+    assign short_desc = product.description | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' ' | replace: '</p>', ' ' | replace: '</li>', ' ' | strip_html | strip_newlines | strip | truncate: 300
+  endif
+  if material == blank
+    assign material = product.metafields.custom.material.value | strip_html
+  endif
+-%}
+  <script type="application/json" data-card-json>
+  {
+    "title": {{ product.title | json }},
+    "url": {{ product.url | json }},
+    "vendor": {{ product.vendor | json }},
+    "price": {{ product.price | json }},
+    "compare_at_price": {{ product.compare_at_price | json }},
+    "options": [{% for opt in product.options_with_values %}{"name":{{ opt.name | json }},"values":{{ opt.values | json }}}{% unless forloop.last %},{% endunless %}{% endfor %}],
+    "color": {{ color_name | json }},
+    "swatches": {% assign sw_n = 0 %}{% assign sw_lb = '{' %}{% assign sw_rb = '}' %}{{ sw_lb }}{% for opt in product.options_with_values %}{% if opt.name == color_name %}{% for value in opt.values %}{% if sw_n > 0 %},{% endif %}{% assign sw_n = sw_n | plus: 1 %}{{ value | json }}:{% capture sw_css %}{% render 'swatch-color', value: value %}{% endcapture %}{{ sw_css | strip | json }}{% endfor %}{% endif %}{% endfor %}{{ sw_rb }},
+    "single": {{ product.has_only_default_variant | json }},
+    "images": [{% assign n = 0 %}{% for m in product.media %}{% if m.media_type == 'image' and n < 6 %}{% if n > 0 %},{% endif %}{"src":{{ m | image_url: width: 600 | json }},"alt":{{ m.alt | default: product.title | json }}}{% assign n = n | plus: 1 %}{% endif %}{% endfor %}],
+    "variants": [{% for v in product.variants %}{"id":{{ v.id | json }},"title":{{ v.title | json }},"option1":{{ v.option1 | json }},"option2":{{ v.option2 | json }},"option3":{{ v.option3 | json }},"available":{{ v.available | json }},"price":{{ v.price | json }},"compare_at_price":{{ v.compare_at_price | json }},"image":{% if v.featured_image %}{{ v.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},"qty":{{ v.inventory_quantity | default: 0 | json }},"tracked":{% if v.inventory_management != blank %}true{% else %}false{% endif %}}{% unless forloop.last %},{% endunless %}{% endfor %}],
+    "badges": {% render 'product-badges', product: product, limit: 2, format: 'json' %},
+    "available": {{ product.available | json }},
+    "description": {{ short_desc | json }},
+    "material": {% if material != blank %}{{ material | json }}{% else %}null{% endif %}
+  }
+</script>

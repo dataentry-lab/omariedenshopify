@@ -1,0 +1,89 @@
+{%- capture od_locked -%}{%- render 'prive-locked' -%}{%- endcapture -%}
+{%- unless od_locked contains 'yes' -%}
+{%- comment -%}
+  Block library 4: image row / banners. Round 6 (client): 1 to 4 banners per row (mobile 1 or 2), each banner = image,
+  heading, subtext, button label, link (the image is clickable too), text under the image, left or centred; optional
+  section heading and text above the row; lightbox when a banner has no link.
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign n = section.blocks.size
+  assign per_row = st.per_row | default: 3 | plus: 0
+  if per_row > n and n > 0
+    assign per_row = n
+  endif
+  assign per_row_m = st.per_row_mobile | default: 1 | plus: 0
+  assign sizes = 100 | divided_by: per_row
+-%}
+<section class="od-blk od-imgrow od-imgrow--{{ st.align | default: 'start' }}" id="od-imgrow-{{ section.id }}" style="padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px; --od-blk-text: {{ st.text_color }}; --od-accent: {{ st.accent }}; --od-cols: {{ per_row }}; --od-cols-m: {{ per_row_m }};">
+  <div class="{% unless st.full_width %}_container_1kxnl_30{% endunless %}">
+    {%- render 'od-block-head', eyebrow: st.eyebrow, heading: st.heading, text: st.text -%}
+    <div class="od-imgrow__grid" data-od-gallery="{{ st.lightbox }}">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <article class="od-imgrow__item" {{ block.shopify_attributes }}>
+          {%- capture media -%}
+            <div class="od-ratio od-ratio--{{ st.ratio }}">
+              {%- if b.image != blank -%}
+                <img src="{{ b.image | image_url: width: 1400 }}" srcset="{{ b.image | image_url: width: 700 }} 700w, {{ b.image | image_url: width: 1400 }} 1400w" sizes="(max-width: 767px) {{ 100 | divided_by: per_row_m }}vw, {{ sizes }}vw" alt="{{ b.image.alt | default: b.heading | escape }}" width="{{ b.image.width }}" height="{{ b.image.height }}" loading="lazy"{% if st.lightbox and b.link == blank %} data-od-zoom="{{ b.image | image_url: width: 2000 }}"{% endif %}>
+              {%- else -%}
+                {{ 'lifestyle-2' | placeholder_svg_tag: 'od-placeholder' }}
+              {%- endif -%}
+            </div>
+          {%- endcapture -%}
+          {%- if b.link != blank -%}
+            <a class="od-imgrow__media" href="{{ b.link }}" aria-label="{{ b.heading | default: b.button_label | escape }}">{{ media }}</a>
+          {%- else -%}
+            <div class="od-imgrow__media">{{ media }}</div>
+          {%- endif -%}
+          {%- if b.heading != blank or b.text != blank or b.button_label != blank or b.caption != blank -%}
+            <div class="od-imgrow__body">
+              {%- if b.heading != blank -%}<h3 class="od-imgrow__heading">{% if b.link != blank %}<a href="{{ b.link }}">{{ b.heading }}</a>{% else %}{{ b.heading }}{% endif %}</h3>{%- endif -%}
+              {%- if b.text != blank -%}<p class="od-imgrow__text">{{ b.text }}</p>{%- elsif b.caption != blank -%}<p class="od-imgrow__text">{{ b.caption }}</p>{%- endif -%}
+              {%- if b.button_label != blank -%}{%- render 'od-button', label: b.button_label, url: b.link, style: st.button_style -%}{%- endif -%}
+            </div>
+          {%- endif -%}
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Image row / banners",
+  "tag": "section",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "paragraph", "content": "Add 1 to 4 banners as blocks. Each banner can have a heading, text and a button under the image." },
+    { "type": "text", "id": "eyebrow", "label": "Section eyebrow" },
+    { "type": "text", "id": "heading", "label": "Section heading" },
+    { "type": "richtext", "id": "text", "label": "Section text" },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "per_row", "label": "Banners per row (desktop)", "min": 1, "max": 4, "step": 1, "default": 3 },
+    { "type": "select", "id": "per_row_mobile", "label": "Banners per row (mobile)", "default": "1", "options": [ { "value": "1", "label": "1" }, { "value": "2", "label": "2" } ] },
+    { "type": "select", "id": "align", "label": "Text alignment", "default": "start", "options": [ { "value": "start", "label": "Left" }, { "value": "center", "label": "Centre" } ] },
+    { "type": "select", "id": "ratio", "label": "Image shape", "default": "3-4", "options": [ { "value": "3-4", "label": "Portrait 3:4" }, { "value": "2-3", "label": "Portrait 2:3" }, { "value": "1-1", "label": "Square" }, { "value": "4-3", "label": "Landscape 4:3" }, { "value": "16-9", "label": "Wide 16:9" } ] },
+    { "type": "select", "id": "button_style", "label": "Button style", "default": "outline", "options": [ { "value": "outline", "label": "Outline" }, { "value": "solid", "label": "Solid" }, { "value": "link", "label": "Text link" } ] },
+    { "type": "checkbox", "id": "full_width", "label": "Full width (no side gutter)", "default": false },
+    { "type": "checkbox", "id": "lightbox", "label": "Open images without a link in a lightbox", "default": true },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#551c25" },
+    { "type": "color", "id": "accent", "label": "Accent (button)", "default": "#551c25" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 }
+  ],
+  "blocks": [
+    { "type": "image", "name": "Banner", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "text", "id": "heading", "label": "Heading" },
+      { "type": "text", "id": "text", "label": "Subtext" },
+      { "type": "text", "id": "button_label", "label": "Button label" },
+      { "type": "url", "id": "link", "label": "Link (image, heading and button)" },
+      { "type": "text", "id": "caption", "label": "Caption (older setting, shown when Subtext is empty)" }
+    ] }
+  ],
+  "presets": [ { "name": "Image row / banners", "blocks": [ { "type": "image" }, { "type": "image" }, { "type": "image" } ] } ]
+}
+{% endschema %}

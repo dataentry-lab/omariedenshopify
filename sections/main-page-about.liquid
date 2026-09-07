@@ -1,0 +1,280 @@
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign s = section.settings
+  if s.hero_image != blank
+    assign hero_url = s.hero_image | image_url: width: 2560
+  else
+    assign hero_url = 'images_about-us.webp' | asset_url
+  endif
+  assign t_title = s.title | default: page.title
+  if rtl and s.title_ar != blank
+    assign t_title = s.title_ar
+  endif
+  assign t_paragraph_1 = s.paragraph_1
+  if rtl and s.paragraph_1_ar != blank
+    assign t_paragraph_1 = s.paragraph_1_ar
+  endif
+  assign t_paragraph_2 = s.paragraph_2
+  if rtl and s.paragraph_2_ar != blank
+    assign t_paragraph_2 = s.paragraph_2_ar
+  endif
+  assign t_paragraph_3 = s.paragraph_3
+  if rtl and s.paragraph_3_ar != blank
+    assign t_paragraph_3 = s.paragraph_3_ar
+  endif
+  assign t_founder_kicker = s.founder_kicker
+  if rtl and s.founder_kicker_ar != blank
+    assign t_founder_kicker = s.founder_kicker_ar
+  endif
+  assign t_founder_title = s.founder_title
+  if rtl and s.founder_title_ar != blank
+    assign t_founder_title = s.founder_title_ar
+  endif
+  assign t_founder_text = s.founder_text
+  if rtl and s.founder_text_ar != blank
+    assign t_founder_text = s.founder_text_ar
+  endif
+  assign t_full_title = s.full_title
+  if rtl and s.full_title_ar != blank
+    assign t_full_title = s.full_title_ar
+  endif
+  assign t_full_text = s.full_text
+  if rtl and s.full_text_ar != blank
+    assign t_full_text = s.full_text_ar
+  endif
+  assign t_thought_left = s.thought_left
+  if rtl and s.thought_left_ar != blank
+    assign t_thought_left = s.thought_left_ar
+  endif
+  assign t_thought_right = s.thought_right
+  if rtl and s.thought_right_ar != blank
+    assign t_thought_right = s.thought_right_ar
+  endif
+  assign t_space_title = s.space_title
+  if rtl and s.space_title_ar != blank
+    assign t_space_title = s.space_title_ar
+  endif
+  assign t_space_text = s.space_text
+  if rtl and s.space_text_ar != blank
+    assign t_space_text = s.space_text_ar
+  endif
+  assign t_marquee_text = s.marquee_text
+  if rtl and s.marquee_text_ar != blank
+    assign t_marquee_text = s.marquee_text_ar
+  endif
+  assign card_index = 0
+  assign slide_index = 0
+-%}
+<div class="_AboutUs_1qfvv_30" data-section-id="{{ section.id }}">
+  <section class="_bgBack_xwnoc_133 _pageBannerContent_1qfvv_30" style="background-image: url(&quot;{{ hero_url }}&quot;); height: 500px;">
+    <div class="_container_1kxnl_30 _banner_xwnoc_30 undefined">
+      <div class="_banner__content_xwnoc_61 ">
+        <h1 class="{% if rtl %}_titleRtl_xwnoc_39{% else %}undefined{% endif %} _banner__content__title_xwnoc_67 undefined"> </h1>
+      </div>
+    </div>
+  </section>
+
+  <div class="_AboutTitle_1rtsw_39" style="background-image: url(&quot;{{ 'images_about-shape.svg' | asset_url }}&quot;);">
+    <div class="_container_1kxnl_30 ">
+      <div class="_RotateImages_1rtsw_54">
+        <div class="_globalImg_1tf1q_38 _rImage_1rtsw_30">
+          {%- if s.badge_image != blank -%}
+            <img fetchpriority="auto" alt="{{ shop.name | escape }}" src="{{ s.badge_image | image_url: width: 400 }}" width="{{ s.badge_image.width }}" height="{{ s.badge_image.height }}">
+          {%- else -%}
+            <img fetchpriority="auto" alt="{{ shop.name | escape }}" src="{{ 'images_about-circle-img.svg' | asset_url }}">
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="_TitleWithDes_1rtsw_79">
+        <div class="_Title_1rtsw_79"><h1>{{ t_title }}</h1></div>
+        <div class="_Description_1rtsw_135">
+          {%- if t_paragraph_1 != blank -%}<p>{{ t_paragraph_1 }}</p>{%- endif -%}
+          {%- if t_paragraph_2 != blank -%}<p>{{ t_paragraph_2 }}</p>{%- endif -%}
+          {%- if t_paragraph_3 != blank -%}<p>{{ t_paragraph_3 }}</p>{%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="_AboutCardSection_9pizf_30">
+    <div class="_container_1kxnl_30 ">
+      <div class="_InnerContainer_9pizf_43">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'card' -%}
+            {%- assign card_index = card_index | plus: 1 -%}
+            {%- assign card_title = block.settings.title -%}
+            {%- if rtl and block.settings.title_ar != blank -%}{%- assign card_title = block.settings.title_ar -%}{%- endif -%}
+            <div class="_Card_9pizf_60" {{ block.shopify_attributes }}>
+              <div class="_globalImg_1tf1q_38 undefined">
+                {%- if block.settings.image != blank -%}
+                  <img fetchpriority="auto" alt="{{ card_title | escape }}" src="{{ block.settings.image | image_url: width: 800 }}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy">
+                {%- else -%}
+                  {%- assign fallback = 'images_about-card' | append: card_index | append: '.png' -%}
+                  <img fetchpriority="auto" alt="{{ card_title | escape }}" src="{{ fallback | asset_url }}" loading="lazy">
+                {%- endif -%}
+              </div>
+              <div class="_Content_9pizf_63"><h3>{{ card_title }}</h3></div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  <div class="_FounderMessage_j4onj_30">
+    <div class="_container_1kxnl_30 ">
+      <div class="_InnerContainer_j4onj_43">
+        <div><h5>{{ t_founder_kicker }}</h5><h2>{{ t_founder_title }}</h2></div>
+        <p>{{ t_founder_text }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="_FullAboutImnageWithText_3diw5_36">
+    <div class="_container_1kxnl_30 _fullConatiner_3diw5_30">
+      <div class="_FullImage_3diw5_36"{% if s.full_image != blank %} style="background-image: url(&quot;{{ s.full_image | image_url: width: 2560 }}&quot;);"{% endif %}></div>
+      <div class="_InnerContainer_3diw5_56">
+        <div><h5>{{ t_full_title }}</h5></div>
+        <p>{{ t_full_text }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="_FromAThoughtSection_cvevk_30">
+    <div class="_container_1kxnl_30 ">
+      <div class="_InnerContainer_cvevk_45">
+        <div class="_Left_cvevk_78"><h5>{{ t_thought_left }}</h5></div>
+        <div>
+          <div class="_GifImag_cvevk_64">
+            <div class="_globalImg_1tf1q_38 undefined">
+              {%- if s.gif_image != blank -%}
+                <img fetchpriority="auto" alt="" src="{{ s.gif_image | image_url: width: 800 }}" width="{{ s.gif_image.width }}" height="{{ s.gif_image.height }}" loading="lazy">
+              {%- else -%}
+                <img fetchpriority="auto" alt="" src="{{ 'images_GIF.gif' | asset_url }}" loading="lazy">
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+        <div><h5>{{ t_thought_right }}</h5></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="_TheSpaceSection_kccmc_30">
+    <div class="_container_1kxnl_30 ">
+      <div>
+        <div class="_TitleWithDes_kccmc_44">
+          <h5>{{ t_space_title }}</h5>
+          <p> {{ t_space_text }}</p>
+        </div>
+        <div class="swiper sliderBorder {% if rtl %}space_carousel_rtl{% else %}space_carousel{% endif %}" dir="{% if rtl %}rtl{% else %}ltr{% endif %}" data-swiper="space">
+          <div class="swiper-wrapper">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'slide' -%}
+                {%- assign slide_index = slide_index | plus: 1 -%}
+                {%- if block.settings.image != blank -%}
+                  {%- assign slide_url = block.settings.image | image_url: width: 2560 -%}
+                {%- else -%}
+                  {%- assign slide_url = 'images_spaceslide' | append: slide_index | append: '.webp' | asset_url -%}
+                {%- endif -%}
+                <div class="swiper-slide" style="width: 1280px; margin-right: 30px;" {{ block.shopify_attributes }}>
+                  <section class="_bgBack_xwnoc_133 _bgAddCls_kccmc_134" style="background-image: url(&quot;{{ slide_url }}&quot;); height: 500px;">
+                    <div class="_container_1kxnl_30 _banner_xwnoc_30 undefined">
+                      <div class="_banner__content_xwnoc_61 ">
+                        <h1 class="undefined _banner__content__title_xwnoc_67 undefined"> </h1>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <div class="swiper-button-prev"><svg class="swiper-navigation-icon" width="11" height="20" viewBox="0 0 11 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0.38296 20.0762C0.111788 19.805 0.111788 19.3654 0.38296 19.0942L9.19758 10.2796L0.38296 1.46497C0.111788 1.19379 0.111788 0.754138 0.38296 0.482966C0.654131 0.211794 1.09379 0.211794 1.36496 0.482966L10.4341 9.55214C10.8355 9.9535 10.8355 10.6057 10.4341 11.007L1.36496 20.0762C1.09379 20.3474 0.654131 20.3474 0.38296 20.0762Z" fill="currentColor"></path></svg></div>
+          <div class="swiper-button-next"><svg class="swiper-navigation-icon" width="11" height="20" viewBox="0 0 11 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0.38296 20.0762C0.111788 19.805 0.111788 19.3654 0.38296 19.0942L9.19758 10.2796L0.38296 1.46497C0.111788 1.19379 0.111788 0.754138 0.38296 0.482966C0.654131 0.211794 1.09379 0.211794 1.36496 0.482966L10.4341 9.55214C10.8355 9.9535 10.8355 10.6057 10.4341 11.007L1.36496 20.0762C1.09379 20.3474 0.654131 20.3474 0.38296 20.0762Z" fill="currentColor"></path></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- if t_marquee_text != blank -%}
+    <div class="_container_1kxnl_30 _sectionContainer_159jj_30">
+      <div class="_marquee_159jj_34">
+        <div class="_sentenceWrapper_159jj_50 undefined">
+          <span>{{ t_marquee_text }}</span>
+          <span>{{ t_marquee_text }}</span>
+        </div>
+        <div class="_fade_159jj_108"></div>
+      </div>
+    </div>
+  {%- endif -%}
+  <div class="_AboutStory_1qfvv_41"></div>
+</div>
+
+{% schema %}
+{
+  "name": "About page",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image (fallback: about-us.webp)" },
+    { "type": "image_picker", "id": "badge_image", "label": "Rotating badge (fallback: about-circle-img.svg)" },
+    { "type": "header", "content": "About" },
+    { "type": "text", "id": "title", "label": "Title", "default": "About us" },
+    { "type": "text", "id": "title_ar", "label": "Title (Arabic)" },
+    { "type": "textarea", "id": "paragraph_1", "label": "Paragraph 1", "default": "Omarieden is where culture and innovation coexist. Born in Saudi Arabia, it redefines modern luxury through meaning, not excess." },
+    { "type": "textarea", "id": "paragraph_1_ar", "label": "Paragraph 1 (Arabic)" },
+    { "type": "textarea", "id": "paragraph_2", "label": "Paragraph 2", "default": "Every collection tells a story of craftsmanship, artistry, and emotion.Here, global design meets local soul; every texture, tone, and silhouette is chosen with intention.More than a store, OMARIEDEN is a third space. a destination where fashion becomes culture, and elegance becomes identity." },
+    { "type": "textarea", "id": "paragraph_2_ar", "label": "Paragraph 2 (Arabic)" },
+    { "type": "textarea", "id": "paragraph_3", "label": "Paragraph 3", "default": "We don't follow fashion. We cultivate it." },
+    { "type": "textarea", "id": "paragraph_3_ar", "label": "Paragraph 3 (Arabic)" },
+    { "type": "header", "content": "Founder letter" },
+    { "type": "text", "id": "founder_kicker", "label": "Kicker", "default": "A letter from" },
+    { "type": "text", "id": "founder_kicker_ar", "label": "Kicker (Arabic)" },
+    { "type": "text", "id": "founder_title", "label": "Title", "default": "Our Founder" },
+    { "type": "text", "id": "founder_title_ar", "label": "Title (Arabic)" },
+    { "type": "textarea", "id": "founder_text", "label": "Text", "default": "We created Omarieden for the sole purpose of sharing the world within our minds. We want to create beautiful and meaningful spaces for people Because everyone deserves access to luxury experiences. We welcome all to come explore, shop, linger at Omarieden. Let us be part of your daily life and aid in creating wonderful memories." },
+    { "type": "textarea", "id": "founder_text_ar", "label": "Text (Arabic)" },
+    { "type": "header", "content": "Full-bleed image with text" },
+    { "type": "image_picker", "id": "full_image", "label": "Image (fallback: full-about-img.webp)" },
+    { "type": "text", "id": "full_title", "label": "Title", "default": "A THIRD SPACE WHERE YOU BELONG" },
+    { "type": "text", "id": "full_title_ar", "label": "Title (Arabic)" },
+    { "type": "textarea", "id": "full_text", "label": "Text", "default": "In every city, there's a need for a space that feels human, not commercial, not private, but alive.The Third Space is that heartbeat: designed for stillness, shaped for meaning. At OMARIEDEN, we curate more than objects; we curate atmosphere, the kind that restores, reconnects, and reminds you of who you are. It is luxury made personal, design made emotional. A space that doesn't just exist, it belongs to you." },
+    { "type": "textarea", "id": "full_text_ar", "label": "Text (Arabic)" },
+    { "type": "header", "content": "From a thought to a statement" },
+    { "type": "text", "id": "thought_left", "label": "Left text", "default": "From a Thought" },
+    { "type": "text", "id": "thought_left_ar", "label": "Left text (Arabic)" },
+    { "type": "image_picker", "id": "gif_image", "label": "Animated image (fallback: GIF.gif)" },
+    { "type": "text", "id": "thought_right", "label": "Right text", "default": "to a Statement." },
+    { "type": "text", "id": "thought_right_ar", "label": "Right text (Arabic)" },
+    { "type": "header", "content": "The Space" },
+    { "type": "text", "id": "space_title", "label": "Title", "default": "The Space" },
+    { "type": "text", "id": "space_title_ar", "label": "Title (Arabic)" },
+    { "type": "textarea", "id": "space_text", "label": "Text", "default": "At OMARIEDEN, design begins long before the first sketch, it begins with emotion.We create not to fill space, but to give space meaning. Because true luxury, to us, is not in abundance, it's in awareness." },
+    { "type": "textarea", "id": "space_text_ar", "label": "Text (Arabic)" },
+    { "type": "header", "content": "Marquee" },
+    { "type": "text", "id": "marquee_text", "label": "Marquee text", "default": "Omarieden is not about having everything. It is about having the right things." },
+    { "type": "text", "id": "marquee_text_ar", "label": "Marquee text (Arabic)" }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Value card",
+      "limit": 3,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image (fallback: about-card1..3.png)" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Confident" },
+        { "type": "text", "id": "title_ar", "label": "Title (Arabic)" }
+      ]
+    },
+    {
+      "type": "slide",
+      "name": "Space slide",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image (fallback: spaceslide1..3.webp)" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,74 @@
+<div class="_container_1kxnl_30 ">
+  <div class="_shipping_section_1e5dv_30">
+    <div class="_globalImg_1tf1q_38 _shipping_section__innercard_1e5dv_49">
+      {%- if section.settings.image != blank -%}
+        <img fetchpriority="auto" alt="products" src="{{ section.settings.image | image_url: width: 1200 }}" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" loading="lazy">
+      {%- else -%}
+        <img fetchpriority="auto" alt="products" src="{{ 'images_chair.png' | asset_url }}" loading="lazy">
+      {%- endif -%}
+    </div>
+    <div class="_shipping_section__list_items_1e5dv_62">
+      <ul>
+        {%- for block in section.blocks -%}
+          {%- liquid
+            case block.settings.icon
+              when 'shipping'
+                assign icon = 'icons_display.svg'
+              when 'secure'
+                assign icon = 'icons_secure.svg'
+              when 'returns'
+                assign icon = 'icons_return.png'
+              else
+                assign icon = 'icons_support.svg'
+            endcase
+          -%}
+          <li {{ block.shopify_attributes }}>
+            <div class="_globalImg_1tf1q_38 _icon_w43v1_30">
+              {%- if block.settings.custom_icon != blank -%}
+                <img fetchpriority="auto" alt="{{ block.settings.title | escape }}" src="{{ block.settings.custom_icon | image_url: width: 96 }}">
+              {%- else -%}
+                <img fetchpriority="auto" alt="{{ block.settings.title | escape }}" src="{{ icon | asset_url }}">
+              {%- endif -%}
+            </div>
+            <div class="_des_w43v1_35">
+              <h5>{{ block.settings.title }}</h5>
+              <p>{{ block.settings.text | replace: '[SAR]', '<span class="_sar_1ef42_1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="11"><path d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg></span>' }}</p>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "USP / shipping section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image (defaults to the chair image)" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [ { "value": "shipping", "label": "Free shipping" }, { "value": "secure", "label": "Secure payments" }, { "value": "returns", "label": "Free returns" }, { "value": "support", "label": "Need help" } ], "default": "shipping" },
+        { "type": "image_picker", "id": "custom_icon", "label": "Custom icon (optional)" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Free Shipping" },
+        { "type": "text", "id": "text", "label": "Text (use [SAR] for the riyal symbol)", "default": "On orders over [SAR] 500" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "USP / shipping section",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "shipping", "title": "Free Shipping", "text": "On orders over [SAR] 500" } },
+        { "type": "item", "settings": { "icon": "secure", "title": "Secure Payments", "text": "100% secure payment solution" } },
+        { "type": "item", "settings": { "icon": "returns", "title": "Free Returns", "text": "Within 30 days" } },
+        { "type": "item", "settings": { "icon": "support", "title": "Need Help?", "text": "Find all the answers to your questions in our FAQ." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

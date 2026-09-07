@@ -1,0 +1,18 @@
+{%- comment -%}
+  Reads the per-article fields used by News & Events / Curated Edits.
+  Sets: a_kind ('recap' | 'blog' | 'story'), a_dates, a_location, a_map, a_gallery (array of images), a_products
+  Param: article
+{%- endcomment -%}
+{%- liquid
+  assign a_kind = 'blog'
+  if article.tags contains 'recap' or article.tags contains 'Recap'
+    assign a_kind = 'recap'
+  elsif article.tags contains 'story' or article.tags contains 'edit'
+    assign a_kind = 'story'
+  endif
+  assign a_dates = article.metafields.custom.event_dates.value
+  assign a_location = article.metafields.custom.location.value
+  assign a_map = article.metafields.custom.location_url.value
+  assign a_gallery = article.metafields.custom.gallery.value
+  assign a_products = article.metafields.custom.products.value
+-%}

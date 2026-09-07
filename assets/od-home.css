@@ -1,0 +1,45 @@
+/* od-home: "Just Arrived" / "Privé Live" row (sections/just-arrived.liquid, assets/od-home.js) */
+.od-live { background: var(--od-live-bg, #fcf8f2); color: var(--od-live-text, #551c25); padding: 56px 0 48px; overflow: hidden; }
+.od-live__inner { position: relative; }
+.od-live__head { text-align: center; margin-bottom: 28px; }
+.od-live__title { margin: 0; font-family: "Basteleur Moonlight", serif; font-weight: 300; font-size: 40px; line-height: 1.1; letter-spacing: .01em; color: inherit; }
+.od-live__title em { font-style: italic; font-family: "Basteleur Moonlight", serif; font-weight: 300; }
+.od-live__count { display: flex; justify-content: center; align-items: center; gap: 8px; margin: 10px 0 4px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--od-live-accent, #595b33); }
+.od-live__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--od-live-accent, #595b33); animation: od-live-pulse 1.6s ease-in-out infinite; }
+@keyframes od-live-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.8); } }
+.od-live__tagline { margin: 0; font-family: Bricolage, sans-serif; font-weight: 400; font-size: 15px; color: inherit; opacity: .9; }
+.od-live__viewport { overflow: hidden; }
+/* round 6: Net-a-Porter "Live" mechanics. Fixed card widths, the whole row is shifted by one card + gap and eased back
+   to 0 (transform only, GPU), the card that falls off the end is clipped by the viewport. See od-home.js. */
+.od-live__row { display: flex; gap: var(--od-live-gap); --od-live-visible: 6; --od-live-gap: 16px; will-change: transform; transform: translateX(0); backface-visibility: hidden; }
+.od-live__row.is-shifting { transition: transform var(--od-live-dur, .8s) ease-in-out; }
+.od-live__card {
+  flex: 0 0 auto;
+  width: calc((100% - (var(--od-live-visible) - 1) * var(--od-live-gap)) / var(--od-live-visible));
+  text-align: center;
+  color: inherit;
+}
+.od-live__card.od-card { color: inherit; }
+.od-live__media { background: var(--od-live-card-bg, #f1eeea); }
+.od-live__card .od-card__media { min-width: 120px; }
+.od-live__text { padding-top: 12px; }
+.od-live__brand { margin: 0 0 4px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: inherit; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.od-live__name { margin: 0; font-family: Bricolage, sans-serif; font-weight: 400; font-size: 14px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.od-live__name a { color: inherit; text-decoration: none; }
+.od-live__name a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.od-live__caption { margin: 6px 0 0; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--od-live-accent, #595b33); white-space: nowrap; }
+.od-live__caption--price { text-transform: none; letter-spacing: .02em; font-size: 13px; display: flex; justify-content: center; align-items: center; gap: 4px; color: inherit; }
+.od-live__caption--price ._sar_1ef42_1 > svg { height: 10px; width: auto; }
+/* dark (Privé) style keeps the standard maroon heart and quick-view circle on the white image (round 6, client) */
+@media (max-width: 767px) {
+  .od-live { padding: 36px 0 32px; }
+  .od-live__title { font-size: 28px; }
+  .od-live__tagline { font-size: 15px; }
+  .od-live__inner { padding-inline-end: 0 !important; }
+  .od-live__row { --od-live-visible: 2.5; --od-live-gap: 10px; gap: 10px; }
+  .od-live__name { font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .od-live__row.is-shifting { transition: none; }
+  .od-live__dot { animation: none; }
+}

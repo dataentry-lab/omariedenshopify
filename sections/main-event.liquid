@@ -1,0 +1,123 @@
+{%- comment -%}
+  Event page (product template "event"): video / image banner with tag, title, short description, date / venue / duration row,
+  rich description, accordions (event-details), location card + map embed + directions, gallery, sticky price card "Select tickets".
+  Booking is a separate step: {{ product.url }}?view=event-booking (templates/product.event-booking.json).
+{%- endcomment -%}
+{%- liquid
+  include 'event-meta', product: product
+  assign st = section.settings
+  assign mf = product.metafields.custom
+  assign video = mf.banner_video.value
+  assign img = product.featured_image
+  assign gallery = mf.gallery.value
+  assign booking_url = product.url | append: '?view=event-booking'
+  assign map_q = ev_address | default: ev_venue
+-%}
+<article class="od-blk od-event" style="--od-blk-text: {{ st.text_color }}; --od-accent: {{ st.accent }}; --od-overlay: {{ st.overlay_color }}; --od-overlay-o: {{ st.overlay_opacity | divided_by: 100.0 }};" data-od-event>
+  <header class="od-event__hero od-banner od-banner--{{ st.height }}">
+    <div class="od-banner__media">
+      {%- if video != blank -%}
+        {{ video | video_tag: image_size: '1800x', autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'od-banner__video' }}
+      {%- elsif img -%}
+        <img class="od-banner__img" src="{{ img | image_url: width: 2400 }}" alt="{{ img.alt | escape }}" width="{{ img.width }}" height="{{ img.height }}" fetchpriority="high">
+      {%- else -%}
+        <div class="od-banner__placeholder"></div>
+      {%- endif -%}
+      <div class="od-banner__overlay"></div>
+    </div>
+    <div class="_container_1kxnl_30 od-event__hero-content">
+      {%- capture tag -%}
+        {%- case ev_status -%}
+          {%- when 'past' -%}<span class="od-ev__tag od-ev__tag--past">{{ 'events.tags.past' | t }}</span>
+          {%- when 'soldout' -%}<span class="od-ev__tag od-ev__tag--soldout">{{ 'events.tags.sold_out' | t }}</span>
+          {%- when 'fast' -%}<span class="od-ev__tag od-ev__tag--fast">{{ 'events.tags.selling_fast' | t }}</span>
+          {%- when 'soon' -%}{%- if ev_days <= 0 -%}<span class="od-ev__tag od-ev__tag--soon">{{ 'events.tags.today' | t }}</span>{%- else -%}<span class="od-ev__tag od-ev__tag--soon">{{ 'events.tags.days_left' | t: count: ev_days }}</span>{%- endif -%}
+        {%- endcase -%}
+      {%- endcapture -%}
+      {%- if tag != blank -%}<div class="od-ev__tags od-ev__tags--hero">{{ tag }}</div>{%- endif -%}
+    </div>
+  </header>
+
+  <div class="_container_1kxnl_30">
+    <div class="od-event__layout">
+      <div class="od-event__main">
+        <h1 class="od-event__title">{{ product.title }}</h1>
+        {%- if ev_short != blank -%}<p class="od-event__short">{{ ev_short }}</p>{%- endif -%}
+        <ul class="od-event__meta">
+          {%- if ev_start > 0 -%}<li>{% render 'od-icon', name: 'calendar' %}<span>{{ ev_start_local | date: format: 'event_date' }}, {{ ev_start_local | date: format: 'event_time' }}{% if ev_end > 0 %} to {{ ev_end_local | date: format: 'event_time' }}{% endif %}</span></li>{%- endif -%}
+          {%- if ev_venue != blank -%}<li>{% render 'od-icon', name: 'pin' %}<span>{{ ev_venue }}</span></li>{%- endif -%}
+          {%- if ev_duration != blank -%}<li>{% render 'od-icon', name: 'clock' %}<span>{{ ev_duration }}</span></li>{%- endif -%}
+        </ul>
+        {%- if product.description != blank -%}<div class="od-event__desc od-rte">{{ product.description }}</div>{%- endif -%}
+        {%- render 'event-details', product: product -%}
+
+        {%- if ev_venue != blank or ev_address != blank -%}
+          <h2 class="od-event__h">{{ 'events.page.location' | t }}</h2>
+          <div class="od-event__loc">
+            <div class="od-event__loc-icon">{% render 'od-icon', name: 'pin' %}<span class="od-blk__eyebrow">{{ 'events.page.venue' | t }}</span></div>
+            <div>
+              <p class="od-event__loc-name">{{ ev_venue }}</p>
+              {%- if ev_address != blank -%}<p class="od-event__loc-addr">{{ ev_address | newline_to_br }}</p>{%- endif -%}
+              {%- if ev_map != blank -%}<a class="od-blk__btn od-blk__btn--link" href="{{ ev_map }}" target="_blank" rel="noopener">{{ 'events.page.directions' | t }} {% render 'od-icon', name: 'chevron' %}</a>{%- endif -%}
+            </div>
+          </div>
+          {%- if st.show_map and map_q != blank -%}
+            <div class="od-event__map"><iframe src="https://www.google.com/maps?q={{ map_q | url_encode }}&output=embed" loading="lazy" title="{{ ev_venue | escape }}" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- if gallery != blank and gallery.size > 0 -%}
+          <h2 class="od-event__h">{{ 'events.page.photos' | t }}</h2>
+          <div class="od-agal__grid od-agal__grid--grid" data-od-gallery="true">
+            {%- for im in gallery limit: 8 -%}
+              <button type="button" class="od-agal__item" data-od-zoom="{{ im | image_url: width: 2000 }}" aria-label="{{ 'blogs.news.open_photo' | t: n: forloop.index }}"><img src="{{ im | image_url: width: 700 }}" alt="" width="700" height="700" loading="lazy"></button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <aside class="od-event__side">
+        <div class="od-event__card">
+          <p class="od-blk__eyebrow">{{ 'events.page.price_from' | t }}</p>
+          <p class="od-event__price">{% if ev_free %}{{ 'events.free' | t }}{% else %}{% render 'sar' %}{{ ev_price_from | money_without_currency }}{% endif %}</p>
+          {%- if ev_status == 'fast' and ev_seats > 0 -%}<p class="od-event__left">{{ 'events.tags.selling_fast' | t }}, {{ 'events.seats_left' | t: count: ev_seats }}</p>
+          {%- elsif ev_seats > 0 -%}<p class="od-event__left od-event__left--calm">{{ 'events.seats_left' | t: count: ev_seats }}</p>{%- endif -%}
+          {%- if ev_status == 'past' -%}
+            <p class="od-event__closed">{{ 'events.page.past' | t }}</p>
+          {%- elsif ev_status == 'soldout' -%}
+            <p class="od-event__closed">{{ 'events.page.sold_out' | t }}</p>
+            <a class="od-blk__btn od-blk__btn--outline" href="#od-form-event-interest">{{ 'events.join_waitlist' | t }}</a>
+          {%- else -%}
+            <a class="od-blk__btn od-blk__btn--solid od-event__cta" href="{{ booking_url }}">{{ 'events.page.select_tickets' | t }}</a>
+          {%- endif -%}
+          <p class="od-event__note">{% render 'od-icon', name: 'ticket' %} {{ 'events.page.instant' | t }}</p>
+          {%- if product.variants.size > 1 -%}
+            <ul class="od-event__types">
+              {%- for v in product.variants -%}
+                <li><span>{{ v.title }}</span><span>{% if v.price == 0 %}{{ 'events.free' | t }}{% else %}{% render 'sar' %}{{ v.price | money_without_currency }}{% endif %}</span></li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+      </aside>
+    </div>
+  </div>
+  {%- unless ev_status == 'past' or ev_status == 'soldout' -%}
+    <div class="od-event__bar"><span class="od-event__bar-price">{% if ev_free %}{{ 'events.free' | t }}{% else %}{{ 'events.from' | t }} {% render 'sar' %}{{ ev_price_from | money_without_currency }}{% endif %}</span><a class="od-blk__btn od-blk__btn--solid" href="{{ booking_url }}">{{ 'events.page.select_tickets' | t }}</a></div>
+  {%- endunless -%}
+</article>
+
+{% schema %}
+{
+  "name": "Event page",
+  "tag": "section",
+  "settings": [
+    { "type": "select", "id": "height", "label": "Banner height", "default": "m", "options": [ { "value": "s", "label": "Small" }, { "value": "m", "label": "Medium" }, { "value": "l", "label": "Large" } ] },
+    { "type": "color", "id": "overlay_color", "label": "Banner overlay colour", "default": "#2a0d12" },
+    { "type": "range", "id": "overlay_opacity", "label": "Banner overlay opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 25 },
+    { "type": "checkbox", "id": "show_map", "label": "Show the map", "default": true },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#551c25" },
+    { "type": "color", "id": "accent", "label": "Accent", "default": "#595b33" }
+  ]
+}
+{% endschema %}

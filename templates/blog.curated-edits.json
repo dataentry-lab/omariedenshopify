@@ -1,0 +1,32 @@
+{
+  "sections": {
+    "hero": {
+      "type": "blog-hero",
+      "settings": {
+        "title": "",
+        "overlay_color": "#551c25",
+        "overlay_opacity": 40
+      }
+    },
+    "list": {
+      "type": "main-blog",
+      "settings": {
+        "style": "edits",
+        "heading": "",
+        "subheading": "",
+        "show_tabs": false,
+        "image_side": "alternate",
+        "ratio": "4-3",
+        "excerpt": "medium",
+        "link_label_blog": "Shop the edit",
+        "default_label": "The edit",
+        "per_page": 6,
+        "load_mode": "button"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "list"
+  ]
+}

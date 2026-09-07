@@ -1,0 +1,65 @@
+<div class="_container_1kxnl_30 ">
+  <div class="_fBrandContainer_jqjs6_30">
+    {%- render 'section-header', title: section.settings.title, button_label: section.settings.button_label, button_url: section.settings.button_url -%}
+    <div class="_fBrand_jqjs6_30">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign url = block.settings.url
+          if url == blank and block.settings.collection != blank
+            assign url = collections[block.settings.collection].url
+          endif
+          if url == blank
+            assign vendor_q = block.settings.name | url_encode
+            assign url = routes.collections_url | append: '/vendors?q=' | append: vendor_q
+          endif
+        -%}
+        <div class="_featured_brands_card_164tx_34" data-href="{{ url }}" {{ block.shopify_attributes }}>
+          <div class="_featured_brands_card__imgContainer_164tx_37">
+            <div class="_globalImg_1tf1q_38 _featured_brands_card__imgContainer__innercard_164tx_47">
+              {%- if block.settings.image != blank -%}
+                <img fetchpriority="auto" alt="{{ block.settings.name | escape }}" src="{{ block.settings.image | image_url: width: 800 }}" srcset="{{ block.settings.image | image_url: width: 400 }} 400w, {{ block.settings.image | image_url: width: 800 }} 800w" sizes="(max-width: 768px) 50vw, 300px" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy">
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag }}
+              {%- endif -%}
+            </div>
+            {%- if block.settings.products != blank -%}
+              <div class="_featured_brands_card__imgContainer__products_164tx_37">
+                {%- for product in block.settings.products limit: 3 -%}
+                  <div class="_globalImg_1tf1q_38 _featured_brands_card__imgContainer__products__img_164tx_74"><img alt="{{ product.title | escape }}" src="{{ product.featured_image | image_url: width: 160 }}" style="height:80px;width:auto;object-fit:cover;" loading="lazy"></div>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+          <div><p class="_featured_brands_card__product_details__brand_164tx_82">{{ block.settings.name }}</p></div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured brands",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Featured Brands" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Discover all" },
+    { "type": "url", "id": "button_url", "label": "Button link (e.g. /pages/discover-all-brands)" }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Brand name", "default": "Brand" },
+        { "type": "image_picker", "id": "image", "label": "Image (portrait)" },
+        { "type": "collection", "id": "collection", "label": "Brand collection" },
+        { "type": "url", "id": "url", "label": "Custom link (overrides collection)" },
+        { "type": "product_list", "id": "products", "label": "Products shown on hover (optional)", "limit": 3 }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Featured brands", "blocks": [ { "type": "brand" }, { "type": "brand" }, { "type": "brand" }, { "type": "brand" } ] }
+  ]
+}
+{% endschema %}

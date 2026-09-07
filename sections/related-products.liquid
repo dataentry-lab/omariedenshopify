@@ -1,0 +1,50 @@
+{%- comment -%}
+  "You might also like": loaded through Shopify's Product Recommendations API (theme.js fetches this section with product_id),
+  falls back to the configured collection when recommendations are not available yet.
+{%- endcomment -%}
+{%- liquid
+  assign list = nil
+  if recommendations.performed and recommendations.products_count > 0
+    assign list = recommendations.products
+  elsif settings.related_fallback_collection != blank
+    assign list = collections[settings.related_fallback_collection].products
+  elsif product.collections.size > 0
+    assign list = product.collections.first.products
+  endif
+  assign limit = section.settings.limit | default: 8
+-%}
+<div data-recommendations data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ limit }}&intent=related" data-performed="{{ recommendations.performed }}">
+  {%- if list and list.size > 0 -%}
+    <div class="_container_1kxnl_30 _editorsPick_fcq6z_30 od-home-section" style="">
+      <div class="_container_1kxnl_30 _editorsPick__headerClass_fcq6z_51 od-home-section__inner">
+        {%- render 'section-header', title: section.settings.title, button_label: section.settings.button_label, button_url: section.settings.button_url -%}
+        <div class="od-carousel">
+          <div class="swiper sliderBorder category_carousel editors_pick_c {% if request.locale.iso_code contains 'ar' %}custom_rtl{% endif %}" dir="{% if request.locale.iso_code contains 'ar' %}rtl{% else %}ltr{% endif %}" data-swiper="cards">
+            <div class="swiper-wrapper">
+              {%- for p in list limit: limit -%}
+                {%- unless p.id == product.id -%}
+                  <div class="swiper-slide">{% render 'product-card', product: p %}</div>
+                {%- endunless -%}
+              {%- endfor -%}
+            </div>
+            <div class="swiper-pagination"></div>
+          </div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "You might also like",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "You might also like" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop all" },
+    { "type": "url", "id": "button_url", "label": "Button link" },
+    { "type": "range", "id": "limit", "label": "Number of products", "min": 4, "max": 10, "step": 1, "default": 8 }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,85 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "settings": {
+        "style": "story",
+        "button_label": "Shop now",
+        "cover_full": false
+      }
+    },
+    "text1": {
+      "type": "od-text",
+      "settings": {
+        "heading": "Sets",
+        "text": "<p>Matching sets designed to be mixed and matched.</p>",
+        "width": "narrow",
+        "align": "center"
+      }
+    },
+    "grid1": {
+      "type": "od-product-grid",
+      "settings": {
+        "heading": "",
+        "source": "products",
+        "per_row": 3,
+        "limit": 6,
+        "align": "center"
+      }
+    },
+    "row1": {
+      "type": "od-image-row",
+      "blocks": {
+        "i1": {
+          "type": "image",
+          "settings": {}
+        },
+        "i2": {
+          "type": "image",
+          "settings": {}
+        },
+        "i3": {
+          "type": "image",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "i1",
+        "i2",
+        "i3"
+      ],
+      "settings": {
+        "ratio": "3-4",
+        "full_width": true
+      }
+    },
+    "imgtext": {
+      "type": "od-image-text",
+      "settings": {
+        "eyebrow": "",
+        "title": "Prints",
+        "text": "<p>Motifs that emulate the feeling of the season.</p>",
+        "button_label": "Shop now",
+        "image_side": "start",
+        "ratio": "4-5"
+      }
+    },
+    "related": {
+      "type": "article-related",
+      "settings": {
+        "mode": "auto",
+        "count": 3,
+        "heading": "More edits",
+        "card_kind": "portrait"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "text1",
+    "grid1",
+    "row1",
+    "imgtext",
+    "related"
+  ]
+}

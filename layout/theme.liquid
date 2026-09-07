@@ -1,0 +1,165 @@
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign dark_header = false
+  case request.page_type
+    when 'index', 'list-collections'
+      assign dark_header = true
+    when 'page'
+      if template.suffix == 'about' or template.suffix == 'contact' or template.suffix == 'faqs' or template.suffix == 'policy'
+        assign dark_header = true
+      endif
+  endcase
+-%}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" type="image/svg+xml" href="{{ 'icons_omariden.svg' | asset_url }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <title>
+      {{- page_title -}}
+      {%- if current_tags %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+    {%- if settings.head_verification != blank -%}{{ settings.head_verification }}{%- endif -%}
+    {{ content_for_header }}
+
+    <link rel="preload" as="font" href="{{ 'bricolage.ttf' | asset_url }}" type="font/ttf" crossorigin>
+    <link rel="preload" as="font" href="{{ 'Basteleur-Moonlight.otf' | asset_url }}" type="font/otf" crossorigin>
+    {%- if rtl -%}
+      <link rel="preload" as="font" href="{{ 'IBMPlexArabic-Regular.otf' | asset_url }}" type="font/otf" crossorigin>
+    {%- endif -%}
+    {{ 'omarieden.css' | asset_url | stylesheet_tag }}
+    {{ 'theme-shopify.css' | asset_url | stylesheet_tag }}
+    {{ 'od-card.css' | asset_url | stylesheet_tag }}
+    {{ 'od-cart.css' | asset_url | stylesheet_tag }}
+    {{ 'od-menu.css' | asset_url | stylesheet_tag }}
+    {{ 'od-listing.css' | asset_url | stylesheet_tag }}
+    {{ 'od-blocks.css' | asset_url | stylesheet_tag }}
+
+    <script>
+      window.OD = {
+        rtl: {{ rtl | json }},
+        locale: {{ request.locale.iso_code | json }},
+        rootUrl: {{ routes.root_url | json }},
+        cartUrl: {{ routes.cart_url | json }},
+        cartAddUrl: {{ routes.cart_add_url | json }},
+        cartChangeUrl: {{ routes.cart_change_url | json }},
+        cartUpdateUrl: {{ routes.cart_update_url | json }},
+        searchUrl: {{ routes.search_url | json }},
+        predictiveSearchUrl: {{ routes.predictive_search_url | json }},
+        accountUrl: {{ routes.account_url | json }},
+        loginUrl: {{ routes.account_login_url | json }},
+        collectionsUrl: {{ routes.collections_url | json }},
+        allProductsUrl: {{ routes.all_products_collection_url | json }},
+        customerId: {{ customer.id | json }},
+        cartCount: {{ cart.item_count }},
+        freeShippingThreshold: {{ settings.free_shipping_threshold | default: 500 }},
+        moneyFormat: {{ shop.money_format | json }},
+        colorOptionName: {{ settings.color_option_name | default: 'Color' | json }},
+        galleryColorMode: {{ settings.gallery_color_mode | default: 'filter' | json }},
+        swatchMap: {{ settings.color_swatch_map | json }},
+        badges: {
+          metafield: {{ settings.badge_metafield_enabled | json }},
+          newDays: {{ settings.badge_new_days | default: 30 }},
+          saleStyle: {{ settings.badge_sale_style | default: 'label' | json }},
+          soldOut: {{ settings.badge_soldout_enabled | json }},
+          soldOutLabel: {{ 'products.product.sold_out' | t | json }},
+          rules: [
+            {%- for i in (1..6) -%}
+              {%- assign kt = 'badge_' | append: i | append: '_type' -%}
+              {%- assign km = 'badge_' | append: i | append: '_match' -%}
+              {%- assign kl = 'badge_' | append: i | append: '_label' -%}
+              {%- assign kla = 'badge_' | append: i | append: '_label_ar' -%}
+              {%- assign kb = 'badge_' | append: i | append: '_bg' -%}
+              {%- assign kx = 'badge_' | append: i | append: '_text' -%}
+              {%- assign lbl = settings[kl] -%}
+              {%- if rtl and settings[kla] != blank -%}{%- assign lbl = settings[kla] -%}{%- endif -%}
+              { type: {{ settings[kt] | default: 'none' | json }}, match: {{ settings[km] | default: '' | json }}, label: {{ lbl | default: '' | json }}, bg: {{ settings[kb] | default: '#551c25' | json }}, text: {{ settings[kx] | default: '#ffffff' | json }} }{% unless forloop.last %},{% endunless %}
+            {%- endfor -%}
+          ]
+        },
+        assets: {
+          wishlist: {{ 'icons_light_wishlist.svg' | asset_url | json }},
+          wishlistFilled: {{ 'icons_light_favourite.svg' | asset_url | json }},
+          arrowRight: {{ 'icons_light_arrow_right.svg' | asset_url | json }},
+          arrowLeft: {{ 'icons_light_arrow_left.svg' | asset_url | json }},
+          plus: {{ 'icons_light_plus.svg' | asset_url | json }},
+          minus: {{ 'icons_light_minus.svg' | asset_url | json }},
+          fallback: {{ 'images_fallback.svg' | asset_url | json }}
+        },
+        t: {
+          addedToCart: {{ 'products.product.added_to_cart' | t | json }},
+          addedToWishlist: {{ 'wishlist.added' | t | json }},
+          removedFromWishlist: {{ 'wishlist.removed' | t | json }},
+          cartError: {{ 'cart.general.error' | t | json }},
+          viewResults: {{ 'search.view_results' | t | json }},
+          suggestion: {{ 'search.suggestion' | t | json }},
+          products: {{ 'search.products' | t | json }},
+          noResults: {{ 'search.no_results' | t | json }},
+          shippingUnlocked: {{ 'cart.shipping.unlocked' | t | json }},
+          shippingRemaining: {{ 'cart.shipping.remaining_html' | t | json }}
+        }
+      };
+      document.documentElement.className += ' js';
+    </script>
+  </head>
+
+  <body class="template-{{ request.page_type | handle }}{% if template.suffix %} template-{{ request.page_type | handle }}-{{ template.suffix | handle }}{% endif %}" {% if rtl %}dir="rtl"{% endif %} data-dark-header="{{ dark_header }}">
+    {%- if settings.body_start_scripts != blank -%}{{ settings.body_start_scripts }}{%- endif -%}
+    <div id="root">
+      {%- sections 'header-group' -%}
+      <main id="MainContent">
+        {%- comment -%} no breadcrumbs on the home page or on pages with the transparent header (about, contact, faqs), client 7 Sep {%- endcomment -%}
+        {%- unless request.page_type == 'index' or request.page_type == 'password' or request.page_type == '404' or dark_header -%}
+          {%- liquid
+            assign crumbs_overlay = false
+            if request.page_type == 'blog' or request.page_type == 'article'
+              assign crumbs_overlay = true
+            elsif request.page_type == 'page' and template.suffix != blank and template.suffix != 'brands' and template.suffix != 'legal' and template.suffix != 'wishlist' and template.suffix != 'activation'
+              assign crumbs_overlay = true
+            elsif request.page_type == 'product' and template.suffix == 'event'
+              assign crumbs_overlay = true
+            endif
+          -%}
+          <div class="od-crumbs-wrap{% if crumbs_overlay %} od-crumbs-wrap--overlay{% endif %}"><div class="_container_1kxnl_30">{% render 'breadcrumbs' %}</div></div>
+        {%- endunless -%}
+        {{ content_for_layout }}
+        <div data-od-toaster style="position: fixed; z-index: 9999; inset: 16px; pointer-events: none;"></div>
+      </main>
+      {%- sections 'footer-group' -%}
+      <button type="button" aria-label="{{ 'general.accessibility.back_to_top' | t }}" class="_backToTop_wlu9t_30" data-back-to-top>
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="20" width="20" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="m4 12 1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"></path></svg>
+      </button>
+    </div>
+    <div id="modal">
+      {%- render 'modal-search' -%}
+      {%- render 'modal-login' -%}
+      {%- render 'modal-language' -%}
+      {%- render 'modal-mobile-submenus' -%}
+      {%- section 'cart-drawer' -%}
+      {%- render 'quick-add-drawer' -%}
+      {%- render 'wishlist-drawer' -%}
+      {%- section 'welcome-popup' -%}
+      {%- if request.page_type == 'collection' or request.page_type == 'search' -%}
+        {%- render 'modal-filter' -%}
+      {%- endif -%}
+    </div>
+    <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+    <script src="{{ 'od-card.js' | asset_url }}" defer></script>
+    <script src="{{ 'od-cart.js' | asset_url }}" defer></script>
+    <script src="{{ 'od-menu.js' | asset_url }}" defer></script>
+    <script src="{{ 'od-listing.js' | asset_url }}" defer></script>
+    <script src="{{ 'od-blocks.js' | asset_url }}" defer></script>
+  </body>
+</html>

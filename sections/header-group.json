@@ -1,0 +1,24 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {},
+      "blocks": {
+        "women_banners": {
+          "type": "menu_banners",
+          "settings": {
+            "department": "Women",
+            "caption_1": "ELEVATED ESSENTIALS",
+            "link_1": "/collections/women",
+            "caption_2": "SIMPLE PLEASURE",
+            "link_2": "/collections/women"
+          }
+        }
+      },
+      "block_order": ["women_banners"]
+    }
+  },
+  "order": ["header"]
+}

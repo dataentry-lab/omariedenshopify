@@ -1,0 +1,353 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-slider",
+      "blocks": {
+        "slide1": {
+          "type": "slide",
+          "settings": {
+            "title": "Back To Routine",
+            "subtitle": "New Arrivals, New Routines, New Inspiration, New You.",
+            "button_label": "Explore"
+          }
+        }
+      },
+      "block_order": [
+        "slide1"
+      ],
+      "settings": {
+        "autoplay_delay": 5500
+      }
+    },
+    "new_in_trend": {
+      "type": "product-slider",
+      "settings": {
+        "title": "New in trend",
+        "button_label": "Shop all",
+        "limit": 30,
+        "variant": "trend"
+      }
+    },
+    "featured_brands": {
+      "type": "featured-brands",
+      "blocks": {
+        "b1": {
+          "type": "brand",
+          "settings": {
+            "name": "Veja"
+          }
+        },
+        "b2": {
+          "type": "brand",
+          "settings": {
+            "name": "MKI MIYUKI ZOKU"
+          }
+        },
+        "b3": {
+          "type": "brand",
+          "settings": {
+            "name": "Oilily"
+          }
+        },
+        "b4": {
+          "type": "brand",
+          "settings": {
+            "name": "IRO"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {
+        "title": "Featured Brands",
+        "button_label": "Discover all",
+        "button_url": "/pages/discover-all-brands"
+      }
+    },
+    "banner": {
+      "type": "image-banner",
+      "settings": {
+        "top_subtitle": "NOW AT OMARIEDEN",
+        "title": "MARY KATRANTZOU",
+        "subtitle": "A world of expressive prints, impeccable tailoring, and contemporary luxury - designed to turn every look into a work of art.",
+        "button_label": "Explore",
+        "height": 720
+      }
+    },
+    "world": {
+      "type": "world-of-omarieden",
+      "settings": {
+        "eyebrow": "STEP INTO THE",
+        "title": "World Of Omarieden",
+        "text": "Discover the latest collections from the most esteemed fashion houses, designed for the upcoming season. Join the Omarieden Circle loyalty program to enjoy exclusive benefits and be the first to access these stunning arrivals!",
+        "button_label": "Explore"
+      }
+    },
+    "new_brand": {
+      "type": "new-brand",
+      "settings": {
+        "eyebrow": "NEW BRAND",
+        "title": "IRO",
+        "text": "Born in Paris and defined by effortless sophistication, IRO embodies modern confidence through refined tailoring and understated elegance. The brand combines contemporary design with impeccable craftsmanship, creating versatile pieces that balance timeless style with a distinctly urban spirit.",
+        "button_label": "Explore"
+      }
+    },
+    "marquee": {
+      "type": "marquee",
+      "settings": {
+        "text": "the most trusted curated multibrand destination for luxury fashion"
+      }
+    },
+    "usp": {
+      "type": "usp-section",
+      "blocks": {
+        "u1": {
+          "type": "item",
+          "settings": {
+            "icon": "shipping",
+            "title": "Free Shipping",
+            "text": "On orders over [SAR] 500"
+          }
+        },
+        "u2": {
+          "type": "item",
+          "settings": {
+            "icon": "secure",
+            "title": "Secure Payments",
+            "text": "100% secure payment solution"
+          }
+        },
+        "u3": {
+          "type": "item",
+          "settings": {
+            "icon": "returns",
+            "title": "Free Returns",
+            "text": "Within 30 days"
+          }
+        },
+        "u4": {
+          "type": "item",
+          "settings": {
+            "icon": "support",
+            "title": "Need Help?",
+            "text": "Find all the answers to your questions in our FAQ."
+          }
+        }
+      },
+      "block_order": [
+        "u1",
+        "u2",
+        "u3",
+        "u4"
+      ],
+      "settings": {}
+    },
+    "just_arrived": {
+      "type": "just-arrived",
+      "settings": {
+        "heading": "OMARIEDEN",
+        "heading_italic": "Just Arrived",
+        "tagline": "The latest arrivals, as they land in store",
+        "speed": 2
+      }
+    },
+    "curated_edits": {
+      "type": "editorial-cards",
+      "blocks": {
+        "c1": {
+          "type": "card",
+          "settings": {
+            "label": "The edit",
+            "title": "The Autumn Edit",
+            "text": "Layered pieces for cooler evenings, chosen by our stylists.",
+            "link_label": "Shop the edit"
+          }
+        },
+        "c2": {
+          "type": "card",
+          "settings": {
+            "label": "The edit",
+            "title": "Travel Essentials",
+            "text": "Packed and ready for the weekend away.",
+            "link_label": "Shop the edit"
+          }
+        },
+        "c3": {
+          "type": "card",
+          "settings": {
+            "label": "The edit",
+            "title": "Kids Collection",
+            "text": "Soft cottons and playful colours for little ones.",
+            "link_label": "Shop the edit"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "settings": {
+        "heading": "Curated Edits",
+        "mode": "manual",
+        "count": "3",
+        "card_kind": "portrait",
+        "link_label": "View all",
+        "card_link_label": "Shop the edit",
+        "link_pos": "both"
+      }
+    },
+    "category_carousel_X6EWRd": {
+      "type": "category-carousel",
+      "blocks": {
+        "category_eHaqcG": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "subtitle": "",
+            "title": "",
+            "url": ""
+          }
+        },
+        "category_NR7aw8": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "subtitle": "",
+            "title": "",
+            "url": ""
+          }
+        },
+        "category_yiwMgH": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "subtitle": "",
+            "title": "",
+            "url": ""
+          }
+        },
+        "category_e6n798": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "subtitle": "",
+            "title": "",
+            "url": ""
+          }
+        },
+        "category_MHwcy6": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "subtitle": "",
+            "title": "",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_eHaqcG",
+        "category_NR7aw8",
+        "category_yiwMgH",
+        "category_e6n798",
+        "category_MHwcy6"
+      ],
+      "name": "Category carousel",
+      "settings": {
+        "title": "Shop by category",
+        "button_label": "Shop all",
+        "button_url": "",
+        "card_button": "Explore"
+      }
+    },
+    "editorial_cards_R9pJNG": {
+      "type": "editorial-cards",
+      "name": "News & Events cards",
+      "settings": {
+        "heading": "News & Events",
+        "blog": "news",
+        "mode": "latest",
+        "count": "3",
+        "card_kind": "landscape",
+        "card_link_label": "",
+        "link_label": "See all",
+        "link_url": "",
+        "link_pos": "both",
+        "bg": "",
+        "text_color": "#551c25",
+        "accent": "#595b33",
+        "pad_top": 48,
+        "pad_bottom": 48
+      }
+    },
+    "shop_the_look_CdjJL7": {
+      "type": "shop-the-look",
+      "blocks": {
+        "look_4C7Jbx": {
+          "type": "look",
+          "settings": {
+            "name": "Urban Rebel",
+            "products": []
+          }
+        },
+        "look_mkTzfY": {
+          "type": "look",
+          "settings": {
+            "name": "Urban Rebel",
+            "products": []
+          }
+        },
+        "look_VMdqXg": {
+          "type": "look",
+          "settings": {
+            "name": "Simple Modernist",
+            "products": []
+          }
+        },
+        "look_86EndB": {
+          "type": "look",
+          "settings": {
+            "name": "Night Out",
+            "products": []
+          }
+        }
+      },
+      "block_order": [
+        "look_4C7Jbx",
+        "look_mkTzfY",
+        "look_VMdqXg",
+        "look_86EndB"
+      ],
+      "name": "Shop the look",
+      "settings": {
+        "title": "Shop The Look",
+        "button_label": "",
+        "button_url": "",
+        "look_label": "LOOK",
+        "columns": "4",
+        "ratio": "2-3",
+        "cta_label": "Shop this look"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "category_carousel_X6EWRd",
+    "new_in_trend",
+    "just_arrived",
+    "featured_brands",
+    "banner",
+    "shop_the_look_CdjJL7",
+    "world",
+    "curated_edits",
+    "new_brand",
+    "marquee",
+    "usp",
+    "editorial_cards_R9pJNG"
+  ]
+}

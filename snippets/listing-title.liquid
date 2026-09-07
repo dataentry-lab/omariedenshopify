@@ -1,0 +1,25 @@
+{%- comment -%}
+  Listing title (collection + search results pages).
+  Params:
+    title   – heading text (already escaped by the caller if needed)
+    count   – number rendered as "(count)" next to the title (optional)
+    eyebrow – small uppercase label above the title (optional)
+    quoted  – true wraps the title in quotes (search page)
+{%- endcomment -%}
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+-%}
+<div class="od-listing__title">
+  {%- if eyebrow != blank -%}
+    <p class="od-listing__eyebrow">{{ eyebrow }}</p>
+  {%- endif -%}
+  <h1 class="od-listing__heading{% if rtl %} od-listing__heading--rtl{% endif %}">
+    <span class="od-listing__name">{% if quoted %}&ldquo;{{ title }}&rdquo;{% else %}{{ title }}{% endif %}</span>
+    {%- if count != blank -%}
+      <span class="od-listing__count">({{ count }})</span>
+    {%- endif -%}
+  </h1>
+</div>

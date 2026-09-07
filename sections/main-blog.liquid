@@ -1,0 +1,162 @@
+{%- comment -%}
+  Blog listing (Curated Edits and News & Events share it, settings decide the style):
+  - rows: image left / right / alternating, category label, title, dates + location (articles tagged recap), excerpt, link
+  - recap articles show a collage of 1 / 3 / 5 photos from the article's gallery field with an optional photo-count badge
+  - optional category tabs generated from the blog's tags
+  - pagination: "Load more" button or infinite scroll (assets/od-blocks.js)
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign per_page = st.per_page | default: 6
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign excerpt_words = 30
+  if st.excerpt == 'short'
+    assign excerpt_words = 18
+  elsif st.excerpt == 'long'
+    assign excerpt_words = 55
+  endif
+  assign recap_label = 'blogs.news.recap' | t
+  comment
+    round 6: the section can be used on any page. On a blog page it lists the current blog, elsewhere the blog picked
+    in the settings. With no blog at all it shows a note instead of a Liquid error.
+  endcomment
+  assign b = blank
+  if request.page_type == 'blog' and st.blog_source != 'picker'
+    assign b = blog
+  elsif st.blog != blank
+    assign b = blogs[st.blog]
+  elsif request.page_type == 'blog'
+    assign b = blog
+  endif
+-%}
+<section class="od-blk od-blog od-blog--{{ st.style }}" id="od-blog-{{ section.id }}" style="--od-blk-text: {{ st.text_color }}; --od-accent: {{ st.accent }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;" data-od-blog data-load="{{ st.load_mode }}">
+  <div class="_container_1kxnl_30">
+    {%- if st.heading != blank or st.subheading != blank -%}
+      <div class="od-blog__head">
+        {%- if st.heading != blank -%}<h2 class="od-blk__heading od-blog__heading">{{ st.heading }}</h2>{%- endif -%}
+        {%- if st.subheading != blank -%}<p class="od-blog__sub">{{ st.subheading }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+    {%- if b == blank -%}
+      <p class="od-blog__empty">{{ 'blogs.general.pick_blog' | t }}</p>
+    {%- else -%}
+    {%- if st.show_tabs and b.all_tags.size > 0 -%}
+      <nav class="od-tabs" aria-label="{{ 'blogs.general.categories' | t }}" data-listing-ajax>
+        <a class="od-tab{% unless current_tags %} is-active{% endunless %}" href="{{ b.url }}">{{ 'blogs.general.all' | t }}</a>
+        {%- for tag in b.all_tags -%}
+          {%- assign tl = tag | downcase -%}
+          {%- if tl == 'recap' or tl == 'blog' or tl == 'story' or tl == 'edit' -%}{%- continue -%}{%- endif -%}
+          <a class="od-tab{% if current_tags contains tag %} is-active{% endif %}" href="{{ b.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+        {%- endfor -%}
+      </nav>
+    {%- endif -%}
+    {%- paginate b.articles by per_page -%}
+      <div class="od-blog__list" data-od-blog-list>
+        {%- for article in b.articles -%}
+          {%- include 'article-meta', article: article -%}
+          {%- liquid
+            assign side = st.image_side
+            if side == 'alternate'
+              assign mod = forloop.index0 | modulo: 2
+              if mod == 0
+                assign side = 'start'
+              else
+                assign side = 'end'
+              endif
+            endif
+            assign cover = article.image
+            assign a_kind_x = a_kind
+            assign photos = 0
+            if a_kind == 'recap' and a_gallery != blank
+              assign photos = a_gallery.size
+            endif
+            assign link_label = st.link_label_blog
+            if a_kind == 'recap'
+              assign link_label = st.link_label_recap
+            endif
+          -%}
+          <article class="od-blog__row od-blog__row--img-{{ side }}{% if a_kind == 'recap' %} od-blog__row--recap{% endif %}">
+            <a class="od-blog__media" href="{{ article.url }}" aria-label="{{ article.title | escape }}">
+              {%- if a_kind == 'recap' and photos > 1 and st.collage != '1' -%}
+                {%- assign n = st.collage | plus: 0 -%}
+                <div class="od-collage od-collage--{{ n | at_most: photos }}">
+                  {%- for im in a_gallery limit: n -%}
+                    <div class="od-collage__cell"><img src="{{ im | image_url: width: 800 }}" alt="" width="800" height="800" loading="lazy"></div>
+                  {%- endfor -%}
+                </div>
+              {%- elsif cover != blank -%}
+                <div class="od-ratio od-ratio--{{ st.ratio }}"><img src="{{ cover | image_url: width: 1000 }}" srcset="{{ cover | image_url: width: 600 }} 600w, {{ cover | image_url: width: 1000 }} 1000w" sizes="(max-width: 767px) 100vw, 50vw" alt="{{ cover.alt | default: article.title | escape }}" width="{{ cover.width }}" height="{{ cover.height }}" loading="lazy"></div>
+              {%- else -%}
+                <div class="od-ratio od-ratio--{{ st.ratio }}">{{ 'lifestyle-1' | placeholder_svg_tag: 'od-placeholder' }}</div>
+              {%- endif -%}
+              {%- if a_kind == 'recap' and st.count_badge and photos > 0 -%}
+                <span class="od-blog__pill">{{ recap_label }}, {{ 'blogs.news.photos' | t: count: photos }}</span>
+              {%- endif -%}
+            </a>
+            <div class="od-blog__body">
+              <p class="od-blk__eyebrow od-blog__kind">
+                {%- if a_kind == 'recap' -%}{{ recap_label }}{%- else -%}
+                  {%- assign shown = false -%}
+                  {%- for tag in article.tags -%}{%- assign tl = tag | downcase -%}{%- if tl == 'blog' or tl == 'story' or tl == 'edit' -%}{%- continue -%}{%- endif -%}{%- unless shown -%}{{ tag }}{%- assign shown = true -%}{%- endunless -%}{%- endfor -%}
+                  {%- unless shown -%}{{ st.default_label }}{%- endunless -%}
+                {%- endif -%}
+              </p>
+              <h3 class="od-blog__title"><a href="{{ article.url }}">{{ article.title }}</a></h3>
+              {%- if a_dates != blank -%}<p class="od-blog__dates">{{ a_dates }}{% if a_location != blank and st.location_inline %}, {{ a_location }}{% endif %}</p>{%- endif -%}
+              {%- if a_location != blank and st.location_inline == false -%}<p class="od-blog__loc"><span>{{ 'blogs.news.location' | t }}:</span> {{ a_location }}</p>{%- endif -%}
+              {%- if a_dates == blank and st.show_date -%}<p class="od-blog__dates">{{ article.published_at | date: format: 'date' }}</p>{%- endif -%}
+              {%- if st.excerpt != 'none' -%}<p class="od-blog__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: excerpt_words }}</p>{%- endif -%}
+              <a class="od-blk__btn od-blk__btn--link" href="{{ article.url }}">{{ link_label }}</a>
+            </div>
+          </article>
+        {%- else -%}
+          <p class="od-blog__empty">{{ 'blogs.general.empty' | t }}</p>
+        {%- endfor -%}
+      </div>
+      {%- if paginate.next -%}
+        <div class="od-blog__more" data-od-blog-more data-next-url="{{ paginate.next.url }}">
+          {%- if st.load_mode == 'button' -%}<button type="button" class="od-blk__btn od-blk__btn--outline" data-od-blog-more-btn>{{ 'blogs.general.load_more' | t }}</button>{%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Blog list",
+  "tag": "section",
+  "settings": [
+    { "type": "select", "id": "style", "label": "Style", "default": "news", "options": [ { "value": "news", "label": "News & Events (recap collages)" }, { "value": "edits", "label": "Curated Edits (editorial rows)" } ] },
+    { "type": "select", "id": "blog_source", "label": "Which blog", "default": "auto", "options": [ { "value": "auto", "label": "This page's blog (else the one picked below)" }, { "value": "picker", "label": "Always the blog picked below" } ] },
+    { "type": "blog", "id": "blog", "label": "Blog" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "News" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Event recaps and stories from the house" },
+    { "type": "checkbox", "id": "show_tabs", "label": "Category tabs from the blog tags", "default": true },
+    { "type": "text", "id": "default_label", "label": "Label when an article has no category tag", "default": "Blog" },
+    { "type": "header", "content": "Rows" },
+    { "type": "select", "id": "image_side", "label": "Image side", "default": "start", "options": [ { "value": "start", "label": "Left" }, { "value": "end", "label": "Right" }, { "value": "alternate", "label": "Alternate" } ] },
+    { "type": "select", "id": "ratio", "label": "Cover shape", "default": "1-1", "options": [ { "value": "1-1", "label": "Square" }, { "value": "4-3", "label": "Landscape 4:3" }, { "value": "3-4", "label": "Portrait 3:4" }, { "value": "16-9", "label": "Wide" } ] },
+    { "type": "select", "id": "collage", "label": "Recap thumbnail photos", "default": "3", "options": [ { "value": "1", "label": "1 (cover only)" }, { "value": "3", "label": "3" }, { "value": "5", "label": "5" } ] },
+    { "type": "checkbox", "id": "count_badge", "label": "Show the photo-count badge on recaps", "default": true },
+    { "type": "checkbox", "id": "location_inline", "label": "Location on the same line as the dates", "default": true },
+    { "type": "checkbox", "id": "show_date", "label": "Show publish date when there are no event dates", "default": true },
+    { "type": "select", "id": "excerpt", "label": "Excerpt length", "default": "medium", "options": [ { "value": "none", "label": "None" }, { "value": "short", "label": "Short" }, { "value": "medium", "label": "Medium" }, { "value": "long", "label": "Long" } ] },
+    { "type": "text", "id": "link_label_recap", "label": "Link label, recaps", "default": "See the photos" },
+    { "type": "text", "id": "link_label_blog", "label": "Link label, posts", "default": "Read more" },
+    { "type": "header", "content": "Paging" },
+    { "type": "range", "id": "per_page", "label": "Posts per page", "min": 4, "max": 12, "step": 1, "default": 6 },
+    { "type": "select", "id": "load_mode", "label": "Load more", "default": "button", "options": [ { "value": "button", "label": "Button" }, { "value": "infinite", "label": "Infinite scroll" } ] },
+    { "type": "header", "content": "Colours and spacing" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#551c25" },
+    { "type": "color", "id": "accent", "label": "Accent (labels, links)", "default": "#595b33" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "presets": [ { "name": "Blog list" } ]
+}
+{% endschema %}

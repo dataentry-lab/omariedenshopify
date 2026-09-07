@@ -1,0 +1,26 @@
+{%- liquid
+  assign form_url = section.settings.form_url
+  assign height = section.settings.height | default: 1439
+  assign title = section.settings.title | default: page.title
+-%}
+<div class="_FormActivation_qxm9o_1" data-section-id="{{ section.id }}">
+  {%- if form_url != blank -%}
+    <iframe class="_formFrame_qxm9o_15" src="{{ form_url }}" title="{{ title | escape }}" style="--form-height: {{ height }}px;" loading="lazy">{{ 'pages.activation.loading' | t }}</iframe>
+  {%- else -%}
+    <div class="_noProducts_1f8fu_34" style="text-align:center;padding:40px 16px;min-height:300px;">
+      <h4>{{ title }}</h4>
+      <p>{{ 'pages.activation.missing_url' | t }}</p>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Activation form",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Iframe title (defaults to page title)" },
+    { "type": "text", "id": "form_url", "label": "Google Form embed URL", "info": "e.g. https://docs.google.com/forms/d/e/…/viewform?embedded=true", "default": "https://docs.google.com/forms/d/e/1FAIpQLSdc8fh_axC24aEzUbCyAtQzYk4bwRuCj4GNu9lZj4q6LElWzw/viewform?embedded=true" },
+    { "type": "number", "id": "height", "label": "Form height (px)", "default": 1439 }
+  ]
+}
+{% endschema %}

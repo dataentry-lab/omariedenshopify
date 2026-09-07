@@ -1,0 +1,172 @@
+{
+  "sections": {
+    "banner": {
+      "type": "od-big-banner",
+      "settings": {
+        "height": "l",
+        "eyebrow": "By invitation",
+        "title": "Omarieden Privé",
+        "text": "<p>A private lounge for our most valued clients</p>",
+        "button_label": "Book your visit",
+        "button_url": "#od-form-prive",
+        "overlay_color": "#2a0d12",
+        "overlay_opacity": 55,
+        "text_color": "#fcf8f2",
+        "button_color": "#c9a96a",
+        "button_text_color": "#fcf8f2"
+      }
+    },
+    "imgtext": {
+      "type": "od-image-text",
+      "settings": {
+        "eyebrow": "Privé",
+        "title": "Personal styling, private previews, first access",
+        "text": "<p>Your own stylist, a private fitting suite and new collections before anyone else. Coffee, dates and the door closed behind you.</p>",
+        "button_label": "Book your visit",
+        "button_url": "#od-form-prive",
+        "image_side": "start",
+        "ratio": "4-3"
+      }
+    },
+    "row": {
+      "type": "od-image-row",
+      "blocks": {
+        "i1": {
+          "type": "image",
+          "settings": {}
+        },
+        "i2": {
+          "type": "image",
+          "settings": {}
+        },
+        "i3": {
+          "type": "image",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "i1",
+        "i2",
+        "i3"
+      ],
+      "settings": {
+        "ratio": "3-4"
+      }
+    },
+    "cards": {
+      "type": "od-cards",
+      "blocks": {
+        "c1": {
+          "type": "card",
+          "settings": {
+            "icon": "hanger",
+            "title": "Private styling",
+            "text": "<p>One-to-one, by appointment</p>"
+          }
+        },
+        "c2": {
+          "type": "card",
+          "settings": {
+            "icon": "key",
+            "title": "First access",
+            "text": "<p>Preview new arrivals early</p>"
+          }
+        },
+        "c3": {
+          "type": "card",
+          "settings": {
+            "icon": "truck",
+            "title": "Home delivery",
+            "text": "<p>Try at home, same day in Riyadh</p>"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "settings": {
+        "per_row": 3
+      }
+    },
+    "strip": {
+      "type": "od-small-banner",
+      "settings": {
+        "title": "Autumn preview evening, 2 October",
+        "button_label": "Reserve a seat"
+      }
+    },
+    "grid": {
+      "type": "od-product-grid",
+      "settings": {
+        "heading": "The Privé edit",
+        "source": "collection",
+        "per_row": 4,
+        "limit": 8,
+        "tag_label": "Privé"
+      }
+    },
+    "live": {
+      "type": "just-arrived",
+      "settings": {
+        "heading": "OMARIEDEN",
+        "heading_italic": "Privé Live",
+        "source": "products",
+        "dark": true,
+        "bg": "#2a0d12",
+        "text_color": "#fcf8f2",
+        "accent": "#c9a96a",
+        "card_bg": "#3a171e",
+        "count_text": "",
+        "tagline": "New in Privé",
+        "caption": "text",
+        "caption_text": "Exclusive"
+      }
+    },
+    "faq": {
+      "type": "od-faq",
+      "blocks": {
+        "q1": {
+          "type": "item",
+          "settings": {
+            "question": "How do I join Privé?",
+            "answer": "<p>Request an appointment below and our team will be in touch.</p>"
+          }
+        },
+        "q2": {
+          "type": "item",
+          "settings": {
+            "question": "Is there a fee?",
+            "answer": "<p>No. Privé is by invitation.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2"
+      ],
+      "settings": {
+        "heading": "Questions"
+      }
+    },
+    "form": {
+      "type": "od-form",
+      "settings": {
+        "kind": "prive",
+        "customer_tag": "prive"
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "imgtext",
+    "row",
+    "cards",
+    "strip",
+    "grid",
+    "live",
+    "faq",
+    "form"
+  ]
+}

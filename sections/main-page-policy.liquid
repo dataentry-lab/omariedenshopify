@@ -1,0 +1,37 @@
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  if section.settings.hero_image != blank
+    assign hero_url = section.settings.hero_image | image_url: width: 2560
+  else
+    assign hero_url = 'images_page-banner.jpg' | asset_url
+  endif
+-%}
+<div class="_ordersAndDelivery_1dpfq_30" data-section-id="{{ section.id }}">
+  <section class="_bgBack_xwnoc_133 _bgAddCls_1dpfq_70" style="background-image: url(&quot;{{ hero_url }}&quot;); height: 500px;">
+    <div class="_container_1kxnl_30 _banner_xwnoc_30 undefined">
+      <div class="_banner__content_xwnoc_61 ">
+        <h1 class="{% if rtl %}_titleRtl_xwnoc_39{% else %}undefined{% endif %} _banner__content__title_xwnoc_67 _titleClass_1dpfq_30">{{ section.settings.title | default: page.title }} </h1>
+      </div>
+    </div>
+  </section>
+  <div class="_OrderQuestion_1dpfq_81">
+    <div class="_container_1kxnl_30 ">
+      <div class="od-rte od-rte--policy">
+        {{ page.content }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Policy page (hero)",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image (fallback: page-banner.jpg)" },
+    { "type": "text", "id": "title", "label": "Hero title (defaults to page title)" }
+  ]
+}
+{% endschema %}

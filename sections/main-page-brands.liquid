@@ -1,0 +1,61 @@
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign letters = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,0-9' | split: ','
+  assign vendors = shop.vendors | sort_natural
+  assign total = vendors.size
+  assign per_column = total | plus: 2 | divided_by: 3
+  if per_column < 1
+    assign per_column = 1
+  endif
+  assign last_pos = per_column | minus: 1
+-%}
+<div class="_container_1kxnl_30 " data-brands data-section-id="{{ section.id }}">
+  <div class="_alphaSearchContent_omffk_30">
+    <p class="_active_omffk_73" data-letter="all">{{ 'pages.brands.all' | t }}</p>
+    {%- for letter in letters -%}
+      <p class="" data-letter="{{ letter }}">{{ letter }}</p>
+    {%- endfor -%}
+  </div>
+  <div class="_allBrandsContent_1mhi2_30">
+    <div class="_leftContainer_1fzpw_30">
+      <div class="_searchContainer_1fzpw_78">
+        <div class="_globalImg_1tf1q_38 _searchContainer__icon_1fzpw_120"><img fetchpriority="auto" alt="{{ 'pages.brands.search' | t | escape }}" src="{{ 'icons_light_search.svg' | asset_url }}"></div>
+        <input placeholder="{{ 'pages.brands.search' | t | escape }}" class="_inputPaddingRight_1fzpw_70 _searchContainer__input_1fzpw_96" type="text" value="" data-brand-search aria-label="{{ 'pages.brands.search' | t | escape }}">
+        <p style="display: none !important;" data-brand-clear role="button">{{ 'pages.brands.clear' | t }}</p>
+      </div>
+      <div class="_leftContainer__img_1fzpw_57"{% if section.settings.image != blank %} style="background-image: url(&quot;{{ section.settings.image | image_url: width: 1000 }}&quot;);"{% endif %}></div>
+    </div>
+    <div class="_right_etq9e_44">
+      <div class="_right__top_etq9e_47">
+        <h2 data-brands-heading data-all="{{ 'pages.brands.all' | t | escape }}">{{ 'pages.brands.all' | t }}</h2>
+        {%- if total > 0 -%}
+          <div class="_right__top__brands_etq9e_70">
+            {%- for vendor in vendors -%}
+              {%- assign col_pos = forloop.index0 | modulo: per_column -%}
+              {%- if col_pos == 0 -%}<div>{%- endif -%}
+              <p data-brand><a href="{{ vendor | url_for_vendor }}" style="color: inherit; text-decoration: none;">{{ vendor }}</a></p>
+              {%- if col_pos == last_pos or forloop.last -%}</div>{%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- else -%}
+          <div class="_noProducts_1f8fu_34" style="text-align:center;padding:40px 0;min-height:0;">
+            <div class="_globalImg_1tf1q_38" style="width:220px;margin:0 auto 16px;"><img src="{{ 'noresult_no_brands.svg' | asset_url }}" alt=""></div>
+            <p>{{ 'pages.brands.empty' | t }}</p>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Brands A-Z page",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Decorative image under the search box (fallback: brandsImg.webp)" }
+  ]
+}
+{% endschema %}

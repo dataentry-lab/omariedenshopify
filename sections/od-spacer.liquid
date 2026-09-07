@@ -1,0 +1,23 @@
+{%- capture od_locked -%}{%- render 'prive-locked' -%}{%- endcapture -%}
+{%- unless od_locked contains 'yes' -%}
+{%- comment -%} Block library 14: spacer / divider with optional ornament. {%- endcomment -%}
+{%- assign st = section.settings -%}
+<div class="od-blk od-spacer od-spacer--{{ st.style }}" style="height: {{ st.height }}px; --od-accent: {{ st.color }};">
+  {%- if st.style != 'space' -%}
+    <div class="_container_1kxnl_30 od-spacer__inner"><span class="od-spacer__line"></span>{% if st.style == 'ornament' %}<span class="od-spacer__orn" aria-hidden="true">&#10022;</span><span class="od-spacer__line"></span>{% endif %}</div>
+  {%- endif -%}
+</div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Spacer / divider",
+  "tag": "section",
+  "settings": [
+    { "type": "select", "id": "style", "label": "Style", "default": "space", "options": [ { "value": "space", "label": "Empty space" }, { "value": "line", "label": "Thin line" }, { "value": "ornament", "label": "Line with ornament" } ] },
+    { "type": "range", "id": "height", "label": "Height", "min": 8, "max": 160, "step": 4, "unit": "px", "default": 40 },
+    { "type": "color", "id": "color", "label": "Line colour", "default": "#c9a96a" }
+  ],
+  "presets": [ { "name": "Spacer / divider" } ]
+}
+{% endschema %}

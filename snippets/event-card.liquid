@@ -1,0 +1,60 @@
+{%- comment -%} Event card for the events listing / upcoming strip. Params: product, show_price (default true) {%- endcomment -%}
+{%- liquid
+  comment
+    include (not render) on purpose: event-meta sets variables for this file. Callers must use include too, Shopify does not allow include inside a rendered snippet.
+  endcomment
+  include 'event-meta', product: product
+  if show_price == nil
+    assign show_price = true
+  endif
+  assign img = product.featured_image
+  assign manual = ''
+  for tag in product.tags
+    assign tl = tag | downcase
+    if tl == 'prive' or tl == 'privé'
+      assign manual = 'prive'
+      break
+    elsif tl == 'kids'
+      assign manual = 'kids'
+    elsif tl == 'members'
+      assign manual = 'members'
+    endif
+  endfor
+-%}
+<article class="od-ev od-ev--{{ ev_status }}" data-event data-status="{{ ev_status }}" data-start="{{ ev_start }}">
+  <a class="od-ev__media od-ratio od-ratio--4-3" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+    {%- if img -%}
+      <img src="{{ img | image_url: width: 900 }}" srcset="{{ img | image_url: width: 500 }} 500w, {{ img | image_url: width: 900 }} 900w" sizes="(max-width: 767px) 100vw, 25vw" alt="{{ img.alt | default: product.title | escape }}" width="{{ img.width }}" height="{{ img.height }}" loading="lazy">
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'od-placeholder' }}
+    {%- endif -%}
+    <span class="od-ev__tags">
+      {%- case ev_status -%}
+        {%- when 'past' -%}<span class="od-ev__tag od-ev__tag--past">{{ 'events.tags.past' | t }}</span>
+        {%- when 'soldout' -%}<span class="od-ev__tag od-ev__tag--soldout">{{ 'events.tags.sold_out' | t }}</span>
+        {%- when 'fast' -%}<span class="od-ev__tag od-ev__tag--fast">{{ 'events.tags.selling_fast' | t }}</span>
+        {%- when 'soon' -%}
+          {%- if ev_days <= 0 -%}<span class="od-ev__tag od-ev__tag--soon">{{ 'events.tags.today' | t }}</span>
+          {%- else -%}<span class="od-ev__tag od-ev__tag--soon">{{ 'events.tags.days_left' | t: count: ev_days }}</span>{%- endif -%}
+      {%- endcase -%}
+      {%- if manual != blank -%}<span class="od-ev__tag od-ev__tag--{{ manual }}">{% if manual == 'prive' %}{{ 'events.tags.prive' | t }}{% elsif manual == 'kids' %}{{ 'events.tags.kids' | t }}{% else %}{{ 'events.tags.members' | t }}{% endif %}</span>{%- endif -%}
+    </span>
+  </a>
+  <h3 class="od-ev__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+  <p class="od-ev__when">
+    {%- if ev_start > 0 -%}{{ ev_start_local | date: format: 'event_short' }}{%- endif -%}
+    {%- if ev_venue != blank -%}{% if ev_start > 0 %}, {% endif %}{{ ev_venue }}{%- endif -%}
+  </p>
+  {%- if show_price -%}
+    <p class="od-ev__price">
+      {%- if ev_status == 'soldout' -%}
+        <a href="{{ product.url }}#od-form-event-interest" class="od-ev__wait">{{ 'events.join_waitlist' | t }}</a>
+      {%- elsif ev_free -%}
+        <strong>{{ 'events.free' | t }}</strong>
+      {%- else -%}
+        <strong>{{ 'events.from' | t }} {% render 'sar' %}{{ ev_price_from | money_without_currency }}</strong>
+      {%- endif -%}
+      {%- if ev_status == 'fast' and ev_seats > 0 -%}<span class="od-ev__left">{{ 'events.seats_left' | t: count: ev_seats }}</span>{%- endif -%}
+    </p>
+  {%- endif -%}
+</article>

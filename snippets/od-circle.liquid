@@ -1,0 +1,5 @@
+{%- comment -%} Maroon "OMARIEDEN Circle arriving soon" card, used in login popover, mobile nav and cart {%- endcomment -%}
+<div class="_odCircle_rttpt_34">
+  <div class="_globalImg_1tf1q_38 _odCircle__img_rttpt_42"><img fetchpriority="auto" alt="{{ shop.name | escape }}" src="{{ 'icons_omariden_light.svg' | asset_url }}"></div>
+  <div class="_odCircle__left_rttpt_46"><p{% if request.locale.iso_code contains 'ar' %} class="_pRtl_rttpt_30"{% endif %}>{{ settings.circle_text | default: 'A new way to belong is on its way. The OMARIEDEN Circle, arriving soon.' }}</p></div>
+</div>

@@ -1,0 +1,373 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page-faqs",
+      "blocks": {
+        "cat_orders": {
+          "type": "category",
+          "settings": {
+            "title": "Orders",
+            "icon_asset": "icons_light_order.svg",
+            "title_ar": "الطلبات"
+          }
+        },
+        "cat_delivery": {
+          "type": "category",
+          "settings": {
+            "title": "Delivery",
+            "icon_asset": "icons_shipping.svg",
+            "title_ar": "التوصيل"
+          }
+        },
+        "cat_returns": {
+          "type": "category",
+          "settings": {
+            "title": "Returns & Refunds",
+            "icon_asset": "icons_return.png",
+            "title_ar": "الإرجاع والاسترداد"
+          }
+        },
+        "cat_payments": {
+          "type": "category",
+          "settings": {
+            "title": "Payments & Pricing",
+            "icon_asset": "icons_secure.svg",
+            "title_ar": "الدفع والأسعار"
+          }
+        },
+        "o1": {
+          "type": "question",
+          "settings": {
+            "category": "orders",
+            "question": "How can I track my order?",
+            "answer": "<p>After placing your order, you will receive an email confirmation with your order details. Once your order is dispatched, you will receive an SMS and/or email with your tracking number and courier information. You can also track your order through the “My Orders” section in your OMARIEDEN account</p>",
+            "question_ar": "كيف يمكنني تتبع طلبي؟",
+            "answer_ar": "<p>بعد إتمام الطلب، ستصلك رسالة تأكيد عبر البريد الإلكتروني تحتوي على تفاصيل الطلب. وعند شحن الطلب، ستتلقى رسالة</p><p>بريد إلكتروني يتضمن رقم التتبع ومعلومات شركة الشحن. كما يمكنك تتبع الطلب من خلال قسم “طلباتي” في حسابك على موقع</p>"
+          }
+        },
+        "o2": {
+          "type": "question",
+          "settings": {
+            "category": "orders",
+            "question": "How long does it take to process my order?",
+            "answer": "<p>Orders typically require 1–2 business days for processing before dispatch</p>",
+            "question_ar": "كم يستغرق تجهيز الطلب قبل الشحن؟",
+            "answer_ar": "<p>يستغرق تجهيز الطلب عادةً من يوم إلى يومي عمل قبل شحنه</p>"
+          }
+        },
+        "o3": {
+          "type": "question",
+          "settings": {
+            "category": "orders",
+            "question": "Can I cancel my order after placing it?",
+            "answer": "<p>Yes, you can cancel your order before it is prepared for shipment through your OMARIEDEN account under “My Orders” or by contacting customer support</p>",
+            "question_ar": "هل يمكنني إلغاء طلبي بعد إتمامه؟",
+            "answer_ar": "<p>نعم، يمكنك إلغاء الطلب قبل بدء تجهيز الطلب للشحن من خلال حسابك في أوماريدن عبر قسم “طلباتي” أو عن طريق التواصل مع خدمة العملاء</p>"
+          }
+        },
+        "o4": {
+          "type": "question",
+          "settings": {
+            "category": "orders",
+            "question": "Can I cancel my order after it has been shipped?",
+            "answer": "<p>Once an order has been prepared or shipped, cancellation is no longer possible. However, you may use the Free Return Service after delivery</p>",
+            "question_ar": "هل يمكن إلغاء الطلب بعد شحنه؟",
+            "answer_ar": "<p>لا يمكن إلغاء الطلب بعد أن يتم تجهيزه أو شحنه. ولكن يمكنك الاستفادة من خدمة الإرجاع المجاني بعد استلام الطلب</p>"
+          }
+        },
+        "o5": {
+          "type": "question",
+          "settings": {
+            "category": "orders",
+            "question": "How will I know that my order was successfully placed?",
+            "answer": "<p>You will receive an email confirmation with your order details immediately after placing your order</p>",
+            "question_ar": "كيف أعرف أن طلبي تم بنجاح؟",
+            "answer_ar": "<p>بعد إتمام الطلب مباشرة، ستصلك رسالة تأكيد عبر البريد الإلكتروني تحتوي على جميع تفاصيل الطلب</p>"
+          }
+        },
+        "o6": {
+          "type": "question",
+          "settings": {
+            "category": "orders",
+            "question": "How long does it take to receive a refund?",
+            "answer": "<p>Once returned items are received and quality-checked, refunds will be processed using the original payment method. Please allow 7–14 working days for processing and bank confirmation</p>",
+            "question_ar": "كم يستغرق استرداد المبلغ بعد الإرجاع؟",
+            "answer_ar": "<p>بعد استلام المنتج المرتجع وفحصه، سيتم استرداد المبلغ باستخدام نفس طريقة الدفع الأصلية. يرجى السماح من 7 إلى 14 يوم عمل لإتمام عملية الاسترداد وتأكيدها من البنك</p>"
+          }
+        },
+        "d1": {
+          "type": "question",
+          "settings": {
+            "category": "delivery",
+            "question": "When will my order be shipped?",
+            "answer": "<p>Orders are processed within 1–2 business days before dispatch.</p><p>Orders placed after 6:00 PM (KSA time) or during public holidays will be processed on the next working day</p>",
+            "question_ar": "متى يتم شحن طلبي؟",
+            "answer_ar": "<p>يتم تجهيز الطلبات خلال 1–2 يوم عمل قبل الشحن.</p><p>الطلبات التي يتم تقديمها بعد الساعة 6:00 مساءً (بتوقيت السعودية) أو خلال العطلات الرسمية سيتم معالجتها في يوم العمل التالي.</p>"
+          }
+        },
+        "d2": {
+          "type": "question",
+          "settings": {
+            "category": "delivery",
+            "question": "How long does delivery take?",
+            "answer": "<p>Delivery times depend on the location and shipping method:</p><ul><li>Express Delivery</li><li>Riyadh, Jeddah, Al Khobar: 1–3 working days</li><li>Other regions in Saudi Arabia: 2–7 working days</li><li>Bahrain: 3–5 working days</li></ul><ul><li>Standard Delivery</li><li>Saudi Arabia &amp; Bahrain: 3–6 working days</li></ul>",
+            "question_ar": "كم يستغرق التوصيل؟",
+            "answer_ar": "<p>تعتمد مدة التوصيل على موقعك وطريقة الشحن المختارة:</p><p>التوصيل السريع</p><ul><li>الرياض، جدة، الخبر: 1–3 أيام عمل</li><li>باقي مناطق المملكة العربية السعودية: 2–7 أيام عمل</li><li>البحرين: 3–5 أيام عمل</li></ul><p>التوصيل العادي</p><ul><li>المملكة العربية السعودية والبحرين: 3–6 أيام عمل</li></ul>"
+          }
+        },
+        "d3": {
+          "type": "question",
+          "settings": {
+            "category": "delivery",
+            "question": "Do you offer free delivery?",
+            "answer": "<p>Yes. Free standard delivery is available when the order meets the minimum amount:</p><ul><li>Saudi Arabia: Free delivery on orders above SAR 500</li><li>Bahrain: Free delivery on orders above BHD 50</li></ul>",
+            "question_ar": "هل يوجد شحن مجاني؟",
+            "answer_ar": "<p>نعم، يتوفر شحن عادي مجاني عند وصول الطلب إلى الحد الأدنى التالي:</p><ul><li>السعودية: شحن مجاني للطلبات التي تتجاوز 500 ريال سعودي</li><li>البحرين: شحن مجاني للطلبات التي تتجاوز 50 دينار بحريني</li></ul>"
+          }
+        },
+        "d4": {
+          "type": "question",
+          "settings": {
+            "category": "delivery",
+            "question": "How can I track my order?",
+            "answer": "<p>After placing your order:</p><ul><li>You will receive an order confirmation email.</li><li>Once shipped, you will receive an SMS or email with a tracking number.</li><li>You can track your shipment through:</li><li>The courier’s website</li><li>The “My Orders” section in your OMARIEDEN account</li></ul>",
+            "question_ar": "كيف يمكنني تتبع طلبي؟",
+            "answer_ar": "<p>بعد إتمام الطلب:</p><ul><li>ستصلك رسالة تأكيد عبر البريد الإلكتروني تحتوي على تفاصيل الطلب.</li><li>عند شحن الطلب، ستصلك رسالة نصية أو بريد إلكتروني تحتوي على رقم التتبع ومعلومات شركة الشحن.</li></ul><p>يمكنك تتبع الشحنة عبر:</p><ul><li>موقع شركة الشحن</li><li>قسم طلباتي في حسابك على موقع OMARIEDEN.</li></ul>"
+          }
+        },
+        "d5": {
+          "type": "question",
+          "settings": {
+            "category": "delivery",
+            "question": "What happens if the delivery cannot be completed?",
+            "answer": "<p>If delivery cannot be completed:</p><ul><li>The courier will attempt a second delivery, or</li><li>The shipment may be redirected to the nearest collection point.</li></ul><p>If the parcel is not collected within the courier’s timeframe, it will be returned to origin (RTO).</p>",
+            "question_ar": "ماذا يحدث إذا تعذر تسليم الطلب؟",
+            "answer_ar": "<p>في حال تعذر إتمام عملية التسليم:</p><ul><li>ستقوم شركة الشحن بمحاولة توصيل ثانية، أو</li><li>سيتم تحويل الشحنة إلى أقرب نقطة استلام.</li></ul><p>إذا لم يتم استلام الشحنة خلال المدة المحددة من قبل شركة الشحن، فسيتم إرجاعها إلى المصدر.</p>"
+          }
+        },
+        "r1": {
+          "type": "question",
+          "settings": {
+            "category": "returns-refunds",
+            "question": "How can I return an item?",
+            "answer": "<p>You can submit a return request by logging into your account, going to My Orders, selecting the order you want to return, and choosing the Return option. Fill in the required details and submit the request</p>",
+            "question_ar": "كيف يمكنني إرجاع منتج؟",
+            "answer_ar": "<p>يمكنك طلب إرجاع المنتج من خلال تسجيل الدخول إلى حسابك، ثم الذهاب إلى طلباتي</p><p>واختيار الطلب الذي ترغب بإرجاعه، ثم اختيار إرجاع  وملء تفاصيل الإرجاع وإرسال الطلب</p>"
+          }
+        },
+        "r2": {
+          "type": "question",
+          "settings": {
+            "category": "returns-refunds",
+            "question": "What is the return period?",
+            "answer": "<p>Items can be returned within 30 days from the delivery date</p>",
+            "question_ar": "ما هي مدة الإرجاع؟",
+            "answer_ar": "<p>يمكنك إرجاع المنتجات خلال 30 يومًا من تاريخ استلام الطلب</p>"
+          }
+        },
+        "r3": {
+          "type": "question",
+          "settings": {
+            "category": "returns-refunds",
+            "question": "Are there items that cannot be returned?",
+            "answer": "<p>Yes. The following items cannot be returned:</p><ul><li>Hosiery</li><li>Lingerie</li><li>Swimwear</li><li>Face masks (unless faulty or damaged on delivery)</li><li>Made-to-measure or personalized items (unless defective)</li></ul>",
+            "question_ar": "هل هناك منتجات لا يمكن إرجاعها؟",
+            "answer_ar": "<p>نعم، لا يمكن إرجاع المنتجات التالية:</p><ul><li>الجوارب</li><li>الملابس الداخلية</li><li>ملابس السباحة</li><li>الكمامات (إلا في حال كانت تالفة أو معيبة عند الاستلام)</li><li>المنتجات المصممة أو المخصصة حسب الطلب (إلا إذا كانت معيبة)</li></ul>"
+          }
+        },
+        "r4": {
+          "type": "question",
+          "settings": {
+            "category": "returns-refunds",
+            "question": "What condition must items be in to be returned",
+            "answer": "<p>Items must be unworn, unused, undamaged, and with all original tags attached, including original packaging such as boxes, dust bags, or cases</p>",
+            "question_ar": "ما هي حالة المنتج المطلوبة لقبول الإرجاع؟",
+            "answer_ar": "<p>يجب أن يكون المنتج غير مستخدم، غير ملبوس، وغير متضرر، مع بقاء جميع البطاقات الأصلية</p><p>مرفقة به</p>"
+          }
+        },
+        "r5": {
+          "type": "question",
+          "settings": {
+            "category": "returns-refunds",
+            "question": "When will I receive my refund?",
+            "answer": "<p>Once your return reaches the warehouse, please allow up to 6 working days for processing.</p>",
+            "question_ar": "متى يتم معالجة طلب الاسترجاع؟",
+            "answer_ar": "<p>بعد وصول المنتج إلى مستودعاتنا، يرجى الانتظار حتى 6 أيام عمل لمعالجة طلب الإرجاع</p>"
+          }
+        },
+        "r6": {
+          "type": "question",
+          "settings": {
+            "category": "returns-refunds",
+            "question": "How will my refund be issued?",
+            "answer": "<p>Refunds will be issued to the original payment method or via bank transfer, unless store credit is selected</p>",
+            "question_ar": "كيف سيتم استرجاع المبلغ؟",
+            "answer_ar": "<p>سيتم استرجاع المبلغ إلى وسيلة الدفع الأصلية أو عبر تحويل بنكي، ما لم يتم اختيار رصيد المتجر</p>"
+          }
+        },
+        "r7": {
+          "type": "question",
+          "settings": {
+            "category": "returns-refunds",
+            "question": "How long does it take for the refund to appear in my account?",
+            "answer": "<p>After approval, refunds may take up to 30 working days to appear depending on your bank or payment provider.</p>",
+            "question_ar": "كم يستغرق وصول المبلغ إلى حسابي؟",
+            "answer_ar": "<p>بعد الموافقة على طلب الاسترجاع، قد يستغرق ظهور المبلغ في حسابك حتى 30 يوم عمل حسب البنك أو مزود خدمة الدفع</p>"
+          }
+        },
+        "r8": {
+          "type": "question",
+          "settings": {
+            "category": "returns-refunds",
+            "question": "Can I receive my refund as store credit?",
+            "answer": "<p>Yes. You may choose to receive your refund as Omarieden store credit, which is valid for 24 months and can be used for purchases on the website.</p>",
+            "question_ar": "هل يمكن استلام المبلغ كرصيد في المتجر؟",
+            "answer_ar": "<p>نعم، يمكنك اختيار استلام المبلغ كـ رصيد في متجر</p><p>ويمكن استخدامه للشراء من الموقع</p>"
+          }
+        },
+        "r9": {
+          "type": "question",
+          "settings": {
+            "category": "returns-refunds",
+            "question": "Are shipping fees refundable?",
+            "answer": "<p>Shipping fees are refunded only if the item is faulty, incorrect, or damaged. Otherwise, handling charges may apply.</p>",
+            "question_ar": "كم مدة صلاحية رصيد المتجر؟",
+            "answer_ar": "<p>رصيد المتجر صالح لمدة 24 شهرًا ويمكن استخدامه في أي عملية شراء على الموقع</p>"
+          }
+        },
+        "p1": {
+          "type": "question",
+          "settings": {
+            "category": "payments-pricing",
+            "question": "What payment methods do you accept?",
+            "answer": "<p>We accept major credit and debit cards (Visa, Mastercard, American Express), Apple Pay, Mada (KSA), and Buy Now Pay Later services such as Tamara and Tabby. Cash on Delivery and bank transfer may be available for selected regions or high-value orders</p>",
+            "question_ar": "ما هي طرق الدفع المتاحة؟",
+            "answer_ar": "<p>نقبل بطاقات الائتمان والخصم (Visa وMastercard وAmerican Express)، بالإضافة إلى Apple Pay وMada داخل السعودية. كما نوفر خدمة الدفع لاحقًا عبر Tamara وTabby. وقد يتوفر الدفع عند الاستلام أو التحويل البنكي لبعض المناطق أو الطلبات ذات القيمة العالية</p>"
+          }
+        },
+        "p2": {
+          "type": "question",
+          "settings": {
+            "category": "payments-pricing",
+            "question": "When will my payment be charged?",
+            "answer": "<p>Payments made via credit/debit cards, Apple Pay, STC Pay, or Mada are charged immediately at checkout once the order is successfully authorized</p>",
+            "question_ar": "متى يتم خصم المبلغ من بطاقتي؟",
+            "answer_ar": "<p>يتم خصم المبلغ مباشرة عند إتمام الطلب بنجاح في صفحة الدفع عند استخدام البطاقات البنكية أو المحافظ الرقمية مثل Apple Pay</p>"
+          }
+        },
+        "p3": {
+          "type": "question",
+          "settings": {
+            "category": "payments-pricing",
+            "question": "Can I pay later using installment services?",
+            "answer": "<p>Yes. We offer Buy Now, Pay Later options through Tamara and Tabby in Saudi Arabia. Eligibility and payment schedules depend on the provider’s approval.</p>",
+            "question_ar": "هل يمكنني الدفع بالتقسيط؟",
+            "answer_ar": "<p>داخل المملكة العربية السعودية، ويعتمد توفرها على موافقة مزود الخدمة Tamara أو Tabby  نعم، يمكنك استخدام خدمات اشترِ الآن وادفع لاحقًا مثل</p>"
+          }
+        },
+        "p4": {
+          "type": "question",
+          "settings": {
+            "category": "payments-pricing",
+            "question": "Is Cash on Delivery (COD) available?",
+            "answer": "<p>Cash on Delivery may be available for selected locations and order values. Availability will be shown at checkout based on your delivery address</p>",
+            "question_ar": "هل يتوفر الدفع عند الاستلام؟",
+            "answer_ar": "<p>قد يتوفر الدفع عند الاستلام في بعض المناطق ولطلبات محددة حسب قيمة الطلب. سيتم إظهار توفر هذه الخدمة أثناء إتمام عملية الشراء</p>"
+          }
+        },
+        "p5": {
+          "type": "question",
+          "settings": {
+            "category": "payments-pricing",
+            "question": "Why may product prices vary?",
+            "answer": "<p>Prices may vary depending on factors such as product sourcing (local vs international), exchange rate fluctuations, import duties, and courier or logistics costs</p>",
+            "question_ar": "لماذا قد تختلف الأسعار؟",
+            "answer_ar": "<p>قد تختلف الأسعار بناءً على عدة عوامل مثل مصدر المنتج (محلي أو دولي)، تقلبات أسعار الصرف، الرسوم الجمركية أو الضرائب في بلد الوجهة، بالإضافة إلى تكاليف الشحن والخدمات اللوجستية.</p>"
+          }
+        },
+        "p6": {
+          "type": "question",
+          "settings": {
+            "category": "payments-pricing",
+            "question": "Are taxes included in the product price?",
+            "answer": "<p>Yes. Prices displayed for orders delivered within Saudi Arabia and Bahrain include VAT. For other countries, customs duties or import taxes may apply depending on local regulations</p>",
+            "question_ar": "هل الأسعار تشمل الضريبة؟",
+            "answer_ar": "<p>نعم، الأسعار المعروضة للطلبات داخل المملكة العربية السعودية والبحرين تشمل ضريبة القيمة المضاف</p><p>أما الطلبات الدولية فقد تخضع لرسوم جمركية أو ضرائب حسب قوانين الدولة المستلمة</p>"
+          }
+        },
+        "p7": {
+          "type": "question",
+          "settings": {
+            "category": "payments-pricing",
+            "question": "Which currency will I be charged in?",
+            "answer": "<p>Your shopping currency is automatically determined based on your delivery destination. If your local currency is not supported, the payment will be processed in Saudi Riyal (SAR)</p>",
+            "question_ar": "بأي عملة سيتم الدفع؟",
+            "answer_ar": "<p>يتم تحديد عملة الدفع تلقائيًا بناءً على عنوان الشحن. وإذا لم تكن العملة المحلية مدعومة، فسيتم معالجة الدفع بالريال السعودي</p>"
+          }
+        },
+        "p8": {
+          "type": "question",
+          "settings": {
+            "category": "payments-pricing",
+            "question": "Are there any additional fees at checkout?",
+            "answer": "<p>The amount displayed at checkout is the final price for local deliveries. However, international orders may incur customs duties or import taxes payable to the courier or local authorities.</p>",
+            "question_ar": "هل هناك رسوم إضافية عند الدفع؟",
+            "answer_ar": "<p>المبلغ الظاهر عند إتمام الطلب هو المبلغ النهائي للطلبات المحلية. أما الطلبات الدولية فقد تتطلب دفع رسوم جمركية أو ضرائب إضافية تُدفع للجهات المختصة أو شركة الشحن</p>"
+          }
+        },
+        "p9": {
+          "type": "question",
+          "settings": {
+            "category": "payments-pricing",
+            "question": "Can my bank charge additional fees?",
+            "answer": "<p>Some banks may apply foreign transaction or currency conversion fees. These charges are determined by your card issuer and are not controlled by OMARIEDEN</p>",
+            "question_ar": "هل قد يفرض البنك رسومًا إضافية؟",
+            "answer_ar": "<p>قد يفرض البنك أو جهة إصدار البطاقة رسوم معاملات دولية أو تحويل عملة. هذه الرسوم يحددها البنك ولا يتحكم بها موقع</p>"
+          }
+        }
+      },
+      "block_order": [
+        "cat_orders",
+        "cat_delivery",
+        "cat_returns",
+        "cat_payments",
+        "o1",
+        "o2",
+        "o3",
+        "o4",
+        "o5",
+        "o6",
+        "d1",
+        "d2",
+        "d3",
+        "d4",
+        "d5",
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5",
+        "r6",
+        "r7",
+        "r8",
+        "r9",
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5",
+        "p6",
+        "p7",
+        "p8",
+        "p9"
+      ],
+      "settings": {
+        "title": "FAQS",
+        "title_ar": "الأسئلة الشائعة"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

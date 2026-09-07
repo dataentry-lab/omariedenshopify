@@ -1,0 +1,38 @@
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+-%}
+<section class="_bgBack_xwnoc_133 _bgAddCls_o1irq_66" style="background-image: url({% if section.settings.image != blank %}{{ section.settings.image | image_url: width: 2560 }}{% else %}{{ 'images_trending_banner.webp' | asset_url }}{% endif %}); height: {{ section.settings.height | default: 720 }}px;" id="Banner-{{ section.id }}">
+  {%- if section.settings.mobile_image != blank -%}
+    <style>@media (max-width: 768px){ #Banner-{{ section.id }} { background-image: url({{ section.settings.mobile_image | image_url: width: 1000 }}) !important; } }</style>
+  {%- endif -%}
+  <div class="_container_1kxnl_30 _banner_xwnoc_30 undefined">
+    <div class="_banner__content_xwnoc_61 ">
+      {%- if section.settings.top_subtitle != blank -%}<p class="_banner__content__topsubtitle_xwnoc_103">{{ section.settings.top_subtitle }}</p>{%- endif -%}
+      <h1 class="{% if rtl %}_titleRtl_xwnoc_39{% else %}undefined{% endif %} _banner__content__title_xwnoc_67 _titleAddStyle_o1irq_30">{{ section.settings.title }} </h1>
+      {%- if section.settings.subtitle != blank -%}<div class="_banner__content__subtitle_xwnoc_118 _subtitleCls_o1irq_60">{{ section.settings.subtitle }}</div>{%- endif -%}
+      {%- if section.settings.button_label != blank -%}
+        <button type="button" class="_btn_lnddl_30 _bannerBtn_xwnoc_30" data-href="{{ section.settings.button_url | default: routes.all_products_collection_url }}">{{ section.settings.button_label }}</button>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image banner",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Background image" },
+    { "type": "image_picker", "id": "mobile_image", "label": "Mobile background image (optional)" },
+    { "type": "range", "id": "height", "label": "Height (px)", "min": 400, "max": 900, "step": 10, "default": 720 },
+    { "type": "text", "id": "top_subtitle", "label": "Small top line", "default": "NOW AT OMARIEDEN" },
+    { "type": "text", "id": "title", "label": "Title", "default": "MARY KATRANTZOU" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "A world of expressive prints, impeccable tailoring, and contemporary luxury - designed to turn every look into a work of art." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Explore" },
+    { "type": "url", "id": "button_url", "label": "Button link" }
+  ],
+  "presets": [ { "name": "Image banner" } ]
+}
+{% endschema %}

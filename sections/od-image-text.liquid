@@ -1,0 +1,51 @@
+{%- capture od_locked -%}{%- render 'prive-locked' -%}{%- endcapture -%}
+{%- unless od_locked contains 'yes' -%}
+{%- comment -%} Block library 3: image + text (layout 1 approved: landscape image, eyebrow, title, text, button; image left or right). {%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+-%}
+<section class="od-blk od-imgtext od-imgtext--img-{{ st.image_side }}" id="od-imgtext-{{ section.id }}" style="--od-blk-bg: {{ st.bg | default: 'transparent' }}; --od-blk-text: {{ st.text_color }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+  <div class="_container_1kxnl_30">
+    <div class="od-imgtext__grid">
+      <div class="od-imgtext__media od-ratio od-ratio--{{ st.ratio }}">
+        {%- if st.image != blank -%}
+          <img src="{{ st.image | image_url: width: 1400 }}" srcset="{{ st.image | image_url: width: 700 }} 700w, {{ st.image | image_url: width: 1400 }} 1400w" sizes="(max-width: 767px) 100vw, 55vw" alt="{{ st.image.alt | escape }}" width="{{ st.image.width }}" height="{{ st.image.height }}" loading="lazy">
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'od-placeholder' }}
+        {%- endif -%}
+      </div>
+      <div class="od-imgtext__body">
+        {%- if st.eyebrow != blank -%}<p class="od-blk__eyebrow">{{ st.eyebrow }}</p>{%- endif -%}
+        {%- if st.title != blank -%}<h2 class="od-blk__heading">{{ st.title }}</h2>{%- endif -%}
+        {%- if st.text != blank -%}<div class="od-blk__text">{{ st.text }}</div>{%- endif -%}
+        {%- render 'od-button', label: st.button_label, url: st.button_url, style: st.button_style, color: st.button_color, text_color: st.button_text_color -%}
+      </div>
+    </div>
+  </div>
+</section>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Image + text",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "select", "id": "ratio", "label": "Image shape", "default": "4-3", "options": [ { "value": "4-3", "label": "Landscape 4:3" }, { "value": "3-2", "label": "Landscape 3:2" }, { "value": "1-1", "label": "Square" }, { "value": "4-5", "label": "Portrait 4:5" } ] },
+    { "type": "select", "id": "image_side", "label": "Image side", "default": "start", "options": [ { "value": "start", "label": "Left (right in Arabic)" }, { "value": "end", "label": "Right (left in Arabic)" } ] },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Privé" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Personal styling, private previews, first access" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Your own stylist, a private fitting suite and new collections before anyone else.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Book your visit" },
+    { "type": "url", "id": "button_url", "label": "Button link" },
+    { "type": "select", "id": "button_style", "label": "Button style", "default": "outline", "options": [ { "value": "outline", "label": "Outline" }, { "value": "solid", "label": "Solid" }, { "value": "link", "label": "Text link" } ] },
+    { "type": "color", "id": "button_color", "label": "Button colour", "default": "#551c25" },
+    { "type": "color", "id": "button_text_color", "label": "Button text colour (solid)", "default": "#fcf8f2" },
+    { "type": "color", "id": "bg", "label": "Background (empty = none)" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#551c25" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "presets": [ { "name": "Image + text" } ]
+}
+{% endschema %}

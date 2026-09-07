@@ -1,0 +1,180 @@
+{%- comment -%}
+  Floating filter drawer (collection + search pages), driven by Shopify storefront filters.
+  The "Category" tree comes from the main navigation menu, exactly like the original department > sub-department > category tree.
+{%- endcomment -%}
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  if request.page_type == 'search'
+    assign results = search
+    assign action_url = routes.search_url
+  else
+    assign results = collection
+    assign action_url = collection.url
+  endif
+  assign menu_handle = settings.main_menu | default: 'main-menu'
+  assign sort_by = results.sort_by | default: results.default_sort_by
+-%}
+<div class="_backdrop_9316i_30 undefined" data-modal-backdrop="filter" data-show-class="_backdropShow_rmug7_216"></div>
+<div class="_modal_9316i_132 _modalAddCls_rmug7_176" data-modal="filter" data-show-class="_show_rmug7_210">
+  <div class="_mHeader_9316i_67">
+    <div class="_mHeader__imgContainer_9316i_89"><h2{% if rtl %} class="_h2Rtl_9316i_50"{% endif %}>{{ 'collections.filter.title' | t }} <span></span></h2></div>
+    <div class="_globalImg_1tf1q_38 _close_9316i_125" data-close-modal="filter"><img fetchpriority="auto" alt="{{ 'general.accessibility.close' | t }}" src="{{ 'icons_cross.svg' | asset_url }}"></div>
+  </div>
+  <form action="{{ action_url }}" method="get" data-filter-form style="display:contents;">
+    {%- if request.page_type == 'search' -%}
+      <input type="hidden" name="q" value="{{ search.terms | escape }}">
+      <input type="hidden" name="options[prefix]" value="last">
+    {%- endif -%}
+    {%- if sort_by -%}<input type="hidden" name="sort_by" value="{{ sort_by }}">{%- endif -%}
+    <div class="_content_9316i_45">
+      <div class="_filterContainer_rmug7_30">
+
+        {%- comment -%} Category tree: scoped to the current department / sub-department, drill-in + back (client request) {%- endcomment -%}
+        {%- if linklists[menu_handle].links.size > 0 -%}
+          {%- liquid
+            assign start_panel = 'root'
+            assign di = 0
+            for dept in linklists[menu_handle].links
+              assign di = di | plus: 1
+              if dept.active or dept.child_active
+                assign start_panel = 'd' | append: di
+                assign si = 0
+                for sub in dept.links
+                  assign si = si | plus: 1
+                  if sub.links.size > 0
+                    if sub.active or sub.child_active
+                      assign start_panel = 'd' | append: di | append: 's' | append: si
+                    endif
+                  endif
+                endfor
+              endif
+            endfor
+          -%}
+          <div class="_accordion_container_ve0fr_30 undefined" data-accordion>
+            <div>
+              <button type="button" class="_menu_button_ve0fr_36 _title_rmug7_108 " data-accordion-toggle><span>{{ 'collections.filter.category' | t }}</span></button>
+              <div class="_content_ve0fr_84 undefined" style="height: auto; overflow: hidden; transition: height 0.3s; margin-bottom: 0px;" data-accordion-content data-accordion-open>
+                <div class="od-ft" data-ft data-ft-start="{{ start_panel }}">
+                  {%- comment -%} root: departments {%- endcomment -%}
+                  <div class="od-ft__panel" data-ft-panel="root" hidden>
+                    {%- assign di = 0 -%}
+                    {%- for dept in linklists[menu_handle].links -%}
+                      {%- assign di = di | plus: 1 -%}
+                      {%- if dept.links.size > 0 -%}
+                        <button type="button" class="od-ft__row od-ft__row--drill" data-ft-go="d{{ di }}"><span>{{ dept.title }}</span><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                      {%- else -%}
+                        <a class="od-ft__row" href="{{ dept.url }}"><span>{{ dept.title }}</span></a>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                  {%- assign di = 0 -%}
+                  {%- for dept in linklists[menu_handle].links -%}
+                    {%- assign di = di | plus: 1 -%}
+                    {%- if dept.links.size > 0 -%}
+                      <div class="od-ft__panel" data-ft-panel="d{{ di }}" hidden>
+                        <button type="button" class="od-ft__back" data-ft-go="root"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{{ 'collections.filter.all_departments' | t }}</span></button>
+                        <a class="od-ft__row od-ft__row--all{% if dept.active %} is-current{% endif %}" href="{{ dept.url }}"><span>{{ 'collections.filter.all_in' | t: name: dept.title }}</span></a>
+                        {%- assign si = 0 -%}
+                        {%- for sub in dept.links -%}
+                          {%- assign si = si | plus: 1 -%}
+                          {%- if sub.links.size > 0 -%}
+                            <button type="button" class="od-ft__row od-ft__row--drill{% if sub.active or sub.child_active %} is-current{% endif %}" data-ft-go="d{{ di }}s{{ si }}"><span>{{ sub.title }}</span><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                          {%- else -%}
+                            <a class="od-ft__row{% if sub.active %} is-current{% endif %}" href="{{ sub.url }}"><span>{{ sub.title }}</span></a>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                      {%- assign si = 0 -%}
+                      {%- for sub in dept.links -%}
+                        {%- assign si = si | plus: 1 -%}
+                        {%- if sub.links.size > 0 -%}
+                          <div class="od-ft__panel" data-ft-panel="d{{ di }}s{{ si }}" hidden>
+                            <button type="button" class="od-ft__back" data-ft-go="d{{ di }}"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{{ dept.title }}</span></button>
+                            <a class="od-ft__row od-ft__row--all{% if sub.active %} is-current{% endif %}" href="{{ sub.url }}"><span>{{ 'collections.filter.all_in' | t: name: sub.title }}</span></a>
+                            {%- for cat in sub.links -%}
+                              <a class="od-ft__row{% if cat.active %} is-current{% endif %}" href="{{ cat.url }}"><span>{{ cat.title }}</span></a>
+                            {%- endfor -%}
+                          </div>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Storefront filters {%- endcomment -%}
+        {%- for filter in results.filters -%}
+          {%- liquid
+            assign is_last = false
+            if forloop.last
+              assign is_last = true
+            endif
+            assign is_color = false
+            assign flabel = filter.label | downcase
+            if flabel contains 'color' or flabel contains 'colour' or flabel contains 'لون'
+              assign is_color = true
+            endif
+            assign open = false
+            if filter.active_values.size > 0 or filter.min_value.value != nil or filter.max_value.value != nil
+              assign open = true
+            endif
+          -%}
+          <div class="_accordion_container_ve0fr_30 {% if is_last %}_lastChild_rmug7_50{% else %}undefined{% endif %}" data-accordion>
+            <div>
+              <button type="button" class="_menu_button_ve0fr_36 _title_rmug7_108 {% if open %}_open_ve0fr_80{% endif %}" data-accordion-toggle>
+                <span>{{ filter.label }}</span>
+                <span class="_icon_ve0fr_59 "><div class="_globalImg_1tf1q_38 _icon__img_ve0fr_59"><img fetchpriority="auto" alt="" src="{% if open %}{{ 'icons_light_minus.svg' | asset_url }}{% else %}{{ 'icons_light_plus.svg' | asset_url }}{% endif %}" data-icon-plus="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-minus="{{ 'icons_light_minus.svg' | asset_url }}"></div></span>
+              </button>
+              <div class="_content_ve0fr_84 undefined" style="height: {% if open %}auto{% else %}0px{% endif %}; overflow: hidden; transition: height 0.3s; margin-bottom: {% if open %}16px{% else %}0px{% endif %};" data-accordion-content {% if open %}data-accordion-open{% endif %}>
+                {%- case filter.type -%}
+                  {%- when 'list' -%}
+                    {%- for value in filter.values -%}
+                      {%- if is_color -%}
+                        <div class="_radioButton_1ivr7_41">
+                          <label><input id="{{ filter.param_name }}-{{ forloop.index }}" type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %} style="appearance:radio;-webkit-appearance:radio;"><p>{{ value.label }} <span>({{ value.count }})</span></p></label>
+                        </div>
+                      {%- else -%}
+                        <div class="_CheckboxButton_8c7of_30">
+                          <label><div><input id="{{ filter.param_name }}-{{ forloop.index }}" type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}><span class="_CustomCheck_8c7of_52"></span></div><p>{{ value.label }}</p></label>
+                        </div>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  {%- when 'boolean' -%}
+                    {%- for value in filter.values -%}
+                      <div class="_CheckboxButton_8c7of_30">
+                        <label><div><input type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %}><span class="_CustomCheck_8c7of_52"></span></div><p>{{ value.label }}</p></label>
+                      </div>
+                    {%- endfor -%}
+                  {%- when 'price_range' -%}
+                    <div class="_priceWrapper_rmug7_54">
+                      <div class="_inputWithLabel_1s8yh_30 undefined">
+                        <label class="_label_1g1i8_30">{{ 'collections.filter.min' | t }} </label>
+                        <input min="0" class="_input_1vioh_49 " type="number" name="{{ filter.min_value.param_name }}" value="{% if filter.min_value.value %}{{ filter.min_value.value | money_without_currency | remove: ',' }}{% endif %}" placeholder="0">
+                      </div>
+                      <div class="_inputWithLabel_1s8yh_30 undefined">
+                        <label class="_label_1g1i8_30">{{ 'collections.filter.max' | t }} </label>
+                        <input min="1" class="_input_1vioh_49 " type="number" name="{{ filter.max_value.param_name }}" value="{% if filter.max_value.value %}{{ filter.max_value.value | money_without_currency | remove: ',' }}{% endif %}" placeholder="{{ filter.range_max | money_without_currency | remove: ',' }}">
+                      </div>
+                      <p></p>
+                    </div>
+                {%- endcase -%}
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+    <div class="_footerClass_rmug7_101 _mFooter_9316i_55">
+      <div class="_buttonContainer_rmug7_85">
+        <a href="{{ action_url }}{% if request.page_type == 'search' %}?q={{ search.terms | url_encode }}{% endif %}" class="_btn_lnddl_30 _resetBtn_rmug7_149" style="text-decoration:none;">{{ 'collections.filter.reset' | t }}</a>
+        <button type="submit" class="_btn_lnddl_30 _applyBtn_rmug7_122">{{ 'collections.filter.apply' | t }}</button>
+      </div>
+    </div>
+  </form>
+</div>

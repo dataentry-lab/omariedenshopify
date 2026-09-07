@@ -1,0 +1,39 @@
+{%- comment -%} Editorial card: image, label, title, description, link label. Params: article, kind ('landscape' | 'portrait'), link_label {%- endcomment -%}
+{%- liquid
+  comment
+    include (not render) on purpose: article-meta sets variables for this file. Callers must use include too, Shopify does not allow include inside a rendered snippet.
+  endcomment
+  include 'article-meta', article: article
+  assign lbl = link_label
+  if lbl == blank
+    if a_kind == 'recap'
+      assign lbl = 'blogs.news.see_photos' | t
+    else
+      assign lbl = 'blogs.general.read_more' | t
+    endif
+  endif
+  assign ratio = '4-3'
+  if kind == 'portrait'
+    assign ratio = '4-5'
+  endif
+-%}
+<article class="od-acard">
+  <a class="od-acard__media od-ratio od-ratio--{{ ratio }}" href="{{ article.url }}" aria-label="{{ article.title | escape }}">
+    {%- if article.image -%}
+      <img src="{{ article.image | image_url: width: 900 }}" srcset="{{ article.image | image_url: width: 500 }} 500w, {{ article.image | image_url: width: 900 }} 900w" sizes="(max-width: 767px) 100vw, 33vw" alt="{{ article.image.alt | default: article.title | escape }}" width="{{ article.image.width }}" height="{{ article.image.height }}" loading="lazy">
+    {%- else -%}
+      {{ 'lifestyle-2' | placeholder_svg_tag: 'od-placeholder' }}
+    {%- endif -%}
+  </a>
+  <p class="od-blk__eyebrow od-acard__kind">
+    {%- if a_kind == 'recap' -%}{{ 'blogs.news.recap' | t }}{%- else -%}
+      {%- assign shown = false -%}
+      {%- for tag in article.tags -%}{%- assign tl = tag | downcase -%}{%- if tl == 'blog' or tl == 'story' or tl == 'edit' -%}{%- continue -%}{%- endif -%}{%- unless shown -%}{{ tag }}{%- assign shown = true -%}{%- endunless -%}{%- endfor -%}
+      {%- unless shown -%}{{ article.blog.title }}{%- endunless -%}
+    {%- endif -%}
+  </p>
+  <h3 class="od-acard__title"><a href="{{ article.url }}">{{ article.title }}</a></h3>
+  {%- if a_dates != blank -%}<p class="od-acard__dates">{{ a_dates }}{% if a_location != blank %}, {{ a_location }}{% endif %}</p>{%- endif -%}
+  {%- if article.excerpt_or_content != blank -%}<p class="od-acard__text">{{ article.excerpt_or_content | strip_html | truncatewords: 16 }}</p>{%- endif -%}
+  <a class="od-blk__btn od-blk__btn--link" href="{{ article.url }}">{{ lbl }}</a>
+</article>

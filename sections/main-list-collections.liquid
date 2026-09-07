@@ -1,0 +1,76 @@
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign s = section.settings
+  assign default_title = 'pages.collections.title' | t
+  assign title = s.title | default: default_title
+  if s.banner != blank
+    assign banner_url = s.banner | image_url: width: 2560
+  else
+    assign banner_url = 'images_collection-banner.png' | asset_url
+  endif
+-%}
+{%- if s.show_banner -%}
+  <div class="_PageBanner_1h0w1_34">
+    <section class="_bgBack_xwnoc_133 _bgAddCls_1h0w1_83" style="background-image: url(&quot;{{ banner_url }}&quot;); height: 480px;">
+      <div class="_container_1kxnl_30 _banner_xwnoc_30 undefined">
+        <div class="_banner__content_xwnoc_61 undefined _pageBannerContent_1h0w1_30">
+          <h1 class="{% if rtl %}_titleRtl_xwnoc_39{% else %}undefined{% endif %} _banner__content__title_xwnoc_67 undefined">{{ title }} <span>({{ collections.size }})</span></h1>
+        </div>
+      </div>
+    </section>
+  </div>
+{%- else -%}
+  <div class="od-header-spacer"></div>
+{%- endif -%}
+
+<div class="_container_1kxnl_30 " data-section-id="{{ section.id }}">
+  <div class="_fBrandContainer_jqjs6_30">
+    {%- unless s.show_banner -%}
+      {%- render 'section-header', title: title -%}
+    {%- endunless -%}
+    {%- paginate collections by 48 -%}
+      <div class="_fBrand_jqjs6_30">
+        {%- for collection in collections -%}
+          <div class="_featured_brands_card_164tx_34" data-href="{{ collection.url }}">
+            <div class="_featured_brands_card__imgContainer_164tx_37">
+              <div class="_globalImg_1tf1q_38 _featured_brands_card__imgContainer__innercard_164tx_47">
+                {%- if collection.image != blank -%}
+                  <img fetchpriority="auto" alt="{{ collection.title | escape }}" src="{{ collection.image | image_url: width: 800 }}" srcset="{{ collection.image | image_url: width: 400 }} 400w, {{ collection.image | image_url: width: 800 }} 800w" sizes="(max-width: 768px) 50vw, 300px" width="{{ collection.image.width }}" height="{{ collection.image.height }}" loading="lazy">
+                {%- elsif collection.products.first.featured_image != blank -%}
+                  <img fetchpriority="auto" alt="{{ collection.title | escape }}" src="{{ collection.products.first.featured_image | image_url: width: 800 }}" loading="lazy">
+                {%- else -%}
+                  {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </div>
+            </div>
+            <div><p class="_featured_brands_card__product_details__brand_164tx_82">{{ collection.title }}</p></div>
+          </div>
+        {%- endfor -%}
+      </div>
+      {%- if paginate.pages > 1 -%}
+        <div style="display:flex;justify-content:center;gap:16px;padding:24px 0;">
+          {%- if paginate.previous -%}
+            <button type="button" class="_bbtn_lnddl_75" data-href="{{ paginate.previous.url }}">{{ 'general.accessibility.previous' | t }}</button>
+          {%- endif -%}
+          {%- if paginate.next -%}
+            <button type="button" class="_bbtn_lnddl_75" data-href="{{ paginate.next.url }}">{{ 'general.accessibility.next' | t }}</button>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collections list",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title (defaults to \"Collections\")" },
+    { "type": "checkbox", "id": "show_banner", "label": "Show hero banner (the dark header is used on this page)", "default": true },
+    { "type": "image_picker", "id": "banner", "label": "Banner image (fallback: collection-banner.png)" }
+  ]
+}
+{% endschema %}

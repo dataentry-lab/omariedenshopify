@@ -1,0 +1,144 @@
+{%- comment -%}
+  Product card v3 (client approved 6 Sep): product-driven badges top-left (max two, snippets/product-badges.liquid),
+  wishlist top-right, thin chevron arrows (desktop on hover, mobile always), dots, hover image swap (image 2 on desktop hover),
+  maroon circle quick-view button with the bag icon (opens the shared quick-add drawer / bottom sheet),
+  sandstone "Sold out" badge instead of the button when unavailable (image at 60%),
+  brand, name + price, colour dots + "n colour(s)".
+  Styles: assets/od-card.css  Behaviour: assets/od-card.js (+ theme.js for swatch → image and wishlist)
+  Params:
+    product        - product drop (required)
+    show_wishlist  - boolean (default true)
+    color_option   - option name used for swatches (default settings.color_option_name or "Color")
+    badge          - legacy, ignored (badges come from the product now)
+{%- endcomment -%}
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  if show_wishlist == nil
+    assign show_wishlist = true
+  endif
+  assign color_name = color_option | default: settings.color_option_name | default: 'Color'
+  assign color_opt = nil
+  assign color_index = 0
+  for opt in product.options_with_values
+    if opt.name == color_name
+      assign color_opt = opt
+      assign color_index = forloop.index
+    endif
+  endfor
+
+  assign img = product.featured_image
+  assign img2 = nil
+  assign media_count = 0
+  for m in product.media
+    if m.media_type == 'image'
+      assign media_count = media_count | plus: 1
+      if media_count == 2
+        assign img2 = m
+      endif
+    endif
+  endfor
+  if media_count == 0 and img
+    assign media_count = 1
+  endif
+  if media_count > 6
+    assign media_count = 6
+  endif
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+  assign sold_out = false
+  if product.available == false
+    assign sold_out = true
+  endif
+  assign short_desc = product.description | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' ' | replace: '</p>', ' ' | replace: '</li>', ' ' | strip_html | strip_newlines | strip | truncate: 300
+  assign material = product.metafields.custom.material.value | strip_html
+  assign colour_count = 0
+  if color_opt
+    assign colour_count = color_opt.values.size
+  endif
+-%}
+<div class="_new_in_trend_card_13l1w_130 od-card{% if rtl %} od-card--rtl{% endif %}{% if sold_out %} is-sold-out{% endif %}" data-product-card data-od-card data-product-id="{{ product.id }}" data-handle="{{ product.handle }}" data-color-index="{{ color_index }}" data-color-value="{% if color_opt %}{{ color_opt.values.first | escape }}{% endif %}">
+  <div class="od-card__media">
+    <a href="{{ product.url }}" class="od-card__link" data-card-image-link aria-label="{{ product.title | escape }}">
+      {%- if img -%}
+        <img class="od-card__img" fetchpriority="auto" alt="{{ img.alt | default: product.title | escape }}" src="{{ img | image_url: width: 600 }}" srcset="{{ img | image_url: width: 300 }} 300w, {{ img | image_url: width: 600 }} 600w, {{ img | image_url: width: 900 }} 900w" sizes="(max-width: 480px) 50vw, 320px" width="{{ img.width }}" height="{{ img.height }}" loading="lazy" data-card-image>
+      {%- else -%}
+        <img class="od-card__img" fetchpriority="auto" alt="{{ product.title | escape }}" src="{{ 'images_fallback.svg' | asset_url }}" width="600" height="900" data-card-image>
+      {%- endif -%}
+      {%- if img2 -%}
+        <img class="od-card__img od-card__img--hover" alt="" src="{{ img2 | image_url: width: 600 }}" width="{{ img2.width }}" height="{{ img2.height }}" loading="lazy" data-card-image-hover aria-hidden="true">
+      {%- endif -%}
+    </a>
+
+    <div class="od-card__top">
+      <div class="od-card__top-start" data-card-badges>
+        {%- unless sold_out -%}{%- render 'product-badges', product: product, limit: 2 -%}{%- endunless -%}
+      </div>
+      <div class="od-card__top-end">
+        {%- if show_wishlist -%}
+          <div class="_globalImg_1tf1q_38 _wishlistIcon_13l1w_356 od-card__wish" data-wishlist-toggle data-wishlist-id="{{ product.id }}" data-wishlist-handle="{{ product.handle }}" role="button" tabindex="0" aria-label="{{ 'wishlist.add' | t }}">
+            <img fetchpriority="auto" alt="" width="24" height="24" src="{{ 'icons_light_wishlist.svg' | asset_url }}">
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if media_count > 1 -%}
+      <button type="button" class="od-card__arrow od-card__arrow--prev" data-card-prev aria-label="{{ 'general.accessibility.previous' | t }}">
+        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button type="button" class="od-card__arrow od-card__arrow--next" data-card-next aria-label="{{ 'general.accessibility.next' | t }}">
+        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="od-card__dots" data-card-dots aria-hidden="true">
+        {%- for i in (1..media_count) -%}<span{% if forloop.first %} class="is-active"{% endif %}></span>{%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if sold_out -%}
+      {%- if settings.badge_soldout_enabled != false -%}<span class="od-card__soldout">{{ 'products.product.sold_out' | t }}</span>{%- endif -%}
+    {%- else -%}
+      <button type="button" class="od-card__plus" data-card-quickadd aria-label="{{ 'products.card.quick_add' | t }}" aria-haspopup="dialog">
+        {%- render 'icon-bag-plus' -%}
+      </button>
+    {%- endif -%}
+  </div>
+
+  <div class="od-card__body">
+    {%- if product.vendor != blank -%}<p class="od-card__brand"><a class="od-brand-link" href="{{ product.vendor | url_for_vendor }}">{{ product.vendor }}</a></p>{%- endif -%}
+    <div class="od-card__row">
+      <p class="od-card__name"><a href="{{ product.url }}">{{ product.title }}</a></p>
+      <div class="od-card__prices">
+        <p class="od-card__price{% if on_sale %} od-card__price--sale{% endif %}">{% render 'sar' %}{{ product.price | money_without_currency }}</p>
+        {%- if on_sale -%}
+          <p class="od-card__price od-card__price--compare">{% render 'sar' %}{{ product.compare_at_price | money_without_currency }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+    {%- if color_opt -%}
+      <div class="od-card__colours">
+        <div class="{% if rtl %}_new_in_trend_card__colorsRtl_13l1w_139{% else %}_new_in_trend_card__colorsLtr_13l1w_139{% endif %} od-card__swatches">
+          {%- for value in color_opt.values -%}
+            {%- liquid
+              assign v_img = ''
+              for variant in product.variants
+                if variant.options contains value and variant.featured_image
+                  assign v_img = variant.featured_image | image_url: width: 600
+                  break
+                endif
+              endfor
+            -%}
+            <button type="button" title="{{ value | escape }}" aria-label="{{ value | escape }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" class="_swatch_13l1w_280 od-card__dot {% if forloop.first %}_swatchSelected_13l1w_301{% endif %} " style="background: {% render 'swatch-color', value: value %};" data-card-swatch data-value="{{ value | escape }}" data-image="{{ v_img }}"></button>
+          {%- endfor -%}
+        </div>
+        <span class="od-card__colours-text">{{ 'products.card.colours' | t: count: colour_count }}</span>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- render 'product-json', product: product, color_name: color_name, short_desc: short_desc, material: material -%}
+</div>

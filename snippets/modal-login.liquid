@@ -1,0 +1,39 @@
+{%- comment -%}
+  Top-right login popover. Shopify customer accounts use email (+ one-time code with "new customer accounts"),
+  so the phone field of the original becomes an email field; layout, colours and animation are unchanged.
+{%- endcomment -%}
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+-%}
+<div class="_backdrop_9316i_30 _modalAddBackdropCls_111bg_231" data-modal-backdrop="login" data-show-class="_backdropShow_111bg_37"></div>
+<div class="_modal_9316i_132 {% if rtl %}_modalAddClsRtl_111bg_195{% else %}_modalAddCls_111bg_195{% endif %}" data-modal="login" data-show-class="_show_111bg_30">
+  <div class="_content_9316i_45">
+    <div class="_globalImg_1tf1q_38 _close_111bg_71" data-close-modal="login"><img fetchpriority="auto" alt="{{ 'general.accessibility.close' | t }}" src="{{ 'icons_cross.svg' | asset_url }}"></div>
+    <div class="_modalLogin_111bg_93">
+      <div class="_globalImg_1tf1q_38 _mobileLogo_111bg_80"><img fetchpriority="auto" alt="{{ shop.name | escape }}" src="{{ 'icons_light_logo-sun.svg' | asset_url }}"></div>
+      <h4>{{ 'customer.login.title' | t }}</h4>
+      <div>
+        <form method="get" action="{{ routes.account_login_url }}" data-login-form>
+          <label>{{ 'customer.login.email' | t }}</label>
+          <div dir="ltr">
+            <div class="react-international-phone-input-container _inputContainer_111bg_248">
+              <input class="react-international-phone-input _input_111bg_248" type="email" name="email" autocomplete="email" placeholder="{{ 'customer.login.email_placeholder' | t }}" required style="padding:0 12px;font-size:16px;">
+            </div>
+          </div>
+          <button type="submit" class="_btn_lnddl_30 _modalLogin__button_111bg_191" style="margin-top:16px;width:100%;">{{ 'customer.login.continue' | t }}</button>
+        </form>
+      </div>
+      <div class="_login_seprator_111bg_335"><span>{{ 'customer.login.or' | t }}</span></div>
+      <div class="_login_with_social_111bg_296">
+        <a class="_login_with_social_button_111bg_296" href="{{ routes.account_login_url }}" style="text-decoration:none;">
+          <div class="_globalImg_1tf1q_38 _login_with_social_icon_111bg_325"><img fetchpriority="auto" alt="Google" src="{{ 'icons_google.svg' | asset_url }}"></div>
+          <p{% if rtl %} class="_pRtl_111bg_321"{% endif %}>{{ 'customer.login.google' | t }}</p>
+        </a>
+      </div>
+      {%- render 'od-circle' -%}
+    </div>
+  </div>
+</div>

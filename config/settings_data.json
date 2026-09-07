@@ -1,0 +1,14 @@
+{
+  "current": {
+    "main_menu": "main-menu",
+    "color_option_name": "Color",
+    "size_option_name": "Size",
+    "return_days": 30,
+    "free_shipping_threshold": 500,
+    "style_code_metafield": "custom.style_code",
+    "material_metafield": "custom.material",
+    "care_metafield": "custom.care",
+    "products_per_page": 24,
+    "circle_text": "A new way to belong is on its way. The OMARIEDEN Circle, arriving soon."
+  }
+}

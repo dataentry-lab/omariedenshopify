@@ -1,0 +1,55 @@
+{%- comment -%}
+  Article text (addable section, round 7 item 7): shows the current post's title / excerpt / body anywhere in an
+  article template, so a story body can sit between library blocks or be repeated. Only renders on article pages;
+  outside one it shows a note in the theme editor and nothing on the live site.
+  Pair it with "Hide the article body" on the main Article section so the body is not shown twice.
+  Styles: assets/od-blocks.css (.od-artext), body typography shared with the Article section (.od-article__body / .od-rte).
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign align = st.align | default: 'left'
+  if align == 'left'
+    assign align_class = 'start'
+  elsif align == 'right'
+    assign align_class = 'end'
+  else
+    assign align_class = 'center'
+  endif
+-%}
+{%- if article != blank -%}
+<section class="od-blk od-artext od-artext--{{ st.width | default: 'narrow' }} od-artext--{{ align_class }}" id="od-artext-{{ section.id }}" style="--od-blk-bg: {{ st.bg | default: '#fcf8f2' }}; --od-blk-text: {{ st.text_color | default: '#551c25' }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+  <div class="_container_1kxnl_30">
+    <div class="od-artext__inner">
+      {%- if st.show_title -%}<h2 class="od-artext__title od-article__title">{{ article.title }}</h2>{%- endif -%}
+      {%- if st.show_excerpt and article.excerpt != blank -%}<p class="od-artext__lead od-article__lead">{{ article.excerpt }}</p>{%- endif -%}
+      {%- if st.show_body and article.content != blank -%}<div class="od-artext__body od-article__body od-rte">{{ article.content }}</div>{%- endif -%}
+    </div>
+  </div>
+</section>
+{%- elsif request.design_mode -%}
+<section class="od-blk od-artext od-artext--note" id="od-artext-{{ section.id }}">
+  <div class="_container_1kxnl_30">
+    <p class="od-artext__note">Article text: this section only shows content on a blog article page (Curated Edits story, News post or recap). Nothing is shown here on the live site.</p>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Article text",
+  "tag": "section",
+  "settings": [
+    { "type": "paragraph", "content": "Shows the current post's title, excerpt and body. Use it on article templates; turn on \"Hide the article body\" in the Article section so the body is not shown twice." },
+    { "type": "checkbox", "id": "show_title", "label": "Show title", "default": true },
+    { "type": "checkbox", "id": "show_excerpt", "label": "Show excerpt", "default": false },
+    { "type": "checkbox", "id": "show_body", "label": "Show body", "default": true },
+    { "type": "select", "id": "align", "label": "Alignment", "default": "left", "options": [ { "value": "left", "label": "Left (right in Arabic)" }, { "value": "center", "label": "Centre" }, { "value": "right", "label": "Right (left in Arabic)" } ] },
+    { "type": "select", "id": "width", "label": "Width", "default": "narrow", "options": [ { "value": "narrow", "label": "Narrow (720px)" }, { "value": "medium", "label": "Medium (900px)" }, { "value": "full", "label": "Full" } ] },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#551c25" },
+    { "type": "color", "id": "bg", "label": "Background colour", "default": "#fcf8f2" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 8, "unit": "px", "default": 40 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 8, "unit": "px", "default": 40 }
+  ],
+  "presets": [ { "name": "Article text" } ]
+}
+{% endschema %}

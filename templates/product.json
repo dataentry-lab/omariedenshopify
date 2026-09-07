@@ -1,0 +1,7 @@
+{
+  "sections": {
+    "main": { "type": "main-product", "settings": {} },
+    "related": { "type": "related-products", "settings": { "title": "You might also like", "button_label": "Shop all", "limit": 8 } }
+  },
+  "order": ["main", "related"]
+}

@@ -1,0 +1,120 @@
+{%- comment -%}
+  Welcome popup (rendered once from layout/theme.liquid). Step 1: email + interests (Women / Men / Kids -> customer tags),
+  Continue, No thanks. Success screen with the discount code. Step 2 (phone / WhatsApp) is built but off by default:
+  it needs an SMS app to store the consent and send the code. Behaviour: assets/od-popup.js.
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign show = st.enabled
+  if request.design_mode == false and st.hide_paths != blank
+    assign paths = st.hide_paths | split: ','
+    for p in paths
+      assign ps = p | strip
+      if ps != blank and request.path contains ps
+        assign show = false
+      endif
+    endfor
+  endif
+  if request.page_type == 'cart' or request.page_type == 'customers/login' or request.page_type == 'customers/register'
+    assign show = false
+  endif
+  assign interests = st.interests | split: ','
+  assign copy_label = 'general.popup.copy_code' | t
+-%}
+{%- if show -%}
+<div class="od-popup" data-od-popup data-delay="{{ st.delay }}" data-exit="{{ st.exit_intent }}" data-days="{{ st.days }}" data-step2="{{ st.step2 }}" data-key="od_popup_{{ section.id | md5 | slice: 0, 8 }}" data-design="{{ request.design_mode }}" hidden
+  style="--od-pop-bg: {{ st.bg }}; --od-pop-text: {{ st.text_color }}; --od-pop-accent: {{ st.accent }}; --od-pop-accent-text: {{ st.accent_text }};">
+  <div class="od-popup__backdrop" data-od-popup-close></div>
+  <div class="od-popup__box" role="dialog" aria-modal="true" aria-labelledby="od-popup-title">
+    <button type="button" class="od-popup__x" data-od-popup-close aria-label="{{ 'general.accessibility.close' | t }}">{% render 'od-icon', name: 'x' %}</button>
+    <div class="od-popup__media">
+      {%- if st.image != blank -%}<img class="od-popup__img" src="{{ st.image | image_url: width: 900 }}" alt="" width="{{ st.image.width }}" height="{{ st.image.height }}" loading="lazy">{%- endif -%}
+      {%- if st.image_mobile != blank -%}<img class="od-popup__img od-popup__img--mobile" src="{{ st.image_mobile | image_url: width: 900 }}" alt="" width="{{ st.image_mobile.width }}" height="{{ st.image_mobile.height }}" loading="lazy">{%- endif -%}
+    </div>
+    <div class="od-popup__body">
+      <div class="od-popup__step" data-od-popup-step="1">
+        {%- if st.eyebrow != blank -%}<p class="od-popup__eyebrow">{{ st.eyebrow }}</p>{%- endif -%}
+        <h2 class="od-popup__title" id="od-popup-title">{{ st.heading }}</h2>
+        {%- if st.text != blank -%}<div class="od-popup__text">{{ st.text }}</div>{%- endif -%}
+        {%- form 'customer', class: 'od-popup__form', data-od-popup-form: 'true' -%}
+          <input type="hidden" name="contact[tags]" value="{{ st.tag | default: 'newsletter' }}" data-od-popup-tags data-base="{{ st.tag | default: 'newsletter' }}">
+          <input type="hidden" name="contact[accepts_marketing]" value="true">
+          <label class="od-popup__field"><span class="visually-hidden">{{ st.email_placeholder }}</span><input type="email" name="contact[email]" required placeholder="{{ st.email_placeholder | escape }}" autocomplete="email"></label>
+          {%- if st.interests != blank -%}
+            <div class="od-popup__interests">
+              {%- for i in interests -%}{%- assign iv = i | strip -%}{%- if iv == blank -%}{%- continue -%}{%- endif -%}
+                <label class="od-popup__check"><input type="checkbox" value="{{ iv | handle }}" data-od-popup-interest><span>{{ iv }}</span></label>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+          <p class="od-formblk__error" data-od-popup-error hidden></p>
+          <button type="submit" class="od-popup__btn">{{ st.button_label }}</button>
+          {%- if st.consent != blank -%}<p class="od-popup__consent">{{ st.consent }}</p>{%- endif -%}
+        {%- endform -%}
+        <button type="button" class="od-popup__no" data-od-popup-close>{{ st.no_label }}</button>
+      </div>
+      <div class="od-popup__step" data-od-popup-step="2" hidden>
+        <h2 class="od-popup__title">{{ st.step2_heading }}</h2>
+        <div class="od-popup__text">{{ st.step2_text }}</div>
+        <form class="od-popup__form" data-od-popup-phone>
+          <div class="od-popup__phone"><span class="od-popup__cc">{{ st.step2_cc }}</span><input type="tel" name="phone" inputmode="tel" placeholder="{{ st.step2_placeholder | escape }}" required><button type="submit" class="od-popup__btn od-popup__btn--inline">{{ st.step2_button }}</button></div>
+          <p class="od-popup__consent">{{ st.step2_consent }}</p>
+        </form>
+        <button type="button" class="od-popup__no" data-od-popup-close>{{ st.step2_no }}</button>
+      </div>
+      <div class="od-popup__step" data-od-popup-step="done" hidden>
+        <h2 class="od-popup__title">{{ st.success_heading }}</h2>
+        <div class="od-popup__text">{{ st.success_text }}</div>
+        {%- if st.code != blank -%}<button type="button" class="od-popup__code" data-od-popup-copy data-code="{{ st.code | escape }}">{{ st.code }} <span>{{ copy_label }}</span></button>{%- endif -%}
+        <button type="button" class="od-popup__btn" data-od-popup-close>{{ st.success_button }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{{ 'od-popup.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Welcome popup",
+  "settings": [
+    { "type": "checkbox", "id": "enabled", "label": "Show the popup", "default": false },
+    { "type": "range", "id": "delay", "label": "Show after", "min": 0, "max": 30, "step": 1, "unit": "s", "default": 6 },
+    { "type": "checkbox", "id": "exit_intent", "label": "Also show on exit intent (desktop)", "default": true },
+    { "type": "range", "id": "days", "label": "Do not show again for", "min": 1, "max": 90, "step": 1, "unit": "d", "default": 30 },
+    { "type": "text", "id": "hide_paths", "label": "Hide on pages containing", "info": "Comma separated parts of the address, e.g. /pages/prive, /checkout", "default": "/pages/prive" },
+    { "type": "header", "content": "Images" },
+    { "type": "image_picker", "id": "image", "label": "Image (desktop, right side)" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile, top)" },
+    { "type": "header", "content": "Step 1" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Welcome to Omarieden" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "10% off your first order" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Sign up for new arrivals, Curated Edits and invitations to our events.</p>" },
+    { "type": "text", "id": "email_placeholder", "label": "Email placeholder", "default": "Email" },
+    { "type": "text", "id": "interests", "label": "Interest options (comma separated)", "default": "Women, Men, Kids" },
+    { "type": "text", "id": "tag", "label": "Customer tag", "default": "newsletter" },
+    { "type": "text", "id": "button_label", "label": "Button", "default": "Continue" },
+    { "type": "text", "id": "no_label", "label": "Decline link", "default": "No thanks" },
+    { "type": "text", "id": "consent", "label": "Consent text", "default": "By signing up you agree to receive marketing emails. Unsubscribe any time." },
+    { "type": "header", "content": "Step 2 (phone / WhatsApp, needs an SMS app)" },
+    { "type": "checkbox", "id": "step2", "label": "Show step 2", "default": false },
+    { "type": "text", "id": "step2_heading", "label": "Heading", "default": "Stay in touch on WhatsApp" },
+    { "type": "richtext", "id": "step2_text", "label": "Text", "default": "<p>Be the first to hear about new arrivals and event invitations.</p>" },
+    { "type": "text", "id": "step2_cc", "label": "Country code", "default": "+966" },
+    { "type": "text", "id": "step2_placeholder", "label": "Phone placeholder", "default": "5x xxx xxxx" },
+    { "type": "text", "id": "step2_button", "label": "Button", "default": "Send" },
+    { "type": "text", "id": "step2_consent", "label": "Consent text", "default": "By signing up you agree to receive marketing messages. Reply STOP to unsubscribe." },
+    { "type": "text", "id": "step2_no", "label": "Decline link", "default": "No, I don't want messages" },
+    { "type": "header", "content": "Success" },
+    { "type": "text", "id": "success_heading", "label": "Heading", "default": "Welcome" },
+    { "type": "richtext", "id": "success_text", "label": "Text", "default": "<p>Use this code at checkout for 10% off your first order.</p>" },
+    { "type": "text", "id": "code", "label": "Discount code (create it in Discounts)", "default": "WELCOME10" },
+    { "type": "text", "id": "success_button", "label": "Button", "default": "Start shopping" },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#fcf8f2" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#551c25" },
+    { "type": "color", "id": "accent", "label": "Button", "default": "#551c25" },
+    { "type": "color", "id": "accent_text", "label": "Button text", "default": "#fcf8f2" }
+  ]
+}
+{% endschema %}

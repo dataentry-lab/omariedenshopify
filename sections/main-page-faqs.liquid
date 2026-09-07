@@ -1,0 +1,149 @@
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign s = section.settings
+  if s.hero_image != blank
+    assign hero_url = s.hero_image | image_url: width: 2560
+  else
+    assign hero_url = 'images_faq.jpg' | asset_url
+  endif
+  assign page_title = s.title | default: page.title
+  if rtl and s.title_ar != blank
+    assign page_title = s.title_ar
+  endif
+  assign first_cat = ''
+  assign first_title = ''
+  for block in section.blocks
+    if block.type == 'category' and first_cat == ''
+      assign first_cat = block.settings.title | handleize
+      assign first_title = block.settings.title
+      if rtl and block.settings.title_ar != blank
+        assign first_title = block.settings.title_ar
+      endif
+    endif
+  endfor
+-%}
+<div class="_Faqs_1omwv_42" data-faq data-section-id="{{ section.id }}">
+  <section class="_bgBack_xwnoc_133 _bgAddCls_1omwv_42" style="background-image: url(&quot;{{ hero_url }}&quot;); height: 720px;">
+    <div class="_container_1kxnl_30 _banner_xwnoc_30 _flexDir_1omwv_30">
+      <div class="_banner__content_xwnoc_61 _addClassContent_1omwv_119">
+        <h1 class="{% if rtl %}_titleRtl_xwnoc_39{% else %}undefined{% endif %} _banner__content__title_xwnoc_67 undefined">{{ page_title }} </h1>
+        <div class="_Search_1omwv_98">
+          <div class="_SearchInput_14xaz_30 _customSize_1omwv_108">
+            <div class="_globalImg_1tf1q_38 undefined"><img fetchpriority="auto" alt="" src="{{ 'icons_search.svg' | asset_url }}"></div>
+            <input class="_input_1vioh_49 " placeholder="{{ 'pages.faqs.search' | t | escape }}" type="text" data-faq-search aria-label="{{ 'pages.faqs.search' | t | escape }}">
+          </div>
+        </div>
+      </div>
+      <div class="_FaqCard_j5j7a_37">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'category' -%}
+            {%- assign handle = block.settings.title | handleize -%}
+            <div class="_infoCard_j5j7a_54 _card_1seg6_30 {% if handle == first_cat %}_selected_1seg6_37{% else %}undefined{% endif %}" data-faq-cat="{{ handle }}" role="button" tabindex="0" {{ block.shopify_attributes }}>
+              <div class="_globalImg_1tf1q_38 _infoCard__icon_j5j7a_67">
+                {%- if block.settings.icon != blank -%}
+                  <img fetchpriority="auto" alt="" src="{{ block.settings.icon | image_url: width: 120 }}" width="{{ block.settings.icon.width }}" height="{{ block.settings.icon.height }}">
+                {%- else -%}
+                  <img fetchpriority="auto" alt="" src="{{ block.settings.icon_asset | default: 'icons_light_order.svg' | asset_url }}">
+                {%- endif -%}
+              </div>
+              <h2>{% if rtl and block.settings.title_ar != blank %}{{ block.settings.title_ar }}{% else %}{{ block.settings.title }}{% endif %}</h2>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  <div class="_faqQuestion_1omwv_178">
+    <div class="_container_1kxnl_30 ">
+      <div class="_faqDropdown_1omwv_191">
+        <div class="_form_control_9l1c3_30">
+          <div class="_select_box_9l1c3_51 undefined" data-select data-faq-select>
+            <span class="_value_9l1c3_91" data-select-label>{{ first_title }}</span>
+            <div class="_globalImg_1tf1q_38 _arrow_9l1c3_68"><img fetchpriority="auto" alt="{{ first_title | escape }}" src="{% if rtl %}{{ 'icons_light_arrow_left.svg' | asset_url }}{% else %}{{ 'icons_light_arrow_right.svg' | asset_url }}{% endif %}"></div>
+          </div>
+          <ul class="_options_9l1c3_126 _options_bottom_9l1c3_221" data-select-options hidden>
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'category' -%}
+                <li data-value="{{ block.settings.title | handleize }}">{% if rtl and block.settings.title_ar != blank %}{{ block.settings.title_ar }}{% else %}{{ block.settings.title }}{% endif %}</li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+
+      {%- for cat in section.blocks -%}
+        {%- if cat.type == 'category' -%}
+          {%- assign handle = cat.settings.title | handleize -%}
+          {%- assign has_questions = false -%}
+          <div class="_innerCantainer_1omwv_200" data-faq-group="{{ handle }}" {% unless handle == first_cat %}hidden{% endunless %}>
+            <h3>{% if rtl and cat.settings.title_ar != blank %}{{ cat.settings.title_ar }}{% else %}{{ cat.settings.title }}{% endif %}</h3>
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'question' -%}
+                {%- assign q_cat = block.settings.category | handleize -%}
+                {%- if q_cat == handle -%}
+                  {%- assign has_questions = true -%}
+                  {%- assign q_text = block.settings.question -%}
+                  {%- assign a_text = block.settings.answer -%}
+                  {%- if rtl -%}
+                    {%- if block.settings.question_ar != blank -%}{%- assign q_text = block.settings.question_ar -%}{%- endif -%}
+                    {%- if block.settings.answer_ar != blank -%}{%- assign a_text = block.settings.answer_ar -%}{%- endif -%}
+                  {%- endif -%}
+                  <div class="_accordion_container_ve0fr_30 _faqItem_1omwv_264" data-accordion data-faq-item {{ block.shopify_attributes }}>
+                    <div>
+                      <button class="_menu_button_ve0fr_36 _faqTitle_1omwv_248 " data-accordion-toggle type="button"><span>{{ q_text }}</span><span class="_icon_ve0fr_59 "><div class="_globalImg_1tf1q_38 _icon__img_ve0fr_59"><img fetchpriority="auto" alt="" src="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-plus="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-minus="{{ 'icons_light_minus.svg' | asset_url }}"></div></span></button>
+                      <div class="_content_ve0fr_84 _answerClass_1omwv_231" style="height: 0px; overflow: hidden; transition: height 0.3s; margin-bottom: 0px;" data-accordion-content>{{ a_text }}</div>
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- unless has_questions -%}
+              <div class="_noProducts_1f8fu_34" style="text-align:center;padding:40px 0;min-height:0;">
+                <div class="_globalImg_1tf1q_38" style="width:220px;margin:0 auto 16px;"><img src="{{ 'noresult_no_faqs.svg' | asset_url }}" alt=""></div>
+                <p>{{ 'pages.faqs.empty' | t }}</p>
+              </div>
+            {%- endunless -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "FAQs page",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image (fallback: faq.jpg)" },
+    { "type": "text", "id": "title", "label": "Title (defaults to page title)", "default": "FAQS" },
+    { "type": "text", "id": "title_ar", "label": "Title (Arabic)" }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Orders", "info": "The category handle is the handleized title (e.g. \"Returns & Refunds\" → returns-refunds)." },
+        { "type": "text", "id": "title_ar", "label": "Title (Arabic)", "info": "Shown on the Arabic site. The handle still comes from the English title." },
+        { "type": "image_picker", "id": "icon", "label": "Icon" },
+        { "type": "text", "id": "icon_asset", "label": "Fallback icon asset filename", "default": "icons_light_order.svg" }
+      ]
+    },
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "category", "label": "Category handle", "default": "orders" },
+        { "type": "text", "id": "question", "label": "Question", "default": "How can I track my order?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>After placing your order, you will receive an email confirmation with your order details.</p>" },
+        { "type": "text", "id": "question_ar", "label": "Question (Arabic)" },
+        { "type": "richtext", "id": "answer_ar", "label": "Answer (Arabic)" }
+      ]
+    }
+  ]
+}
+{% endschema %}

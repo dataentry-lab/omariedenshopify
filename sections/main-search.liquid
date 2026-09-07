@@ -1,0 +1,32 @@
+{%- liquid
+  assign per_page = settings.products_per_page | default: 24
+  assign sort_by = search.sort_by
+-%}
+<div class="_container_1kxnl_30 od-listing od-listing--search" data-listing>
+  {%- assign search_eyebrow = 'search.results_for' | t -%}
+  {%- assign search_title = search.terms | escape -%}
+  {%- render 'listing-title', title: search_title, count: search.results_count, eyebrow: search_eyebrow, quoted: true -%}
+  {%- render 'listing-toolbar', sort_by: sort_by, is_search: true -%}
+  {%- paginate search.results by per_page -%}
+    <div class="_SearchProductList_1cn7p_30 od-listing__grid" data-product-grid data-cols="4">
+      {%- for item in search.results -%}
+        {%- if item.object_type == 'product' -%}
+          {%- render 'product-card', product: item -%}
+        {%- endif -%}
+      {%- else -%}
+        <div style="grid-column: 1 / -1;">
+          <div class="_noProducts_1f8fu_34" style="text-align:center;padding:60px 0;">
+            <div class="_globalImg_1tf1q_38" style="width:220px;margin:0 auto 16px;"><img src="{{ 'noresult_no_products.svg' | asset_url }}" alt="" width="220" height="220"></div>
+            <h4>{{ 'search.no_results' | t }}</h4>
+            <p>{{ 'search.no_results_text' | t }}</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+    <div class="_LoadMoreSectionn_1cn7p_47" data-load-more data-next-url="{% if paginate.next %}{{ paginate.next.url }}{% endif %}"></div>
+  {%- endpaginate -%}
+</div>
+
+{% schema %}
+{ "name": "Search results", "settings": [] }
+{% endschema %}

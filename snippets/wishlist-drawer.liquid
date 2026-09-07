@@ -1,0 +1,32 @@
+{%- comment -%}
+  Wishlist drawer (original site: "Wishlists (n)" panel from the header heart; on mobile opened from the side menu > My Wishlist).
+  Cards are rendered by assets/od-card.js from the browser wishlist (localStorage) + /products/{handle}.js.
+  Reuses the cart drawer shell classes (assets/od-cart.css) + .od-wl* (assets/od-card.css).
+{%- endcomment -%}
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+-%}
+<div class="_backdrop_9316i_30 undefined" data-modal-backdrop="wishlist" data-show-class="_backdropShow_1bfe0_295"></div>
+<div class="_modal_9316i_132 undefined od-cartd od-wl {% if rtl %}_modalAddClsRtl_1bfe0_251 od-cartd--rtl{% else %}_modalAddCls_1bfe0_251{% endif %}" data-modal="wishlist" data-show-class="_show_1bfe0_289" data-wishlist-drawer role="dialog" aria-modal="true" aria-label="{{ 'wishlist.title' | t }}">
+  <div class="od-cartd__inner">
+    <div class="_mHeader_9316i_67 od-cartd__header od-wl__header">
+      <div class="_mHeader__imgContainer_9316i_89 od-wl__head-start">
+        <button type="button" class="od-wl__back" data-wl-back aria-label="{{ 'general.accessibility.back' | t }}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <h2 class="od-cartd__title{% if rtl %} _h2Rtl_9316i_50{% endif %}">{{ 'wishlist.drawer_title' | t }} <span data-wl-count>(0)</span></h2>
+      </div>
+      <div class="_globalImg_1tf1q_38 _close_9316i_125" data-close-modal="wishlist" role="button" tabindex="0" aria-label="{{ 'general.accessibility.close' | t }}"><img fetchpriority="auto" alt="" src="{{ 'icons_cross.svg' | asset_url }}" width="20" height="20"></div>
+    </div>
+    <div class="od-cartd__body od-wl__body" data-wl-body>
+      <div class="od-wl__grid" data-wl-grid></div>
+      <div class="od-wl__empty _noProducts_1f8fu_34" data-wl-empty hidden>
+        <div class="_globalImg_1tf1q_38" style="width:180px;margin:0 auto 16px;"><img src="{{ 'noresult_empty_wishlist.svg' | asset_url }}" alt="" width="180" height="180"></div>
+        <h4>{{ 'wishlist.empty_title' | t }}</h4>
+        <p>{{ 'wishlist.empty_text' | t }}</p>
+        <button type="button" class="_btn_lnddl_30 _shopBtn_1f8fu_30" data-href="{{ routes.all_products_collection_url }}" data-close-modal="wishlist">{{ 'wishlist.shop' | t }}</button>
+      </div>
+    </div>
+  </div>
+</div>

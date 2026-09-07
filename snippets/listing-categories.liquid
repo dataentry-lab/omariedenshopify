@@ -1,0 +1,44 @@
+{%- comment -%}
+  Category pill buttons for the collection / search listing pages.
+  Source is the main menu (settings.main_menu):
+    - collection page, level-1 department active            -> its level-2 children
+    - collection page, level-2 sub-department active         -> its level-3 children
+    - collection page, level-3 category active               -> its level-3 siblings (active one filled)
+    - nothing matches, or search page                        -> level-1 departments
+  Params:
+    is_search – true on the search results page (always level-1 departments)
+{%- endcomment -%}
+{%- liquid
+  assign menu_handle = settings.main_menu | default: 'main-menu'
+  assign items = blank
+  unless is_search
+    for dept in linklists[menu_handle].links
+      if dept.active or dept.child_active
+        assign sub_found = false
+        for sub in dept.links
+          if sub.active or sub.child_active
+            assign sub_found = true
+            if sub.links.size > 0
+              assign items = sub.links
+            else
+              assign items = dept.links
+            endif
+          endif
+        endfor
+        unless sub_found
+          assign items = dept.links
+        endunless
+      endif
+    endfor
+  endunless
+  if items == blank or items.size == 0
+    assign items = linklists[menu_handle].links
+  endif
+-%}
+{%- if items.size > 0 -%}
+  <nav class="od-listing__cats" aria-label="{{ 'listing.categories' | t }}" data-listing-cats>
+    {%- for link in items -%}
+      <a class="od-cat{% if link.active %} is-active{% endif %}" href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title }}</a>
+    {%- endfor -%}
+  </nav>
+{%- endif -%}

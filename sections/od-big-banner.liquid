@@ -1,0 +1,60 @@
+{%- capture od_locked -%}{%- render 'prive-locked' -%}{%- endcapture -%}
+{%- unless od_locked contains 'yes' -%}
+{%- comment -%} Block library 1: big banner (image or video, overlay, centred or left text). {%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign img = st.image
+-%}
+<section class="od-blk od-banner od-banner--{{ st.height }} od-banner--text-{{ st.text_position }}" id="od-banner-{{ section.id }}" style="--od-overlay: {{ st.overlay_color }}; --od-overlay-o: {{ st.overlay_opacity | divided_by: 100.0 }}; --od-blk-text: {{ st.text_color }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+  <div class="od-banner__media">
+    {%- if st.video != blank -%}
+      {{ st.video | video_tag: image_size: '1800x', autoplay: true, loop: true, muted: true, controls: false, class: 'od-banner__video' }}
+    {%- elsif img != blank -%}
+      <img class="od-banner__img" src="{{ img | image_url: width: 2400 }}" srcset="{{ img | image_url: width: 1000 }} 1000w, {{ img | image_url: width: 1800 }} 1800w, {{ img | image_url: width: 2400 }} 2400w" sizes="100vw" alt="{{ img.alt | escape }}" width="{{ img.width }}" height="{{ img.height }}" loading="lazy">
+    {%- else -%}
+      <div class="od-banner__placeholder"></div>
+    {%- endif -%}
+    {%- if st.mobile_image != blank -%}
+      <img class="od-banner__img od-banner__img--mobile" src="{{ st.mobile_image | image_url: width: 1000 }}" alt="{{ st.mobile_image.alt | escape }}" width="{{ st.mobile_image.width }}" height="{{ st.mobile_image.height }}" loading="lazy">
+    {%- endif -%}
+    <div class="od-banner__overlay"></div>
+  </div>
+  <div class="_container_1kxnl_30 od-banner__content">
+    {%- if st.eyebrow != blank -%}<p class="od-blk__eyebrow">{{ st.eyebrow }}</p>{%- endif -%}
+    {%- if st.title != blank -%}<h1 class="od-banner__title">{{ st.title }}</h1>{%- endif -%}
+    {%- if st.text != blank -%}<div class="od-banner__text">{{ st.text }}</div>{%- endif -%}
+    {%- render 'od-button', label: st.button_label, url: st.button_url, style: st.button_style, color: st.button_color, text_color: st.button_text_color -%}
+  </div>
+</section>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Big banner",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "image_picker", "id": "mobile_image", "label": "Mobile image (optional)" },
+    { "type": "video", "id": "video", "label": "Video (optional, replaces the image)" },
+    { "type": "select", "id": "height", "label": "Height", "default": "m", "options": [ { "value": "s", "label": "Small" }, { "value": "m", "label": "Medium" }, { "value": "l", "label": "Large" }, { "value": "full", "label": "Full screen" } ] },
+    { "type": "color", "id": "overlay_color", "label": "Overlay colour", "default": "#551c25" },
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 40 },
+    { "type": "header", "content": "Text" },
+    { "type": "select", "id": "text_position", "label": "Text position", "default": "center", "options": [ { "value": "center", "label": "Centre" }, { "value": "start", "label": "Left (right in Arabic)" }, { "value": "bottom", "label": "Bottom left" } ] },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Omarieden Privé" },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#fcf8f2" },
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "button_label", "label": "Label" },
+    { "type": "url", "id": "button_url", "label": "Link" },
+    { "type": "select", "id": "button_style", "label": "Style", "default": "outline", "options": [ { "value": "outline", "label": "Outline" }, { "value": "solid", "label": "Solid" }, { "value": "link", "label": "Text link" } ] },
+    { "type": "color", "id": "button_color", "label": "Button colour", "default": "#c9a96a" },
+    { "type": "color", "id": "button_text_color", "label": "Button text colour", "default": "#fcf8f2" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 }
+  ],
+  "presets": [ { "name": "Big banner" } ]
+}
+{% endschema %}

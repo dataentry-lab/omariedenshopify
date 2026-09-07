@@ -1,0 +1,63 @@
+{%- capture od_locked -%}{%- render 'prive-locked' -%}{%- endcapture -%}
+{%- unless od_locked contains 'yes' -%}
+{%- comment -%} Block library 5: cards (icon or image, title, text, link), 2 to 4 per row. {%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+-%}
+<section class="od-blk od-cards" id="od-cards-{{ section.id }}" style="--od-blk-bg: {{ st.bg | default: 'transparent' }}; --od-blk-text: {{ st.text_color }}; --od-card-bg: {{ st.card_bg }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+  <div class="_container_1kxnl_30">
+    {%- render 'od-block-head', eyebrow: st.eyebrow, heading: st.heading, text: st.text -%}
+    <div class="od-cards__grid" style="--od-cols: {{ st.per_row }};">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        {%- capture inner -%}
+          {%- if b.image != blank -%}
+            <div class="od-cards__img"><img src="{{ b.image | image_url: width: 800 }}" alt="{{ b.image.alt | escape }}" width="{{ b.image.width }}" height="{{ b.image.height }}" loading="lazy"></div>
+          {%- elsif b.icon != 'none' -%}
+            <div class="od-cards__icon">{% render 'od-icon', name: b.icon %}</div>
+          {%- endif -%}
+          {%- if b.title != blank -%}<h3 class="od-cards__title">{{ b.title }}</h3>{%- endif -%}
+          {%- if b.text != blank -%}<div class="od-cards__text">{{ b.text }}</div>{%- endif -%}
+          {%- if b.link_label != blank -%}<span class="od-blk__btn od-blk__btn--link">{{ b.link_label }}</span>{%- endif -%}
+        {%- endcapture -%}
+        {%- if b.link != blank -%}
+          <a class="od-cards__card od-cards__card--{{ st.style }}" href="{{ b.link }}" {{ block.shopify_attributes }}>{{ inner }}</a>
+        {%- else -%}
+          <div class="od-cards__card od-cards__card--{{ st.style }}" {{ block.shopify_attributes }}>{{ inner }}</div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Cards",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "range", "id": "per_row", "label": "Cards per row", "min": 2, "max": 4, "step": 1, "default": 3 },
+    { "type": "select", "id": "style", "label": "Card style", "default": "filled", "options": [ { "value": "filled", "label": "Filled" }, { "value": "outline", "label": "Outline" }, { "value": "plain", "label": "No box" } ] },
+    { "type": "color", "id": "bg", "label": "Section background (empty = none)" },
+    { "type": "color", "id": "card_bg", "label": "Card background", "default": "#f1eeea" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#551c25" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 }
+  ],
+  "blocks": [
+    { "type": "card", "name": "Card", "settings": [
+      { "type": "select", "id": "icon", "label": "Icon", "default": "hanger", "options": [ { "value": "none", "label": "None" }, { "value": "hanger", "label": "Hanger" }, { "value": "key", "label": "Key" }, { "value": "truck", "label": "Delivery" }, { "value": "star", "label": "Star" }, { "value": "gift", "label": "Gift" }, { "value": "calendar", "label": "Calendar" }, { "value": "cup", "label": "Cup" }, { "value": "diamond", "label": "Diamond" }, { "value": "heart", "label": "Heart" }, { "value": "pin", "label": "Location" }, { "value": "phone", "label": "Phone" } ] },
+      { "type": "image_picker", "id": "image", "label": "Image (replaces the icon)" },
+      { "type": "text", "id": "title", "label": "Title", "default": "Private styling" },
+      { "type": "richtext", "id": "text", "label": "Text", "default": "<p>One-to-one, by appointment</p>" },
+      { "type": "text", "id": "link_label", "label": "Link label" },
+      { "type": "url", "id": "link", "label": "Link" }
+    ] }
+  ],
+  "presets": [ { "name": "Cards", "blocks": [ { "type": "card" }, { "type": "card", "settings": { "icon": "key", "title": "First access", "text": "<p>Preview new arrivals early</p>" } }, { "type": "card", "settings": { "icon": "truck", "title": "Home delivery", "text": "<p>Try at home, same day in Riyadh</p>" } } ] } ]
+}
+{% endschema %}

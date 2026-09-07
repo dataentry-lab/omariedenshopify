@@ -1,0 +1,625 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Omarieden",
+    "theme_version": "1.0.0",
+    "theme_author": "Omarieden",
+    "theme_documentation_url": "https://omarieden.com",
+    "theme_support_url": "https://omarieden.com/contact-us"
+  },
+  {
+    "name": "Navigation",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "main_menu",
+        "label": "Main menu",
+        "info": "3 levels: department (Women) > sub-department (CLOTHING) > category (Dresses). Used by the desktop nav, mega menu, mobile menu and the filter drawer category tree.",
+        "default": "main-menu"
+      }
+    ]
+  },
+  {
+    "name": "Products",
+    "settings": [
+      {
+        "type": "text",
+        "id": "color_option_name",
+        "label": "Colour option name",
+        "default": "Color",
+        "info": "The product option used for colour swatches."
+      },
+      {
+        "type": "text",
+        "id": "size_option_name",
+        "label": "Size option name",
+        "default": "Size"
+      },
+      {
+        "type": "textarea",
+        "id": "color_swatch_map",
+        "label": "Colour swatch map",
+        "info": "One per line: COLOUR NAME:#hex. Two or three colours split the circle: NAVY WHITE:#1f2a44,#ffffff. Shopify's own swatches (colour or image, linked Color option) win when set.",
+        "default": "BLACK:#313131\nWHITE:#ffffff\nBROWN:#a37146\nRAISIN:#a37146\nHAZEBLUE:#679ad1\nBLUESTRIPE:#679ad1\nBARK:#a37146\nOATMEAL:#f0e8d6\nPIERRE:#f0e8d6\nCHALK:#ffffff\nGREIGE:#bbbbbb\nNAVY:#1f2a44\nRED:#bc2027\nGREEN:#595b33\nBEIGE:#e5d9c7\nPINK:#e8b4c0\nYELLOW:#e6c34a\nGREY:#9a9a9a\nGRAY:#9a9a9a"
+      },
+      {
+        "type": "select",
+        "id": "gallery_color_mode",
+        "label": "Product gallery and colours",
+        "options": [
+          {
+            "value": "filter",
+            "label": "Show only the selected colour's photos"
+          },
+          {
+            "value": "sync",
+            "label": "All photos, swatch follows the gallery"
+          },
+          {
+            "value": "off",
+            "label": "Off (all photos, jump to the colour's photo)"
+          }
+        ],
+        "default": "filter",
+        "info": "A photo belongs to a colour when it is the variant image of that colour, or its alt text is the colour name (optionally followed by \" - description\"). Photos without a colour show for every colour."
+      },
+      {
+        "type": "number",
+        "id": "return_days",
+        "label": "Return period shown on product page (days)",
+        "default": 30
+      },
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "Free shipping threshold (SAR)",
+        "default": 500
+      },
+      {
+        "type": "text",
+        "id": "style_code_metafield",
+        "label": "Style code metafield (namespace.key)",
+        "default": "custom.style_code",
+        "info": "Optional. Shown as 'Style Code' on the product page. Falls back to the variant SKU."
+      },
+      {
+        "type": "text",
+        "id": "material_metafield",
+        "label": "Material composition metafield (namespace.key)",
+        "default": "custom.material"
+      },
+      {
+        "type": "text",
+        "id": "care_metafield",
+        "label": "Details & care metafield (namespace.key)",
+        "default": "custom.care"
+      },
+      {
+        "type": "collection",
+        "id": "trending_collection",
+        "label": "Trending collection",
+        "info": "Used for 'Trending now' on the cart page and as fallback for related products."
+      },
+      {
+        "type": "collection",
+        "id": "related_fallback_collection",
+        "label": "'You might also like' fallback collection"
+      }
+    ]
+  },
+  {
+    "name": "Product badges",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Badges follow the product everywhere (collection, search, sliders, wishlist, cart, quick view, product page). Rules are checked top to bottom, first matches win, maximum two badges per card. Sold out always replaces the others."
+      },
+      {
+        "type": "header",
+        "content": "Product field"
+      },
+      {
+        "type": "checkbox",
+        "id": "badge_metafield_enabled",
+        "label": "Use the custom.badge product field as the first badge",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "badge_metafield_bg",
+        "label": "Background",
+        "default": "#551c25"
+      },
+      {
+        "type": "color",
+        "id": "badge_metafield_text",
+        "label": "Text colour",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Automatic rules"
+      },
+      {
+        "type": "range",
+        "id": "badge_new_days",
+        "label": "\"New\" for products published within",
+        "min": 1,
+        "max": 90,
+        "step": 1,
+        "unit": "d",
+        "default": 30
+      },
+      {
+        "type": "select",
+        "id": "badge_sale_style",
+        "label": "Sale badge shows",
+        "default": "label",
+        "options": [
+          {
+            "value": "label",
+            "label": "The label (e.g. Sale)"
+          },
+          {
+            "value": "percent",
+            "label": "The discount (e.g. -20%)"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "badge_soldout_enabled",
+        "label": "Show \"Sold out\" badge on unavailable products",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Rule 1"
+      },
+      {
+        "type": "select",
+        "id": "badge_1_type",
+        "label": "Source",
+        "default": "tags",
+        "options": [
+          {
+            "value": "none",
+            "label": "Off"
+          },
+          {
+            "value": "tags",
+            "label": "Tag or collection handle"
+          },
+          {
+            "value": "new",
+            "label": "Automatic: New (published recently)"
+          },
+          {
+            "value": "sale",
+            "label": "Automatic: Sale (compare-at price higher)"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "badge_1_match",
+        "label": "Tags or collection handles",
+        "info": "Comma separated, e.g. trending, trending-now",
+        "default": "trending, trending-now"
+      },
+      {
+        "type": "text",
+        "id": "badge_1_label",
+        "label": "Label (English)",
+        "default": "Trending"
+      },
+      {
+        "type": "text",
+        "id": "badge_1_label_ar",
+        "label": "Label (Arabic)",
+        "default": "رائج"
+      },
+      {
+        "type": "color",
+        "id": "badge_1_bg",
+        "label": "Background",
+        "default": "#551c25"
+      },
+      {
+        "type": "color",
+        "id": "badge_1_text",
+        "label": "Text colour",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Rule 2"
+      },
+      {
+        "type": "select",
+        "id": "badge_2_type",
+        "label": "Source",
+        "default": "tags",
+        "options": [
+          {
+            "value": "none",
+            "label": "Off"
+          },
+          {
+            "value": "tags",
+            "label": "Tag or collection handle"
+          },
+          {
+            "value": "new",
+            "label": "Automatic: New (published recently)"
+          },
+          {
+            "value": "sale",
+            "label": "Automatic: Sale (compare-at price higher)"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "badge_2_match",
+        "label": "Tags or collection handles",
+        "info": "Comma separated, e.g. trending, trending-now",
+        "default": "new, new-in"
+      },
+      {
+        "type": "text",
+        "id": "badge_2_label",
+        "label": "Label (English)",
+        "default": "New"
+      },
+      {
+        "type": "text",
+        "id": "badge_2_label_ar",
+        "label": "Label (Arabic)",
+        "default": "جديد"
+      },
+      {
+        "type": "color",
+        "id": "badge_2_bg",
+        "label": "Background",
+        "default": "#595b33"
+      },
+      {
+        "type": "color",
+        "id": "badge_2_text",
+        "label": "Text colour",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Rule 3"
+      },
+      {
+        "type": "select",
+        "id": "badge_3_type",
+        "label": "Source",
+        "default": "new",
+        "options": [
+          {
+            "value": "none",
+            "label": "Off"
+          },
+          {
+            "value": "tags",
+            "label": "Tag or collection handle"
+          },
+          {
+            "value": "new",
+            "label": "Automatic: New (published recently)"
+          },
+          {
+            "value": "sale",
+            "label": "Automatic: Sale (compare-at price higher)"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "badge_3_match",
+        "label": "Tags or collection handles",
+        "info": "Comma separated, e.g. trending, trending-now"
+      },
+      {
+        "type": "text",
+        "id": "badge_3_label",
+        "label": "Label (English)",
+        "default": "New"
+      },
+      {
+        "type": "text",
+        "id": "badge_3_label_ar",
+        "label": "Label (Arabic)",
+        "default": "جديد"
+      },
+      {
+        "type": "color",
+        "id": "badge_3_bg",
+        "label": "Background",
+        "default": "#595b33"
+      },
+      {
+        "type": "color",
+        "id": "badge_3_text",
+        "label": "Text colour",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Rule 4"
+      },
+      {
+        "type": "select",
+        "id": "badge_4_type",
+        "label": "Source",
+        "default": "sale",
+        "options": [
+          {
+            "value": "none",
+            "label": "Off"
+          },
+          {
+            "value": "tags",
+            "label": "Tag or collection handle"
+          },
+          {
+            "value": "new",
+            "label": "Automatic: New (published recently)"
+          },
+          {
+            "value": "sale",
+            "label": "Automatic: Sale (compare-at price higher)"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "badge_4_match",
+        "label": "Tags or collection handles",
+        "info": "Comma separated, e.g. trending, trending-now"
+      },
+      {
+        "type": "text",
+        "id": "badge_4_label",
+        "label": "Label (English)",
+        "default": "Sale"
+      },
+      {
+        "type": "text",
+        "id": "badge_4_label_ar",
+        "label": "Label (Arabic)",
+        "default": "تخفيض"
+      },
+      {
+        "type": "color",
+        "id": "badge_4_bg",
+        "label": "Background",
+        "default": "#8a2b2b"
+      },
+      {
+        "type": "color",
+        "id": "badge_4_text",
+        "label": "Text colour",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Rule 5"
+      },
+      {
+        "type": "select",
+        "id": "badge_5_type",
+        "label": "Source",
+        "default": "tags",
+        "options": [
+          {
+            "value": "none",
+            "label": "Off"
+          },
+          {
+            "value": "tags",
+            "label": "Tag or collection handle"
+          },
+          {
+            "value": "new",
+            "label": "Automatic: New (published recently)"
+          },
+          {
+            "value": "sale",
+            "label": "Automatic: Sale (compare-at price higher)"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "badge_5_match",
+        "label": "Tags or collection handles",
+        "info": "Comma separated, e.g. trending, trending-now",
+        "default": "limited, exclusive"
+      },
+      {
+        "type": "text",
+        "id": "badge_5_label",
+        "label": "Label (English)",
+        "default": "Limited"
+      },
+      {
+        "type": "text",
+        "id": "badge_5_label_ar",
+        "label": "Label (Arabic)",
+        "default": "إصدار محدود"
+      },
+      {
+        "type": "color",
+        "id": "badge_5_bg",
+        "label": "Background",
+        "default": "#e5d9c7"
+      },
+      {
+        "type": "color",
+        "id": "badge_5_text",
+        "label": "Text colour",
+        "default": "#551c25"
+      },
+      {
+        "type": "header",
+        "content": "Rule 6"
+      },
+      {
+        "type": "select",
+        "id": "badge_6_type",
+        "label": "Source",
+        "default": "tags",
+        "options": [
+          {
+            "value": "none",
+            "label": "Off"
+          },
+          {
+            "value": "tags",
+            "label": "Tag or collection handle"
+          },
+          {
+            "value": "new",
+            "label": "Automatic: New (published recently)"
+          },
+          {
+            "value": "sale",
+            "label": "Automatic: Sale (compare-at price higher)"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "badge_6_match",
+        "label": "Tags or collection handles",
+        "info": "Comma separated, e.g. trending, trending-now",
+        "default": "prive"
+      },
+      {
+        "type": "text",
+        "id": "badge_6_label",
+        "label": "Label (English)",
+        "default": "Privé"
+      },
+      {
+        "type": "text",
+        "id": "badge_6_label_ar",
+        "label": "Label (Arabic)",
+        "default": "بريفيه"
+      },
+      {
+        "type": "color",
+        "id": "badge_6_bg",
+        "label": "Background",
+        "default": "#c9a96a"
+      },
+      {
+        "type": "color",
+        "id": "badge_6_text",
+        "label": "Text colour",
+        "default": "#2a0d12"
+      }
+    ]
+  },
+  {
+    "name": "Collections",
+    "settings": [
+      {
+        "type": "range",
+        "id": "products_per_page",
+        "label": "Products per page",
+        "min": 12,
+        "max": 48,
+        "step": 6,
+        "default": 24
+      }
+    ]
+  },
+  {
+    "name": "Texts",
+    "settings": [
+      {
+        "type": "text",
+        "id": "circle_text",
+        "label": "OMARIEDEN Circle card text",
+        "default": "A new way to belong is on its way. The OMARIEDEN Circle, arriving soon."
+      }
+    ]
+  },
+  {
+    "name": "Tracking & scripts",
+    "settings": [
+      {
+        "type": "html",
+        "id": "head_verification",
+        "label": "Head scripts / verification tags",
+        "info": "Pasted into <head>: Google site verification, Facebook domain verification, GTM head snippet, MoEngage, Clarity. (Prefer the Shopify Google & YouTube / Facebook channel apps where possible.)"
+      },
+      {
+        "type": "html",
+        "id": "body_start_scripts",
+        "label": "Body start scripts",
+        "info": "e.g. the GTM <noscript> iframe."
+      }
+    ]
+  },
+  {
+    "name": "Events",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Events are products with the product type \"Event\", in the collection below (keep it out of the menu). Ticket types are the variants (price 0 = free, inventory = seats). Event details are product fields (custom.event_start, event_end, venue, address, map_url, duration, short_description, details, attendee_fields, sessions, gallery, banner_video). Give each event the product template \"event\"."
+      },
+      {
+        "type": "collection",
+        "id": "events_collection",
+        "label": "Events collection"
+      },
+      {
+        "type": "page",
+        "id": "events_page",
+        "label": "Events listing page (page template \"events\")"
+      },
+      {
+        "type": "range",
+        "id": "event_soon_days",
+        "label": "\"n days left\" tag within",
+        "min": 1,
+        "max": 30,
+        "step": 1,
+        "unit": "d",
+        "default": 7
+      },
+      {
+        "type": "range",
+        "id": "event_fast_threshold",
+        "label": "\"Selling fast\" when seats left are at most",
+        "min": 1,
+        "max": 50,
+        "step": 1,
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "events_tz_offset",
+        "label": "Time zone offset from UTC",
+        "min": -12,
+        "max": 14,
+        "step": 1,
+        "unit": "h",
+        "default": 3,
+        "info": "Riyadh = 3. Event times are shifted by this many hours."
+      },
+      {
+        "type": "text",
+        "id": "event_terms_url",
+        "label": "Event terms page link (booking checkbox)"
+      }
+    ]
+  }
+]

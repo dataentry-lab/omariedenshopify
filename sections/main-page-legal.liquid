@@ -1,0 +1,27 @@
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+-%}
+<div data-section-id="{{ section.id }}">
+  {%- comment -%} Round 7: the beige breadcrumb strip (Home > Title) was removed, the global breadcrumb trail already shows the path. {%- endcomment -%}
+  <div class="_privacyContent_1csea_60">
+    <div class="_container_1kxnl_30 ">
+      <div class="od-rte od-rte--legal">
+        {%- if section.settings.show_title -%}<h1>{{ page.title }}</h1>{%- endif -%}
+        {{ page.content }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Legal page",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Breadcrumb label (defaults to page title)" },
+    { "type": "checkbox", "id": "show_title", "label": "Show page title as heading above the content", "default": true }
+  ]
+}
+{% endschema %}

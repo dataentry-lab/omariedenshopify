@@ -1,0 +1,85 @@
+{%- comment -%}
+  Quick-add drawer (desktop: slides in from the side like the cart drawer; mobile: bottom sheet).
+  One shared element, rendered once from layout/theme.liquid; filled by assets/od-card.js from the
+  JSON embedded in each product card ([data-card-json]). Styles: assets/od-card.css (.od-qa*).
+{%- endcomment -%}
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+-%}
+<div class="_backdrop_9316i_30 undefined" data-modal-backdrop="quick-add" data-show-class="od-show"></div>
+<div class="_modal_9316i_132 undefined od-qa{% if rtl %} od-qa--rtl{% endif %}" data-modal="quick-add" data-show-class="od-show" data-quick-add role="dialog" aria-modal="true" aria-label="{{ 'products.card.quick_add' | t }}"
+  data-t-add="{{ 'products.product.add_to_cart' | t | escape }}"
+  data-t-sold-out="{{ 'products.product.sold_out' | t | escape }}"
+  data-t-size="{{ 'products.product.size' | t | escape }}"
+  data-t-colour="{{ 'products.card.colour_label' | t: name: '__NAME__' | escape }}"
+  data-t-low="{{ 'products.card.low_in_stock' | t | escape }}"
+  data-t-select-size="{{ 'products.card.select_size' | t | escape }}"
+  data-t-more="{{ 'products.card.more_details' | t | escape }}"
+  data-t-less="{{ 'products.card.less_details' | t | escape }}"
+  data-t-description="{{ 'products.product.description' | t | escape }}"
+  data-t-material="{{ 'products.product.material' | t | escape }}"
+  data-t-read-more="{{ 'products.card.read_more' | t | escape }}"
+  data-icon-plus="{{ 'icons_light_plus.svg' | asset_url }}"
+  data-icon-minus="{{ 'icons_light_minus.svg' | asset_url }}">
+  <div class="od-qa__handle" data-qa-handle aria-hidden="true"><span></span></div>
+  <div class="od-qa__head" data-qa-head>
+    <div class="od-qa__titles">
+      <a class="od-qa__brand od-brand-link" data-qa-brand href="#" hidden></a>
+      <a class="od-qa__title" data-qa-title href="#"></a>
+      <p class="od-qa__price" data-qa-price></p>
+    </div>
+    <button type="button" class="od-qa__close" data-close-modal="quick-add" aria-label="{{ 'general.accessibility.close' | t }}">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="od-qa__body" data-qa-body>
+    <div class="od-qa__gallery" data-qa-gallery>
+      <div class="od-qa__badges" data-qa-badges aria-hidden="true"></div>
+      <div class="swiper od-qa__swiper" data-qa-swiper>
+        <div class="swiper-wrapper" data-qa-slides></div>
+        <div class="od-qa__pagination" data-qa-pagination></div>
+      </div>
+      <button type="button" class="od-qa__nav od-qa__nav--prev" data-qa-prev aria-label="{{ 'general.accessibility.previous' | t }}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button type="button" class="od-qa__nav od-qa__nav--next" data-qa-next aria-label="{{ 'general.accessibility.next' | t }}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+
+    <div class="od-qa__row od-qa__colours" data-qa-colours hidden>
+      <span class="od-qa__label" data-qa-colour-label></span>
+      <span class="od-qa__swatches" data-qa-swatches></span>
+    </div>
+
+    <div class="od-qa__sizes-wrap" data-qa-sizes-wrap hidden>
+      <div class="od-qa__row">
+        <span class="od-qa__label">{{ 'products.product.size' | t }}</span>
+        <span class="od-qa__note" data-qa-note aria-live="polite"></span>
+      </div>
+      <div class="od-qa__sizes" data-qa-sizes role="group" aria-label="{{ 'products.product.size' | t }}"></div>
+    </div>
+
+    <button type="button" class="od-qa__atc" data-qa-atc>
+      <span data-qa-atc-label>{{ 'products.product.add_to_cart' | t }}</span>
+      <span class="od-qa__atc-price" data-qa-atc-price></span>
+    </button>
+
+    <button type="button" class="od-qa__more" data-qa-more aria-expanded="false">{{ 'products.card.more_details' | t }}</button>
+    <div class="od-qa__details" data-qa-details style="height: 0px; overflow: hidden;">
+      <div class="od-qa__details-inner">
+        <div class="_accordion_container_ve0fr_30 od-qa__acc" data-accordion>
+          <div>
+            <button type="button" class="_menu_button_ve0fr_36 od-qa__acc-btn _open_ve0fr_80" data-accordion-toggle><span>{{ 'products.product.description' | t }}</span><span class="_icon_ve0fr_59 "><div class="_globalImg_1tf1q_38 _icon__img_ve0fr_59"><img alt="" width="16" height="16" src="{{ 'icons_light_minus.svg' | asset_url }}" data-icon-plus="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-minus="{{ 'icons_light_minus.svg' | asset_url }}"></div></span></button>
+            <div class="_content_ve0fr_84 od-qa__acc-content" style="height: auto; overflow: hidden; transition: height 0.3s; margin-bottom: 16px;" data-accordion-content data-accordion-open><p data-qa-description></p><a class="od-qa__read-more" data-qa-read-more href="#">{{ 'products.card.read_more' | t }}</a></div>
+          </div>
+        </div>
+        <div class="_accordion_container_ve0fr_30 od-qa__acc" data-accordion data-qa-material-acc hidden>
+          <div>
+            <button type="button" class="_menu_button_ve0fr_36 od-qa__acc-btn" data-accordion-toggle><span>{{ 'products.product.material' | t }}</span><span class="_icon_ve0fr_59 "><div class="_globalImg_1tf1q_38 _icon__img_ve0fr_59"><img alt="" width="16" height="16" src="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-plus="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-minus="{{ 'icons_light_minus.svg' | asset_url }}"></div></span></button>
+            <div class="_content_ve0fr_84 od-qa__acc-content" style="height: 0px; overflow: hidden; transition: height 0.3s; margin-bottom: 0px;" data-accordion-content><p data-qa-material></p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

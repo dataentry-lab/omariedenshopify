@@ -1,0 +1,24 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "about": { "type": "menu", "settings": { "title": "about", "menu": "footer-about" } },
+        "service": { "type": "menu", "settings": { "title": "at your service", "menu": "footer-service" } },
+        "policies": { "type": "menu", "settings": { "title": "Policies", "menu": "footer-policies" } },
+        "privacy": { "type": "menu", "settings": { "title": "privacy & settings", "menu": "footer-privacy" } }
+      },
+      "block_order": ["about", "service", "policies", "privacy"],
+      "settings": {
+        "company_name": "Omarieden Company",
+        "vat": "312878014500003",
+        "cr": "2051263702",
+        "facebook": "https://www.facebook.com/omarieden.ksa",
+        "instagram": "https://www.instagram.com/omarieden.dept"
+      }
+    }
+  },
+  "order": ["footer"]
+}

@@ -1,0 +1,80 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page-about",
+      "blocks": {
+        "card1": {
+          "type": "card",
+          "settings": {
+            "title": "Confident",
+            "title_ar": "ثقة"
+          }
+        },
+        "card2": {
+          "type": "card",
+          "settings": {
+            "title": "Timeless Style",
+            "title_ar": "أناقة أبدية"
+          }
+        },
+        "card3": {
+          "type": "card",
+          "settings": {
+            "title": "Detail Obsessed",
+            "title_ar": "مهتمين بأدق التفاصيل"
+          }
+        },
+        "slide1": {
+          "type": "slide",
+          "settings": {}
+        },
+        "slide2": {
+          "type": "slide",
+          "settings": {}
+        },
+        "slide3": {
+          "type": "slide",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "card1",
+        "card2",
+        "card3",
+        "slide1",
+        "slide2",
+        "slide3"
+      ],
+      "settings": {
+        "title": "About us",
+        "title_ar": "من نحن",
+        "paragraph_1": "Omarieden is where culture and innovation coexist. Born in Saudi Arabia, it redefines modern luxury through meaning, not excess.",
+        "paragraph_1_ar": "أوماريدن هي مساحة يلتقي فيها الإرث بالفكر الحديث. وُلدت في السعودية لتعيد تعريف الفخامة الحديثة من خلال المعنى والعمق، لا المبالغة. كل مجموعة تحكي قصة حِرفة متقنة ، وذائقة فنية، وإحساس صادق.",
+        "paragraph_2": "Every collection tells a story of craftsmanship, artistry, and emotion.Here, global design meets local soul; every texture, tone, and silhouette is chosen with intention.More than a store, OMARIEDEN is a third space. a destination where fashion becomes culture, and elegance becomes identity.",
+        "paragraph_2_ar": "هنا يلتقي التصميم العالمي بروح المكان؛ حيث تُختار الخامة، واللون، والتفصيل بعناية تعكس هوية سعودية . أكثر من متجر، أوماريدن هي مساحة ثالثة , وجهة تتحول فيها الموضة إلى ثقافة، وتصبح الأناقة امتدادًا للهوية.",
+        "paragraph_3": "We don't follow fashion. We cultivate it.",
+        "founder_kicker": "A letter from",
+        "founder_kicker_ar": "رسالة من",
+        "founder_title": "Our Founder",
+        "founder_title_ar": "المؤسس",
+        "founder_text": "We created Omarieden for the sole purpose of sharing the world within our minds. We want to create beautiful and meaningful spaces for people Because everyone deserves access to luxury experiences. We welcome all to come explore, shop, linger at Omarieden. Let us be part of your daily life and aid in creating wonderful memories.",
+        "founder_text_ar": "ولدت أوماريدن بهدف واحد: مشاركة العالم الهوية السعودية بفكر معاصر كما نراه. لأن الجميع يستحق تجربة الفخامة , نسعى لتصميم مساحات جميلة وذات معنى،. نرحب بالجميع للإستمتاع في تجربة جديدة في أوماريدن، في التسوق، أو قضاء بعض الوقت هنا. دعونا نكون جزءًا من حياتكم اليومية ونساعدكم على خلق ذكريات جميلة.",
+        "full_title": "A THIRD SPACE WHERE YOU BELONG",
+        "full_title_ar": "ثيرد بارت او المساحة الثالثة مصطلح يطلق على المكان غير المنزل والعمل هي مساحة تسترجع فيها هدوءك في كل مدينة،",
+        "full_text": "In every city, there's a need for a space that feels human, not commercial, not private, but alive.The Third Space is that heartbeat: designed for stillness, shaped for meaning. At OMARIEDEN, we curate more than objects; we curate atmosphere, the kind that restores, reconnects, and reminds you of who you are. It is luxury made personal, design made emotional. A space that doesn't just exist, it belongs to you.",
+        "full_text_ar": "تحتاج لمكان تحس فيه بالإنفصال عن ضوضاء المدينة؛ مكان يشعرك بالحياة المساحة الثالثة هي هذا النبض : مصممة للهدوء، ومشكّلة بالمعنى . في أوماريدن، إحنا ما نجمع أشياء بس؛ نسوي أجواء تعيدك لنفسك، وتذكرك بمن أنت. هنا الفخامة تصير جزء منك ، والتفرد يميزك. مساحة صنعناها لك .",
+        "thought_left": "From a Thought",
+        "thought_left_ar": "من مجرّد فكرة",
+        "thought_right": "to a Statement.",
+        "thought_right_ar": "إلى بصمة واضحة.",
+        "space_title": "The Space",
+        "space_title_ar": "المكان في أوماريدن",
+        "space_text": "At OMARIEDEN, design begins long before the first sketch, it begins with emotion.We create not to fill space, but to give space meaning. Because true luxury, to us, is not in abundance, it's in awareness.",
+        "space_text_ar": "التصميم يبدأ من الإحساس قبل أي رسمة! نسعى لخلق مساحات لا تملأ فقط، بل تضيف معنى وعمق لكل زاوية. لأن الفخامة الحقيقية، بالنسبة لنا، ليست في الوفرة، بل في الادراك , الإنتباه والتمعن في كل تفصيل."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

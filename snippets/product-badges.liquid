@@ -1,0 +1,113 @@
+{%- comment -%}
+  Product badges, driven by the product itself (Theme settings > Product badges).
+  Rules are checked top to bottom, first matches win, at most `limit` badges (default 2).
+    1. custom.badge metafield text (always first when enabled)
+    2. rules 1..6: tag / collection match, automatic New (published within N days), automatic Sale
+  Sold out is handled by the caller (it replaces every other badge).
+  Params: product (required), limit (default 2), format: 'html' (default) or 'json'
+  Used by: product-card, product-json, quick-add, product page gallery.
+{%- endcomment -%}
+{%- liquid
+  assign limit = limit | default: 2
+  assign format = format | default: 'html'
+  assign is_ar = false
+  if request.locale.iso_code contains 'ar'
+    assign is_ar = true
+  endif
+
+  assign haystack = '|'
+  for tag in product.tags
+    assign t = tag | downcase | strip
+    assign haystack = haystack | append: t | append: '|'
+  endfor
+  for c in product.collections
+    assign haystack = haystack | append: c.handle | append: '|'
+  endfor
+
+  assign now_s = 'now' | date: '%s' | plus: 0
+  assign pub_s = product.published_at | date: '%s' | plus: 0
+  assign age_days = now_s | minus: pub_s | divided_by: 86400
+
+  assign labels = ''
+  assign bgs = ''
+  assign texts = ''
+  assign count = 0
+
+  if settings.badge_metafield_enabled
+    assign mf = product.metafields.custom.badge.value
+    if mf != blank
+      assign labels = labels | append: mf | strip | append: '||'
+      assign bgs = bgs | append: settings.badge_metafield_bg | append: '||'
+      assign texts = texts | append: settings.badge_metafield_text | append: '||'
+      assign count = count | plus: 1
+    endif
+  endif
+
+  for i in (1..6)
+    if count >= limit
+      break
+    endif
+    assign key_type = 'badge_' | append: i | append: '_type'
+    assign rtype = settings[key_type]
+    if rtype == blank or rtype == 'none'
+      continue
+    endif
+    assign key_match = 'badge_' | append: i | append: '_match'
+    assign key_label = 'badge_' | append: i | append: '_label'
+    assign key_label_ar = 'badge_' | append: i | append: '_label_ar'
+    assign key_bg = 'badge_' | append: i | append: '_bg'
+    assign key_text = 'badge_' | append: i | append: '_text'
+    assign hit = false
+    assign label = settings[key_label]
+    if is_ar and settings[key_label_ar] != blank
+      assign label = settings[key_label_ar]
+    endif
+
+    if rtype == 'tags'
+      assign tokens = settings[key_match] | default: '' | downcase | split: ','
+      for tok in tokens
+        assign tk = tok | strip
+        if tk == blank
+          continue
+        endif
+        assign needle = '|' | append: tk | append: '|'
+        if haystack contains needle
+          assign hit = true
+          break
+        endif
+      endfor
+    elsif rtype == 'new'
+      assign days = settings.badge_new_days | default: 30
+      if product.published_at != blank and age_days <= days
+        assign hit = true
+      endif
+    elsif rtype == 'sale'
+      if product.compare_at_price > product.price
+        assign hit = true
+        if settings.badge_sale_style == 'percent'
+          assign pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price
+          assign label = '-' | append: pct | append: '%'
+        endif
+      endif
+    endif
+
+    if hit and label != blank
+      assign labels = labels | append: label | append: '||'
+      assign bgs = bgs | append: settings[key_bg] | append: '||'
+      assign texts = texts | append: settings[key_text] | append: '||'
+      assign count = count | plus: 1
+    endif
+  endfor
+
+  assign label_arr = labels | split: '||'
+  assign bg_arr = bgs | split: '||'
+  assign text_arr = texts | split: '||'
+-%}
+{%- if format == 'json' -%}
+  [{%- for l in label_arr -%}{%- if l == blank -%}{%- continue -%}{%- endif -%}{%- unless forloop.first -%},{%- endunless -%}{"label":{{ l | json }},"bg":{{ bg_arr[forloop.index0] | default: '#551c25' | json }},"text":{{ text_arr[forloop.index0] | default: '#ffffff' | json }}}{%- endfor -%}]
+{%- else -%}
+  {%- for l in label_arr -%}
+    {%- if l == blank -%}{%- continue -%}{%- endif -%}
+    <span class="od-card__badge" style="background-color: {{ bg_arr[forloop.index0] | default: '#551c25' }}; color: {{ text_arr[forloop.index0] | default: '#ffffff' }};">{{ l }}</span>
+  {%- endfor -%}
+{%- endif -%}

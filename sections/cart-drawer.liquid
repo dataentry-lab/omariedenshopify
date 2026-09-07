@@ -1,0 +1,216 @@
+{%- comment -%}
+  Cart drawer ("Shopping Bag"). Rendered once in layout/theme.liquid inside #modal and
+  re-rendered through the Section Rendering API (?sections=cart-drawer) by assets/od-cart.js.
+  Markup reuses the original site's drawer CSS module (_1bfe0 / _1tn6c / _9316i); Shopify-only
+  additions are prefixed od-cartd- (assets/od-cart.css).
+{%- endcomment -%}
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign threshold = settings.free_shipping_threshold | default: 500 | times: 100
+  assign subtotal = cart.items_subtotal_price
+  assign progress = subtotal | times: 100 | divided_by: threshold
+  assign remaining = threshold | minus: subtotal
+  assign trending = collections[section.settings.trending_collection]
+  if trending == blank
+    assign trending = collections[settings.trending_collection]
+  endif
+  if trending == blank
+    assign trending = collections.all
+  endif
+  assign trending_limit = section.settings.trending_limit | default: 8
+  assign color_name = settings.color_option_name | default: 'Color'
+  assign size_name = settings.size_option_name | default: 'Size'
+-%}
+<div class="_backdrop_9316i_30 undefined" data-modal-backdrop="cart" data-show-class="_backdropShow_1bfe0_295"></div>
+<div class="_modal_9316i_132 undefined od-cartd {% if rtl %}_modalAddClsRtl_1bfe0_251 od-cartd--rtl{% else %}_modalAddCls_1bfe0_251{% endif %}" data-modal="cart" data-show-class="_show_1bfe0_289" data-cart-drawer data-section-id="{{ section.id }}" role="dialog" aria-modal="true" aria-label="{{ 'cart.title' | t }}"
+  data-threshold="{{ threshold }}"
+  data-color-name="{{ color_name | escape }}"
+  data-size-name="{{ size_name | escape }}"
+  data-t-size="{{ 'products.product.size' | t | escape }}"
+  data-t-color="{{ 'products.product.color' | t | escape }}"
+  data-t-decrease="{{ 'cart.general.decrease' | t | escape }}"
+  data-t-increase="{{ 'cart.general.increase' | t | escape }}"
+  data-t-wishlist="{{ 'cart.general.move_to_wishlist' | t | escape }}"
+  data-t-remove="{{ 'cart.general.remove' | t | escape }}"
+  data-icon-minus="{{ 'icons_light_minus.svg' | asset_url }}"
+  data-icon-plus="{{ 'icons_light_plus.svg' | asset_url }}"
+  data-icon-wishlist="{{ 'icons_light_wishlist.svg' | asset_url }}"
+  data-icon-trash="{{ 'icons_light_trash.svg' | asset_url }}"
+  data-icon-fallback="{{ 'images_fallback.svg' | asset_url }}">
+  <div class="od-cartd__inner" data-cart-drawer-content data-cart-item-count="{{ cart.item_count }}">
+    <div class="_mHeader_9316i_67 od-cartd__header">
+      <div class="_mHeader__imgContainer_9316i_89">
+        <h2 class="od-cartd__title{% if rtl %} _h2Rtl_9316i_50{% endif %}">{{ 'cart.title' | t }} <span data-cart-drawer-count>({{ cart.item_count }})</span></h2>
+      </div>
+      <div class="_globalImg_1tf1q_38 _close_9316i_125" data-close-modal="cart" role="button" tabindex="0" aria-label="{{ 'general.accessibility.close' | t }}"><img fetchpriority="auto" alt="" src="{{ 'icons_cross.svg' | asset_url }}" width="20" height="20"></div>
+    </div>
+
+    <div class="_content_9316i_45 od-cartd__body">
+        <div class="_bag_1bfe0_63 od-cartd__bag" data-cartd-bag{% if cart.item_count == 0 %} hidden{% endif %}>
+          <div class="_bag__shippingBar_1bfe0_323 od-cartd__shipping" data-cartd-shipping>
+            {%- if remaining <= 0 -%}
+              <p data-cartd-shipping-text>{{ 'cart.shipping.unlocked' | t }}</p>
+            {%- else -%}
+              {%- assign remaining_amount = remaining | money_without_currency -%}
+              <p data-cartd-shipping-text>{{ 'cart.shipping.remaining_html' | t: amount: remaining_amount }}</p>
+            {%- endif -%}
+            <div class="_bag__shippingBar__bar_1bfe0_327"><div class="_bag__shippingBar__bar__progress_1bfe0_334 {% if rtl %}_progressBarRtl_1bfe0_30{% endif %}" style="width: {{ progress | at_most: 100 }}%;" data-cartd-shipping-bar></div></div>
+          </div>
+
+          <div class="_bag__cards_1bfe0_359 od-cartd__items" data-cartd-items>
+            {%- for item in cart.items -%}
+              <div class="_checkoutCard_1tn6c_70 od-cartd-item" data-cartd-item data-key="{{ item.key }}" data-line="{{ forloop.index }}">
+                <a class="_globalImg_1tf1q_38 _checkoutCard__pImg_1tn6c_77 od-cartd-item__img" href="{{ item.url }}">
+                  {%- if item.image -%}
+                    <img fetchpriority="auto" alt="{{ item.title | escape }}" src="{{ item.image | image_url: width: 300 }}" width="{{ item.image.width }}" height="{{ item.image.height }}" loading="lazy">
+                  {%- else -%}
+                    <img fetchpriority="auto" alt="" src="{{ 'images_fallback.svg' | asset_url }}" width="100" height="150">
+                  {%- endif -%}
+                </a>
+                <div class="_checkoutCard__right_1tn6c_82 od-cartd-item__right">
+                  <div class="_checkoutCard__right__details_1tn6c_88 od-cartd-item__details">
+                    <div class="_checkoutCard__right__details__info_1tn6c_115 od-cartd-item__info">
+                      <div class="_checkoutCard__right__details__info__text_1tn6c_122 od-cartd-item__text">
+                        <p>{{ item.vendor }}</p>
+                        <p><a href="{{ item.url }}" class="od-cartd-item__link">{{ item.product.title }}</a></p>
+                      </div>
+                      {%- unless item.product.has_only_default_variant -%}
+                        <div class="_checkoutCard__right__details__info__textConfig_1tn6c_156 od-cartd-item__options">
+                          {%- for option in item.options_with_values -%}
+                            <p><span>{% if option.name == size_name %}{{ 'products.product.size' | t }}{% elsif option.name == color_name %}{{ 'products.product.color' | t }}{% else %}{{ option.name }}{% endif %}:</span><span>{{ option.value }}</span></p>
+                          {%- endfor -%}
+                        </div>
+                      {%- endunless -%}
+                    </div>
+                    <div class="od-cartd-item__prices">
+                      <p class="_checkoutCard__right__details__price_1tn6c_95 null">{% render 'sar' %}{{ item.final_line_price | money_without_currency }}</p>
+                      {%- if item.original_line_price > item.final_line_price -%}
+                        <p class="_checkoutCard__right__details__price_1tn6c_95 _strikeThrough_1tn6c_34 od-cartd-item__was">{% render 'sar' %}{{ item.original_line_price | money_without_currency }}</p>
+                      {%- endif -%}
+                    </div>
+                  </div>
+
+                  <div class="_incDec_58mpv_55 od-cartd-qty" dir="ltr">
+                    <button type="button" class="_globalImg_1tf1q_38 _incDec__icon_58mpv_99 od-cartd-qty__btn" data-cartd-change data-key="{{ item.key }}" data-qty="{{ item.quantity | minus: 1 }}" aria-label="{{ 'cart.general.decrease' | t }}"><img fetchpriority="auto" alt="" src="{{ 'icons_light_minus.svg' | asset_url }}" width="16" height="16"></button>
+                    <div class="_incDec__q_58mpv_80" aria-live="polite">{{ item.quantity }}</div>
+                    <button type="button" class="_globalImg_1tf1q_38 _incDec__icon_58mpv_99 od-cartd-qty__btn" data-cartd-change data-key="{{ item.key }}" data-qty="{{ item.quantity | plus: 1 }}" aria-label="{{ 'cart.general.increase' | t }}"><img fetchpriority="auto" alt="" src="{{ 'icons_light_plus.svg' | asset_url }}" width="16" height="16"></button>
+                  </div>
+
+                  <div class="_checkoutCard__right__icons_1tn6c_175 od-cartd-item__actions">
+                    <button type="button" class="undefined _border_9vfph_30 _iconWithText_9vfph_36 od-cartd-item__wl" data-cartd-wishlist data-key="{{ item.key }}" data-handle="{{ item.product.handle }}" data-product-id="{{ item.product_id }}">
+                      <div class="_globalImg_1tf1q_38 _iconWithText__icon_9vfph_45"><img fetchpriority="auto" alt="" src="{{ 'icons_light_wishlist.svg' | asset_url }}" width="16" height="16"></div>
+                      <p>{{ 'cart.general.move_to_wishlist' | t }}</p>
+                    </button>
+                    <button type="button" class="undefined _border_9vfph_30 _iconWithText_9vfph_36 od-cartd-item__trash" data-cartd-change data-key="{{ item.key }}" data-qty="0" aria-label="{{ 'cart.general.remove' | t }}">
+                      <div class="_globalImg_1tf1q_38 _iconWithText__icon_9vfph_45"><img fetchpriority="auto" alt="" src="{{ 'icons_light_trash.svg' | asset_url }}" width="16" height="16"></div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+        <div class="_shoppingBagContainer_1bfe0_86 od-cartd__empty" data-cartd-empty{% if cart.item_count > 0 %} hidden{% endif %}>
+          <div class="_shoppingBagContainer__emptyCart_1bfe0_92 _noProducts_1f8fu_34 od-cartd__empty-text">
+            <h4>{{ 'cart.empty.title' | t }}</h4>
+            <p>{{ 'cart.empty.text' | t }}</p>
+          </div>
+          <button type="button" class="_btn_lnddl_30 _shoppingBag_1bfe0_86 od-cartd__shop" data-href="{{ routes.all_products_collection_url }}">{{ 'cart.empty.button' | t }}</button>
+        </div>
+        <div class="od-cartd__skeleton" data-cartd-skeleton hidden aria-hidden="true">
+          <div class="od-skel od-skel--line" style="width: 70%;"></div>
+          <div class="od-cartd__skel-item"><div class="od-skel od-cartd__skel-img"></div><div class="od-cartd__skel-text"><div class="od-skel od-skel--line" style="width: 40%;"></div><div class="od-skel od-skel--line" style="width: 80%;"></div><div class="od-skel od-skel--line" style="width: 30%;"></div></div></div>
+          <div class="od-cartd__skel-item"><div class="od-skel od-cartd__skel-img"></div><div class="od-cartd__skel-text"><div class="od-skel od-skel--line" style="width: 50%;"></div><div class="od-skel od-skel--line" style="width: 70%;"></div><div class="od-skel od-skel--line" style="width: 30%;"></div></div></div>
+        </div>
+
+      {%- if trending.products.size > 0 -%}
+        <div class="_trending_1bfe0_153 od-cartd__trending">
+          <div class="_trendingProducts_cnitd_51">
+            <div class="_title_cnitd_30"><h6>{{ 'cart.trending' | t }}</h6></div>
+            <div class="swiper sliderBorder trending_carousel od-cartd__swiper {% if rtl %}custom_rtl{% endif %}" dir="{% if rtl %}rtl{% else %}ltr{% endif %}" data-cartd-swiper>
+              <div class="swiper-wrapper">
+                {%- for p in trending.products limit: trending_limit -%}
+                  {%- assign v = p.selected_or_first_available_variant -%}
+                  <div class="swiper-slide">
+                    <div class="undefined _trendingCard_102j2_37 _trendingCard_1bfe0_189 od-cartd-trend" data-qa-source data-handle="{{ p.handle }}">
+                      <div class="_leftContainer_102j2_30">
+                        <a class="_globalImg_1tf1q_38 _trendingCard__pImg_102j2_60 od-cartd-trend__img" href="{{ p.url }}">
+                          {%- if p.featured_image -%}
+                            <img fetchpriority="auto" alt="{{ p.title | escape }}" src="{{ p.featured_image | image_url: width: 200 }}" width="{{ p.featured_image.width }}" height="{{ p.featured_image.height }}" loading="lazy">
+                          {%- else -%}
+                            <img fetchpriority="auto" alt="" src="{{ 'images_fallback.svg' | asset_url }}" width="100" height="150">
+                          {%- endif -%}
+                        </a>
+                        <div>
+                          <p class="_text1_102j2_64">{{ p.vendor }}</p>
+                          <p class="_text2_102j2_83"><a href="{{ p.url }}" class="od-cartd-item__link">{{ p.title }}</a></p>
+                          <div class="_priceRow_102j2_123"><p class="_text3_102j2_65 null">{% render 'sar' %}{{ p.price | money_without_currency }}</p></div>
+                        </div>
+                      </div>
+                      {%- if p.available and v -%}
+                        {%- render 'product-json', product: p -%}
+                        <button type="button" class="_trendingCard__add_102j2_47 od-cartd-trend__add" data-quick-add-open aria-label="{{ 'products.card.quick_add' | t }}">
+                          <div class="_globalImg_1tf1q_38 _trendingCard__add__img_102j2_56"><img fetchpriority="auto" alt="" src="{{ 'icons_light_plus.svg' | asset_url }}" width="16" height="16"></div>
+                        </button>
+                      {%- else -%}
+                        <button type="button" class="_trendingCard__add_102j2_47 od-cartd-trend__add" data-href="{{ p.url }}" aria-label="{{ 'products.product.sold_out' | t }}" disabled>
+                          <div class="_globalImg_1tf1q_38 _trendingCard__add__img_102j2_56"><img fetchpriority="auto" alt="" src="{{ 'icons_light_plus.svg' | asset_url }}" width="16" height="16"></div>
+                        </button>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
+            <div class="custom_navigation {% if rtl %}custom_navigationRtl{% endif %} od-cartd__nav">
+              <button type="button" class="_globalImg_1tf1q_38 trending-swiper-button-prev-custom od-cartd__nav-btn" aria-label="{{ 'general.accessibility.previous' | t }}"><img fetchpriority="auto" alt="" src="{% if rtl %}{{ 'icons_light_arrow_right.svg' | asset_url }}{% else %}{{ 'icons_light_arrow_left.svg' | asset_url }}{% endif %}" width="16" height="16"></button>
+              <button type="button" class="_globalImg_1tf1q_38 trending-swiper-button-next-custom od-cartd__nav-btn" aria-label="{{ 'general.accessibility.next' | t }}"><img fetchpriority="auto" alt="" src="{% if rtl %}{{ 'icons_light_arrow_left.svg' | asset_url }}{% else %}{{ 'icons_light_arrow_right.svg' | asset_url }}{% endif %}" width="16" height="16"></button>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+      <div class="_mFooter_9316i_55 od-cartd__footer" data-cartd-footer{% if cart.item_count == 0 %} hidden{% endif %}>
+        <div class="_subtotal_1bfe0_165">
+          <p>{{ 'cart.summary.subtotal' | t }}</p>
+          <p data-cartd-subtotal>{% render 'sar' %}{{ cart.total_price | money_without_currency }}</p>
+        </div>
+        <p class="_subtotalinfo_1bfe0_235">{{ 'cart.summary.taxes_note' | t }}</p>
+        <form action="{{ routes.cart_url }}" method="post" class="od-cartd__checkout-form">
+          <button type="submit" name="checkout" class="_btn_lnddl_30 _checkout_1bfe0_199 od-cartd__checkout">{{ 'cart.drawer.checkout' | t }}</button>
+        </form>
+        <p class="_viewBag_1bfe0_227 od-cartd__viewbag"><a href="{{ routes.cart_url }}">{{ 'cart.drawer.view_bag' | t }}</a></p>
+      </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Slide-in shopping bag shown when a product is added to the cart or the bag icon is clicked. The /cart page stays available through the \"View my bag\" link."
+    },
+    {
+      "type": "collection",
+      "id": "trending_collection",
+      "label": "Trending now collection",
+      "info": "Products shown in the \"Trending now\" carousel inside the drawer. Falls back to Theme settings > Trending collection, then all products."
+    },
+    {
+      "type": "range",
+      "id": "trending_limit",
+      "label": "Trending products",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    }
+  ]
+}
+{% endschema %}

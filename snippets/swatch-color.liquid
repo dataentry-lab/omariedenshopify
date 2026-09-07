@@ -1,0 +1,47 @@
+{%- comment -%}
+  Outputs a CSS `background` value for a colour option value (use as style="background: ...").
+  Accepts: value (product option value drop or string)
+  Priority (round 7):
+    1. Shopify's own swatch on the linked Color option: image (cropped, cover) else solid colour
+    2. theme setting map, one per line "NAME:#hex" or "NAME:#hex,#hex[,#hex]" (2-3 colours split the circle diagonally)
+    3. the value name itself as a CSS colour
+{%- endcomment -%}
+{%- liquid
+  assign out = ''
+  assign name = value | strip
+  if value.swatch
+    if value.swatch.image
+      assign img = value.swatch.image | image_url: width: 80
+      assign out = 'url(' | append: img | append: ') center / cover no-repeat'
+      if value.swatch.color
+        assign out = out | append: ' ' | append: value.swatch.color
+      endif
+    elsif value.swatch.color
+      assign out = value.swatch.color
+    endif
+  endif
+  if out == ''
+    assign map = settings.color_swatch_map | newline_to_br | split: '<br />'
+    assign key = name | upcase | strip
+    for line in map
+      assign pair = line | strip | split: ':'
+      assign k = pair[0] | upcase | strip
+      if k == key and pair.size > 1
+        assign out = pair[1] | strip
+        break
+      endif
+    endfor
+    if out contains ','
+      assign cols = out | split: ','
+      if cols.size == 2
+        assign out = 'linear-gradient(135deg, ' | append: cols[0] | strip | append: ' 50%, ' | append: cols[1] | strip | append: ' 50%)'
+      elsif cols.size > 2
+        assign out = 'linear-gradient(135deg, ' | append: cols[0] | strip | append: ' 33.4%, ' | append: cols[1] | strip | append: ' 33.4%, ' | append: cols[1] | strip | append: ' 66.7%, ' | append: cols[2] | strip | append: ' 66.7%)'
+      endif
+    endif
+  endif
+  if out == ''
+    assign out = name | downcase | remove: ' '
+  endif
+  echo out
+-%}

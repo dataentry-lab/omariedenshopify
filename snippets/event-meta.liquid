@@ -1,0 +1,70 @@
+{%- comment -%}
+  Reads the event fields of a product (product type "Event"). Sets:
+    ev_start, ev_end (unix seconds UTC or 0, for sorting / comparisons), ev_start_raw, ev_venue, ev_address, ev_map, ev_duration, ev_short, ev_status
+    ev_start_local, ev_end_local: the same timestamps shifted by Theme settings > Events > "Time zone offset from UTC"
+      (default +3, Riyadh). Use THESE with | date: for anything shown to people; the metafield values are ISO UTC and
+      | date: alone prints UTC (11:00 Riyadh would show as 8:00 AM).
+    ev_status: 'past' | 'soldout' | 'fast' | 'soon' | 'open';  ev_days (calendar days until start, in the shop time zone), ev_seats (total seats left, -1 = untracked)
+    ev_price_from (cents), ev_free (true when every ticket is free)
+  Param: product
+{%- endcomment -%}
+{%- liquid
+  assign mf = product.metafields.custom
+  assign ev_start_raw = mf.event_start.value
+  assign ev_end_raw = mf.event_end.value
+  assign ev_tz_offset = settings.events_tz_offset | default: 3 | times: 3600
+  assign ev_start = 0
+  assign ev_end = 0
+  assign ev_start_local = 0
+  assign ev_end_local = 0
+  if ev_start_raw != blank
+    assign ev_start = ev_start_raw | date: '%s' | plus: 0
+    assign ev_start_local = ev_start | plus: ev_tz_offset
+  endif
+  if ev_end_raw != blank
+    assign ev_end = ev_end_raw | date: '%s' | plus: 0
+    assign ev_end_local = ev_end | plus: ev_tz_offset
+  endif
+  assign ev_venue = mf.venue.value
+  assign ev_address = mf.address.value
+  assign ev_map = mf.map_url.value
+  assign ev_duration = mf.duration.value
+  assign ev_short = mf.short_description.value
+  assign now_s = 'now' | date: '%s' | plus: 0
+  assign ref = ev_end
+  if ref == 0
+    assign ref = ev_start
+  endif
+  assign now_local = now_s | plus: ev_tz_offset
+  assign start_day = ev_start_local | divided_by: 86400
+  assign now_day = now_local | divided_by: 86400
+  assign ev_days = start_day | minus: now_day
+  assign ev_seats = 0
+  assign tracked = false
+  assign ev_price_from = product.price_min
+  assign ev_free = true
+  for v in product.variants
+    if v.price > 0
+      assign ev_free = false
+    endif
+    if v.inventory_management != blank
+      assign tracked = true
+      if v.inventory_quantity > 0
+        assign ev_seats = ev_seats | plus: v.inventory_quantity
+      endif
+    endif
+  endfor
+  unless tracked
+    assign ev_seats = -1
+  endunless
+  assign ev_status = 'open'
+  if ref > 0 and ref < now_s
+    assign ev_status = 'past'
+  elsif product.available == false
+    assign ev_status = 'soldout'
+  elsif tracked and ev_seats <= settings.event_fast_threshold
+    assign ev_status = 'fast'
+  elsif ev_start > 0 and ev_days <= settings.event_soon_days
+    assign ev_status = 'soon'
+  endif
+-%}

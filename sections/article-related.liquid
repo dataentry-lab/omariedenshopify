@@ -1,0 +1,76 @@
+{%- comment -%}
+  Related posts: automatic = same blog sharing a tag with this article (newest first), filled up with the latest posts;
+  manual = hand-picked articles (blocks). Count 2 to 4.
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign count = st.count | default: 3
+  assign picked = ''
+  if st.mode == 'manual'
+    for block in section.blocks
+      if block.settings.article != blank
+        assign picked = picked | append: block.settings.article.handle | append: ','
+      endif
+    endfor
+  endif
+-%}
+{%- capture cards -%}
+  {%- if st.mode == 'manual' -%}
+    {%- for block in section.blocks limit: count -%}
+      {%- assign a = block.settings.article -%}
+      {%- if a != blank -%}{%- include 'article-card', article: a, kind: st.card_kind -%}{%- endif -%}
+    {%- endfor -%}
+  {%- else -%}
+    {%- assign n = 0 -%}
+    {%- assign used = '|' | append: article.handle | append: '|' -%}
+    {%- for a in blog.articles limit: 40 -%}
+      {%- if n >= count -%}{%- break -%}{%- endif -%}
+      {%- assign key = '|' | append: a.handle | append: '|' -%}
+      {%- if used contains key -%}{%- continue -%}{%- endif -%}
+      {%- assign shared = false -%}
+      {%- for t in a.tags -%}{%- if article.tags contains t -%}{%- assign shared = true -%}{%- break -%}{%- endif -%}{%- endfor -%}
+      {%- if shared -%}
+        {%- include 'article-card', article: a, kind: st.card_kind -%}
+        {%- assign used = used | append: key -%}
+        {%- assign n = n | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- for a in blog.articles limit: 40 -%}
+      {%- if n >= count -%}{%- break -%}{%- endif -%}
+      {%- assign key = '|' | append: a.handle | append: '|' -%}
+      {%- if used contains key -%}{%- continue -%}{%- endif -%}
+      {%- include 'article-card', article: a, kind: st.card_kind -%}
+      {%- assign used = used | append: key -%}
+      {%- assign n = n | plus: 1 -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endcapture -%}
+{%- if cards contains 'od-acard' -%}
+<section class="od-blk od-related" style="--od-blk-text: {{ st.text_color }}; --od-accent: {{ st.accent }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+  <div class="_container_1kxnl_30">
+    {%- render 'od-block-head', eyebrow: st.eyebrow, heading: st.heading, align: 'start' -%}
+    <div class="od-acards" style="--od-cols: {{ count }};">{{ cards }}</div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Related posts",
+  "tag": "section",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "select", "id": "mode", "label": "Source", "default": "auto", "options": [ { "value": "auto", "label": "Automatic (same tag, newest first)" }, { "value": "manual", "label": "Hand-picked (blocks below)" } ] },
+    { "type": "range", "id": "count", "label": "Posts", "min": 2, "max": 4, "step": 1, "default": 3 },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "More from the house" },
+    { "type": "select", "id": "card_kind", "label": "Card style", "default": "landscape", "options": [ { "value": "landscape", "label": "Landscape image" }, { "value": "portrait", "label": "Portrait image" } ] },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#551c25" },
+    { "type": "color", "id": "accent", "label": "Accent", "default": "#595b33" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 }
+  ],
+  "blocks": [ { "type": "article", "name": "Article", "settings": [ { "type": "article", "id": "article", "label": "Article" } ] } ],
+  "presets": [ { "name": "Related posts" } ]
+}
+{% endschema %}

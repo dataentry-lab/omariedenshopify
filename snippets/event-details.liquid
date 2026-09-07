@@ -1,0 +1,53 @@
+{%- comment -%}
+  Accordions for an event from the product field custom.details (multi-line text):
+  a line starting with "#" starts a new item (its title), the following lines are its text ("- " lines become a list).
+  Falls back to the classic fields highlights / inclusions / cancellation / how_to_get_there when details is empty.
+{%- endcomment -%}
+{%- capture nl %}
+{% endcapture -%}
+{%- liquid
+  assign mf = product.metafields.custom
+  assign raw = mf.details.value
+  if raw == blank
+    assign raw = ''
+    if mf.highlights.value != blank
+      assign t1 = 'events.page.highlights' | t
+      assign raw = raw | append: '# ' | append: t1 | append: nl | append: mf.highlights.value | append: nl
+    endif
+    if mf.inclusions.value != blank
+      assign t2 = 'events.page.inclusions' | t
+      assign raw = raw | append: '# ' | append: t2 | append: nl | append: mf.inclusions.value | append: nl
+    endif
+    if mf.cancellation.value != blank
+      assign t3 = 'events.page.cancellation' | t
+      assign raw = raw | append: '# ' | append: t3 | append: nl | append: mf.cancellation.value | append: nl
+    endif
+    if mf.how_to_get_there.value != blank
+      assign t4 = 'events.page.how_to_get_there' | t
+      assign raw = raw | append: '# ' | append: t4 | append: nl | append: mf.how_to_get_there.value | append: nl
+    endif
+  endif
+  assign items = raw | strip | split: '#'
+-%}
+{%- if raw != blank -%}
+  <div class="od-acc od-event__acc">
+    {%- for item in items -%}
+      {%- assign it = item | strip -%}
+      {%- if it == blank -%}{%- continue -%}{%- endif -%}
+      {%- assign lines = it | split: nl -%}
+      {%- assign title = lines[0] | strip -%}
+      {%- capture body -%}
+        {%- for l in lines offset: 1 -%}
+          {%- assign ls = l | strip -%}
+          {%- if ls == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign first2 = ls | slice: 0, 2 -%}
+          {%- if first2 == '- ' -%}<li>{{ ls | remove_first: '- ' }}</li>{%- else -%}<p>{{ ls }}</p>{%- endif -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+      <details class="od-acc__item"{% if forloop.first %} open{% endif %}>
+        <summary class="od-acc__q"><span>{{ title }}</span><span class="od-acc__icon" aria-hidden="true"></span></summary>
+        <div class="od-acc__a">{% if body contains '<li>' %}<ul>{{ body }}</ul>{% else %}{{ body }}{% endif %}</div>
+      </details>
+    {%- endfor -%}
+  </div>
+{%- endif -%}

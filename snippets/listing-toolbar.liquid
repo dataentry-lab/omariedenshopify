@@ -1,0 +1,59 @@
+{%- comment -%}
+  Listing toolbar (collection and search pages).
+  Desktop: [Filter] [Sort by] ............ [category buttons]
+  Mobile:  category buttons (scrollable row), then a sticky Filter / Sort by row.
+  Params: sort_by, is_search
+  Desktop grid toggle 4 / 5 per row (remembered for the session, assets/od-listing.js); mobile is always 2.
+  Sort / filter / categories load results without a page reload; the "Updating" spinner shows meanwhile.
+{%- endcomment -%}
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign sort_label = 'listing.sort_by' | t
+  case sort_by
+    when 'best-selling'
+      assign sort_label = 'collections.sort.best_selling' | t
+    when 'created-descending'
+      assign sort_label = 'collections.sort.newest' | t
+    when 'price-ascending'
+      assign sort_label = 'collections.sort.price_asc' | t
+    when 'price-descending'
+      assign sort_label = 'collections.sort.price_desc' | t
+    when 'title-ascending'
+      assign sort_label = 'collections.sort.brand' | t
+  endcase
+-%}
+<div class="od-listing__toolbar{% if is_search %} od-listing__toolbar--search{% endif %}" data-listing-toolbar>
+  {%- render 'listing-categories', is_search: is_search -%}
+  <div class="od-listing__sentinel" data-listing-sentinel aria-hidden="true"></div>
+  <div class="od-listing__controls" data-listing-controls>
+    <div class="od-listing__control">
+      <button type="button" class="_filterButtonWithIcon_1xi50_34 od-listing__filter" data-open-modal="filter" aria-haspopup="dialog">
+        <span>{{ 'collections.filter.button' | t }}</span>
+        <div class="_globalImg_1tf1q_38 _fIcon_1xi50_74"><img fetchpriority="auto" alt="" width="16" height="16" src="{{ 'icons_light_filter.svg' | asset_url }}"></div>
+      </button>
+    </div>
+    <div class="od-listing__control">
+      <div class="_form_control_9l1c3_30">
+        <div class="_select_box_9l1c3_51 _sortby_13mii_101 od-listing__sort" data-select data-sort-select role="button" tabindex="0" aria-haspopup="listbox">
+          <span class="{% if sort_by %}_value_9l1c3_91{% else %}_placeholder_9l1c3_76{% endif %}" data-select-label>{{ sort_label }}</span>
+          <div class="_globalImg_1tf1q_38 _arrow_9l1c3_68"><img fetchpriority="auto" alt="" width="16" height="16" src="{% if rtl %}{{ 'icons_light_arrow_left.svg' | asset_url }}{% else %}{{ 'icons_light_arrow_right.svg' | asset_url }}{% endif %}"></div>
+        </div>
+        <ul class=" _optionCls_13mii_160 _options_9l1c3_126 _options_bottom_9l1c3_221" data-select-options hidden>
+          <li data-value="best-selling">{{ 'collections.sort.best_selling' | t }}</li>
+          <li data-value="created-descending">{{ 'collections.sort.newest' | t }}</li>
+          <li data-value="price-ascending">{{ 'collections.sort.price_asc' | t }}</li>
+          <li data-value="price-descending">{{ 'collections.sort.price_desc' | t }}</li>
+          <li data-value="title-ascending">{{ 'collections.sort.brand' | t }}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="od-listing__cols" role="group" aria-label="{{ 'listing.grid' | t }}">
+      <button type="button" data-grid-cols="4" class="is-active" aria-pressed="true" aria-label="{{ 'listing.grid_4' | t }}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><g fill="currentColor"><rect x="3" y="4" width="3.5" height="16"/><rect x="8.5" y="4" width="3.5" height="16"/><rect x="14" y="4" width="3.5" height="16"/><rect x="19.5" y="4" width="2.5" height="16"/></g></svg></button>
+      <button type="button" data-grid-cols="5" aria-pressed="false" aria-label="{{ 'listing.grid_5' | t }}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><g fill="currentColor"><rect x="2" y="4" width="2.8" height="16"/><rect x="6.3" y="4" width="2.8" height="16"/><rect x="10.6" y="4" width="2.8" height="16"/><rect x="14.9" y="4" width="2.8" height="16"/><rect x="19.2" y="4" width="2.8" height="16"/></g></svg></button>
+    </div>
+    <span class="od-listing__updating" aria-live="polite"><i aria-hidden="true"></i>{{ 'listing.updating' | t }}</span>
+  </div>
+</div>

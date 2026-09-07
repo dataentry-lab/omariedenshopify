@@ -1,0 +1,21 @@
+{%- comment -%}
+  Section title row with the sliding-arrow link button.
+  Params: title, button_label, button_url
+{%- endcomment -%}
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+-%}
+<div class="_sHeader_13hf5_30 undefined">
+  <h2 class="_title_1m4vh_30 {% if rtl %}_addTitleStyleRtl_13hf5_43{% else %}_addTitleStyle_13hf5_38{% endif %} undefined">{{ title }} </h2>
+  {%- if button_label != blank -%}
+    <button type="button" class="_bbtn_lnddl_75 {% if rtl %}_rtlBtn_13hf5_52{% else %}_ltrBtn_13hf5_48{% endif %} _sectionHeaderButton_13hf5_56" data-href="{{ button_url | default: routes.all_products_collection_url }}">
+      <span>{{ button_label }}</span>
+      <span class="_sectionHeaderButton__s2_13hf5_65">
+        <div class="_globalImg_1tf1q_38 _sectionHeaderButton__s2__img_13hf5_76"><img fetchpriority="auto" alt="" src="{% if rtl %}{{ 'icons_light_arrow_left.svg' | asset_url }}{% else %}{{ 'icons_light_arrow_right.svg' | asset_url }}{% endif %}"></div>
+      </span>
+    </button>
+  {%- endif -%}
+</div>

@@ -1,0 +1,162 @@
+{%- comment -%}
+  Side menu drawer (mobile + desktop). Rendered from sections/header.liquid.
+  Params: blocks (section.blocks, for "menu_banners"), menu (linklist handle), rtl (boolean)
+  Level 1: department list + My account + Language & Region.
+  Level 2: one panel per department, slides in over level 1 inside the same drawer.
+  Opened through the modal system: OD.openModal('menu') / data-open-modal="menu" (od-menu.js also
+  redirects the header hamburger [data-open-mobile-nav] here).
+{%- endcomment -%}
+{%- liquid
+  unless menu
+    assign menu = settings.main_menu | default: 'main-menu'
+  endunless
+  if rtl
+    assign chev = 'icons_light_arrow_left.svg'
+    assign chev_back = 'icons_light_arrow_right.svg'
+  else
+    assign chev = 'icons_light_arrow_right.svg'
+    assign chev_back = 'icons_light_arrow_left.svg'
+  endif
+-%}
+<div class="_backdrop_9316i_30 undefined" data-modal-backdrop="menu" data-show-class="_backdropShow_pdb61_246"></div>
+<div class="_modal_9316i_132 od-sm{% if rtl %} od-sm--rtl{% endif %}" data-modal="menu" data-show-class="od-sm--show" data-side-menu role="dialog" aria-modal="true" aria-label="{{ 'header.menu' | t }}">
+  {%- comment -%} Level 1 {%- endcomment -%}
+  <div class="od-sm__panel od-sm__panel--l1" data-sm-level1>
+    <div class="_mHeader_9316i_67 od-sm__head">
+      <a class="_globalImg_1tf1q_38 od-sm__logo" href="{{ routes.root_url }}"><img width="24" height="24" fetchpriority="auto" alt="{{ shop.name | escape }}" src="{{ 'icons_omariden.svg' | asset_url }}"></a>
+      <div class="_globalImg_1tf1q_38 _close_9316i_125" data-close-modal="menu" role="button" tabindex="0" aria-label="{{ 'general.accessibility.close' | t }}"><img width="24" height="24" fetchpriority="auto" alt="{{ 'general.accessibility.close' | t }}" src="{{ 'icons_cross.svg' | asset_url }}"></div>
+    </div>
+    <div class="_content_9316i_45 od-sm__body">
+      <ul class="od-sm__list">
+        {%- for link in linklists[menu].links -%}
+          <li class="od-sm__item">
+            {%- if link.links.size > 0 -%}
+              <button type="button" class="od-sm__row" data-sm-open="{{ forloop.index }}" aria-expanded="false">
+                <span class="od-sm__rowTitle">{{ link.title }}</span>
+                <span class="_globalImg_1tf1q_38 od-sm__chev"><img width="16" height="16" fetchpriority="auto" alt="" src="{{ chev | asset_url }}"></span>
+              </button>
+            {%- else -%}
+              <a class="od-sm__row" href="{{ link.url }}"><span class="od-sm__rowTitle">{{ link.title }}</span></a>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+      <div class="_myaccount_1w9c3_195 od-sm__account">
+        <h2>{{ 'header.my_account' | t }}</h2>
+        <div>
+          <div class="_accountContainer_1w9c3_214">
+            <ul>
+              <li class="_accountItem_1w9c3_232" {% if customer %}onclick="window.location.href='{{ routes.account_url }}'"{% else %}data-open-modal="login"{% endif %}>
+                <div class="_iconContainer_16tu5_35">
+                  <div class="_globalImg_1tf1q_38 _icon_16tu5_30 _imgClass_1w9c3_249"><img width="24" height="24" fetchpriority="auto" alt="" src="{{ 'icons_light_profile.svg' | asset_url }}"></div>
+                  <p><span>{% if customer %}{{ 'header.my_account' | t }}{% else %}{{ 'header.sign_in_or_register' | t }}{% endif %}</span></p>
+                </div>
+              </li>
+              <li class="_accountItem_1w9c3_232" data-open-wishlist data-wl-from-menu role="button" tabindex="0">
+                <div class="_iconContainer_16tu5_35">
+                  <div class="_globalImg_1tf1q_38 _icon_16tu5_30 _imgClass_1w9c3_249"><img width="24" height="24" fetchpriority="auto" alt="" src="{{ 'icons_light_wishlist.svg' | asset_url }}"></div>
+                  <p><span>{{ 'header.my_wishlist' | t }}</span></p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        {%- render 'od-circle' -%}
+      </div>
+      <div class="_languageBtn_1w9c3_146" data-open-modal="language">
+        <div class="_languageBtn__container_1w9c3_155">
+          <p class="_languageBtn__container__title_1w9c3_160">{{ 'header.language_region' | t }}:</p>
+          <p class="_languageBtn__container__langName_1w9c3_174">{% if rtl %}Ar{% else %}En{% endif %}</p>
+        </div>
+        <div class="_globalImg_1tf1q_38 _languageBtn__icon_1w9c3_190"><img width="16" height="16" fetchpriority="auto" alt="" src="{{ chev | asset_url }}"></div>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Level 2: one panel per department with children {%- endcomment -%}
+  {%- for link in linklists[menu].links -%}
+    {%- if link.links.size > 0 -%}
+      {%- liquid
+        assign dept_key = link.title | downcase | strip
+        assign has_banners = false
+        for block in blocks
+          if block.type == 'menu_banners'
+            assign block_dept = block.settings.department | downcase | strip
+            if block_dept == dept_key
+              assign banner_block = block
+              if block.settings.image_1 != blank or block.settings.image_2 != blank or request.design_mode
+                assign has_banners = true
+              endif
+              break
+            endif
+          endif
+        endfor
+      -%}
+      <div class="od-sm__panel od-sm__panel--l2" data-sm-panel="{{ forloop.index }}" aria-hidden="true">
+        <div class="_mHeader_9316i_67 od-sm__head od-sm__head--l2">
+          <div class="_mHeader__imgContainer_9316i_89">
+            <div class="_globalImg_1tf1q_38 _arrow_left_9316i_126 od-sm__back" data-sm-back role="button" tabindex="0" aria-label="{{ 'general.accessibility.back' | t }}"><img width="24" height="24" fetchpriority="auto" alt="{{ 'general.accessibility.back' | t }}" src="{{ chev_back | asset_url }}"></div>
+            <h2 class="od-sm__title{% if rtl %} _h2Rtl_9316i_50{% endif %}">{{ link.title }}</h2>
+          </div>
+          <div class="_globalImg_1tf1q_38 _close_9316i_125" data-close-modal="menu" role="button" tabindex="0" aria-label="{{ 'general.accessibility.close' | t }}"><img width="24" height="24" fetchpriority="auto" alt="{{ 'general.accessibility.close' | t }}" src="{{ 'icons_cross.svg' | asset_url }}"></div>
+        </div>
+        <div class="_content_9316i_45 od-sm__body od-sm__body--l2">
+          <a class="od-sm__viewAll" href="{{ link.url }}">{{ 'header.view_all' | t: name: link.title }}</a>
+          {%- for sub in link.links -%}
+            {%- if forloop.first -%}
+              <div class="od-sm__group">
+                <p class="od-sm__label"><a href="{{ sub.url }}">{{ sub.title }}</a></p>
+                <ul class="od-sm__links">
+                  {%- for cat in sub.links -%}
+                    <li><a href="{{ cat.url }}">{{ cat.title }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- else -%}
+              <div class="_accordion_container_ve0fr_30 od-sm__acc" data-accordion>
+                <div>
+                  <button type="button" class="_menu_button_ve0fr_36 od-sm__accBtn " data-accordion-toggle><span>{{ sub.title | downcase }}</span><span class="_icon_ve0fr_59 "><div class="_globalImg_1tf1q_38 _icon__img_ve0fr_59"><img width="16" height="16" alt="" src="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-plus="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-minus="{{ 'icons_light_minus.svg' | asset_url }}"></div></span></button>
+                  <div class="_content_ve0fr_84 od-sm__accContent" style="height: 0px; overflow: hidden; transition: height 0.3s; margin-bottom: 0px;" data-accordion-content>
+                    <ul class="od-sm__links">
+                      {%- assign sub_name = sub.title | downcase -%}
+                      <li class="od-sm__viewAllSub"><a href="{{ sub.url }}">{{ 'header.view_all' | t: name: sub_name }}</a></li>
+                      {%- for cat in sub.links -%}
+                        <li><a href="{{ cat.url }}">{{ cat.title }}</a></li>
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if has_banners -%}
+            <div class="od-mb od-mb--grid od-sm__banners">
+              {%- for i in (1..2) -%}
+                {%- liquid
+                  assign k_img = 'image_' | append: i
+                  assign k_cap = 'caption_' | append: i
+                  assign k_link = 'link_' | append: i
+                  assign b_img = banner_block.settings[k_img]
+                  assign b_cap = banner_block.settings[k_cap]
+                  assign b_link = banner_block.settings[k_link]
+                -%}
+                {%- if b_img != blank or request.design_mode -%}
+                  <a class="od-mb__tile" href="{{ b_link | default: link.url }}">
+                    <span class="od-mb__img">
+                      {%- if b_img != blank -%}
+                        <img src="{{ b_img | image_url: width: 600 }}" srcset="{{ b_img | image_url: width: 300 }} 300w, {{ b_img | image_url: width: 600 }} 600w" sizes="(max-width: 480px) 45vw, 190px" width="600" height="800" alt="{{ b_img.alt | default: b_cap | escape }}" loading="lazy">
+                      {%- else -%}
+                        {{ 'collection-1' | placeholder_svg_tag: 'od-mb__ph' }}
+                      {%- endif -%}
+                    </span>
+                    {%- if b_cap != blank -%}<span class="od-mb__caption">{{ b_cap }}</span>{%- endif -%}
+                  </a>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+</div>

@@ -1,0 +1,50 @@
+{%- comment -%} Hero banner for blog listings / pages: full-width image, centred title, overlay colour + opacity, title colour, height. {%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign title = st.title
+  if title == blank
+    if blog != blank
+      assign title = blog.title
+    elsif page != blank
+      assign title = page.title
+    elsif collection != blank
+      assign title = collection.title
+    endif
+  endif
+-%}
+<section class="od-blk od-hero od-hero--{{ st.height }}" id="od-hero-{{ section.id }}" style="--od-overlay: {{ st.overlay_color }}; --od-overlay-o: {{ st.overlay_opacity | divided_by: 100.0 }}; --od-blk-text: {{ st.title_color }}; --od-hero-bg: {{ st.fallback_bg }};">
+  <div class="od-hero__media">
+    {%- if st.image != blank -%}
+      <img class="od-hero__img" src="{{ st.image | image_url: width: 2400 }}" srcset="{{ st.image | image_url: width: 1000 }} 1000w, {{ st.image | image_url: width: 1800 }} 1800w, {{ st.image | image_url: width: 2400 }} 2400w" sizes="100vw" alt="{{ st.image.alt | escape }}" width="{{ st.image.width }}" height="{{ st.image.height }}" fetchpriority="high">
+    {%- endif -%}
+    {%- if st.mobile_image != blank -%}
+      <img class="od-hero__img od-hero__img--mobile" src="{{ st.mobile_image | image_url: width: 1000 }}" alt="{{ st.mobile_image.alt | escape }}" width="{{ st.mobile_image.width }}" height="{{ st.mobile_image.height }}">
+    {%- endif -%}
+    <div class="od-hero__overlay"></div>
+  </div>
+  <div class="od-hero__content">
+    {%- if st.eyebrow != blank -%}<p class="od-blk__eyebrow">{{ st.eyebrow }}</p>{%- endif -%}
+    <h1 class="od-hero__title">{{ title }}</h1>
+    {%- if st.text != blank -%}<p class="od-hero__text">{{ st.text }}</p>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero banner",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image (desktop)" },
+    { "type": "image_picker", "id": "mobile_image", "label": "Image (mobile, optional)" },
+    { "type": "color", "id": "fallback_bg", "label": "Background when no image", "default": "#3f141b" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "title", "label": "Title", "info": "Leave empty to use the blog / page title" },
+    { "type": "text", "id": "text", "label": "Subtitle" },
+    { "type": "color", "id": "title_color", "label": "Title colour", "default": "#fcf8f2" },
+    { "type": "color", "id": "overlay_color", "label": "Overlay colour", "default": "#551c25" },
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 40 },
+    { "type": "select", "id": "height", "label": "Height", "default": "m", "options": [ { "value": "s", "label": "Small" }, { "value": "m", "label": "Medium" }, { "value": "l", "label": "Large" } ] }
+  ],
+  "presets": [ { "name": "Hero banner" } ]
+}
+{% endschema %}

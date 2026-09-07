@@ -1,0 +1,51 @@
+{%- capture od_locked -%}{%- render 'prive-locked' -%}{%- endcapture -%}
+{%- unless od_locked contains 'yes' -%}
+{%- comment -%} Block library 2: small banner strip (text + button, colour or image background). {%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+-%}
+<section class="od-blk od-strip" id="od-strip-{{ section.id }}" style="--od-blk-bg: {{ st.bg }}; --od-blk-text: {{ st.text_color }}; --od-overlay: {{ st.overlay_color }}; --od-overlay-o: {{ st.overlay_opacity | divided_by: 100.0 }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+  <div class="_container_1kxnl_30">
+    <div class="od-strip__box od-strip__box--{{ st.layout }}">
+      {%- if st.image != blank -%}
+        <img class="od-strip__img" src="{{ st.image | image_url: width: 1600 }}" alt="{{ st.image.alt | escape }}" width="{{ st.image.width }}" height="{{ st.image.height }}" loading="lazy">
+        <div class="od-strip__overlay"></div>
+      {%- endif -%}
+      <div class="od-strip__content">
+        <div>
+          {%- if st.eyebrow != blank -%}<p class="od-blk__eyebrow">{{ st.eyebrow }}</p>{%- endif -%}
+          {%- if st.title != blank -%}<h3 class="od-strip__title">{{ st.title }}</h3>{%- endif -%}
+          {%- if st.text != blank -%}<p class="od-strip__text">{{ st.text }}</p>{%- endif -%}
+        </div>
+        {%- render 'od-button', label: st.button_label, url: st.button_url, style: st.button_style, color: st.button_color, text_color: st.button_text_color -%}
+      </div>
+    </div>
+  </div>
+</section>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Small banner",
+  "tag": "section",
+  "settings": [
+    { "type": "select", "id": "layout", "label": "Layout", "default": "row", "options": [ { "value": "row", "label": "Text left, button right" }, { "value": "center", "label": "Centred" } ] },
+    { "type": "image_picker", "id": "image", "label": "Background image (optional)" },
+    { "type": "color", "id": "overlay_color", "label": "Image overlay colour", "default": "#2a0d12" },
+    { "type": "range", "id": "overlay_opacity", "label": "Image overlay opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 40 },
+    { "type": "color", "id": "bg", "label": "Background colour", "default": "#e5d9c7" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#551c25" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Autumn preview evening, 2 October" },
+    { "type": "text", "id": "text", "label": "Text" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Reserve a seat" },
+    { "type": "url", "id": "button_url", "label": "Button link" },
+    { "type": "select", "id": "button_style", "label": "Button style", "default": "outline", "options": [ { "value": "outline", "label": "Outline" }, { "value": "solid", "label": "Solid" }, { "value": "link", "label": "Text link" } ] },
+    { "type": "color", "id": "button_color", "label": "Button colour", "default": "#551c25" },
+    { "type": "color", "id": "button_text_color", "label": "Button text colour (solid)", "default": "#fcf8f2" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 }
+  ],
+  "presets": [ { "name": "Small banner" } ]
+}
+{% endschema %}

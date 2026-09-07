@@ -1,0 +1,37 @@
+{%- comment -%}
+  Product card carousel (home "New in trend", PDP "You might also like").
+  Params: title, button_label, button_url, products (array), limit, badge, variant ('trend' | 'editors'), show_wishlist
+{%- endcomment -%}
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  if variant == 'editors'
+    assign wrap_class = '_editorsPick_fcq6z_30'
+    assign head_class = '_editorsPick__headerClass_fcq6z_51'
+    assign swiper_class = 'editors_pick_c'
+  else
+    assign wrap_class = '_newInTrend_m96fa_30'
+    assign head_class = '_newInTrend__headerClass_m96fa_51'
+    assign swiper_class = 'trend_carousel'
+  endif
+  assign limit = limit | default: 50
+-%}
+<div class="_container_1kxnl_30 {{ wrap_class }} od-home-section">
+  <div class="_container_1kxnl_30 {{ head_class }} od-home-section__inner">
+    {%- render 'section-header', title: title, button_label: button_label, button_url: button_url -%}
+    <div class="od-carousel">
+      <div class="swiper sliderBorder category_carousel {{ swiper_class }} {% if rtl %}custom_rtl{% endif %}" dir="{% if rtl %}rtl{% else %}ltr{% endif %}" data-swiper="cards">
+        <div class="swiper-wrapper">
+          {%- for product in products limit: limit -%}
+            <div class="swiper-slide">{% render 'product-card', product: product, show_wishlist: show_wishlist %}</div>
+          {%- endfor -%}
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </div>
+</div>

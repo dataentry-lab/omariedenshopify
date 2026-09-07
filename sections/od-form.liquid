@@ -1,0 +1,144 @@
+{%- capture od_locked -%}{%- render 'prive-locked' -%}{%- endcapture -%}
+{%- unless od_locked contains 'yes' -%}
+{%- comment -%}
+  Block library 13: forms. One section, three kinds:
+    prive          Book your visit: name, phone, email, categories (multi), style (single), notes, optional image
+    event-interest Join the next event: name, email, phone, consent
+    cafe           Reserve a table: name, phone, date/time, guests, notes
+  Submits with fetch (no reload, assets/od-blocks.js): a contact form (emails the store) and, when an email is given,
+  a customer form (saves the customer with the tag + choices as tags). Falls back to a normal submit if Shopify asks
+  for a captcha challenge.
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign kind = st.kind | default: 'prive'
+  assign fid = 'od-form-' | append: section.id
+  assign cats = st.categories | split: ','
+  assign styles = st.styles | split: ','
+-%}
+<section class="od-blk od-formblk od-formblk--{{ kind }} od-formblk--{{ st.layout }}" id="od-form-{{ kind }}" data-section-id="{{ section.id }}" style="--od-blk-bg: {{ st.bg }}; --od-blk-text: {{ st.text_color }}; --od-accent: {{ st.accent }}; --od-accent-text: {{ st.accent_text }}; --od-field-bg: {{ st.field_bg }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+  <div class="_container_1kxnl_30">
+    <div class="od-formblk__box">
+      <div class="od-formblk__intro">
+        {%- if st.eyebrow != blank -%}<p class="od-blk__eyebrow">{{ st.eyebrow }}</p>{%- endif -%}
+        {%- if st.heading != blank -%}<h2 class="od-blk__heading">{{ st.heading }}</h2>{%- endif -%}
+        {%- if st.text != blank -%}<div class="od-blk__text">{{ st.text }}</div>{%- endif -%}
+        {%- if st.image != blank -%}
+          <div class="od-formblk__img od-ratio od-ratio--{{ st.image_ratio }}"><img src="{{ st.image | image_url: width: 900 }}" alt="{{ st.image.alt | escape }}" width="{{ st.image.width }}" height="{{ st.image.height }}" loading="lazy"></div>
+        {%- endif -%}
+      </div>
+      <div class="od-formblk__form">
+        {%- assign succ = st.success | escape -%}
+        {%- form 'contact', id: fid, class: 'od-formblk__contact', data-od-form: kind, data-tag: st.customer_tag, data-success: succ -%}
+          <input type="hidden" name="contact[form]" value="{{ st.heading | default: kind | escape }}">
+          {%- assign posted = false -%}
+          {%- if form.posted_successfully? -%}{%- assign posted = true -%}{%- endif -%}
+          {%- if posted -%}
+            <div class="od-formblk__success" role="status">{% render 'od-icon', name: 'check' %}<p>{{ st.success }}</p></div>
+          {%- else -%}
+            {%- if form.errors -%}<div class="od-formblk__error" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+            <div class="od-formblk__error" role="alert" data-od-form-error hidden></div>
+            <div class="od-formblk__grid">
+              {%- if st.show_name -%}
+                <label class="od-field{% if kind == 'prive' or kind == 'cafe' %} od-field--half{% endif %}"><span class="od-field__label">{{ st.label_name }} *</span><input type="text" name="contact[name]" autocomplete="name" required placeholder="{{ st.label_name | escape }}"></label>
+              {%- endif -%}
+              {%- if st.show_phone -%}
+                <label class="od-field{% if kind == 'prive' or kind == 'cafe' %} od-field--half{% endif %}"><span class="od-field__label">{{ st.label_phone }}{% if kind != 'event-interest' %} *{% endif %}</span><input type="tel" name="contact[phone]" autocomplete="tel" {% if kind != 'event-interest' %}required{% endif %} placeholder="{{ st.phone_placeholder | escape }}" inputmode="tel"></label>
+              {%- endif -%}
+              {%- if st.show_email -%}
+                <label class="od-field{% if kind == 'event-interest' %} od-field--half{% endif %}"><span class="od-field__label">{{ st.label_email }}{% if kind != 'cafe' %} *{% endif %}</span><input type="email" name="contact[email]" autocomplete="email" {% if kind != 'cafe' %}required{% endif %} placeholder="{{ st.label_email | escape }}"></label>
+              {%- endif -%}
+              {%- if kind == 'cafe' -%}
+                <label class="od-field od-field--half"><span class="od-field__label">{{ st.label_datetime }} *</span><input type="datetime-local" name="contact[date_time]" required></label>
+                <label class="od-field od-field--half"><span class="od-field__label">{{ st.label_guests }} *</span><input type="number" name="contact[guests]" min="1" max="30" value="2" required></label>
+              {%- endif -%}
+              {%- if kind == 'prive' and st.categories != blank -%}
+                <fieldset class="od-field od-chips">
+                  <legend class="od-field__label">{{ st.label_categories }}</legend>
+                  <div class="od-chips__row">
+                    {%- for c in cats -%}{%- assign cv = c | strip -%}{%- if cv == blank -%}{%- continue -%}{%- endif -%}
+                      <label class="od-chip"><input type="checkbox" name="contact[categories][]" value="{{ cv | escape }}" data-tag-prefix="cat:"><span>{{ cv }}</span></label>
+                    {%- endfor -%}
+                  </div>
+                </fieldset>
+              {%- endif -%}
+              {%- if kind == 'prive' and st.styles != blank -%}
+                <fieldset class="od-field od-chips">
+                  <legend class="od-field__label">{{ st.label_style }}</legend>
+                  <div class="od-chips__row">
+                    {%- for c in styles -%}{%- assign cv = c | strip -%}{%- if cv == blank -%}{%- continue -%}{%- endif -%}
+                      <label class="od-chip"><input type="radio" name="contact[style]" value="{{ cv | escape }}" data-tag-prefix="style:"><span>{{ cv }}</span></label>
+                    {%- endfor -%}
+                  </div>
+                </fieldset>
+              {%- endif -%}
+              {%- if st.show_notes -%}
+                <label class="od-field"><span class="od-field__label">{{ st.label_notes }}</span><textarea name="contact[body]" rows="3" placeholder="{{ st.notes_placeholder | escape }}"></textarea></label>
+              {%- endif -%}
+              {%- if st.consent_text != blank -%}
+                <label class="od-consent"><input type="checkbox" name="contact[consent]" value="yes" data-consent><span>{{ st.consent_text }}</span></label>
+              {%- endif -%}
+            </div>
+            <button type="submit" class="od-blk__btn od-blk__btn--solid od-formblk__submit">{{ st.button_label }}</button>
+            {%- if st.note != blank -%}<p class="od-formblk__note">{{ st.note }}</p>{%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+        <template data-od-form-success><div class="od-formblk__success" role="status">{% render 'od-icon', name: 'check' %}<p>{{ st.success }}</p></div></template>
+      </div>
+    </div>
+  </div>
+</section>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Form",
+  "tag": "section",
+  "settings": [
+    { "type": "select", "id": "kind", "label": "Form type", "default": "prive", "options": [ { "value": "prive", "label": "Book your visit (Privé)" }, { "value": "event-interest", "label": "Join the next event" }, { "value": "cafe", "label": "Reserve a table (cafe)" } ] },
+    { "type": "paragraph", "content": "Submissions are emailed to the store (Settings > Notifications > Customer contact) and the person is saved in Customers with the tag below." },
+    { "type": "text", "id": "customer_tag", "label": "Customer tag", "default": "prive" },
+    { "type": "select", "id": "layout", "label": "Layout", "default": "split", "options": [ { "value": "split", "label": "Text left, form right" }, { "value": "stack", "label": "Centred, form below" } ] },
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Book your visit" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Tell us a little about you" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>We'll prepare a selection before you arrive and confirm your appointment by phone or WhatsApp within one working day.</p>" },
+    { "type": "image_picker", "id": "image", "label": "Image under the text (optional)" },
+    { "type": "select", "id": "image_ratio", "label": "Image shape", "default": "4-3", "options": [ { "value": "4-3", "label": "Landscape 4:3" }, { "value": "1-1", "label": "Square" }, { "value": "16-9", "label": "Wide" } ] },
+    { "type": "header", "content": "Fields" },
+    { "type": "checkbox", "id": "show_name", "label": "Name", "default": true },
+    { "type": "text", "id": "label_name", "label": "Name label", "default": "Full name" },
+    { "type": "checkbox", "id": "show_phone", "label": "Phone", "default": true },
+    { "type": "text", "id": "label_phone", "label": "Phone label", "default": "Phone" },
+    { "type": "text", "id": "phone_placeholder", "label": "Phone placeholder", "default": "+966 5x xxx xxxx" },
+    { "type": "checkbox", "id": "show_email", "label": "Email", "default": true },
+    { "type": "text", "id": "label_email", "label": "Email label", "default": "Email" },
+    { "type": "text", "id": "label_categories", "label": "Categories label (Privé)", "default": "Categories you love" },
+    { "type": "text", "id": "categories", "label": "Categories (comma separated, Privé)", "default": "Women, Men, Kids, Bags, Shoes, Jewellery" },
+    { "type": "text", "id": "label_style", "label": "Style label (Privé)", "default": "Your style" },
+    { "type": "text", "id": "styles", "label": "Styles (comma separated, Privé)", "default": "Classic, Modern, Minimal, Statement" },
+    { "type": "text", "id": "label_datetime", "label": "Date and time label (cafe)", "default": "Date and time" },
+    { "type": "text", "id": "label_guests", "label": "Guests label (cafe)", "default": "Guests" },
+    { "type": "checkbox", "id": "show_notes", "label": "Notes field", "default": true },
+    { "type": "text", "id": "label_notes", "label": "Notes label", "default": "Anything we should know?" },
+    { "type": "text", "id": "notes_placeholder", "label": "Notes placeholder", "default": "Sizes, occasion, preferred day and time" },
+    { "type": "text", "id": "consent_text", "label": "Consent checkbox text (empty = no checkbox)" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Request an appointment" },
+    { "type": "text", "id": "note", "label": "Small note under the button" },
+    { "type": "text", "id": "success", "label": "Success message", "default": "Thank you, we'll be in touch shortly." },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#2a0d12" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#fcf8f2" },
+    { "type": "color", "id": "accent", "label": "Button / selected chip colour", "default": "#c9a96a" },
+    { "type": "color", "id": "accent_text", "label": "Button text colour", "default": "#2a0d12" },
+    { "type": "color", "id": "field_bg", "label": "Field background", "default": "#ffffff" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "presets": [
+    { "name": "Form: Book your visit (Privé)" },
+    { "name": "Form: Join the next event", "settings": { "kind": "event-interest", "customer_tag": "event-interest", "eyebrow": "Be the first to know", "heading": "Join us at the next event", "text": "<p>Leave your details and we'll send you a personal invitation before the next preview, pop-up or trunk show. No booking needed, no spam.</p>", "show_notes": false, "consent_text": "I'd like invitations by email and WhatsApp", "button_label": "Keep me posted", "success": "Thank you, you're on the list.", "bg": "#e5d9c7", "text_color": "#551c25", "accent": "#551c25", "accent_text": "#fcf8f2" } },
+    { "name": "Form: Reserve a table (cafe)", "settings": { "kind": "cafe", "customer_tag": "cafe", "eyebrow": "", "heading": "Reserve a table", "text": "<p>Walk-ins welcome. For groups of six or more, book ahead.</p>", "layout": "stack", "show_email": true, "label_notes": "Notes", "notes_placeholder": "Occasion, allergies, high chair", "button_label": "Request a table", "success": "Thank you, we'll confirm your table shortly.", "bg": "#182c29", "text_color": "#f0d58e", "accent": "#f0d58e", "accent_text": "#182c29" } }
+  ]
+}
+{% endschema %}

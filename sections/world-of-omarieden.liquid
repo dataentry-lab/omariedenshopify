@@ -1,0 +1,45 @@
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+-%}
+<div class="_container_1kxnl_30 ">
+  <div class="_world_of_omarieden_ibdio_38">
+    <div class="_world_of_omarieden__content_area_ibdio_91">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<h5>{{ section.settings.eyebrow }}</h5>{%- endif -%}
+        <h1 class="{% if rtl %}_titleRtl_ibdio_30{% else %}_titleLtr_ibdio_34{% endif %}">{{ section.settings.title }}</h1>
+        <p>{{ section.settings.text }}</p>
+        {%- if section.settings.button_label != blank -%}
+          <button type="button" class="_btn_lnddl_30 _odWorldBtn_ibdio_199" data-href="{{ section.settings.button_url | default: routes.all_products_collection_url }}">{{ section.settings.button_label }}</button>
+        {%- endif -%}
+      </div>
+    </div>
+    <div class="_world_of_omarieden__img_area_ibdio_59">
+      <div class="_globalImg_1tf1q_38 undefined">
+        {%- if section.settings.image != blank -%}
+          <img fetchpriority="auto" alt="{{ section.settings.title | escape }}" src="{{ section.settings.image | image_url: width: 1400 }}" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" loading="lazy">
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag }}
+        {%- endif -%}
+      </div>
+      <div class="_globalImg_1tf1q_38 _world_of_omarieden__img_area__fixed_center_logo_ibdio_67"><img fetchpriority="auto" alt="" src="{{ 'images_Graphic-Emblem.svg' | asset_url }}"></div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "World of Omarieden",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "STEP INTO THE" },
+    { "type": "text", "id": "title", "label": "Title", "default": "World Of Omarieden" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Discover the latest collections from the most esteemed fashion houses, designed for the upcoming season. Join the Omarieden Circle loyalty program to enjoy exclusive benefits and be the first to access these stunning arrivals!" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Explore" },
+    { "type": "url", "id": "button_url", "label": "Button link" }
+  ],
+  "presets": [ { "name": "World of Omarieden" } ]
+}
+{% endschema %}

@@ -1,0 +1,30 @@
+{%- liquid
+  assign coll = collections[section.settings.collection]
+  assign limit = section.settings.limit | default: 12
+  assign products = coll.products
+  if section.settings.collection == blank
+    assign products = collections.all.products
+  endif
+  assign url = section.settings.button_url
+  if url == blank
+    assign url = coll.url | default: routes.all_products_collection_url
+  endif
+-%}
+{%- if products.size > 0 -%}
+  {%- render 'product-cards-carousel', title: section.settings.title, button_label: section.settings.button_label, button_url: url, products: products, limit: limit, badge: section.settings.badge, variant: section.settings.variant -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product slider",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "New in trend" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "limit", "label": "Number of products", "min": 4, "max": 40, "step": 1, "default": 12 },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop all" },
+    { "type": "url", "id": "button_url", "label": "Button link (defaults to the collection)" },
+    { "type": "select", "id": "variant", "label": "Style", "options": [ { "value": "trend", "label": "Home (New in trend)" }, { "value": "editors", "label": "Editors pick / You might also like" } ], "default": "trend" }
+  ],
+  "presets": [ { "name": "Product slider" } ]
+}
+{% endschema %}

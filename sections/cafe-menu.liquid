@@ -1,0 +1,103 @@
+{%- comment -%}
+  Cafe menu category (one section per category, up to 50 item blocks): heading, optional intro, same background / overlay
+  settings as the seasonal section, 2 columns desktop / 1 mobile. Item row = photo thumbnail, Arabic name, English name,
+  description, calories, allergen mark, price with the Riyal symbol. Items are blocks, not products.
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+-%}
+<section class="od-blk od-cafe od-cmenu od-cmenu--photo-{{ st.photo | default: '84' }}{% if st.image != blank %} od-cmenu--image{% endif %}" id="cafe-{{ section.id }}" data-cafe-category data-cafe-label="{{ st.tab_label | default: st.heading | escape }}"
+  style="--od-blk-text: {{ st.text_color }}; --od-accent: {{ st.accent }}; --od-overlay: {{ st.overlay_color }}; --od-overlay-o: {{ st.overlay_opacity | divided_by: 100.0 }}; --od-cafe-bg: {{ st.bg | default: 'transparent' }}; --od-line: {{ st.line_color }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+  {%- if st.image != blank -%}
+    <div class="od-cseason__media"><img class="od-cseason__img" src="{{ st.image | image_url: width: 2400 }}" alt="" width="{{ st.image.width }}" height="{{ st.image.height }}" loading="lazy"><div class="od-cseason__overlay"></div></div>
+  {%- endif -%}
+  <div class="_container_1kxnl_30 od-cmenu__inner">
+    <header class="od-cmenu__head">
+      <h2 class="od-cmenu__heading">{{ st.heading }}</h2>
+      {%- if st.text != blank -%}<div class="od-cmenu__intro od-blk__text">{{ st.text }}</div>{%- endif -%}
+    </header>
+    <div class="od-cmenu__grid od-cmenu__grid--{{ st.columns }}" data-od-gallery="{{ st.lightbox }}">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        {%- case block.type -%}
+          {%- when 'heading' -%}
+            <h3 class="od-cmenu__sub" {{ block.shopify_attributes }}>{{ b.text }}</h3>
+          {%- when 'text' -%}
+            <div class="od-cmenu__note od-blk__text" {{ block.shopify_attributes }}>{{ b.text }}</div>
+          {%- else -%}
+            {%- if b.hide -%}{%- continue -%}{%- endif -%}
+            <article class="od-citem{% if b.image == blank %} od-citem--nophoto{% endif %}" {{ block.shopify_attributes }}>
+              {%- if st.photo != 'off' -%}
+                {%- if b.image != blank -%}
+                  <div class="od-citem__img od-ratio od-ratio--{{ st.photo_shape | default: '1-1' }}"><img src="{{ b.image | image_url: width: 300 }}" alt="{{ b.name | escape }}" width="{{ b.image.width }}" height="{{ b.image.height }}" loading="lazy"{% if st.lightbox %} data-od-zoom="{{ b.image | image_url: width: 1400 }}"{% endif %}></div>
+                {%- else -%}
+                  <div class="od-citem__img od-citem__img--empty" aria-hidden="true"></div>
+                {%- endif -%}
+              {%- endif -%}
+              <div class="od-citem__body">
+                {%- if rtl -%}
+                  <h4 class="od-citem__name">{{ b.name_ar | default: b.name }}{% if b.tag != 'none' and b.tag != blank %}<span class="od-cafe-tag od-cafe-tag--{{ b.tag }}">{% case b.tag %}{% when 'new' %}{{ 'cafe.tags.new' | t }}{% when 'signature' %}{{ 'cafe.tags.signature' | t }}{% else %}{{ 'cafe.tags.seasonal' | t }}{% endcase %}</span>{% endif %}</h4>
+                  {%- if b.name_ar != blank and b.name != blank -%}<p class="od-citem__alt" dir="ltr">{{ b.name }}</p>{%- endif -%}
+                {%- else -%}
+                  <h4 class="od-citem__name">{{ b.name }}{% if b.tag != 'none' and b.tag != blank %}<span class="od-cafe-tag od-cafe-tag--{{ b.tag }}">{% case b.tag %}{% when 'new' %}{{ 'cafe.tags.new' | t }}{% when 'signature' %}{{ 'cafe.tags.signature' | t }}{% else %}{{ 'cafe.tags.seasonal' | t }}{% endcase %}</span>{% endif %}</h4>
+                  {%- if b.name_ar != blank -%}<p class="od-citem__alt" dir="rtl">{{ b.name_ar }}</p>{%- endif -%}
+                {%- endif -%}
+                {%- if rtl and b.desc_ar != blank -%}<p class="od-citem__desc">{{ b.desc_ar }}</p>{%- elsif b.desc != blank -%}<p class="od-citem__desc">{{ b.desc }}</p>{%- endif -%}
+                {%- if b.calories != blank or b.allergens -%}<p class="od-citem__meta">{% if b.calories != blank %}{{ b.calories }} {{ 'cafe.cal' | t }}{% endif %}{% if b.allergens %}{% if b.calories != blank %} · {% endif %}<span class="od-citem__allergen" title="{{ b.allergen_note | escape }}">{{ 'cafe.allergens' | t }}</span>{% endif %}</p>{%- endif -%}
+              </div>
+              {%- if b.price != blank -%}<p class="od-citem__price">{% render 'sar' %}{{ b.price }}</p>{%- endif -%}
+            </article>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cafe: menu category",
+  "tag": "section",
+  "max_blocks": 50,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Category name", "default": "Sandwiches" },
+    { "type": "text", "id": "tab_label", "label": "Tab label (defaults to the category name)" },
+    { "type": "richtext", "id": "text", "label": "Intro text" },
+    { "type": "select", "id": "columns", "label": "Columns (desktop)", "default": "2", "options": [ { "value": "1", "label": "1" }, { "value": "2", "label": "2" } ] },
+    { "type": "checkbox", "id": "lightbox", "label": "Click a photo to enlarge", "default": true },
+    { "type": "select", "id": "photo", "label": "Item photo", "default": "84", "options": [ { "value": "off", "label": "Off (text only)" }, { "value": "72", "label": "Small, 72px" }, { "value": "84", "label": "Medium, 84px" }, { "value": "110", "label": "Large, 110px" } ] },
+    { "type": "select", "id": "photo_shape", "label": "Photo shape", "default": "1-1", "options": [ { "value": "1-1", "label": "Square" }, { "value": "3-4", "label": "Portrait" } ] },
+    { "type": "header", "content": "Background" },
+    { "type": "image_picker", "id": "image", "label": "Background image (optional)" },
+    { "type": "color", "id": "bg", "label": "Background colour (empty = none)" },
+    { "type": "color", "id": "overlay_color", "label": "Image overlay colour", "default": "#182c29" },
+    { "type": "range", "id": "overlay_opacity", "label": "Image overlay opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 60 },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#182c29" },
+    { "type": "color", "id": "accent", "label": "Accent", "default": "#f0d58e" },
+    { "type": "color", "id": "line_color", "label": "Row line colour", "default": "#d9d2c3" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "blocks": [
+    { "type": "item", "name": "Menu item", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Photo" },
+      { "type": "text", "id": "name", "label": "Name (English)", "default": "Turkey & cheese ciabatta" },
+      { "type": "text", "id": "name_ar", "label": "Name (Arabic)", "default": "شاباتا الرومي والجبن" },
+      { "type": "textarea", "id": "desc", "label": "Description (English)", "default": "Toasted ciabatta with garlic butter, turkey ham, Emmental, arugula, tomato and BBQ chilli mayo." },
+      { "type": "textarea", "id": "desc_ar", "label": "Description (Arabic)" },
+      { "type": "text", "id": "price", "label": "Price", "default": "48" },
+      { "type": "text", "id": "calories", "label": "Calories", "default": "880" },
+      { "type": "checkbox", "id": "allergens", "label": "Contains allergens", "default": false },
+      { "type": "text", "id": "allergen_note", "label": "Allergen note (shown on hover)" },
+      { "type": "select", "id": "tag", "label": "Tag", "default": "none", "options": [ { "value": "none", "label": "None" }, { "value": "new", "label": "New" }, { "value": "signature", "label": "Signature" }, { "value": "seasonal", "label": "Seasonal" } ] },
+      { "type": "checkbox", "id": "hide", "label": "Hide (sold out today)", "default": false }
+    ] },
+    { "type": "heading", "name": "Heading", "settings": [ { "type": "text", "id": "text", "label": "Heading", "default": "With potato salad" } ] },
+    { "type": "text", "name": "Text", "settings": [ { "type": "richtext", "id": "text", "label": "Text" } ] }
+  ],
+  "presets": [ { "name": "Cafe: menu category", "blocks": [ { "type": "item" }, { "type": "item", "settings": { "name": "Halloumi sandwich", "name_ar": "ساندويتش جبنة الحلوم", "desc": "Warm oregano ciabatta with grilled halloumi, labneh, baby arugula, sundried tomatoes and za'atar.", "price": "48", "calories": "668", "allergens": true } }, { "type": "item", "settings": { "name": "Parmesan fries", "name_ar": "بطاطا بارميزان", "desc": "Golden crispy fries with grated Parmesan, rosemary and sea salt.", "price": "38", "calories": "1050" } } ] } ]
+}
+{% endschema %}

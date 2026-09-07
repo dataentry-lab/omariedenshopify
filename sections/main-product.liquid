@@ -1,0 +1,190 @@
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign color_name = settings.color_option_name | default: 'Color'
+  assign size_name = settings.size_option_name | default: 'Size'
+  assign current = product.selected_or_first_available_variant
+  assign sc_parts = settings.style_code_metafield | split: '.'
+  assign style_code = product.metafields[sc_parts[0]][sc_parts[1]].value
+  assign mat_parts = settings.material_metafield | split: '.'
+  assign material = product.metafields[mat_parts[0]][mat_parts[1]].value
+  assign care_parts = settings.care_metafield | split: '.'
+  assign care = product.metafields[care_parts[0]][care_parts[1]].value
+  assign media_count = product.media.size
+-%}
+<div data-product-root data-color-option="{{ color_name | escape }}" data-size-option="{{ size_name | escape }}" data-selected-variant="{{ current.id }}">
+  <script type="application/json" data-product-json>{{ product | json }}</script>
+  <div class="_container_1kxnl_30 _YouMayLike_drley_30">
+    <div class="_ProductDetailslArea_drley_46">
+
+      {%- comment -%} Media {%- endcomment -%}
+      <div class="_ProductMedia_1cnez_30">
+        <div class="_ProductThumbnail_1cnez_107">
+          <button type="button" aria-label="{{ 'products.product.scroll_up' | t }}" class="_ThumbArrow_1cnez_137 undefined _ThumbArrowDisabled_1cnez_155" disabled data-thumb-up><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 15l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+          <div class="_ThumbScroll_1cnez_126" data-thumb-scroll>
+            {%- for media in product.media -%}
+              <div role="button" tabindex="0" class="_MediaCol_1cnez_160 {% if forloop.first %}_active_1cnez_180{% endif %}" data-thumb data-media-id="{{ media.id }}">
+                <div class="_globalImg_1tf1q_38 undefined"><img fetchpriority="auto" alt="{{ media.alt | escape }}" src="{{ media | image_url: width: 160 }}" loading="lazy"></div>
+              </div>
+            {%- endfor -%}
+          </div>
+          <button type="button" aria-label="{{ 'products.product.scroll_down' | t }}" class="_ThumbArrow_1cnez_137 undefined {% if media_count < 6 %}_ThumbArrowDisabled_1cnez_155{% endif %}" {% if media_count < 6 %}disabled{% endif %} data-thumb-down><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+        </div>
+        <div class="_ProductGallery_1cnez_184">
+          <div class="_Gallery_1cnez_200">
+            <div class="od-pdp__badges" aria-hidden="true">{% if product.available %}{% render 'product-badges', product: product, limit: 2 %}{% elsif settings.badge_soldout_enabled != false %}<span class="od-card__badge od-card__badge--sand">{{ 'products.product.sold_out' | t }}</span>{% endif %}</div>
+            <div class="swiper sliderBorder product_carousel {% if rtl %}custom_rtl{% endif %}" dir="{% if rtl %}rtl{% else %}ltr{% endif %}" data-swiper="product">
+              <div class="swiper-wrapper">
+                {%- for media in product.media -%}
+                  <div class="swiper-slide" data-media-id="{{ media.id }}">
+                    <div class="_zoomWrap_1cnez_226">
+                      {%- if media.media_type == 'image' -%}
+                        <img alt="{{ media.alt | escape }}" class="_zoomImg_1cnez_240" draggable="false" src="{{ media | image_url: width: 1000 }}" srcset="{{ media | image_url: width: 600 }} 600w, {{ media | image_url: width: 1000 }} 1000w, {{ media | image_url: width: 1600 }} 1600w" sizes="(max-width: 768px) 100vw, 500px" width="{{ media.width }}" height="{{ media.height }}" style="transform-origin: 50% 50%; transform: scale(1);" {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}>
+                      {%- else -%}
+                        {{ media | media_tag: image_size: '1000x' }}
+                      {%- endif -%}
+                    </div>
+                  </div>
+                {%- else -%}
+                  <div class="swiper-slide"><div class="_zoomWrap_1cnez_226"><img class="_zoomImg_1cnez_240" src="{{ 'images_fallback.svg' | asset_url }}" alt=""></div></div>
+                {%- endfor -%}
+              </div>
+              <div class="swiper-button-prev"></div>
+              <div class="swiper-button-next"></div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {%- comment -%} Details {%- endcomment -%}
+      <div class="_ProductDetails_1fx6h_36">
+        <div class="undefined _Grid_1fx6h_59">
+          <div>
+            <div class="_ProductBrand_1fx6h_141"><h2>{% if product.vendor != blank %}<a class="od-brand-link" href="{{ product.vendor | url_for_vendor }}" title="{{ product.vendor | escape }}">{{ product.vendor }}</a>{% endif %}</h2></div>
+            <div class="_ProductTitle_1fx6h_156"><h1>{{ product.title }}</h1></div>
+            <div class="_ProductPrice_1fx6h_203">
+              <p>
+                <span data-product-price>{% render 'sar' %}{{ current.price | money_without_currency }}</span>
+                <span data-product-compare class="_strikeThrough_1tn6c_30" style="text-decoration:line-through;opacity:.6;margin-inline-start:8px;{% unless current.compare_at_price > current.price %}display:none;{% endunless %}">{% render 'sar' %}{{ current.compare_at_price | money_without_currency }}</span>
+              </p>
+            </div>
+          </div>
+
+          {%- form 'product', product, id: 'product-form', novalidate: 'novalidate', style: 'display:contents' -%}
+            <input type="hidden" name="id" value="{{ current.id }}">
+            {%- unless product.has_only_default_variant -%}
+              {%- comment -%} Order: colour, style code, then size / other options {%- endcomment -%}
+              {%- for option in product.options_with_values -%}
+                {%- if option.name == color_name -%}
+                  <div class="_ColorSection_1fx6h_79" data-option-index="{{ forloop.index0 }}">
+                    <div class="_Title_1fx6h_88"><h3>{{ 'products.product.color' | t }}:<span data-option-value-label>{{ option.selected_value }}</span></h3></div>
+                    <div class="_ColorList_1fx6h_79">
+                      {%- for value in option.values -%}
+                        <label title="{{ value | escape }}" class="_colorButton_a8uha_30 _colorsCircle_1fx6h_542 " data-option-value="{{ value | escape }}">
+                          <div class="{% if value == option.selected_value %}_selected_a8uha_45{% else %}undefined{% endif %}"><span class="_circle_a8uha_38" style="background: {% render 'swatch-color', value: value %};"></span></div>
+                        </label>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+              <div class="_SizeSection_1fx6h_113 od-pdp-stylecode">
+                <div class="_styleCode_1fx6h_555 _Title_1fx6h_88"><h3>{{ 'products.product.style_code' | t }}:<span data-style-code {% if style_code != blank %}data-fixed="true"{% endif %}>{{ style_code | default: current.sku }}</span></h3></div>
+              </div>
+              {%- for option in product.options_with_values -%}
+                {%- unless option.name == color_name -%}
+                  <div>
+                    <div class="_SizeSection_1fx6h_113" data-option-index="{{ forloop.index0 }}">
+                      <div class="_Title_1fx6h_88"><h3>{% if option.name == size_name %}{{ 'products.product.size' | t }}{% else %}{{ option.name }}{% endif %}:<span data-option-value-label>{{ option.selected_value }}</span></h3></div>
+                      <div class="_SizeList_1fx6h_113">
+                        {%- for value in option.values -%}
+                          <label class="_SizeButton_j1gah_30 " data-option-value="{{ value | escape }}"><div class="_wrapper_j1gah_59 {% if value == option.selected_value %}_selected_j1gah_66{% endif %}"><span class="_square_j1gah_39">{{ value }}</span></div></label>
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                  </div>
+                {%- endunless -%}
+              {%- endfor -%}
+            {%- else -%}
+              <div class="_SizeSection_1fx6h_113">
+                <div class="_styleCode_1fx6h_555 _Title_1fx6h_88"><h3>{{ 'products.product.style_code' | t }}:<span data-style-code>{{ style_code | default: current.sku }}</span></h3></div>
+              </div>
+            {%- endunless -%}
+
+            <div class="_ProductWeight_1fx6h_172"><p>{{ 'products.product.return_period' | t }} <span>{{ settings.return_days | default: 30 }} {{ 'products.product.days' | t }}</span></p></div>
+            <div class="_CartSection_1fx6h_74">
+              <div class="_WishlsitAndCart_1fx6h_74">
+                <button type="button" class="_btn_1ltvt_30 _wishlistButton_1fx6h_559" data-pdp-wishlist aria-label="{{ 'wishlist.add' | t }}"><div class="_globalImg_1tf1q_38 undefined"><img fetchpriority="auto" alt="" src="{{ 'icons_light_wishlist.svg' | asset_url }}"></div></button>
+                <button id="addToCart" type="submit" class="_btn_1f12h_30 " data-add-to-cart data-variant-id="{{ current.id }}" data-label-add="{{ 'products.product.add_to_cart' | t }}" data-label-sold="{{ 'products.product.sold_out' | t }}" data-label-unavailable="{{ 'products.product.unavailable' | t }}" {% unless current.available %}disabled{% endunless %}>{% if current.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</button>
+              </div>
+            </div>
+          {%- endform -%}
+
+          <div>
+            <div class="_Shipping_1fx6h_267">
+              <div class="_IconWithText_1fx6h_272">
+                <div class="_globalImg_1tf1q_38 undefined"><img fetchpriority="auto" alt="" src="{{ 'icons_shipping.svg' | asset_url }}"></div>
+                <p>{{ 'products.product.free_shipping_over' | t }} {% render 'sar' %} {{ settings.free_shipping_threshold | default: 500 }}</p>
+              </div>
+            </div>
+            <div class="_desSectiion_1fx6h_340">
+              {%- if product.description != blank -%}
+                <div class="_accordion_container_ve0fr_30 _desItem_1fx6h_354" data-accordion>
+                  <div>
+                    <button class="_menu_button_ve0fr_36 _desTitle_1fx6h_340 " data-accordion-toggle><span>{{ 'products.product.description' | t }}</span><span class="_icon_ve0fr_59 "><div class="_globalImg_1tf1q_38 _icon__img_ve0fr_59"><img fetchpriority="auto" alt="" src="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-plus="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-minus="{{ 'icons_light_minus.svg' | asset_url }}"></div></span></button>
+                    <div class="_content_ve0fr_84 _desClass_1fx6h_359" style="height: 0px; overflow: hidden; transition: height 0.3s;" data-accordion-content><div class="od-rte">{{ product.description }}</div></div>
+                  </div>
+                </div>
+              {%- endif -%}
+              {%- if material != blank -%}
+                <div class="_accordion_container_ve0fr_30 _desItem_1fx6h_354" data-accordion>
+                  <div>
+                    <button class="_menu_button_ve0fr_36 _desTitle_1fx6h_340 " data-accordion-toggle><span>{{ 'products.product.material' | t }}</span><span class="_icon_ve0fr_59 "><div class="_globalImg_1tf1q_38 _icon__img_ve0fr_59"><img fetchpriority="auto" alt="" src="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-plus="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-minus="{{ 'icons_light_minus.svg' | asset_url }}"></div></span></button>
+                    <div class="_content_ve0fr_84 _desClass_1fx6h_359" style="height: 0px; overflow: hidden; transition: height 0.3s;" data-accordion-content><p>{{ material | newline_to_br }}</p></div>
+                  </div>
+                </div>
+              {%- endif -%}
+              {%- if care != blank -%}
+                <div class="_accordion_container_ve0fr_30 _desItem_1fx6h_354" data-accordion>
+                  <div>
+                    <button class="_menu_button_ve0fr_36 _desTitle_1fx6h_340 " data-accordion-toggle><span>{{ 'products.product.care' | t }}</span><span class="_icon_ve0fr_59 "><div class="_globalImg_1tf1q_38 _icon__img_ve0fr_59"><img fetchpriority="auto" alt="" src="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-plus="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-minus="{{ 'icons_light_minus.svg' | asset_url }}"></div></span></button>
+                    <div class="_content_ve0fr_84 _desClass_1fx6h_359" style="height: 0px; overflow: hidden; transition: height 0.3s;" data-accordion-content><p>{{ care | newline_to_br }}</p></div>
+                  </div>
+                </div>
+              {%- endif -%}
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'accordion' and block.settings.content != blank -%}
+                  <div class="_accordion_container_ve0fr_30 _desItem_1fx6h_354" data-accordion {{ block.shopify_attributes }}>
+                    <div>
+                      <button class="_menu_button_ve0fr_36 _desTitle_1fx6h_340 " data-accordion-toggle><span>{{ block.settings.title }}</span><span class="_icon_ve0fr_59 "><div class="_globalImg_1tf1q_38 _icon__img_ve0fr_59"><img fetchpriority="auto" alt="" src="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-plus="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-minus="{{ 'icons_light_minus.svg' | asset_url }}"></div></span></button>
+                      <div class="_content_ve0fr_84 _desClass_1fx6h_359" style="height: 0px; overflow: hidden; transition: height 0.3s;" data-accordion-content><div class="od-rte">{{ block.settings.content }}</div></div>
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product page",
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "Extra accordion",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Shipping & Returns" },
+        { "type": "richtext", "id": "content", "label": "Content" }
+      ]
+    }
+  ]
+}
+{% endschema %}

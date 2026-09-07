@@ -1,0 +1,58 @@
+{
+  "sections": {
+    "hero": {
+      "type": "blog-hero",
+      "settings": {
+        "title": "",
+        "overlay_color": "#551c25",
+        "overlay_opacity": 40
+      }
+    },
+    "list": {
+      "type": "main-blog",
+      "settings": {
+        "style": "news",
+        "heading": "News",
+        "subheading": "Event recaps and stories from the house",
+        "show_tabs": true,
+        "image_side": "start",
+        "ratio": "1-1",
+        "collage": "3",
+        "count_badge": true,
+        "per_page": 6,
+        "load_mode": "button"
+      }
+    },
+    "events": {
+      "type": "events-upcoming",
+      "settings": {
+        "heading": "Upcoming events",
+        "count": 3
+      }
+    },
+    "form": {
+      "type": "od-form",
+      "settings": {
+        "kind": "event-interest",
+        "customer_tag": "event-interest",
+        "eyebrow": "Be the first to know",
+        "heading": "Join us at the next event",
+        "text": "<p>Leave your details and we'll send you a personal invitation before the next preview, pop-up or trunk show. No booking needed, no spam.</p>",
+        "show_notes": false,
+        "consent_text": "I'd like invitations by email and WhatsApp",
+        "button_label": "Keep me posted",
+        "success": "Thank you, you're on the list.",
+        "bg": "#e5d9c7",
+        "text_color": "#551c25",
+        "accent": "#551c25",
+        "accent_text": "#fcf8f2"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "list",
+    "events",
+    "form"
+  ]
+}

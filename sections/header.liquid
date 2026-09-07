@@ -1,0 +1,213 @@
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign dark = false
+  case request.page_type
+    when 'index', 'list-collections'
+      assign dark = true
+    when 'page'
+      if template.suffix == 'about' or template.suffix == 'contact' or template.suffix == 'faqs'
+        assign dark = true
+      endif
+  endcase
+  if dark
+    assign icon_set = 'dark'
+    assign logo = 'images_dark_logo.svg'
+  else
+    assign icon_set = 'light'
+    assign logo = 'images_light_logo.svg'
+  endif
+  assign menu = settings.main_menu | default: 'main-menu'
+  if rtl
+    assign flag = 'icons_flags_saudi.svg'
+  else
+    assign flag = 'icons_flags_eng.svg'
+  endif
+  assign on_cart = false
+  if request.page_type == 'cart'
+    assign on_cart = true
+  endif
+-%}
+<section class="_mainheader_kqzl1_1 {% unless dark %}_pChange_kqzl1_10{% endunless %}" data-header data-dark="{{ dark }}">
+  <div class="_container_1kxnl_30 ">
+    <header class="_header_1fb5v_56">
+      <div class="_header__content_1fb5v_64">
+        <div class="_mobNavLeft_1fb5v_80">
+          <div class="_lists_1fb5v_119">
+            <ul>
+              <li class="_item_1fb5v_139 {% if dark %}_darkItem_1fb5v_154{% endif %}" style="cursor: pointer;" data-open-modal="language">
+                <div class="_iconContainer_1fb5v_35">
+                  <div class="_globalImg_1tf1q_38 _icon_1fb5v_30"><img fetchpriority="auto" src="{{ flag | asset_url }}" alt="{{ 'header.language' | t }}"></div>
+                  <p><span></span></p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="_globalImg_1tf1q_38 _menu_1fb5v_102" data-open-mobile-nav>
+            <img fetchpriority="auto" alt="{{ 'header.menu' | t }}" src="{{ 'icons_' | append: icon_set | append: '_hamburger.svg' | asset_url }}" data-icon-dark="{{ 'icons_dark_hamburger.svg' | asset_url }}" data-icon-light="{{ 'icons_light_hamburger.svg' | asset_url }}">
+          </div>
+        </div>
+        <a href="{{ routes.root_url }}">
+          <div class="_globalImg_1tf1q_38 _logo_1fb5v_91">
+            {%- if section.settings.logo != blank -%}
+              <img fetchpriority="high" alt="{{ shop.name | escape }} logo" src="{{ section.settings.logo | image_url: width: 400 }}" width="{{ section.settings.logo.width }}" height="{{ section.settings.logo.height }}">
+            {%- else -%}
+              <img fetchpriority="high" alt="{{ shop.name | escape }} logo" src="{{ logo | asset_url }}" data-icon-dark="{{ 'images_dark_logo.svg' | asset_url }}" data-icon-light="{{ 'images_light_logo.svg' | asset_url }}">
+            {%- endif -%}
+          </div>
+        </a>
+        <div class="_mobNavRight_1fb5v_85">
+          <div class="_imgListsTableMob_1fb5v_158">
+            <div class="content">
+              <div class="_globalImg_1tf1q_38 _itemClass_1fb5v_208" data-open-modal="search">
+                <img fetchpriority="auto" alt="{{ 'header.search' | t }}" src="{{ 'icons_' | append: icon_set | append: '_search.svg' | asset_url }}" data-icon-dark="{{ 'icons_dark_search.svg' | asset_url }}" data-icon-light="{{ 'icons_light_search.svg' | asset_url }}">
+              </div>
+              <a class="_globalImg_1tf1q_38 _itemClass_1fb5v_208" href="{{ routes.cart_url }}">
+                <img fetchpriority="auto" alt="{{ 'header.cart' | t }}" src="{% if on_cart %}{{ 'icons_light_bag.svg' | asset_url }}{% else %}{{ 'icons_' | append: icon_set | append: '_loyalty.svg' | asset_url }}{% endif %}" {% unless on_cart %}data-icon-dark="{{ 'icons_dark_loyalty.svg' | asset_url }}" data-icon-light="{{ 'icons_light_loyalty.svg' | asset_url }}"{% endunless %}>
+                <div class="_globalImg__count_1tf1q_41" data-cart-count-wrap {% if cart.item_count == 0 %}style="display: none !important;"{% endif %}><p data-cart-count>{{ cart.item_count }}</p></div>
+              </a>
+            </div>
+          </div>
+          <div class="_imgLists_1fb5v_158">
+            <div class="content">
+              <div class="_globalImg_1tf1q_38 _itemClass_1fb5v_208" data-open-modal="search">
+                <img fetchpriority="auto" alt="{{ 'header.search' | t }}" src="{{ 'icons_' | append: icon_set | append: '_search.svg' | asset_url }}" data-icon-dark="{{ 'icons_dark_search.svg' | asset_url }}" data-icon-light="{{ 'icons_light_search.svg' | asset_url }}">
+              </div>
+              {%- if customer -%}
+                <a class="_globalImg_1tf1q_38 _itemClass_1fb5v_208" href="{{ routes.account_url }}">
+                  <img fetchpriority="auto" alt="{{ 'header.account' | t }}" src="{{ 'icons_' | append: icon_set | append: '_profile.svg' | asset_url }}" data-icon-dark="{{ 'icons_dark_profile.svg' | asset_url }}" data-icon-light="{{ 'icons_light_profile.svg' | asset_url }}">
+                </a>
+              {%- else -%}
+                <div class="_globalImg_1tf1q_38 _itemClass_1fb5v_208" data-open-modal="login">
+                  <img fetchpriority="auto" alt="{{ 'header.account' | t }}" src="{{ 'icons_' | append: icon_set | append: '_profile.svg' | asset_url }}" data-icon-dark="{{ 'icons_dark_profile.svg' | asset_url }}" data-icon-light="{{ 'icons_light_profile.svg' | asset_url }}">
+                </div>
+              {%- endif -%}
+              <a class="_globalImg_1tf1q_38 _itemClass_1fb5v_208" href="{{ routes.root_url }}pages/wishlist" data-open-wishlist>
+                <img fetchpriority="auto" alt="{{ 'header.wishlist' | t }}" src="{{ 'icons_' | append: icon_set | append: '_wishlist.svg' | asset_url }}" data-icon-dark="{{ 'icons_dark_wishlist.svg' | asset_url }}" data-icon-light="{{ 'icons_light_wishlist.svg' | asset_url }}">
+              </a>
+              <a class="_globalImg_1tf1q_38 _itemClass_1fb5v_208" href="{{ routes.cart_url }}">
+                <img fetchpriority="auto" alt="{{ 'header.cart' | t }}" src="{% if on_cart %}{{ 'icons_light_bag.svg' | asset_url }}{% else %}{{ 'icons_' | append: icon_set | append: '_loyalty.svg' | asset_url }}{% endif %}" {% unless on_cart %}data-icon-dark="{{ 'icons_dark_loyalty.svg' | asset_url }}" data-icon-light="{{ 'icons_light_loyalty.svg' | asset_url }}"{% endunless %}>
+                <div class="_globalImg__count_1tf1q_41" data-cart-count-wrap {% if cart.item_count == 0 %}style="display: none !important;"{% endif %}><p data-cart-count>{{ cart.item_count }}</p></div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  {%- comment -%} Desktop category nav + mega menus {%- endcomment -%}
+  <header class="_nav_10uue_30 {% if dark %}_darkNav_10uue_37{% endif %}" data-nav>
+    <div class="_nav__content_10uue_61">
+      <div class="_lists_10uue_71">
+        <ul>
+          {%- for link in linklists[menu].links -%}
+            <li class="_ItemList_10uue_67 _item_10uue_77 {% if dark %}_darkItem_10uue_184{% endif %}" data-nav-item>
+              <a class="_navLink_10uue_168" href="{{ link.url }}">{{ link.title }}{% if link.links.size > 0 %}<div class="_globalImg_1tf1q_38 _dropdownIcon_10uue_174 " data-dropdown-icon><img fetchpriority="auto" alt="" src="{{ 'icons_light_arrow_down.svg' | asset_url }}"></div>{% endif %}</a>
+              {%- if link.links.size > 0 -%}
+                {%- liquid
+                  comment
+                    Menu banners: find the "menu_banners" block whose department matches this level-1 item (case-insensitive)
+                  endcomment
+                  assign dept_key = link.title | downcase | strip
+                  assign has_banners = false
+                  for block in section.blocks
+                    if block.type == 'menu_banners'
+                      assign block_dept = block.settings.department | downcase | strip
+                      if block_dept == dept_key
+                        assign banner_block = block
+                        if block.settings.image_1 != blank or block.settings.image_2 != blank or request.design_mode
+                          assign has_banners = true
+                        endif
+                        break
+                      endif
+                    endif
+                  endfor
+                -%}
+                <div class="_megaMenu_5jgb7_39">
+                  <div class="_container_1kxnl_30 ">
+                    <div class="od-mm{% if has_banners %} od-mm--banners{% endif %}">
+                      <div class="_columns_5jgb7_67">
+                        {%- for sub in link.links -%}
+                          <div class="_lists_5jgb7_79">
+                            <h4><a class="_sdClass_5jgb7_107" href="{{ sub.url }}" style="text-decoration: none; color: inherit;">{{ sub.title }}</a></h4>
+                            <ul>
+                              {%- for cat in sub.links -%}
+                                <li class="_item_5jgb7_112" style="cursor: default;"><a href="{{ cat.url }}">{{ cat.title }}</a></li>
+                              {%- endfor -%}
+                            </ul>
+                          </div>
+                        {%- endfor -%}
+                      </div>
+                      {%- if has_banners -%}
+                        <aside class="od-mb od-mm__banners" {{ banner_block.shopify_attributes }}>
+                          {%- for i in (1..2) -%}
+                            {%- liquid
+                              assign k_img = 'image_' | append: i
+                              assign k_cap = 'caption_' | append: i
+                              assign k_link = 'link_' | append: i
+                              assign b_img = banner_block.settings[k_img]
+                              assign b_cap = banner_block.settings[k_cap]
+                              assign b_link = banner_block.settings[k_link]
+                            -%}
+                            {%- if b_img != blank or request.design_mode -%}
+                              <a class="od-mb__tile" href="{{ b_link | default: link.url }}">
+                                <span class="od-mb__img">
+                                  {%- if b_img != blank -%}
+                                    <img src="{{ b_img | image_url: width: 900 }}" srcset="{{ b_img | image_url: width: 450 }} 450w, {{ b_img | image_url: width: 900 }} 900w" sizes="300px" width="900" height="1200" alt="{{ b_img.alt | default: b_cap | escape }}" loading="lazy">
+                                  {%- else -%}
+                                    {{ 'collection-1' | placeholder_svg_tag: 'od-mb__ph' }}
+                                  {%- endif -%}
+                                </span>
+                                {%- if b_cap != blank -%}<span class="od-mb__caption">{{ b_cap }}</span>{%- endif -%}
+                              </a>
+                            {%- endif -%}
+                          {%- endfor -%}
+                        </aside>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </div>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  {%- comment -%} Side menu drawer (mobile + desktop), replaces the old mobile nav {%- endcomment -%}
+  {%- render 'side-menu', blocks: section.blocks, menu: menu, rtl: rtl -%}
+</section>
+
+{% schema %}
+{
+  "name": "Header",
+  "tag": "div",
+  "class": "od-header-section",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo (optional, replaces built-in Omarieden logo)" },
+    { "type": "paragraph", "content": "The navigation menu is set in Theme settings > Navigation (3 levels: department > sub-department > category)." }
+  ],
+  "max_blocks": 12,
+  "blocks": [
+    {
+      "type": "menu_banners",
+      "name": "Menu banners",
+      "settings": [
+        { "type": "text", "id": "department", "label": "Department", "info": "Exact title of the level-1 menu item these banners belong to, e.g. \"Women\". Shown in the desktop mega menu and at the bottom of the department's side-menu panel." },
+        { "type": "header", "content": "Banner 1" },
+        { "type": "image_picker", "id": "image_1", "label": "Image", "info": "3:4, 900 x 1200 px" },
+        { "type": "text", "id": "caption_1", "label": "Caption", "default": "ELEVATED ESSENTIALS" },
+        { "type": "url", "id": "link_1", "label": "Link" },
+        { "type": "header", "content": "Banner 2" },
+        { "type": "image_picker", "id": "image_2", "label": "Image", "info": "3:4, 900 x 1200 px" },
+        { "type": "text", "id": "caption_2", "label": "Caption", "default": "SIMPLE PLEASURE" },
+        { "type": "url", "id": "link_2", "label": "Link" }
+      ]
+    }
+  ]
+}
+{% endschema %}

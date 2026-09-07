@@ -1,0 +1,11 @@
+{%- comment -%}
+  Shared eyebrow / heading / text for the block library sections.
+  Params: eyebrow, heading, text (richtext or plain), align ('center' | 'start'), size ('s' | 'm' | 'l')
+{%- endcomment -%}
+{%- if eyebrow != blank or heading != blank or text != blank -%}
+  <div class="od-blk__head od-blk__head--{{ align | default: 'center' }} od-blk__head--{{ size | default: 'm' }}">
+    {%- if eyebrow != blank -%}<p class="od-blk__eyebrow">{{ eyebrow }}</p>{%- endif -%}
+    {%- if heading != blank -%}<h2 class="od-blk__heading">{{ heading }}</h2>{%- endif -%}
+    {%- if text != blank -%}<div class="od-blk__text">{{ text }}</div>{%- endif -%}
+  </div>
+{%- endif -%}

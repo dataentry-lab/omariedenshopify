@@ -1,0 +1,37 @@
+{%- liquid
+  assign per_page = settings.products_per_page | default: 24
+  assign sort_by = collection.sort_by
+  assign menu_handle = settings.main_menu | default: 'main-menu'
+  assign listing_title = section.settings.title | default: collection.title
+-%}
+
+<div class="_container_1kxnl_30 _pc_1ajxu_31 od-listing" data-listing>
+  {%- render 'listing-title', title: listing_title, count: collection.products_count -%}
+  {%- render 'listing-toolbar', sort_by: sort_by -%}
+
+  {%- paginate collection.products by per_page -%}
+    <div class="_ProductCollection_1ajxu_41 od-listing__grid" data-product-grid data-cols="4">
+      {%- for product in collection.products -%}
+        {%- render 'product-card', product: product -%}
+      {%- else -%}
+        <div style="grid-column: 1 / -1;">
+          <div class="_noProducts_1f8fu_34" style="text-align:center;padding:60px 0;">
+            <div class="_globalImg_1tf1q_38" style="width:220px;margin:0 auto 16px;"><img src="{{ 'noresult_no_products.svg' | asset_url }}" alt="" width="220" height="220"></div>
+            <h4>{{ 'collections.empty.title' | t }}</h4>
+            <p>{{ 'collections.empty.text' | t }}</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+    <div class="_LoadMoreSectionn_1ajxu_67" data-load-more data-next-url="{% if paginate.next %}{{ paginate.next.url }}{% endif %}"></div>
+  {%- endpaginate -%}
+</div>
+
+{% schema %}
+{
+  "name": "Collection page",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title override (defaults to the collection title)" }
+  ]
+}
+{% endschema %}

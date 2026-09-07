@@ -1,0 +1,42 @@
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+-%}
+<div class="_container_1kxnl_30 ">
+  <div class="_petite_and_me_8yh07_30">
+    <div class="_globalImg_1tf1q_38 {% if rtl %}_leftRtl_8yh07_206{% else %}undefined{% endif %} _petite_and_me__img_area_8yh07_49">
+      {%- if section.settings.image != blank -%}
+        <img fetchpriority="auto" alt="{{ section.settings.eyebrow | escape }}" src="{{ section.settings.image | image_url: width: 1400 }}" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" loading="lazy">
+      {%- else -%}
+        {{ 'lifestyle-2' | placeholder_svg_tag }}
+      {%- endif -%}
+    </div>
+    <div class="{% if rtl %}_rightRtl_8yh07_215{% else %}undefined{% endif %} _petite_and_me__content_area_8yh07_64">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<h5>{{ section.settings.eyebrow }}</h5>{%- endif -%}
+        <h1>{{ section.settings.title }}</h1>
+        <p>{{ section.settings.text }}</p>
+        {%- if section.settings.button_label != blank -%}
+          <button type="button" class="_btn_lnddl_30 _petiteBtn_8yh07_224" data-href="{{ section.settings.button_url | default: routes.all_products_collection_url }}">{{ section.settings.button_label }}</button>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "New brand spotlight",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "NEW BRAND" },
+    { "type": "text", "id": "title", "label": "Title", "default": "IRO" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Born in Paris and defined by effortless sophistication, IRO embodies modern confidence through refined tailoring and understated elegance." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Explore" },
+    { "type": "url", "id": "button_url", "label": "Button link" }
+  ],
+  "presets": [ { "name": "New brand spotlight" } ]
+}
+{% endschema %}

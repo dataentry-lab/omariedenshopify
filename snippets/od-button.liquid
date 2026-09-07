@@ -1,0 +1,4 @@
+{%- comment -%} Block library button. Params: label, url, style ('solid' | 'outline' | 'link'), color (bg/border), text_color {%- endcomment -%}
+{%- if label != blank -%}
+  <a class="od-blk__btn od-blk__btn--{{ style | default: 'outline' }}" href="{{ url | default: '#' }}" style="{% if color != blank %}--od-btn: {{ color }};{% endif %}{% if text_color != blank %}--od-btn-text: {{ text_color }};{% endif %}">{{ label }}</a>
+{%- endif -%}

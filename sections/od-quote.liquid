@@ -1,0 +1,36 @@
+{%- capture od_locked -%}{%- render 'prive-locked' -%}{%- endcapture -%}
+{%- unless od_locked contains 'yes' -%}
+{%- comment -%} Block library 9: quote with attribution, optional portrait. {%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+-%}
+<section class="od-blk od-quote" id="od-quote-{{ section.id }}" style="--od-blk-bg: {{ st.bg | default: 'transparent' }}; --od-blk-text: {{ st.text_color }}; --od-accent: {{ st.accent }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+  <div class="_container_1kxnl_30">
+    <figure class="od-quote__fig">
+      {%- if st.image != blank -%}<div class="od-quote__img"><img src="{{ st.image | image_url: width: 240 }}" alt="{{ st.image.alt | escape }}" width="{{ st.image.width }}" height="{{ st.image.height }}" loading="lazy"></div>{%- endif -%}
+      <span class="od-quote__mark" aria-hidden="true">&ldquo;</span>
+      <blockquote class="od-quote__text">{{ st.quote }}</blockquote>
+      {%- if st.name != blank -%}<figcaption class="od-quote__by">{{ st.name }}{% if st.detail != blank %}<span>{{ st.detail }}</span>{% endif %}</figcaption>{%- endif -%}
+    </figure>
+  </div>
+</section>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Quote",
+  "tag": "section",
+  "settings": [
+    { "type": "textarea", "id": "quote", "label": "Quote", "default": "The most personal shopping in Riyadh." },
+    { "type": "text", "id": "name", "label": "Name", "default": "A Privé member" },
+    { "type": "text", "id": "detail", "label": "Detail (city, title)", "default": "Riyadh" },
+    { "type": "image_picker", "id": "image", "label": "Portrait (optional)" },
+    { "type": "color", "id": "bg", "label": "Background (empty = none)" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#551c25" },
+    { "type": "color", "id": "accent", "label": "Accent (quote mark)", "default": "#c9a96a" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "presets": [ { "name": "Quote" } ]
+}
+{% endschema %}

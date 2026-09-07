@@ -1,0 +1,64 @@
+{%- capture od_locked -%}{%- render 'prive-locked' -%}{%- endcapture -%}
+{%- unless od_locked contains 'yes' -%}
+{%- comment -%} Block library 7: product grid (collection or hand-picked), 3 to 5 per row, shoppable cards, optional gold tag. {%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign products = blank
+  if st.source == 'products' and st.products != blank
+    assign products = st.products
+  elsif st.collection != blank
+    assign products = collections[st.collection].products
+  endif
+  assign limit = st.limit | default: 8
+-%}
+<section class="od-blk od-pgrid" id="od-pgrid-{{ section.id }}" style="--od-blk-bg: {{ st.bg | default: 'transparent' }}; --od-blk-text: {{ st.text_color }}; --od-tag-bg: {{ st.tag_bg }}; --od-tag-text: {{ st.tag_text }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+  <div class="_container_1kxnl_30">
+    <div class="od-pgrid__head">
+      {%- render 'od-block-head', eyebrow: st.eyebrow, heading: st.heading, text: st.text, align: st.align -%}
+      {%- if st.link_label != blank -%}<a class="od-blk__btn od-blk__btn--link od-pgrid__all" href="{{ st.link_url | default: collections[st.collection].url }}">{{ st.link_label }}</a>{%- endif -%}
+    </div>
+    {%- if products != blank and products.size > 0 -%}
+      <div class="od-pgrid__grid{% if st.tag_label != blank %} od-pgrid__grid--tagged{% endif %}" style="--od-cols: {{ st.per_row }};" data-od-tag="{{ st.tag_label | escape }}">
+        {%- for product in products limit: limit -%}
+          <div class="od-pgrid__item">
+            {%- render 'product-card', product: product -%}
+            {%- if st.tag_label != blank -%}<span class="od-pgrid__tag">{{ st.tag_label }}</span>{%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p class="od-pgrid__empty">{{ 'sections.product_grid.empty' | t }}</p>
+    {%- endif -%}
+  </div>
+</section>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Product grid",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Reserved for Privé" },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "select", "id": "align", "label": "Heading alignment", "default": "start", "options": [ { "value": "start", "label": "Left (right in Arabic)" }, { "value": "center", "label": "Centre" } ] },
+    { "type": "select", "id": "source", "label": "Source", "default": "collection", "options": [ { "value": "collection", "label": "Collection" }, { "value": "products", "label": "Hand-picked products" } ] },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "product_list", "id": "products", "label": "Hand-picked products", "limit": 20 },
+    { "type": "range", "id": "limit", "label": "Maximum products", "min": 3, "max": 20, "step": 1, "default": 8 },
+    { "type": "range", "id": "per_row", "label": "Per row (desktop)", "min": 3, "max": 5, "step": 1, "default": 4 },
+    { "type": "text", "id": "link_label", "label": "\"See all\" link label" },
+    { "type": "url", "id": "link_url", "label": "\"See all\" link (defaults to the collection)" },
+    { "type": "header", "content": "Tag on every card (optional)" },
+    { "type": "text", "id": "tag_label", "label": "Tag text", "info": "e.g. Privé. Leave empty for none; the product's own badges still show." },
+    { "type": "color", "id": "tag_bg", "label": "Tag background", "default": "#c9a96a" },
+    { "type": "color", "id": "tag_text", "label": "Tag text colour", "default": "#2a0d12" },
+    { "type": "header", "content": "Colours and spacing" },
+    { "type": "color", "id": "bg", "label": "Background (empty = none)" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#551c25" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 }
+  ],
+  "presets": [ { "name": "Product grid" } ]
+}
+{% endschema %}

@@ -1,0 +1,166 @@
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign threshold = settings.free_shipping_threshold | default: 500 | times: 100
+  assign subtotal = cart.items_subtotal_price
+  assign progress = subtotal | times: 100 | divided_by: threshold
+  assign remaining = threshold | minus: subtotal
+  assign trending = collections[settings.trending_collection]
+  if trending == blank
+    assign trending = collections.all
+  endif
+  assign color_name = settings.color_option_name | default: 'Color'
+  assign size_name = settings.size_option_name | default: 'Size'
+-%}
+<div class="_container_1kxnl_30 " data-cart-page data-section-id="{{ section.id }}">
+  <div class="_content_7ogbc_30">
+    <div class="_bag_179js_45">
+      <h2 class="_title_1m4vh_30 undefined _bag__title_179js_62">{{ 'cart.title' | t }} <span>({{ cart.item_count }})</span></h2>
+
+      {%- if cart.item_count > 0 -%}
+        <div class="_bag__cards_179js_134">
+          <div class="undefined _bag__shippingBar_179js_78">
+            {%- if remaining <= 0 -%}
+              <p>{{ 'cart.shipping.unlocked' | t }}</p>
+            {%- else -%}
+              {%- assign remaining_amount = remaining | money_without_currency -%}
+              <p>{{ 'cart.shipping.remaining_html' | t: amount: remaining_amount }}</p>
+            {%- endif -%}
+            <div class="_bag__shippingBar__bar_179js_81"><div class="_bag__shippingBar__bar__progress_179js_100 {% if rtl %}_progressBarRtl_1bfe0_30{% endif %}" style="width: {{ progress | at_most: 100 }}%;"></div></div>
+          </div>
+
+          {%- for item in cart.items -%}
+            <div class="_checkoutCard_1jlsq_60" data-line="{{ forloop.index }}">
+              <a class="_globalImg_1tf1q_38 _checkoutCard__pImg_1jlsq_76" href="{{ item.url }}" style="display:block">
+                {%- if item.image -%}
+                  <img fetchpriority="auto" alt="{{ item.title | escape }}" src="{{ item.image | image_url: width: 300 }}" width="{{ item.image.width }}" height="{{ item.image.height }}">
+                {%- else -%}
+                  <img fetchpriority="auto" alt="" src="{{ 'images_fallback.svg' | asset_url }}">
+                {%- endif -%}
+              </a>
+              <div class="_checkoutCard__right_1jlsq_80">
+                <div class="_checkoutCard__right__details_1jlsq_91">
+                  <div class="_checkoutCard__right__details__info_1jlsq_118">
+                    <div class="_checkoutCard__right__details__info__text_1jlsq_129">
+                      <p>{{ item.vendor }}</p>
+                      <p><a href="{{ item.url }}" style="text-decoration:none;color:inherit;">{{ item.product.title }}</a></p>
+                    </div>
+                    <div class="_incDec_58mpv_55" dir="ltr">
+                      <div class="_globalImg_1tf1q_38 _incDec__icon_58mpv_99" data-line-change data-line="{{ forloop.index }}" data-qty="{{ item.quantity | minus: 1 }}" role="button" aria-label="{{ 'cart.general.decrease' | t }}"><img fetchpriority="auto" alt="minus" src="{{ 'icons_light_minus.svg' | asset_url }}"></div>
+                      <div class="_incDec__q_58mpv_80">{{ item.quantity }}</div>
+                      <div class="_globalImg_1tf1q_38 _incDec__icon_58mpv_99" data-line-change data-line="{{ forloop.index }}" data-qty="{{ item.quantity | plus: 1 }}" role="button" aria-label="{{ 'cart.general.increase' | t }}"><img fetchpriority="auto" alt="plus" src="{{ 'icons_light_plus.svg' | asset_url }}"></div>
+                    </div>
+                    <div class="_checkoutCard__right__details__info__textConfig_1jlsq_163">
+                      {%- unless item.product.has_only_default_variant -%}
+                        {%- for option in item.options_with_values -%}
+                          <p><span>{% if option.name == size_name %}{{ 'products.product.size' | t }}{% elsif option.name == color_name %}{{ 'products.product.color' | t }}{% else %}{{ option.name }}{% endif %}:</span><span>{{ option.value }}</span></p>
+                        {%- endfor -%}
+                      {%- endunless -%}
+                    </div>
+                  </div>
+                  <div>
+                    <p class="_checkoutCard__right__details__price_1jlsq_98 null">{% render 'sar' %}{{ item.final_line_price | money_without_currency }}</p>
+                    {%- if item.original_line_price > item.final_line_price -%}
+                      <p class="_checkoutCard__right__details__price_1jlsq_98 _strikeThrough_1tn6c_30" style="text-decoration:line-through;opacity:.6;">{% render 'sar' %}{{ item.original_line_price | money_without_currency }}</p>
+                    {%- endif -%}
+                  </div>
+                </div>
+                <div class="_checkoutCard__right__icons_1jlsq_182">
+                  <div class="undefined _border_9vfph_30 _iconWithText_9vfph_36" style="padding: 0px 8px 0px 4px;" data-move-to-wishlist data-handle="{{ item.product.handle }}" data-product-id="{{ item.product_id }}" data-line="{{ forloop.index }}" role="button">
+                    <div class="_globalImg_1tf1q_38 _iconWithText__icon_9vfph_45"><img fetchpriority="auto" alt="{{ 'cart.general.move_to_wishlist' | t }}" src="{{ 'icons_light_wishlist.svg' | asset_url }}"></div>
+                    <p>{{ 'cart.general.move_to_wishlist' | t }}</p>
+                  </div>
+                  <div class="undefined _border_9vfph_30 _iconWithText_9vfph_36" style="gap: 0px; padding: 2px;" data-line-change data-line="{{ forloop.index }}" data-qty="0" role="button" aria-label="{{ 'cart.general.remove' | t }}">
+                    <div class="_globalImg_1tf1q_38 _iconWithText__icon_9vfph_45"><img fetchpriority="auto" alt="{{ 'cart.general.remove' | t }}" src="{{ 'icons_light_trash.svg' | asset_url }}"></div>
+                    <p></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="_shoppingBagContainer_179js_169">
+          <div class="_shoppingBagContainer__emptyCart_179js_183 _noProducts_1f8fu_34">
+            <h4>{{ 'cart.empty.title' | t }}</h4>
+            <p>{{ 'cart.empty.text' | t }}</p>
+          </div>
+          <button type="button" class="_btn_lnddl_30 _shopBtn_1f8fu_30" data-href="{{ routes.all_products_collection_url }}">{{ 'cart.empty.button' | t }}</button>
+        </div>
+      {%- endif -%}
+
+      {%- if trending.products.size > 0 -%}
+        <div class="_bag__trending_179js_124">
+          <div class="_trendingProducts_cnitd_51">
+            <div class="_title_cnitd_30"><h6>{{ 'cart.trending' | t }}</h6></div>
+            <div class="swiper sliderBorder trending_carousel {% if rtl %}custom_rtl{% endif %}" dir="{% if rtl %}rtl{% else %}ltr{% endif %}" data-swiper="trending">
+              <div class="swiper-wrapper">
+                {%- for p in trending.products limit: 10 -%}
+                  <div class="swiper-slide" style="width: 289.2px;">
+                    <div class="undefined _trendingCard_102j2_37" data-qa-source data-handle="{{ p.handle }}">
+                      <div class="_leftContainer_102j2_30">
+                        <a class="_globalImg_1tf1q_38 _trendingCard__pImg_102j2_60" href="{{ p.url }}" style="display:block"><img fetchpriority="auto" alt="{{ p.title | escape }}" src="{{ p.featured_image | image_url: width: 200 }}" loading="lazy"></a>
+                        <div>
+                          <p class="_text1_102j2_64">{{ p.vendor }}</p>
+                          <p class="_text2_102j2_83">{{ p.title }}</p>
+                          <div class="_priceRow_102j2_123"><p class="_text3_102j2_65 null">{% render 'sar' %}{{ p.price | money_without_currency }}</p></div>
+                        </div>
+                      </div>
+                      {%- if p.available -%}{%- render 'product-json', product: p -%}{%- endif -%}
+                      <div class="_trendingCard__add_102j2_47" {% if p.available %}data-quick-add-open{% else %}data-href="{{ p.url }}"{% endif %} role="button" tabindex="0" aria-label="{{ 'products.card.quick_add' | t }}">
+                        <div class="_globalImg_1tf1q_38 _trendingCard__add__img_102j2_56"><img fetchpriority="auto" alt="plus" src="{{ 'icons_light_plus.svg' | asset_url }}"></div>
+                      </div>
+                    </div>
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
+            <div class="custom_navigation {% if rtl %}custom_navigationRtl{% endif %}">
+              <div class="_globalImg_1tf1q_38 trending-swiper-button-prev-custom"><img fetchpriority="auto" alt="{{ 'general.accessibility.previous' | t }}" src="{% if rtl %}{{ 'icons_light_arrow_right.svg' | asset_url }}{% else %}{{ 'icons_light_arrow_left.svg' | asset_url }}{% endif %}"></div>
+              <div class="_globalImg_1tf1q_38 trending-swiper-button-next-custom"><img fetchpriority="auto" alt="{{ 'general.accessibility.next' | t }}" src="{% if rtl %}{{ 'icons_light_arrow_left.svg' | asset_url }}{% else %}{{ 'icons_light_arrow_right.svg' | asset_url }}{% endif %}"></div>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="_right_1vg2n_30">
+      <div class="_summary_1vg2n_70" {% if cart.item_count == 0 %}style="display: none !important;"{% endif %}>
+        <h3>{{ 'cart.summary.title' | t }}</h3>
+        <div class="_summary__subtotal_1vg2n_178">
+          <p>{{ 'cart.summary.subtotal' | t }}</p>
+          <p>{% render 'sar' %}{{ cart.total_price | money_without_currency }}</p>
+        </div>
+        <p>{{ 'cart.summary.taxes_note' | t }}</p>
+        {%- if cart.cart_level_discount_applications.size > 0 -%}
+          {%- for d in cart.cart_level_discount_applications -%}
+            <div class="_summary__subtotal_1vg2n_178"><p>{{ d.title }}</p><p>-{% render 'sar' %}{{ d.total_allocated_amount | money_without_currency }}</p></div>
+          {%- endfor -%}
+        {%- endif -%}
+        <div class="_summary__rewardInfo_1vg2n_173">
+          <div class="_addStyle_1vg2n_286 undefined _iconWithText_9vfph_36">
+            <div class="_globalImg_1tf1q_38 _iconWithText__icon_9vfph_45"><img fetchpriority="auto" alt="" src="{{ 'icons_light_logo-sun.svg' | asset_url }}"></div>
+            <p>{{ 'cart.summary.reward' | t }}</p>
+          </div>
+        </div>
+        <div class="_summary__promo_1vg2n_149">
+          <div class="_inputWithLabel_1s8yh_30 _summary__promo__input_1vg2n_156">
+            <label class="_label_1g1i8_30">{{ 'cart.summary.promo' | t }} </label>
+            <input class="_input_1vioh_49 " value="" data-promo-input autocomplete="off">
+          </div>
+          <button type="button" class="_btn_lnddl_30 _summary__promo__btn_1vg2n_162" disabled data-promo-apply>{{ 'cart.summary.apply' | t }}</button>
+        </div>
+        <form action="{{ routes.cart_url }}" method="post" style="display:contents">
+          <button type="submit" name="checkout" class="_btn_lnddl_30 _summary__checkoutBtn_1vg2n_120">{{ 'cart.summary.checkout' | t }}</button>
+        </form>
+      </div>
+      {%- render 'od-circle' -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{ "name": "Cart page", "settings": [] }
+{% endschema %}

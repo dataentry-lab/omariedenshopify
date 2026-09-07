@@ -1,0 +1,71 @@
+{%- comment -%} Left-side "Language & Region" drawer, wired to Shopify's localization form {%- endcomment -%}
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+-%}
+<div class="_backdrop_9316i_30 undefined" data-modal-backdrop="language" data-show-class="_backdropShow_pdb61_246"></div>
+<div class="_modal_9316i_132 undefined {% if rtl %}_modalAddClsRtl_pdb61_201{% endif %} _modalAddCls_pdb61_201" data-modal="language" data-show-class="_show_pdb61_240">
+  <div class="_mHeader_9316i_67">
+    <div class="_mHeader__imgContainer_9316i_89"><h2{% if rtl %} class="_h2Rtl_9316i_50"{% endif %}>{{ 'header.language_region' | t }} <span></span></h2></div>
+    <div class="_globalImg_1tf1q_38 _close_9316i_125" data-close-modal="language"><img fetchpriority="auto" alt="{{ 'general.accessibility.close' | t }}" src="{{ 'icons_cross.svg' | asset_url }}"></div>
+  </div>
+  <div class="_content_9316i_45">
+    {%- form 'localization', id: 'LocalizationDrawer', class: 'od-localization-form', data-localization-form: '' -%}
+      <div class="_languageContainer_pdb61_30">
+        <div class="_lists_pdb61_81">
+          <h4>{{ 'header.language' | t }}</h4>
+          <ul>
+            {%- for language in localization.available_languages -%}
+              {%- liquid
+                assign is_ar = false
+                if language.iso_code contains 'ar'
+                  assign is_ar = true
+                endif
+                if is_ar
+                  assign lang_flag = 'icons_flags_saudi.svg'
+                  assign lang_label = 'header.arabic' | t
+                else
+                  assign lang_flag = 'icons_flags_eng.svg'
+                  assign lang_label = 'header.english' | t
+                endif
+              -%}
+              <li class="_item_pdb61_166" style="cursor: pointer;" data-locale-option="{{ language.iso_code }}">
+                <div class="_iconContainer_pdb61_60">
+                  <div class="_globalImg_1tf1q_38 _icon_pdb61_55"><img fetchpriority="auto" alt="{{ language.endonym_name | escape }}" src="{{ lang_flag | asset_url }}"></div>
+                  <p><span>{{ lang_label }}</span></p>
+                </div>
+                <div class="_globalImg_1tf1q_38 {% if rtl %}_tickRtl_pdb61_187{% else %}_tickLtr_pdb61_186{% endif %}" {% unless language.iso_code == localization.language.iso_code %}style="display: none !important;"{% endunless %}><img fetchpriority="auto" alt="" src="{{ 'icons_tick.svg' | asset_url }}"></div>
+              </li>
+            {%- endfor -%}
+          </ul>
+          <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}" data-locale-input>
+        </div>
+      </div>
+      <div class="_flagContainer_pdb61_31">
+        <div class="_flagLists_pdb61_82">
+          <h4>{{ 'header.ship_to' | t }}</h4>
+          <ul>
+            {%- for country in localization.available_countries -%}
+              <li class="_item_pdb61_166" style="cursor: pointer;" data-country-option="{{ country.iso_code }}">
+                <div class="_iconContainer_16tu5_35">
+                  <div class="_globalImg_1tf1q_38 _icon_16tu5_30 undefined">
+                    {%- if country.iso_code == 'SA' -%}
+                      <img fetchpriority="auto" alt="{{ country.name | escape }}" src="{{ 'icons_flags_saudi.svg' | asset_url }}">
+                    {%- else -%}
+                      <img fetchpriority="auto" alt="{{ country.name | escape }}" src="{{ country | image_url: width: 40 }}" style="width:20px;height:20px;object-fit:cover;border-radius:50%;">
+                    {%- endif -%}
+                  </div>
+                  <p><span>{{ country.name }} ({{ country.currency.iso_code }})</span></p>
+                </div>
+                <div class="_globalImg_1tf1q_38 {% if rtl %}_tickRtl_pdb61_187{% else %}_tickLtr_pdb61_186{% endif %}" {% unless country.iso_code == localization.country.iso_code %}style="display: none !important;"{% endunless %}><img fetchpriority="auto" alt="" src="{{ 'icons_tick.svg' | asset_url }}"></div>
+              </li>
+            {%- endfor -%}
+          </ul>
+          <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}" data-country-input>
+        </div>
+      </div>
+    {%- endform -%}
+  </div>
+</div>

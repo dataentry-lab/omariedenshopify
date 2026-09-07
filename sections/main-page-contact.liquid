@@ -1,0 +1,128 @@
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign s = section.settings
+  if s.hero_image != blank
+    assign hero_url = s.hero_image | image_url: width: 2560
+  else
+    assign hero_url = 'images_contact-us.jpg' | asset_url
+  endif
+  assign faq_url = s.faq_url | default: '/pages/faqs'
+  assign form_id = 'ContactForm-' | append: section.id
+-%}
+<div data-section-id="{{ section.id }}">
+  <section class="_bgBack_xwnoc_133 _bgAddCls_nnj6b_141" style="background-image: url(&quot;{{ hero_url }}&quot;); height: 720px;">
+    <div class="_container_1kxnl_30 _banner_xwnoc_30 _flexDir_nnj6b_30">
+      <div class="_banner__content_xwnoc_61 ">
+        <h1 class="{% if rtl %}_titleRtl_xwnoc_39{% else %}undefined{% endif %} _banner__content__title_xwnoc_67 _titleClass_nnj6b_100">{{ s.title | default: page.title }} </h1>
+        <div class="_banner__content__subtitle_xwnoc_118 undefined">
+          <p>{{ 'pages.contact.faq_prefix' | t }} <a class="_FaqLink_nnj6b_96" href="{{ faq_url }}">{{ 'pages.contact.faq_link' | t }}</a> {{ 'pages.contact.faq_suffix' | t }}</p>
+        </div>
+      </div>
+      <div class="_infoCards_1pnlg_30">
+        <div class="_infoCard_1pnlg_30 _card_1seg6_30 undefined">
+          <h2>{{ 'pages.contact.email_us' | t }}</h2>
+          <ul>
+            {%- if s.email_general != blank -%}
+              <li><p class="_subtitle_1pnlg_99">{{ 'pages.contact.general' | t }}</p><p>{{ s.email_general }}</p></li>
+            {%- endif -%}
+            {%- if s.email_support != blank -%}
+              <li><p class="_subtitle_1pnlg_99">{{ 'pages.contact.support' | t }}</p><p>{{ s.email_support }}</p></li>
+            {%- endif -%}
+          </ul>
+        </div>
+        <div class="_infoCard_1pnlg_30 _card_1seg6_30 undefined">
+          <h2>{{ 'pages.contact.call_us' | t }}</h2>
+          <ul>
+            {%- if s.phone != blank -%}
+              <li><p class="_subtitle_1pnlg_99">{{ 'pages.contact.phone' | t }}</p><p dir="ltr">{{ s.phone }}</p></li>
+            {%- endif -%}
+            {%- if s.address != blank -%}
+              <li><p class="_subtitle_1pnlg_99">{{ 'pages.contact.address' | t }}</p><p dir="ltr">{{ s.address }}</p></li>
+            {%- endif -%}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="_container_1kxnl_30 _content_nnj6b_76">
+    <div class="_bg_nnj6b_56"{% if s.tile_image != blank %} style="background-image: url(&quot;{{ s.tile_image | image_url: width: 1400 }}&quot;);"{% endif %}></div>
+    <div class="_form_1q1k3_30">
+      <div class="_titleWithDescription_1js2s_30">
+        <h4>{{ s.form_title }}</h4>
+        <p>{{ s.form_subtitle }}</p>
+      </div>
+      {%- form 'contact', class: '_form__content_1q1k3_49', id: form_id -%}
+        {%- if form.posted_successfully? -%}
+          <p class="od-form-msg od-form-msg--success" role="status">{{ 'pages.contact.success' | t }}</p>
+        {%- elsif form.errors -%}
+          <div class="od-form-msg od-form-msg--error" role="alert">
+            <p>{{ 'pages.contact.error' | t }}</p>
+            {{ form.errors | default_errors }}
+          </div>
+        {%- endif -%}
+        <div class="_form__content__top_1q1k3_54">
+          <div class="_inputWithLabel_1s8yh_30 _form__content__top__input_1q1k3_61">
+            <label for="{{ form_id }}-first_name" class="_label_1g1i8_30">{{ 'pages.contact.first_name' | t }} *</label>
+            <input required id="{{ form_id }}-first_name" class="_input_1vioh_49 " type="text" name="contact[first_name]" autocomplete="given-name" value="{{ form.first_name }}">
+          </div>
+          <div class="_inputWithLabel_1s8yh_30 _form__content__top__input_1q1k3_61">
+            <label for="{{ form_id }}-last_name" class="_label_1g1i8_30">{{ 'pages.contact.last_name' | t }} *</label>
+            <input required id="{{ form_id }}-last_name" class="_input_1vioh_49 " type="text" name="contact[last_name]" autocomplete="family-name" value="{{ form.last_name }}">
+          </div>
+        </div>
+        <div class="_inputWithLabel_1s8yh_30 undefined">
+          <label for="{{ form_id }}-email" class="_label_1g1i8_30">{{ 'pages.contact.email' | t }} *</label>
+          <input required id="{{ form_id }}-email" class="_input_1vioh_49 " type="email" name="contact[email]" autocomplete="email" value="{{ form.email }}">
+        </div>
+        <div class="_form_control_9l1c3_30">
+          <label class="_label_1g1i8_30">{{ 'pages.contact.topic' | t }} *</label>
+          <div class="_select_box_9l1c3_51 undefined" data-select>
+            <span class="_placeholder_9l1c3_76" data-select-label>{{ 'pages.contact.select' | t }}</span>
+            <div class="_globalImg_1tf1q_38 _arrow_9l1c3_68"><img fetchpriority="auto" alt="" src="{% if rtl %}{{ 'icons_light_arrow_left.svg' | asset_url }}{% else %}{{ 'icons_light_arrow_right.svg' | asset_url }}{% endif %}"></div>
+          </div>
+          <ul class="_options_9l1c3_126 _options_bottom_9l1c3_221" data-select-options hidden>
+            <li data-value="support">{{ 'pages.contact.topics.support' | t }}</li>
+            <li data-value="sales">{{ 'pages.contact.topics.sales' | t }}</li>
+            <li data-value="marketing">{{ 'pages.contact.topics.marketing' | t }}</li>
+          </ul>
+          <input type="hidden" name="contact[topic]" value="">
+        </div>
+        <div>
+          <div class="_form_control_zcoyv_30">
+            <label for="{{ form_id }}-body" class="_label_1g1i8_30">{{ 'pages.contact.message' | t }} *</label>
+            <textarea required id="{{ form_id }}-body" maxlength="200" class="_textarea_box_zcoyv_35" placeholder="{{ 'pages.contact.type_here' | t | escape }}" rows="6" name="contact[body]" data-char-counter="#{{ form_id }}-count">{{ form.body }}</textarea>
+          </div>
+          {%- assign char_tpl = 'pages.contact.char_limit' | t -%}
+          {%- assign n_ph = '{' | append: 'n}' -%}
+          {%- assign max_ph = '{' | append: 'max}' -%}
+          <p id="{{ form_id }}-count" data-template="{{ char_tpl | escape }}">{{ char_tpl | replace: n_ph, '0' | replace: max_ph, '200' }}</p>
+        </div>
+        <button type="submit" class="_btn_lnddl_30 _sBtn_1q1k3_80">{{ 'pages.contact.submit' | t }}</button>
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact page",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image (fallback: contact-us.jpg)" },
+    { "type": "text", "id": "title", "label": "Title (defaults to page title)" },
+    { "type": "url", "id": "faq_url", "label": "FAQ page link" },
+    { "type": "header", "content": "Info cards" },
+    { "type": "text", "id": "email_general", "label": "General inquiries email", "default": "info@omarieden.com" },
+    { "type": "text", "id": "email_support", "label": "Customer support email", "default": "support@omarieden.com" },
+    { "type": "text", "id": "phone", "label": "Phone number", "default": "+966 13 805 3988 / +966 54 910 5552" },
+    { "type": "text", "id": "address", "label": "Address", "default": "Al Khobar, Al Hizam Al Akhdar Dist, Prince Faisal Ibn Fahads - 34432" },
+    { "type": "header", "content": "Form" },
+    { "type": "image_picker", "id": "tile_image", "label": "Image beside the form (fallback: contact.webp)" },
+    { "type": "text", "id": "form_title", "label": "Form title", "default": "Begin a dialogue with OMARIEDEN." },
+    { "type": "text", "id": "form_subtitle", "label": "Form subtitle", "default": "We are listening." }
+  ]
+}
+{% endschema %}

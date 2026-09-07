@@ -1,0 +1,118 @@
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+-%}
+<div class="undefined _footer_1lh0j_1">
+  <div class="_pFooter_n0o7o_77">
+    <div class="_container_1kxnl_30 _footerContainer_n0o7o_30">
+      <div class="_globalImg_1tf1q_38 _pFooter__logo_n0o7o_81"><img fetchpriority="auto" alt="{{ shop.name | escape }} sun logo" src="{{ 'images_logo-eye.svg' | asset_url }}"></div>
+
+      {%- comment -%} Mobile: accordion version of every link column {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'menu' -%}
+          <div class="_accordion_container_ve0fr_30 _accContainer_n0o7o_58" data-accordion {{ block.shopify_attributes }}>
+            <div>
+              <button class="_menu_button_ve0fr_36 _title_n0o7o_108 " data-accordion-toggle>
+                <span>{{ block.settings.title | default: linklists[block.settings.menu].title }}</span>
+                <span class="_icon_ve0fr_59 "><div class="_globalImg_1tf1q_38 _icon__img_ve0fr_59"><img fetchpriority="auto" alt="" src="{{ 'icons_dark_plus.svg' | asset_url }}" data-icon-plus="{{ 'icons_dark_plus.svg' | asset_url }}" data-icon-minus="{{ 'icons_dark_minus.svg' | asset_url }}"></div></span>
+              </button>
+              <div class="_content_ve0fr_84 undefined" style="height: 0px; overflow: hidden; transition: height 0.3s; margin-bottom: 0px;" data-accordion-content>
+                <div class="_lists_n0o7o_157">
+                  <ul>
+                    {%- for link in linklists[block.settings.menu].links -%}
+                      <li class="_item_n0o7o_175" style="cursor: pointer;"><a href="{{ link.url }}">{{ link.title }}</a></li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- comment -%} Desktop: plain columns {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'menu' -%}
+          <div class="_listLinks_n0o7o_126" {{ block.shopify_attributes }}>
+            <h4>{{ block.settings.title | default: linklists[block.settings.menu].title }}</h4>
+            <ul>
+              {%- for link in linklists[block.settings.menu].links -%}
+                <li class="_item_n0o7o_175" style="cursor: pointer;"><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+
+      <div class="_imgLists_n0o7o_137">
+        <h4>{{ 'footer.follow_us' | t }}</h4>
+        <div class="content">
+          {%- if section.settings.facebook != blank -%}
+            <a href="{{ section.settings.facebook }}" target="_blank" rel="noopener"><div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="facebook" src="{{ 'icons_fb.svg' | asset_url }}"></div></a>
+          {%- endif -%}
+          {%- if section.settings.instagram != blank -%}
+            <a href="{{ section.settings.instagram }}" target="_blank" rel="noopener"><div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="instagram" src="{{ 'icons_insta.svg' | asset_url }}"></div></a>
+          {%- endif -%}
+          {%- if section.settings.tiktok != blank -%}
+            <a href="{{ section.settings.tiktok }}" target="_blank" rel="noopener"><div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="tiktok" src="{{ 'icons_tiktok.svg' | asset_url }}"></div></a>
+          {%- else -%}
+            <div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="tiktok" src="{{ 'icons_tiktok.svg' | asset_url }}"></div>
+          {%- endif -%}
+          {%- if section.settings.linkedin != blank -%}
+            <a href="{{ section.settings.linkedin }}" target="_blank" rel="noopener"><div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="linkedin" src="{{ 'icons_linkedin.svg' | asset_url }}"></div></a>
+          {%- else -%}
+            <div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="linkedin" src="{{ 'icons_linkedin.svg' | asset_url }}"></div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="_sFooter_pfgeh_78">
+    <div class="_container_1kxnl_30 _subFContainer_pfgeh_30">
+      <div class="_languageBtn_pfgeh_81" data-open-modal="language">
+        <p class="_languageBtn__title_pfgeh_90">{{ 'header.language_region' | t }}</p>
+        <p class="_languageBtn__langName_pfgeh_104">{% if rtl %}Ar{% else %}En{% endif %}</p>
+        <div class="_globalImg_1tf1q_38 _languageBtn__icon_pfgeh_120"><img fetchpriority="auto" alt="" src="{{ 'icons_angle-down.svg' | asset_url }}"></div>
+      </div>
+      {%- if section.settings.vat != blank -%}<p><span>{{ 'footer.vat' | t }} : </span><span>{{ section.settings.vat }}</span></p>{%- endif -%}
+      {%- if section.settings.cr != blank -%}<p><span>{{ 'footer.cr' | t }} : </span><span>{{ section.settings.cr }}</span></p>{%- endif -%}
+      <p>{{ 'footer.copyright' | t: shop: section.settings.company_name | default: shop.name }}</p>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Footer",
+  "tag": "footer",
+  "settings": [
+    { "type": "text", "id": "company_name", "label": "Company name (copyright line)", "default": "Omarieden Company" },
+    { "type": "text", "id": "vat", "label": "VAT No.", "default": "312878014500003" },
+    { "type": "text", "id": "cr", "label": "C.R.", "default": "2051263702" },
+    { "type": "url", "id": "facebook", "label": "Facebook URL" },
+    { "type": "url", "id": "instagram", "label": "Instagram URL" },
+    { "type": "url", "id": "tiktok", "label": "TikTok URL" },
+    { "type": "url", "id": "linkedin", "label": "LinkedIn URL" }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Link column",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Heading (leave blank to use the menu title)" },
+        { "type": "link_list", "id": "menu", "label": "Menu" }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "menu", "settings": { "title": "about", "menu": "footer-about" } },
+      { "type": "menu", "settings": { "title": "at your service", "menu": "footer-service" } },
+      { "type": "menu", "settings": { "title": "Policies", "menu": "footer-policies" } },
+      { "type": "menu", "settings": { "title": "privacy & settings", "menu": "footer-privacy" } }
+    ]
+  }
+}
+{% endschema %}

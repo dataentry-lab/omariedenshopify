@@ -1,0 +1,16 @@
+{%- comment -%} Full-width olive search overlay with live (predictive) results {%- endcomment -%}
+<div class="_backdrop_9316i_30 undefined" data-modal-backdrop="search" data-show-class="_backdropShow_j9u6d_48"></div>
+<div class="_modal_9316i_132 _modalAddCls_j9u6d_30" data-modal="search" data-show-class="_show_j9u6d_42">
+  <div class="_content_9316i_45">
+    <form class="_searchWrapper_j9u6d_54" action="{{ routes.search_url }}" method="get" role="search" data-search-form>
+      <div class="_searchContainer_j9u6d_98">
+        <div class="_globalImg_1tf1q_38 _searchContainer__icon_j9u6d_150"><img fetchpriority="auto" alt="{{ 'search.placeholder' | t }}" src="{{ 'icons_dark_search_outline.svg' | asset_url }}"></div>
+        <input placeholder="{{ 'search.placeholder' | t }}" class="_inputPaddingRight_j9u6d_90 _searchContainer__input_j9u6d_116" type="search" name="q" value="{{ search.terms | escape }}" autocomplete="off" data-search-input>
+        <input type="hidden" name="options[prefix]" value="last">
+        <p class="{% if request.locale.iso_code contains 'ar' %}_clearRtl_j9u6d_195{% else %}undefined{% endif %} _searchContainer__clear_j9u6d_157" data-search-clear style="display:none;">{{ 'search.clear' | t }}</p>
+        <div class="_globalImg_1tf1q_38 _searchContainer__closeIcon_j9u6d_182" data-close-modal="search"><img fetchpriority="auto" alt="{{ 'general.accessibility.close' | t }}" src="{{ 'icons_dark_close.svg' | asset_url }}"></div>
+      </div>
+    </form>
+    <div class="_resultWrapper_j9u6d_61" data-search-results hidden></div>
+  </div>
+</div>

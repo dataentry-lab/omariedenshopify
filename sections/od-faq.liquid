@@ -1,0 +1,46 @@
+{%- capture od_locked -%}{%- render 'prive-locked' -%}{%- endcapture -%}
+{%- unless od_locked contains 'yes' -%}
+{%- comment -%} Block library 12: FAQ accordion (question + answer per block), same style as product page accordions. {%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+-%}
+<section class="od-blk od-faqblk" id="od-faq-{{ section.id }}" style="--od-blk-bg: {{ st.bg | default: 'transparent' }}; --od-blk-text: {{ st.text_color }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+  <div class="_container_1kxnl_30">
+    <div class="od-faqblk__inner">
+      {%- render 'od-block-head', eyebrow: st.eyebrow, heading: st.heading, text: st.text -%}
+      <div class="od-acc">
+        {%- for block in section.blocks -%}
+          <details class="od-acc__item" {{ block.shopify_attributes }}{% if forloop.first and st.open_first %} open{% endif %}>
+            <summary class="od-acc__q"><span>{{ block.settings.question }}</span><span class="od-acc__icon" aria-hidden="true"></span></summary>
+            <div class="od-acc__a">{{ block.settings.answer }}</div>
+          </details>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "FAQ / accordion",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Questions" },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "checkbox", "id": "open_first", "label": "Open the first item", "default": false },
+    { "type": "color", "id": "bg", "label": "Background (empty = none)" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#551c25" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 }
+  ],
+  "blocks": [
+    { "type": "item", "name": "Item", "settings": [
+      { "type": "text", "id": "question", "label": "Title", "default": "How do I join Privé?" },
+      { "type": "richtext", "id": "answer", "label": "Text", "default": "<p>Request an appointment below and our team will be in touch.</p>" }
+    ] }
+  ],
+  "presets": [ { "name": "FAQ / accordion", "blocks": [ { "type": "item" }, { "type": "item", "settings": { "question": "Is there a fee?", "answer": "<p>No. Privé is by invitation.</p>" } } ] } ]
+}
+{% endschema %}

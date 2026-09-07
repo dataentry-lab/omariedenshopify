@@ -1,0 +1,114 @@
+{%- comment -%}
+  Shop The Look (Figma: Motion Guide frame 10).
+  Grid of look cards; clicking a look blurs the page and slides a drawer in from the right (left in Arabic)
+  listing the look's products with a size selector and a "+" add-to-cart button.
+{%- endcomment -%}
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+-%}
+<div class="_container_1kxnl_30 od-stl" data-section-id="{{ section.id }}">
+  {%- render 'section-header', title: section.settings.title, button_label: section.settings.button_label, button_url: section.settings.button_url -%}
+  <div class="swiper od-stl__swiper {% if rtl %}custom_rtl{% endif %} od-stl__swiper--{{ section.settings.ratio | default: '2-3' }}" dir="{% if rtl %}rtl{% else %}ltr{% endif %}" data-swiper="looks" data-columns="{{ section.settings.columns }}">
+    <div class="swiper-wrapper">
+      {%- for block in section.blocks -%}
+        <div class="swiper-slide" {{ block.shopify_attributes }}>
+          <div class="od-stl__look" data-open-modal="look-{{ block.id }}" role="button" tabindex="0">
+            <div class="od-stl__look-img">
+              {%- if block.settings.image != blank -%}
+                <img src="{{ block.settings.image | image_url: width: 1200 }}" srcset="{{ block.settings.image | image_url: width: 600 }} 600w, {{ block.settings.image | image_url: width: 1200 }} 1200w" sizes="(max-width: 768px) 100vw, 400px" alt="{{ block.settings.name | escape }}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy">
+              {%- else -%}
+                {{ 'collection-2' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+              <span class="od-stl__cta" aria-hidden="true">{{ section.settings.cta_label | default: 'Shop this look' }}</span>
+            </div>
+            <p class="od-stl__caption"><span class="od-stl__label">{{ section.settings.look_label | default: 'LOOK' }} {{ forloop.index }}</span><span class="od-stl__name">{{ block.settings.name }}</span></p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+    <div class="swiper-button-prev od-stl__arrow"></div>
+    <div class="swiper-button-next od-stl__arrow"></div>
+  </div>
+</div>
+
+{%- comment -%} Drawers (one per look) {%- endcomment -%}
+{%- for block in section.blocks -%}
+  <div class="_backdrop_9316i_30 od-stl-backdrop" data-modal-backdrop="look-{{ block.id }}" data-show-class="od-show"></div>
+  <div class="_modal_9316i_132 od-stl-drawer {% if rtl %}od-stl-drawer--rtl{% endif %}" data-modal="look-{{ block.id }}" data-show-class="od-show" role="dialog" aria-label="{{ block.settings.name | escape }}">
+    <div class="_mHeader_9316i_67 od-stl-drawer__header">
+      <div class="_mHeader__imgContainer_9316i_89"><h2{% if rtl %} class="_h2Rtl_9316i_50"{% endif %}>{{ block.settings.name }} <span></span></h2></div>
+      <div class="_globalImg_1tf1q_38 _close_9316i_125" data-close-modal="look-{{ block.id }}"><img alt="{{ 'general.accessibility.close' | t }}" src="{{ 'icons_cross.svg' | asset_url }}" width="24" height="24"></div>
+    </div>
+    <div class="_content_9316i_45 od-stl-drawer__content">
+      {%- for product in block.settings.products -%}
+        {%- assign first_variant = product.selected_or_first_available_variant -%}
+        <div class="od-stl-item" data-stl-item data-product-handle="{{ product.handle }}">
+          <a class="od-stl-item__img" href="{{ product.url }}">
+            {%- if product.featured_image -%}
+              <img src="{{ product.featured_image | image_url: width: 300 }}" alt="{{ product.title | escape }}" width="{{ product.featured_image.width }}" height="{{ product.featured_image.height }}" loading="lazy">
+            {%- else -%}
+              <img src="{{ 'images_fallback.svg' | asset_url }}" alt="" width="120" height="180">
+            {%- endif -%}
+          </a>
+          <div class="od-stl-item__info">
+            <p class="od-stl-item__brand">{{ product.vendor }}</p>
+            <p class="od-stl-item__name"><a href="{{ product.url }}">{{ product.title }}</a></p>
+            <p class="od-stl-item__price" data-stl-price>{% render 'sar' %}{{ first_variant.price | money_without_currency }}</p>
+            <div class="od-stl-item__row">
+              {%- if product.has_only_default_variant -%}
+                <input type="hidden" data-stl-variant value="{{ first_variant.id }}">
+                <span class="od-stl-item__spacer"></span>
+              {%- else -%}
+                <div class="_form_control_9l1c3_30 od-stl-item__select">
+                  <div class="_select_box_9l1c3_51 undefined" data-select>
+                    <span class="_placeholder_9l1c3_76" data-select-label>{{ 'shop_the_look.select_size' | t }}</span>
+                    <div class="_globalImg_1tf1q_38 _arrow_9l1c3_68"><img alt="" src="{{ 'icons_light_arrow_down.svg' | asset_url }}" width="14" height="14"></div>
+                  </div>
+                  <ul class="_options_9l1c3_126 _options_bottom_9l1c3_221" data-select-options hidden>
+                    {%- for variant in product.variants -%}
+                      <li data-value="{{ variant.id }}" data-price="{{ variant.price }}" {% unless variant.available %}class="od-stl-item__opt--soldout"{% endunless %}>{{ variant.title }}{% unless variant.available %} ({{ 'products.product.sold_out' | t }}){% endunless %}</li>
+                    {%- endfor -%}
+                  </ul>
+                  <input type="hidden" data-stl-variant value="">
+                </div>
+              {%- endif -%}
+              <button type="button" class="od-stl-item__add" data-stl-add aria-label="{{ 'products.product.add_to_cart' | t }}"><img alt="" src="{{ 'icons_light_plus.svg' | asset_url }}" width="14" height="14"></button>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endfor -%}
+
+{% schema %}
+{
+  "name": "Shop the look",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Shop The Look" },
+    { "type": "text", "id": "button_label", "label": "Button label (optional)" },
+    { "type": "url", "id": "button_url", "label": "Button link" },
+    { "type": "text", "id": "look_label", "label": "Caption prefix", "default": "LOOK" },
+    { "type": "select", "id": "columns", "label": "Looks per row (desktop)", "options": [ { "value": "3", "label": "3" }, { "value": "4", "label": "4" } ], "default": "3" },
+    { "type": "select", "id": "ratio", "label": "Image frame", "options": [ { "value": "2-3", "label": "2:3 (Figma)" }, { "value": "1-2", "label": "1:2 (tall)" } ], "default": "2-3", "info": "Images are cropped to fill the frame." },
+    { "type": "text", "id": "cta_label", "label": "Hover button text", "default": "Shop this look" }
+  ],
+  "blocks": [
+    {
+      "type": "look",
+      "name": "Look",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Look name", "default": "Urban Rebel" },
+        { "type": "image_picker", "id": "image", "label": "Image (2:3, 1200 x 1800 px; or 1:2 when the tall frame is selected)" },
+        { "type": "product_list", "id": "products", "label": "Products in this look", "limit": 8 }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Shop the look", "blocks": [ { "type": "look", "settings": { "name": "Urban Rebel" } }, { "type": "look", "settings": { "name": "Simple Modernist" } }, { "type": "look", "settings": { "name": "Night Out" } } ] }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,38 @@
+{%- comment -%} Cafe intro: logo (or name), address, hours, short text. Centred like kith.com/pages/sadelles. {%- endcomment -%}
+{%- assign st = section.settings -%}
+<section class="od-blk od-cafe od-cafe-intro" style="--od-blk-bg: {{ st.bg | default: 'transparent' }}; --od-blk-text: {{ st.text_color }}; --od-accent: {{ st.accent }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+  <div class="_container_1kxnl_30 od-cafe-intro__inner">
+    {%- if st.logo != blank -%}
+      <img class="od-cafe-intro__logo" src="{{ st.logo | image_url: width: 800 }}" alt="{{ st.name | escape }}" width="{{ st.logo.width }}" height="{{ st.logo.height }}" style="width: {{ st.logo_width }}px;">
+    {%- else -%}
+      <h1 class="od-cafe-intro__name">{{ st.name }}</h1>
+    {%- endif -%}
+    {%- if st.address != blank -%}<p class="od-cafe-intro__address">{{ st.address | newline_to_br }}</p>{%- endif -%}
+    {%- if st.hours != blank -%}<p class="od-cafe-intro__hours">{{ st.hours | newline_to_br }}</p>{%- endif -%}
+    {%- if st.text != blank -%}<div class="od-cafe-intro__text od-blk__text">{{ st.text }}</div>{%- endif -%}
+    {%- if st.button_label != blank -%}<a class="od-blk__btn od-blk__btn--outline od-cafe__btn" href="{{ st.button_url | default: '#od-form-cafe' }}">{{ st.button_label }}</a>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cafe intro",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo (SVG or PNG)" },
+    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 120, "max": 520, "step": 10, "unit": "px", "default": 300 },
+    { "type": "text", "id": "name", "label": "Name (used when there is no logo)", "default": "Super Botanical" },
+    { "type": "textarea", "id": "address", "label": "Address", "default": "Riyadh Park, Level 1\nRiyadh" },
+    { "type": "textarea", "id": "hours", "label": "Hours", "default": "Daily 8am to 11pm\nLast order 10:30pm" },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "url", "id": "button_url", "label": "Button link (defaults to the reservation form)" },
+    { "type": "color", "id": "bg", "label": "Background (empty = none)" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#182c29" },
+    { "type": "color", "id": "accent", "label": "Accent", "default": "#f0d58e" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 }
+  ],
+  "presets": [ { "name": "Cafe intro" } ]
+}
+{% endschema %}

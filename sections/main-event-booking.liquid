@@ -1,0 +1,124 @@
+{%- comment -%}
+  Booking step (product template "event-booking", reached from the event page with ?view=event-booking):
+  back link, event name / date / venue, session selector (custom.sessions, one per line "2026-10-02T19:00|Label"),
+  ticket types (variants) with quantity steppers and live seats left, attendee fields per ticket
+  (custom.attendee_fields, one per line "Label|required" or "Label|optional"), terms checkbox,
+  sticky sandstone summary card with Checkout. Answers become line item properties; checkout = Shopify checkout.
+  Behaviour: assets/od-events.js
+{%- endcomment -%}
+{%- liquid
+  include 'event-meta', product: product
+  assign st = section.settings
+  assign mf = product.metafields.custom
+  assign sessions = mf.sessions.value | default: '' | newline_to_br | split: '<br />'
+  assign fields = mf.attendee_fields.value
+  if fields == blank
+    assign fields = st.default_fields
+  endif
+  assign field_lines = fields | newline_to_br | split: '<br />'
+  assign terms_url = settings.event_terms_url
+-%}
+<section class="od-blk od-booking" style="--od-blk-text: {{ st.text_color }}; --od-accent: {{ st.accent }}; --od-sand: {{ st.summary_bg }};" data-od-booking data-product-url="{{ product.url }}" data-cart-add="{{ routes.cart_add_url }}" data-checkout="/checkout"
+  data-t-choose="{{ 'events.booking.choose' | t | escape }}" data-t-fill="{{ 'events.booking.fill' | t | escape }}" data-t-left="{{ 'events.booking.left' | t: count: '__N__' | escape }}" data-t-free="{{ 'events.booking.free' | t | escape }}" data-t-ticket="{{ 'events.booking.ticket_n' | t: n: '__N__', type: '__T__' | escape }}" data-t-same="{{ 'events.booking.same_as_first' | t | escape }}" data-t-adding="{{ 'events.booking.adding' | t | escape }}">
+  <script type="application/json" data-booking-json>
+  {
+    "title": {{ product.title | json }},
+    "variants": [{% for v in product.variants %}{"id":{{ v.id | json }},"title":{{ v.title | json }},"price":{{ v.price | json }},"available":{{ v.available | json }},"qty":{% if v.inventory_management != blank %}{{ v.inventory_quantity | json }}{% else %}null{% endif %}}{% unless forloop.last %},{% endunless %}{% endfor %}],
+    "fields": [{% assign fn = 0 %}{% for line in field_lines %}{% assign l = line | strip %}{% if l == blank %}{% continue %}{% endif %}{% assign parts = l | split: '|' %}{% if fn > 0 %},{% endif %}{"label":{{ parts[0] | strip | json }},"required":{% if parts[1] contains 'req' %}true{% else %}false{% endif %},"type":{% if parts[0] contains 'mail' or parts[0] contains 'بريد' %}"email"{% elsif parts[0] contains 'hone' or parts[0] contains 'جوال' or parts[0] contains 'هاتف' %}"tel"{% else %}"text"{% endif %}}{% assign fn = fn | plus: 1 %}{% endfor %}],
+    "sessions": [{% assign sn = 0 %}{% for line in sessions %}{% assign l = line | strip %}{% if l == blank %}{% continue %}{% endif %}{% assign parts = l | split: '|' %}{% if sn > 0 %},{% endif %}{"value":{{ parts[0] | strip | json }},"label":{{ parts[1] | default: parts[0] | strip | json }}}{% assign sn = sn | plus: 1 %}{% endfor %}],
+    "sessionLabel": {{ 'events.booking.session' | t | json }},
+    "event": { "date": {% if ev_start > 0 %}{{ ev_start_local | date: format: 'event_short' | json }}{% else %}""{% endif %}, "venue": {{ ev_venue | json }} }
+  }
+  </script>
+  <div class="_container_1kxnl_30">
+    <header class="od-booking__head">
+      <div>
+        <a class="od-booking__back" href="{{ product.url }}">{% render 'od-icon', name: 'chevron' %} {{ 'events.booking.back' | t }}</a>
+        <h1 class="od-booking__title">{{ product.title }}</h1>
+        <p class="od-booking__meta">{% if ev_start > 0 %}{% render 'od-icon', name: 'calendar' %} {{ ev_start_local | date: format: 'event_short' }}{% endif %}{% if ev_venue != blank %} &nbsp; {% render 'od-icon', name: 'pin' %} {{ ev_venue }}{% endif %}</p>
+      </div>
+      {%- if ev_status == 'soon' and ev_days >= 0 -%}<span class="od-ev__tag od-ev__tag--soon">{% if ev_days == 0 %}{{ 'events.tags.today' | t }}{% else %}{{ 'events.tags.days_left' | t: count: ev_days }}{% endif %}</span>{%- endif -%}
+    </header>
+
+    {%- if ev_status == 'past' -%}
+      <p class="od-event__closed">{{ 'events.page.past' | t }}</p>
+    {%- else -%}
+    <div class="od-booking__layout">
+      <div class="od-booking__main">
+        {%- if sessions.size > 0 and sessions[0] != blank -%}
+          <h2 class="od-booking__h"><span class="od-booking__num">1</span>{{ 'events.booking.session' | t }}</h2>
+          <div class="od-booking__sessions" data-bk-sessions>
+            {%- for line in sessions -%}{%- assign l = line | strip -%}{%- if l == blank -%}{%- continue -%}{%- endif -%}{%- assign parts = l | split: '|' -%}
+              <label class="od-chip od-chip--big"><input type="radio" name="session" value="{{ parts[0] | strip | escape }}"{% if forloop.first %} checked{% endif %}><span>{% render 'od-icon', name: 'calendar' %} {{ parts[1] | default: parts[0] | strip }}</span></label>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <h2 class="od-booking__h"><span class="od-booking__num">{% if sessions.size > 0 and sessions[0] != blank %}2{% else %}1{% endif %}</span>{{ 'events.booking.tickets' | t }}</h2>
+        <div class="od-booking__tickets" data-bk-tickets>
+          {%- for v in product.variants -%}
+            {%- assign tracked = false -%}{%- if v.inventory_management != blank -%}{%- assign tracked = true -%}{%- endif -%}
+            <div class="od-tk{% unless v.available %} od-tk--soldout{% endunless %}" data-bk-ticket data-id="{{ v.id }}" data-price="{{ v.price }}" data-max="{% if tracked %}{{ v.inventory_quantity | at_least: 0 }}{% else %}20{% endif %}">
+              <div class="od-tk__info">
+                <p class="od-tk__name">{{ v.title }}</p>
+                {%- if v.metafields.custom.description.value != blank -%}<p class="od-tk__desc">{{ v.metafields.custom.description.value }}</p>{%- endif -%}
+                <p class="od-tk__price">
+                  {%- if v.price == 0 -%}<strong>{{ 'events.booking.free' | t }}</strong>{%- else -%}<strong>{% render 'sar' %}{{ v.price | money_without_currency }}</strong>{%- endif -%}
+                  {%- if v.available and tracked and v.inventory_quantity <= settings.event_fast_threshold -%}<span class="od-tk__left" data-bk-left>{{ 'events.booking.left' | t: count: v.inventory_quantity }}</span>{%- endif -%}
+                </p>
+              </div>
+              {%- if v.available -%}
+                <div class="od-step" data-bk-step>
+                  <button type="button" data-bk-minus aria-label="{{ 'cart.general.decrease' | t }}">&minus;</button>
+                  <output data-bk-qty>0</output>
+                  <button type="button" data-bk-plus aria-label="{{ 'cart.general.increase' | t }}">+</button>
+                </div>
+              {%- else -%}
+                <span class="od-ev__tag od-ev__tag--soldout">{{ 'events.tags.sold_out' | t }}</span>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <div class="od-booking__attendees" data-bk-attendees hidden>
+          <h2 class="od-booking__h"><span class="od-booking__num">{% if sessions.size > 0 and sessions[0] != blank %}3{% else %}2{% endif %}</span>{{ 'events.booking.attendees' | t }}</h2>
+          <div data-bk-attendee-list></div>
+          {%- if st.show_terms -%}
+            <label class="od-consent od-booking__terms"><input type="checkbox" data-bk-terms required><span>{% if terms_url != blank %}<a href="{{ terms_url }}" target="_blank" rel="noopener">{{ 'events.booking.terms' | t }}</a>{% else %}{{ 'events.booking.terms' | t }}{% endif %}</span></label>
+          {%- endif -%}
+        </div>
+        <p class="od-formblk__error" data-bk-error hidden></p>
+      </div>
+
+      <aside class="od-booking__side">
+        <div class="od-booking__summary" data-bk-summary>
+          <p class="od-blk__eyebrow">{{ 'events.booking.summary' | t }}</p>
+          <p class="od-booking__sum-title">{{ product.title }}</p>
+          <p class="od-booking__sum-meta">{% if ev_start > 0 %}{{ ev_start_local | date: format: 'event_short' }}<br>{% endif %}{{ ev_venue }}</p>
+          <div class="od-booking__lines" data-bk-lines></div>
+          <div class="od-booking__total"><span>{{ 'events.booking.total' | t }}</span><span data-bk-total>{% render 'sar' %}0.00</span></div>
+          {%- if ev_seats > 0 -%}<p class="od-booking__seats" data-bk-seats>{{ 'events.seats_left' | t: count: ev_seats }}</p>{%- endif -%}
+          <button type="button" class="od-blk__btn od-blk__btn--solid od-booking__checkout" data-bk-checkout disabled>{{ 'events.booking.checkout' | t }}</button>
+          <p class="od-booking__note">{{ 'events.booking.note' | t }}</p>
+        </div>
+      </aside>
+    </div>
+    {%- comment -%} round 6: no sticky bottom bar on mobile, the summary card stays in the page flow with the Checkout button (like the cart page). {%- endcomment -%}
+    {%- endif -%}
+  </div>
+</section>
+<script src="{{ 'od-events.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Event booking",
+  "tag": "section",
+  "settings": [
+    { "type": "textarea", "id": "default_fields", "label": "Default attendee fields", "info": "One per line: Label|required or Label|optional. Used when the event has no \"Attendee fields\" of its own.", "default": "Full name|required\nPhone|required\nEmail|required" },
+    { "type": "checkbox", "id": "show_terms", "label": "Terms checkbox", "default": true },
+    { "type": "color", "id": "summary_bg", "label": "Summary card colour", "default": "#e5d9c7" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#551c25" },
+    { "type": "color", "id": "accent", "label": "Accent", "default": "#595b33" }
+  ]
+}
+{% endschema %}

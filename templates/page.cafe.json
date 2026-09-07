@@ -1,0 +1,286 @@
+{
+  "sections": {
+    "hero": {
+      "type": "od-big-banner",
+      "settings": {
+        "height": "m",
+        "overlay_color": "#182c29",
+        "overlay_opacity": 20,
+        "title": "",
+        "text_color": "#f0d58e",
+        "button_label": ""
+      }
+    },
+    "intro": {
+      "type": "cafe-intro",
+      "settings": {}
+    },
+    "tabs": {
+      "type": "cafe-tabs",
+      "settings": {}
+    },
+    "seasonal": {
+      "type": "cafe-seasonal",
+      "blocks": {
+        "s1": {
+          "type": "item",
+          "settings": {}
+        },
+        "s2": {
+          "type": "item",
+          "settings": {
+            "name": "Date cheesecake",
+            "name_ar": "تشيزكيك التمر",
+            "desc": "From the essence of the past to the present, a creamy date cheesecake topped with warm date sauce.",
+            "price": "36"
+          }
+        },
+        "s3": {
+          "type": "item",
+          "settings": {
+            "name": "Matcha rose",
+            "name_ar": "ماتشا الورد",
+            "desc": "Ceremonial matcha with Taif rose.",
+            "price": "30"
+          }
+        },
+        "s4": {
+          "type": "item",
+          "settings": {
+            "name": "Rose milk shake",
+            "name_ar": "ميلك شيك الورد",
+            "desc": "Blended Taif rose, vanilla, milk.",
+            "price": "28"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "settings": {}
+    },
+    "sandwiches": {
+      "type": "cafe-menu",
+      "blocks": {
+        "i1": {
+          "type": "item",
+          "settings": {}
+        },
+        "i2": {
+          "type": "item",
+          "settings": {
+            "name": "Halloumi sandwich",
+            "name_ar": "ساندويتش جبنة الحلوم",
+            "desc": "Warm oregano ciabatta with grilled halloumi, labneh, baby arugula, sundried tomatoes and za'atar.",
+            "price": "48",
+            "calories": "668",
+            "allergens": true
+          }
+        },
+        "i3": {
+          "type": "item",
+          "settings": {
+            "name": "Parmesan fries",
+            "name_ar": "بطاطا بارميزان",
+            "desc": "Golden crispy fries with grated Parmesan, rosemary and sea salt.",
+            "price": "38",
+            "calories": "1050"
+          }
+        },
+        "i4": {
+          "type": "item",
+          "settings": {
+            "name": "Chicken katsu sando",
+            "name_ar": "ساندو كاتسو الدجاج",
+            "desc": "Crispy breaded chicken with coleslaw, pickle relish and sweet chilli mayo on toasted milk bread.",
+            "price": "48",
+            "calories": "920",
+            "allergens": true
+          }
+        }
+      },
+      "block_order": [
+        "i1",
+        "i2",
+        "i3",
+        "i4"
+      ],
+      "settings": {
+        "heading": "Sandwiches"
+      }
+    },
+    "hotteas": {
+      "type": "cafe-menu",
+      "blocks": {
+        "t1": {
+          "type": "item",
+          "settings": {
+            "name": "Matcha rose",
+            "name_ar": "ماتشا الورد",
+            "desc": "Ceremonial matcha, Taif rose.",
+            "price": "30",
+            "calories": "120"
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "name": "Iced cardamom raf",
+            "name_ar": "راف الهيل البارد",
+            "desc": "Espresso, cream, cardamom.",
+            "price": "28",
+            "calories": "210"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2"
+      ],
+      "settings": {
+        "heading": "Hot teas"
+      }
+    },
+    "banner": {
+      "type": "od-small-banner",
+      "settings": {
+        "title": "The tea bar, Prince Faisal Bin Fahd Rd",
+        "button_label": "Get directions",
+        "bg": "#182c29",
+        "text_color": "#f0d58e",
+        "button_color": "#f0d58e",
+        "button_text_color": "#182c29"
+      }
+    },
+    "nitro": {
+      "type": "cafe-menu",
+      "blocks": {
+        "n1": {
+          "type": "item",
+          "settings": {
+            "name": "Toott",
+            "name_ar": "توت",
+            "desc": "Nitro berry tea on tap.",
+            "price": "26",
+            "calories": "40"
+          }
+        },
+        "n2": {
+          "type": "item",
+          "settings": {
+            "name": "Iced V-60",
+            "name_ar": "قهوة مقطرة باردة",
+            "desc": "Single origin, slow poured.",
+            "price": "24",
+            "calories": "5"
+          }
+        },
+        "n3": {
+          "type": "item",
+          "settings": {
+            "name": "Iced botanical latte",
+            "name_ar": "بوتانيكال لاتيه بارد",
+            "desc": "Espresso, milk, botanical syrup.",
+            "price": "26",
+            "calories": "180"
+          }
+        }
+      },
+      "block_order": [
+        "n1",
+        "n2",
+        "n3"
+      ],
+      "settings": {
+        "heading": "Nitro drinks"
+      }
+    },
+    "desserts": {
+      "type": "cafe-menu",
+      "blocks": {
+        "d1": {
+          "type": "item",
+          "settings": {
+            "name": "Raspberry cake",
+            "name_ar": "كعكة التوت",
+            "desc": "Layered vanilla sponge, raspberry jam, vanilla cream.",
+            "price": "32",
+            "calories": "410",
+            "allergens": true
+          }
+        }
+      },
+      "block_order": [
+        "d1"
+      ],
+      "settings": {
+        "heading": "Desserts"
+      }
+    },
+    "row": {
+      "type": "od-image-row",
+      "blocks": {
+        "r1": {
+          "type": "image",
+          "settings": {}
+        },
+        "r2": {
+          "type": "image",
+          "settings": {}
+        },
+        "r3": {
+          "type": "image",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "settings": {
+        "ratio": "4-3",
+        "text_color": "#182c29",
+        "accent": "#182c29",
+        "per_row": 3
+      }
+    },
+    "reserve": {
+      "type": "od-form",
+      "settings": {
+        "kind": "cafe",
+        "customer_tag": "cafe",
+        "eyebrow": "",
+        "heading": "Reserve a table",
+        "text": "<p>Walk-ins welcome. For groups of six or more, book ahead.</p>",
+        "layout": "stack",
+        "show_email": true,
+        "label_notes": "Notes",
+        "notes_placeholder": "Occasion, allergies, high chair",
+        "button_label": "Request a table",
+        "success": "Thank you, we'll confirm your table shortly.",
+        "bg": "#182c29",
+        "text_color": "#f0d58e",
+        "accent": "#f0d58e",
+        "accent_text": "#182c29",
+        "field_bg": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "intro",
+    "tabs",
+    "seasonal",
+    "sandwiches",
+    "hotteas",
+    "banner",
+    "nitro",
+    "desserts",
+    "row",
+    "reserve"
+  ]
+}

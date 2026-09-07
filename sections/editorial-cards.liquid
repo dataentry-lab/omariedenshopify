@@ -1,0 +1,86 @@
+{%- comment -%}
+  Home section "Curated Edits" / "News & Events": 2 to 3 cards, hand-picked (blocks) or the latest from a blog,
+  with a "Read all" link. Every text is editable.
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign count = st.count | default: 3 | plus: 0
+  assign b = blogs[st.blog]
+-%}
+<section class="od-blk od-edcards" id="od-edcards-{{ section.id }}" style="--od-blk-bg: {{ st.bg | default: 'transparent' }}; --od-blk-text: {{ st.text_color }}; --od-accent: {{ st.accent }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+  <div class="_container_1kxnl_30">
+    <div class="od-edcards__head">
+      <h2 class="od-blk__heading od-edcards__title">{{ st.heading }}</h2>
+      {%- if st.link_label != blank and st.link_pos != 'bottom' -%}<a class="od-blk__btn od-blk__btn--link" href="{{ st.link_url | default: b.url }}">{{ st.link_label }}</a>{%- endif -%}
+    </div>
+    <div class="od-acards" style="--od-cols: {{ count }};">
+      {%- if st.mode == 'manual' and section.blocks.size > 0 -%}
+        {%- for block in section.blocks limit: count -%}
+          {%- assign bs = block.settings -%}
+          {%- if bs.article != blank and bs.image == blank and bs.title == blank -%}
+            {%- include 'article-card', article: bs.article, kind: st.card_kind, link_label: bs.link_label -%}
+          {%- else -%}
+            {%- assign url = bs.link | default: bs.article.url -%}
+            {%- assign img = bs.image | default: bs.article.image -%}
+            {%- assign ratio = '4-3' -%}{%- if st.card_kind == 'portrait' -%}{%- assign ratio = '4-5' -%}{%- endif -%}
+            <article class="od-acard" {{ block.shopify_attributes }}>
+              <a class="od-acard__media od-ratio od-ratio--{{ ratio }}" href="{{ url }}">{% if img != blank %}<img src="{{ img | image_url: width: 900 }}" alt="{{ img.alt | escape }}" width="{{ img.width }}" height="{{ img.height }}" loading="lazy">{% else %}{{ 'lifestyle-1' | placeholder_svg_tag: 'od-placeholder' }}{% endif %}</a>
+              {%- if bs.label != blank -%}<p class="od-blk__eyebrow od-acard__kind">{{ bs.label }}</p>{%- endif -%}
+              <h3 class="od-acard__title"><a href="{{ url }}">{{ bs.title | default: bs.article.title }}</a></h3>
+              {%- if bs.text != blank -%}<p class="od-acard__text">{{ bs.text }}</p>{%- endif -%}
+              {%- if bs.link_label != blank -%}<a class="od-blk__btn od-blk__btn--link" href="{{ url }}">{{ bs.link_label }}</a>{%- endif -%}
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- elsif b != blank -%}
+        {%- for a in b.articles limit: count -%}
+          {%- include 'article-card', article: a, kind: st.card_kind, link_label: st.card_link_label -%}
+        {%- endfor -%}
+      {%- else -%}
+        <p class="od-blog__empty">{{ 'blogs.general.pick_blog' | t }}</p>
+      {%- endif -%}
+    </div>
+    {%- if st.link_label != blank and st.link_pos != 'top' -%}
+      <div class="od-edcards__foot"><a class="od-blk__btn od-blk__btn--outline" href="{{ st.link_url | default: b.url }}">{{ st.link_label }}</a></div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Editorial cards",
+  "tag": "section",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Curated Edits" },
+    { "type": "blog", "id": "blog", "label": "Blog" },
+    { "type": "select", "id": "mode", "label": "Cards", "default": "latest", "options": [ { "value": "latest", "label": "Latest posts from the blog" }, { "value": "manual", "label": "Hand-picked (blocks below)" } ] },
+    { "type": "select", "id": "count", "label": "Number of cards", "default": "3", "options": [ { "value": "2", "label": "2" }, { "value": "3", "label": "3" } ] },
+    { "type": "select", "id": "card_kind", "label": "Card image", "default": "portrait", "options": [ { "value": "portrait", "label": "Portrait" }, { "value": "landscape", "label": "Landscape" } ] },
+    { "type": "text", "id": "card_link_label", "label": "Card link label (latest mode)", "default": "Shop the edit" },
+    { "type": "text", "id": "link_label", "label": "\"View all\" link label", "default": "View all" },
+    { "type": "url", "id": "link_url", "label": "\"View all\" link (defaults to the blog)" },
+    { "type": "select", "id": "link_pos", "label": "\"View all\" position", "default": "both", "options": [ { "value": "both", "label": "Top right and bottom" }, { "value": "top", "label": "Top right only" }, { "value": "bottom", "label": "Bottom only" } ] },
+    { "type": "color", "id": "bg", "label": "Background (empty = none)" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#551c25" },
+    { "type": "color", "id": "accent", "label": "Accent (labels, links)", "default": "#595b33" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    { "type": "card", "name": "Card", "settings": [
+      { "type": "article", "id": "article", "label": "Article (fills image, title, link)" },
+      { "type": "image_picker", "id": "image", "label": "Image (override)" },
+      { "type": "text", "id": "label", "label": "Small label" },
+      { "type": "text", "id": "title", "label": "Title (override)" },
+      { "type": "text", "id": "text", "label": "Description" },
+      { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop the edit" },
+      { "type": "url", "id": "link", "label": "Link (override)" }
+    ] }
+  ],
+  "presets": [
+    { "name": "Curated Edits cards", "settings": { "heading": "Curated Edits", "card_link_label": "Shop the edit", "link_label": "View all" } },
+    { "name": "News & Events cards", "settings": { "heading": "News & Events", "card_kind": "landscape", "card_link_label": "", "link_label": "See all" } }
+  ]
+}
+{% endschema %}

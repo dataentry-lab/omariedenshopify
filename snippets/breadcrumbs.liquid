@@ -1,0 +1,114 @@
+{%- comment -%}
+  Plain text breadcrumb trail (client, 6 Sep): muted parent links, chevron separators, current page in maroon.
+  Rendered from layout/theme.liquid on every page except the home page. Path from the main menu nesting
+  (collection pages); products show the collection they were opened from; mobile shows only "< parent".
+{%- endcomment -%}
+{%- liquid
+  assign menu_handle = settings.main_menu | default: 'main-menu'
+  assign home = 'general.breadcrumbs.home' | t
+  assign crumbs = ''
+  assign sep = '|||'
+  case request.page_type
+    when 'collection'
+      assign c1 = nil
+      assign c2 = nil
+      assign c3 = nil
+      for dept in linklists[menu_handle].links
+        if dept.active or dept.child_active
+          assign c1 = dept
+          for sub in dept.links
+            if sub.active or sub.child_active
+              assign c2 = sub
+              for cat in sub.links
+                if cat.active
+                  assign c3 = cat
+                endif
+              endfor
+            endif
+          endfor
+        endif
+      endfor
+      if c1 and c1.url != collection.url
+        assign crumbs = crumbs | append: c1.title | append: '::' | append: c1.url | append: sep
+      endif
+      if c2 and c2.url != collection.url
+        assign crumbs = crumbs | append: c2.title | append: '::' | append: c2.url | append: sep
+      endif
+      assign current = collection.title
+    when 'product'
+      assign coll = collection
+      if coll == blank
+        assign coll = product.collections.first
+      endif
+      if coll != blank
+        for dept in linklists[menu_handle].links
+          for sub in dept.links
+            if sub.url == coll.url
+              assign crumbs = crumbs | append: dept.title | append: '::' | append: dept.url | append: sep
+            endif
+            for cat in sub.links
+              if cat.url == coll.url
+                assign crumbs = crumbs | append: dept.title | append: '::' | append: dept.url | append: sep | append: sub.title | append: '::' | append: sub.url | append: sep
+              endif
+            endfor
+          endfor
+        endfor
+        assign crumbs = crumbs | append: coll.title | append: '::' | append: coll.url | append: sep
+      endif
+      assign current = product.title
+      if product.type == 'Event' and settings.events_page != blank
+        assign ep = pages[settings.events_page]
+        assign crumbs = ep.title | append: '::' | append: ep.url | append: sep
+      endif
+    when 'search'
+      assign current = 'general.breadcrumbs.search' | t
+    when 'blog'
+      assign current = blog.title
+    when 'article'
+      assign crumbs = blog.title | append: '::' | append: blog.url | append: sep
+      assign current = article.title
+    when 'page'
+      assign current = page.title
+    when 'cart'
+      assign current = 'cart.title' | t
+    when 'customers/account', 'customers/order', 'customers/addresses'
+      assign current = 'customer.account.title' | t
+      if request.page_type != 'customers/account'
+        assign ac = 'customer.account.title' | t
+        assign crumbs = ac | append: '::' | append: routes.account_url | append: sep
+        if request.page_type == 'customers/order'
+          assign current = order.name
+        else
+          assign current = 'customer.addresses.title' | t
+        endif
+      endif
+    when 'list-collections'
+      assign current = 'general.breadcrumbs.collections' | t
+    when '404'
+      assign current = '404'
+    else
+      assign current = page_title
+  endcase
+  assign parts = crumbs | split: sep
+  assign parent_url = routes.root_url
+  assign parent_title = home
+  if parts.size > 0
+    assign lastp = parts | last | split: '::'
+    assign parent_title = lastp[0]
+    assign parent_url = lastp[1]
+  endif
+-%}
+{%- if current != blank -%}
+<nav class="od-crumbs" aria-label="{{ 'general.breadcrumbs.label' | t }}" data-breadcrumbs>
+  <ol class="od-crumbs__list">
+    <li><a href="{{ routes.root_url }}">{{ home }}</a><span class="od-crumbs__sep" aria-hidden="true">{% render 'od-icon', name: 'chevron' %}</span></li>
+    {%- for p in parts -%}
+      {%- assign pp = p | split: '::' -%}
+      {%- if pp[0] == blank -%}{%- continue -%}{%- endif -%}
+      <li><a href="{{ pp[1] }}">{{ pp[0] }}</a><span class="od-crumbs__sep" aria-hidden="true">{% render 'od-icon', name: 'chevron' %}</span></li>
+    {%- endfor -%}
+    <li><span class="od-crumbs__current" aria-current="page">{{ current }}</span></li>
+  </ol>
+  <a class="od-crumbs__back" href="{{ parent_url }}">{% render 'od-icon', name: 'chevron' %} {{ parent_title }}</a>
+</nav>
+{%- endif -%}

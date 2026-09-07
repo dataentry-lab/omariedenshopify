@@ -1,0 +1,123 @@
+{%- comment -%}
+  Article page. Three styles (setting):
+    post   blog post: title above the cover, centred reading column, article body (inline images), share, back link
+    story  Curated Edits story: intro (title, date, subtitle, button), full-width cover, body; blocks from the library follow
+    recap  event recap: hero with details (dates, location, directions), intro, gallery (section article-gallery), share, back link
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  include 'article-meta', article: article
+  assign style = st.style
+  if style == 'auto'
+    if a_kind == 'recap'
+      assign style = 'recap'
+    elsif a_kind == 'story'
+      assign style = 'story'
+    else
+      assign style = 'post'
+    endif
+  endif
+  assign share_url = shop.url | append: article.url
+  assign recap_label = 'blogs.news.recap' | t
+-%}
+<article class="od-blk od-article od-article--{{ style }}" id="od-article-{{ section.id }}" style="--od-blk-text: {{ st.text_color }}; --od-accent: {{ st.accent }}; --od-overlay: {{ st.overlay_color }}; --od-overlay-o: {{ st.overlay_opacity | divided_by: 100.0 }};">
+  {%- if style == 'recap' -%}
+    <header class="od-article__hero od-hero od-hero--m">
+      <div class="od-hero__media">
+        {%- if article.image -%}<img class="od-hero__img" src="{{ article.image | image_url: width: 2400 }}" alt="{{ article.image.alt | escape }}" width="{{ article.image.width }}" height="{{ article.image.height }}" fetchpriority="high">{%- endif -%}
+        <div class="od-hero__overlay"></div>
+      </div>
+      <div class="od-hero__content">
+        <p class="od-blk__eyebrow">{{ recap_label }}</p>
+        {%- unless st.hide_title -%}<h1 class="od-hero__title">{{ article.title }}</h1>{%- endunless -%}
+      </div>
+    </header>
+    <div class="_container_1kxnl_30">
+      <div class="od-article__col od-article__col--center">
+        {%- if a_dates != blank -%}<p class="od-article__dates">{{ a_dates }}</p>{%- endif -%}
+        {%- if a_location != blank -%}<p class="od-article__loc">{{ a_location }}</p>{%- endif -%}
+        <div class="od-article__actions">
+          {%- if a_map != blank -%}<a class="od-blk__btn od-blk__btn--outline" href="{{ a_map }}" target="_blank" rel="noopener">{{ 'blogs.news.directions' | t }}</a>{%- endif -%}
+        </div>
+        {%- if article.excerpt != blank -%}<p class="od-article__lead">{{ article.excerpt }}</p>{%- endif -%}
+        {%- unless st.hide_body -%}<div class="od-article__body od-rte">{{ article.content }}</div>{%- endunless -%}
+      </div>
+    </div>
+  {%- elsif style == 'story' -%}
+    <div class="_container_1kxnl_30">
+      <header class="od-article__intro">
+        {%- if st.show_date -%}<p class="od-article__date">{{ article.published_at | date: format: 'date' }}</p>{%- endif -%}
+        {%- unless st.hide_title -%}<h1 class="od-article__title">{{ article.title }}</h1>{%- endunless -%}
+        {%- if article.excerpt != blank -%}<p class="od-article__lead od-article__lead--italic">{{ article.excerpt }}</p>{%- endif -%}
+      </header>
+    </div>
+    {%- if article.image and st.show_cover -%}
+      <div class="{% unless st.cover_full %}_container_1kxnl_30{% endunless %}"><div class="od-article__cover"><img src="{{ article.image | image_url: width: 2400 }}" srcset="{{ article.image | image_url: width: 1000 }} 1000w, {{ article.image | image_url: width: 2400 }} 2400w" sizes="100vw" alt="{{ article.image.alt | escape }}" width="{{ article.image.width }}" height="{{ article.image.height }}" fetchpriority="high"></div></div>
+    {%- endif -%}
+    {%- if article.content != blank and st.hide_body != true -%}
+      <div class="_container_1kxnl_30"><div class="od-article__col od-article__col--center od-article__body od-rte">{{ article.content }}</div></div>
+    {%- endif -%}
+    {%- if st.button_label != blank -%}
+      <div class="_container_1kxnl_30"><div class="od-article__col od-article__col--center od-article__cta"><a class="od-blk__btn od-blk__btn--outline" href="{{ st.button_url | default: routes.all_products_collection_url }}">{{ st.button_label }}</a></div></div>
+    {%- endif -%}
+  {%- else -%}
+    <div class="_container_1kxnl_30">
+      <header class="od-article__intro">
+        {%- assign shown = false -%}
+        <p class="od-blk__eyebrow">{%- for tag in article.tags -%}{%- assign tl = tag | downcase -%}{%- if tl == 'blog' or tl == 'story' or tl == 'edit' -%}{%- continue -%}{%- endif -%}{%- unless shown -%}{{ tag }}{%- assign shown = true -%}{%- endunless -%}{%- endfor -%}{%- unless shown -%}{{ st.default_label }}{%- endunless -%}</p>
+        {%- unless st.hide_title -%}<h1 class="od-article__title">{{ article.title }}</h1>{%- endunless -%}
+        {%- if st.show_date -%}<p class="od-article__date">{{ article.published_at | date: format: 'date' }}{% if st.show_author and article.author != blank %}, {{ 'blogs.article.by' | t: author: article.author }}{% endif %}</p>{%- endif -%}
+      </header>
+    </div>
+    {%- if article.image and st.show_cover -%}
+      <div class="{% unless st.cover_full %}_container_1kxnl_30{% endunless %}"><div class="od-article__cover"><img src="{{ article.image | image_url: width: 2400 }}" srcset="{{ article.image | image_url: width: 1000 }} 1000w, {{ article.image | image_url: width: 2400 }} 2400w" sizes="100vw" alt="{{ article.image.alt | escape }}" width="{{ article.image.width }}" height="{{ article.image.height }}" fetchpriority="high"></div></div>
+    {%- endif -%}
+    <div class="_container_1kxnl_30">
+      <div class="od-article__col od-article__col--center">
+        {%- if article.excerpt != blank -%}<p class="od-article__lead">{{ article.excerpt }}</p>{%- endif -%}
+        {%- unless st.hide_body -%}<div class="od-article__body od-rte">{{ article.content }}</div>{%- endunless -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if st.show_share or st.show_back -%}
+    <div class="_container_1kxnl_30">
+      <div class="od-article__foot">
+        {%- if st.show_back -%}<a class="od-blk__btn od-blk__btn--link" href="{{ blog.url }}">{{ 'blogs.article.back' | t: blog: blog.title }}</a>{%- endif -%}
+        {%- if st.show_share -%}
+          <div class="od-share" data-od-share data-url="{{ share_url }}" data-title="{{ article.title | escape }}">
+            <a class="od-share__btn" href="https://wa.me/?text={{ article.title | append: ' ' | append: share_url | url_encode }}" target="_blank" rel="noopener" aria-label="WhatsApp">{% render 'od-icon', name: 'whatsapp' %}</a>
+            <a class="od-share__btn" href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">{% render 'od-icon', name: 'instagram' %}</a>
+            <button type="button" class="od-share__btn" data-od-share-copy aria-label="{{ 'blogs.article.copy_link' | t }}">{% render 'od-icon', name: 'link' %}</button>
+            <button type="button" class="od-share__btn" data-od-share-native aria-label="{{ 'blogs.article.share' | t }}" hidden>{% render 'od-icon', name: 'share' %}</button>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+</article>
+
+{% schema %}
+{
+  "name": "Article",
+  "tag": "section",
+  "settings": [
+    { "type": "select", "id": "style", "label": "Layout", "default": "auto", "options": [ { "value": "auto", "label": "Automatic from the tag (recap / story / post)" }, { "value": "post", "label": "Blog post" }, { "value": "story", "label": "Curated Edit story" }, { "value": "recap", "label": "Event recap" } ] },
+    { "type": "text", "id": "default_label", "label": "Label when the post has no category tag", "default": "Blog" },
+    { "type": "checkbox", "id": "show_cover", "label": "Show the cover image", "default": true },
+    { "type": "checkbox", "id": "cover_full", "label": "Cover full width", "default": false },
+    { "type": "checkbox", "id": "show_date", "label": "Show date", "default": true },
+    { "type": "checkbox", "id": "show_author", "label": "Show author", "default": false },
+    { "type": "text", "id": "button_label", "label": "Story button label", "default": "Shop now" },
+    { "type": "url", "id": "button_url", "label": "Story button link" },
+    { "type": "checkbox", "id": "hide_body", "label": "Hide the article body (use the Article text section instead)", "default": false },
+    { "type": "checkbox", "id": "hide_title", "label": "Hide the title (use the Article text section instead)", "default": false },
+    { "type": "checkbox", "id": "show_share", "label": "Share icons", "default": true },
+    { "type": "checkbox", "id": "show_back", "label": "Back link", "default": true },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#551c25" },
+    { "type": "color", "id": "accent", "label": "Accent", "default": "#595b33" },
+    { "type": "color", "id": "overlay_color", "label": "Recap hero overlay colour", "default": "#551c25" },
+    { "type": "range", "id": "overlay_opacity", "label": "Recap hero overlay opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 40 }
+  ]
+}
+{% endschema %}
