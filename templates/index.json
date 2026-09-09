@@ -30,6 +30,98 @@
         "autoplay_delay": 5500
       }
     },
+    "od_stories_HQF6nr": {
+      "type": "od-stories",
+      "blocks": {
+        "story_ACqbgR": {
+          "type": "story",
+          "settings": {
+            "cover": "shopify://shop_images/UG8lLz9yKERTjheVkF8krCCnvPmjPLJ5tnD4r3kf.webp",
+            "label": "New in",
+            "start_date": "",
+            "expires_days": 0
+          }
+        },
+        "slide_n4NUjG": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/q4SjpAs2fRaTyx8OA2WMg7gpqLxhmp6PMYGKFt8S.webp",
+            "seconds": 6,
+            "kind": "media",
+            "heading": "",
+            "text": "",
+            "button_label": "",
+            "link": "",
+            "text_color": "#fcf8f2",
+            "align": "bottom",
+            "product": "",
+            "products": []
+          }
+        },
+        "slide_WhTXtJ": {
+          "type": "slide",
+          "settings": {
+            "seconds": 6,
+            "kind": "media",
+            "heading": "",
+            "text": "",
+            "button_label": "",
+            "link": "",
+            "text_color": "#fcf8f2",
+            "align": "bottom",
+            "product": "",
+            "products": []
+          }
+        },
+        "story_ELNFtB": {
+          "type": "story",
+          "settings": {
+            "label": "New in",
+            "start_date": "",
+            "expires_days": 0
+          }
+        },
+        "slide_n7xfUi": {
+          "type": "slide",
+          "settings": {
+            "seconds": 6,
+            "kind": "media",
+            "heading": "",
+            "text": "",
+            "button_label": "",
+            "link": "",
+            "text_color": "#fcf8f2",
+            "align": "bottom",
+            "product": "",
+            "products": []
+          }
+        }
+      },
+      "block_order": [
+        "story_ACqbgR",
+        "slide_n4NUjG",
+        "slide_WhTXtJ",
+        "story_ELNFtB",
+        "slide_n7xfUi"
+      ],
+      "name": "Stories",
+      "settings": {
+        "heading": "",
+        "show_desktop": false,
+        "show_labels": true,
+        "size": "68",
+        "ring_1": "#AB5563",
+        "ring_2": "#AB5563",
+        "ring_3": "#AB5563",
+        "ring_seen": "#d9d2c6",
+        "ring_speed": 4,
+        "ring_gap": 2,
+        "text_color": "#551c25",
+        "bg": "rgba(0,0,0,0)",
+        "pad_top": 16,
+        "pad_bottom": 16
+      }
+    },
     "category_carousel_X6EWRd": {
       "type": "category-carousel",
       "blocks": {
@@ -516,6 +608,7 @@
   },
   "order": [
     "hero",
+    "od_stories_HQF6nr",
     "category_carousel_X6EWRd",
     "new_in_trend",
     "just_arrived",
