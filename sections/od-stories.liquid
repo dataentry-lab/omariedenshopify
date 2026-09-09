@@ -12,7 +12,7 @@
   assign n = 0
 -%}
 {{ 'od-reels.css' | asset_url | stylesheet_tag }}
-<section class="od-blk od-st{% unless st.show_desktop %} od-st--mobile-only{% endunless %}" id="od-stories-{{ section.id }}" data-od-stories data-section-id="{{ section.id }}" style="padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px; --od-blk-text: {{ st.text_color }}; --od-ring-1: {{ st.ring_1 }}; --od-ring-2: {{ st.ring_2 }}; --od-ring-3: {{ st.ring_3 }}; --od-ring-seen: {{ st.ring_seen }}; --od-ring-speed: {{ st.ring_speed }}s; --od-st-size: {{ st.size }}px; --od-st-gap: {{ st.ring_gap }}px;{% if st.bg != blank and st.bg != 'rgba(0,0,0,0)' %} background: {{ st.bg }};{% endif %}">
+<section class="od-blk od-st{% unless st.show_desktop %} od-st--mobile-only{% endunless %}" id="od-stories-{{ section.id }}" data-od-stories data-section-id="{{ section.id }}" style="padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px; --od-blk-text: {{ st.text_color }}; --od-ring-1: {{ st.ring_1 }}; --od-ring-2: {{ st.ring_2 }}; --od-ring-3: {{ st.ring_3 }}; --od-ring-seen: {{ st.ring_seen }}; --od-ring-speed: {{ st.ring_speed }}s; --od-st-size: {{ st.size }}px; --od-st-gap: {{ st.ring_gap }}px; --od-ring-w: {{ st.ring_width | default: 3 }}px;{% if st.bg != blank and st.bg != 'rgba(0,0,0,0)' %} background: {{ st.bg }};{% endif %}">
   <div class="_container_1kxnl_30">
     {%- if st.heading != blank -%}<h2 class="od-st__heading">{{ st.heading }}</h2>{%- endif -%}
     <div class="od-st__row" data-stories-row>
@@ -128,6 +128,7 @@
     { "type": "color", "id": "ring_3", "label": "Ring colour 3", "default": "#595b33" },
     { "type": "color", "id": "ring_seen", "label": "Ring colour when seen", "default": "#d9d2c6" },
     { "type": "range", "id": "ring_speed", "label": "Ring rotation", "min": 2, "max": 12, "step": 1, "unit": "s", "default": 4 },
+    { "type": "range", "id": "ring_width", "label": "Ring thickness", "min": 1, "max": 8, "step": 1, "unit": "px", "default": 3 },
     { "type": "range", "id": "ring_gap", "label": "Gap between ring and photo", "min": 1, "max": 5, "step": 1, "unit": "px", "default": 2 },
     { "type": "header", "content": "Colours" },
     { "type": "color", "id": "text_color", "label": "Label colour", "default": "#551c25" },
