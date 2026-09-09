@@ -41,21 +41,11 @@
             "expires_days": 0
           }
         },
-        "story_ACqbgR": {
-          "type": "story",
-          "settings": {
-            "cover": "shopify://shop_images/UG8lLz9yKERTjheVkF8krCCnvPmjPLJ5tnD4r3kf.webp",
-            "label": "New in",
-            "start_date": "",
-            "expires_days": 0
-          }
-        },
         "slide_n4NUjG": {
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/q4SjpAs2fRaTyx8OA2WMg7gpqLxhmp6PMYGKFt8S.webp",
             "seconds": 6,
-            "kind": "media",
             "heading": "asdad",
             "text": "adsad",
             "button_label": "asdads",
@@ -66,22 +56,7 @@
             "products": []
           }
         },
-        "slide_WhTXtJ": {
-          "type": "slide",
-          "settings": {
-            "seconds": 6,
-            "kind": "media",
-            "heading": "",
-            "text": "",
-            "button_label": "",
-            "link": "",
-            "text_color": "#fcf8f2",
-            "align": "bottom",
-            "product": "",
-            "products": []
-          }
-        },
-        "story_ELNFtB": {
+        "story_HYbk7c": {
           "type": "story",
           "settings": {
             "label": "New in",
@@ -89,11 +64,11 @@
             "expires_days": 0
           }
         },
-        "slide_n7xfUi": {
+        "slide_rJVBHm": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/7CQ7IgJrah4yq1MZuC5F8T2YAaaH2a1zswe3u0Gy.webp",
             "seconds": 6,
-            "kind": "media",
             "heading": "",
             "text": "",
             "button_label": "",
@@ -107,11 +82,9 @@
       },
       "block_order": [
         "story_PdmkJc",
-        "story_ACqbgR",
         "slide_n4NUjG",
-        "slide_WhTXtJ",
-        "story_ELNFtB",
-        "slide_n7xfUi"
+        "story_HYbk7c",
+        "slide_rJVBHm"
       ],
       "name": "Stories",
       "settings": {
@@ -124,7 +97,7 @@
         "ring_3": "#AB5563",
         "ring_seen": "#d9d2c6",
         "ring_speed": 4,
-        "ring_gap": 2,
+        "ring_gap": 3,
         "text_color": "#551c25",
         "bg": "rgba(0,0,0,0)",
         "pad_top": 16,
@@ -505,7 +478,6 @@
           "settings": {
             "video": "shopify://files/videos/instagram_reel_Dc8Qp5eMgQ5_2.mp4",
             "caption": "",
-            "shop": "product",
             "product": "alemais-astro-star-print-gown-7681d",
             "products": [],
             "collection": "dresses",
@@ -518,7 +490,6 @@
           "settings": {
             "video": "shopify://files/videos/instagram_reel_Dc3X8_MsqIs.mp4",
             "caption": "",
-            "shop": "product",
             "product": "veja-draped-eco-conscious-dark-sneakers-ns0221612a",
             "products": [],
             "collection": "",
@@ -530,7 +501,6 @@
           "type": "reel",
           "settings": {
             "caption": "",
-            "shop": "product",
             "product": "",
             "products": [],
             "collection": "",
@@ -542,7 +512,6 @@
           "type": "reel",
           "settings": {
             "caption": "",
-            "shop": "product",
             "product": "",
             "products": [],
             "collection": "",
@@ -554,7 +523,6 @@
           "type": "reel",
           "settings": {
             "caption": "",
-            "shop": "product",
             "product": "",
             "products": [],
             "collection": "",
@@ -566,7 +534,6 @@
           "type": "reel",
           "settings": {
             "caption": "",
-            "shop": "product",
             "product": "",
             "products": [],
             "collection": "",
@@ -578,7 +545,6 @@
           "type": "reel",
           "settings": {
             "caption": "",
-            "shop": "product",
             "product": "",
             "products": [],
             "collection": "",
