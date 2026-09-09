@@ -1,0 +1,147 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "stories": {
+      "type": "od-stories",
+      "settings": {
+        "show_desktop": true,
+        "heading": "Stories test"
+      },
+      "blocks": {
+        "s1": {
+          "type": "story",
+          "settings": {
+            "label": "New in"
+          }
+        },
+        "s1a": {
+          "type": "slide",
+          "settings": {
+            "heading": "Mid-season sale",
+            "text": "Up to 30%",
+            "button_label": "Shop",
+            "link": "/collections/all",
+            "seconds": 5
+          }
+        },
+        "s1b": {
+          "type": "slide",
+          "settings": {
+            "product": "rivieras-1624-rivmocassin-1624",
+            "seconds": 6
+          }
+        },
+        "s2": {
+          "type": "story",
+          "settings": {
+            "label": "Look"
+          }
+        },
+        "s2a": {
+          "type": "slide",
+          "settings": {
+            "products": [
+              "rotate-1-cat-eye-frame-1163123098",
+              "1886-1886-cap-1886-cap"
+            ],
+            "seconds": 6
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s1a",
+        "s1b",
+        "s2",
+        "s2a"
+      ]
+    },
+    "reels": {
+      "type": "od-reels",
+      "settings": {
+        "heading": "OMARIEDEN",
+        "heading_italic": "Reels"
+      },
+      "blocks": {
+        "r0": {
+          "type": "reel",
+          "settings": {
+            "caption": "Reel 1",
+            "product": "rivieras-1624-rivmocassin-1624"
+          }
+        },
+        "r1": {
+          "type": "reel",
+          "settings": {
+            "caption": "Reel 2",
+            "product": "rotate-1-cat-eye-frame-1163123098"
+          }
+        },
+        "r2": {
+          "type": "reel",
+          "settings": {
+            "caption": "Reel 3",
+            "product": "1886-1886-cap-1886-cap"
+          }
+        },
+        "r3": {
+          "type": "reel",
+          "settings": {
+            "caption": "Reel 4",
+            "product": "1886-1886-classic-oversized-g-t-shirt-1886-cogts"
+          }
+        },
+        "r4": {
+          "type": "reel",
+          "settings": {
+            "caption": "Reel 5",
+            "product": "rivieras-1622-rivmocassin-1622"
+          }
+        },
+        "r5": {
+          "type": "reel",
+          "settings": {
+            "caption": "Reel 6",
+            "product": "rotate-1-cat-eye-frame-1163123096"
+          }
+        },
+        "r6": {
+          "type": "reel",
+          "settings": {
+            "caption": "Reel 7",
+            "product": "rivieras-1624-rivmocassin-1624"
+          }
+        },
+        "r7": {
+          "type": "reel",
+          "settings": {
+            "caption": "Reel 8",
+            "product": "1886-1886-cap-1886-cap"
+          }
+        }
+      },
+      "block_order": [
+        "r0",
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5",
+        "r6",
+        "r7"
+      ]
+    }
+  },
+  "order": [
+    "stories",
+    "reels"
+  ]
+}
