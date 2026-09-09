@@ -33,6 +33,7 @@
     "intro": {
       "type": "cafe-intro",
       "settings": {
+        "logo": "shopify://shop_images/SB-logos.png",
         "logo_width": 300,
         "name": "Super Botanical",
         "address": "Riyadh Park, Level 1\nRiyadh",
