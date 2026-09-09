@@ -506,9 +506,9 @@
             "video": "shopify://files/videos/instagram_reel_Dc8Qp5eMgQ5_2.mp4",
             "caption": "",
             "shop": "product",
-            "product": "alemais-astro-star-print-gown-7681d",
+            "product": "",
             "products": [],
-            "collection": "",
+            "collection": "dresses",
             "link_label": "Shop now",
             "link": ""
           }
@@ -603,7 +603,7 @@
         "heading_italic": "Reels",
         "text": "",
         "align": "start",
-        "per_row": "6",
+        "per_row": "4",
         "show_labels": true,
         "show_captions": false,
         "hover_play": true,
