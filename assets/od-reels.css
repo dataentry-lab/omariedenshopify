@@ -6,10 +6,8 @@
 .od-reels { color: var(--od-blk-text, #551c25); }
 .od-reels__heading em { font-style: italic; }
 .od-reels__empty { font-size: 14px; opacity: .7; border: 1px dashed rgba(85,28,37,.3); padding: 24px; text-align: center; }
-.od-reels__row { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
-.od-reels[data-per-row="4"] .od-reels__row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.od-reels[data-per-row="5"] .od-reels__row { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-.od-reels[data-per-row="7"] .od-reels__row { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.od-reels__carousel { margin-top: 4px; }
+.od-reels__row .swiper-slide { height: auto; }
 .od-reels__tile { position: relative; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; text-align: start; color: inherit; font: inherit; }
 .od-reels__media { display: block; position: relative; aspect-ratio: 9 / 16; border-radius: 6px; overflow: hidden; background: #f1eeea; }
 .od-reels__media img, .od-reels__preview { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -22,16 +20,7 @@
 .od-reels__caption { display: block; margin-top: 8px; font-size: 13px; line-height: 1.4; }
 .od-reels__tile:hover .od-reels__media img { transform: scale(1.02); }
 .od-reels__media img { transition: transform .4s ease; }
-.od-reels__dots { display: none; justify-content: center; gap: 6px; margin-top: 12px; }
-.od-reels__dots span { width: 6px; height: 6px; border-radius: 50%; background: rgba(85,28,37,.2); }
-.od-reels__dots span.is-active { background: var(--od-accent, #595b33); }
-@media (max-width: 767px) {
-  .od-reels .od-reels__row { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
-  .od-reels .od-reels__row::-webkit-scrollbar { display: none; }
-  .od-reels__tile { flex: 0 0 calc((100% - 20px) / 2.3); scroll-snap-align: start; }
-  .od-reels__dots { display: flex; }
-  .od-reels__preview { display: none; }
-}
+@media (max-width: 767px) { .od-reels__preview { display: none; } }
 
 /* ---------- player ---------- */
 .od-rl { position: fixed; inset: 0; z-index: 1005; background: #141110; color: var(--od-rl-cream); display: none; font-family: Bricolage, sans-serif; }
@@ -50,13 +39,9 @@
 .od-rl__side { position: absolute; inset-inline-end: 12px; bottom: 150px; z-index: 3; display: flex; flex-direction: column; gap: 6px; align-items: center; }
 .od-rl__side .od-rl__btn { background: transparent; width: 44px; height: 44px; }
 .od-rl__side .od-rl__btn img { width: 24px; height: 24px; filter: brightness(0) invert(1); }
-.od-rl__meta { position: absolute; left: 14px; right: 70px; bottom: 116px; z-index: 3; font-size: 14px; line-height: 1.4; text-shadow: 0 1px 2px rgba(0,0,0,.4); }
+.od-rl__meta { position: absolute; left: 14px; right: 70px; bottom: 100px; z-index: 3; font-size: 14px; line-height: 1.4; text-shadow: 0 1px 2px rgba(0,0,0,.4); }
 [dir=rtl] .od-rl__meta { left: 70px; right: 14px; }
 .od-rl__meta small { opacity: .75; font-size: 13px; }
-.od-rl__dots { position: absolute; left: 14px; bottom: 104px; z-index: 3; display: flex; gap: 5px; }
-[dir=rtl] .od-rl__dots { left: auto; right: 14px; }
-.od-rl__dots span { width: 5px; height: 5px; border-radius: 50%; background: rgba(252,248,242,.4); }
-.od-rl__dots span.is-active { background: var(--od-rl-cream); }
 .od-rl__cards { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 12px; padding-bottom: max(14px, env(safe-area-inset-bottom)); scrollbar-width: none; }
 .od-rl__cards::-webkit-scrollbar { display: none; }
 .od-rl__cards .od-rl-card { flex: 0 0 calc(100% - 24px); scroll-snap-align: center; }
@@ -100,8 +85,6 @@
   .od-rl__side { bottom: 24px; }
   .od-rl__meta { bottom: 24px; right: 70px; }
   [dir=rtl] .od-rl__meta { right: 14px; left: 70px; }
-  .od-rl__dots { bottom: 14px; left: 50%; transform: translateX(-50%); }
-  [dir=rtl] .od-rl__dots { right: auto; left: 50%; }
   .od-rl__panel:empty { display: none; }
 }
 

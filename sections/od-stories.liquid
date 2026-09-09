@@ -64,7 +64,17 @@
           {%- unless sfirst -%},{%- endunless -%}{%- assign sfirst = false -%}
           {
             "id": {{ block.id | json }},
-            "kind": {{ b.kind | json }},
+            "kind": {% liquid
+              assign kind = 'media'
+              if b.products.count > 0
+                assign kind = 'look'
+              elsif b.product != blank
+                assign kind = 'product'
+              elsif b.heading != blank or b.text != blank or b.button_label != blank
+                assign kind = 'banner'
+              endif
+              echo kind | json
+            %},
             "seconds": {{ b.seconds | default: 6 }},
             "image": {% if b.image != blank %}{{ b.image | image_url: width: 1080 | json }}{% else %}null{% endif %},
             "video": {% if b.video != blank %}[{% assign vn = 0 %}{% for s in b.video.sources %}{% if s.format == 'mp4' %}{% if vn > 0 %},{% endif %}{% assign vn = vn | plus: 1 %}{ "url": {{ s.url | json }}, "h": {{ s.height | default: 0 }} }{% endif %}{% endfor %}]{% else %}null{% endif %},
@@ -86,10 +96,10 @@
         {%- assign b = block.settings -%}
         {%- if block.type == 'slide' -%}
           <div data-slide-products="{{ block.id }}">
-            {%- if b.kind == 'product' and b.product != blank -%}
-              {%- render 'reel-product-card', product: b.product -%}
-            {%- elsif b.kind == 'look' -%}
+            {%- if b.products.count > 0 -%}
               {%- for p in b.products -%}{%- render 'reel-product-card', product: p -%}{%- endfor -%}
+            {%- elsif b.product != blank -%}
+              {%- render 'reel-product-card', product: b.product -%}
             {%- endif -%}
           </div>
         {%- endif -%}
@@ -144,7 +154,7 @@
         { "type": "image_picker", "id": "image", "label": "Image (9:16)" },
         { "type": "video", "id": "video", "label": "Or video" },
         { "type": "range", "id": "seconds", "label": "Seconds on screen (images)", "min": 3, "max": 15, "step": 1, "unit": "s", "default": 6 },
-        { "type": "select", "id": "kind", "label": "Type", "default": "media", "options": [ { "value": "media", "label": "Image or video only" }, { "value": "banner", "label": "Banner: text and button" }, { "value": "product", "label": "Shoppable: one product" }, { "value": "look", "label": "Shoppable: several products" } ] },
+        { "type": "paragraph", "content": "The slide type is automatic: pick a product or products for a shoppable slide, fill the banner fields for a banner, or leave all empty for a plain image / video." },
         { "type": "header", "content": "Banner" },
         { "type": "text", "id": "heading", "label": "Heading" },
         { "type": "textarea", "id": "text", "label": "Text" },

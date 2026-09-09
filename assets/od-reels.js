@@ -99,7 +99,6 @@
       '<div class="od-rl__soundhint">' + ICON.pause + '</div>' +
       '<div class="od-rl__side">' + heartHTML(products[0]) + '<button type="button" class="od-rl__btn" data-rl-share aria-label="' + esc(T.share) + '">' + ICON.share + '</button><button type="button" class="od-rl__btn" data-rl-bag aria-label="' + esc(T.bag) + '">' + ICON.bag + '</button></div>' +
       (meta ? '<div class="od-rl__meta">' + meta + '</div>' : '') +
-      '<div class="od-rl__dots">' + R.reels.map((_, k) => '<span' + (k === i ? ' class="is-active"' : '') + '></span>').join('') + '</div>' +
       shop + '</div>';
   }
   function productsFor(section, id) {
@@ -159,7 +158,6 @@
     // preload the next one
     const nv = items[i + 1] && $('video', items[i + 1]);
     if (nv && !nv.getAttribute('src')) { nv.src = nv.getAttribute('data-src'); nv.load(); }
-    $$('.od-rl__item .od-rl__dots', rl).forEach((dots) => $$('span', dots).forEach((s, k) => s.classList.toggle('is-active', k === i)));
     const prev = $('[data-rl-prev]', rl), next = $('[data-rl-next]', rl);
     if (prev) prev.disabled = i === 0;
     if (next) next.disabled = i === items.length - 1;
@@ -204,16 +202,7 @@
         on(tile, 'mouseleave', () => { tile.classList.remove('is-previewing'); v.pause(); });
       });
     }
-    const row = $('[data-reels-row]', section), dots = $('[data-reels-dots]', section);
-    if (row && dots) {
-      const tiles = $$('.od-reels__tile', row);
-      dots.innerHTML = tiles.map((_, i) => '<span' + (i === 0 ? ' class="is-active"' : '') + '></span>').join('');
-      on(row, 'scroll', () => {
-        const w = tiles[0] ? tiles[0].offsetWidth + 10 : 1;
-        const i = Math.round(Math.abs(row.scrollLeft) / w);
-        $$('span', dots).forEach((s, k) => s.classList.toggle('is-active', k === i));
-      }, { passive: true });
-    }
+    if (OD.initSwipers) OD.initSwipers(section);
     const m = location.hash.match(/^#reel-([A-Za-z0-9_-]+)$/);
     if (m) { const idx = $$('[data-reel-open]', section).findIndex((t) => t.id === 'reel-' + m[1]); if (idx > -1) setTimeout(() => openReels(section, idx), 300); }
   }

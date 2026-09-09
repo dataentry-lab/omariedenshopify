@@ -236,6 +236,11 @@
         // mobile (round 6): ~2.3 cards so the third peeks in, olive dots under the row (od-carousel CSS)
         opts = { slidesPerView: 5, breakpoints: { 0: { slidesPerView: 2.3, spaceBetween: 10 }, 480: { slidesPerView: 2.3, spaceBetween: 12 }, 768: { slidesPerView: 4 }, 1024: { slidesPerView: 4 }, 1280: { slidesPerView: 5 } },
           navigation: { nextEl: nav('.swiper-button-next'), prevEl: nav('.swiper-button-prev') }, pagination: { el: nav('.swiper-pagination'), clickable: true }, watchOverflow: true };
+      } else if (kind === 'reels') {
+        // Omarieden Reels tiles (round 8): 6 per row on desktop (setting 4-7), 2.3 on mobile with olive dots, arrows like the product sliders
+        const per = parseInt(el.getAttribute('data-per-row') || '6', 10);
+        opts = { slidesPerView: per, spaceBetween: 12, breakpoints: { 0: { slidesPerView: 2.3, spaceBetween: 10 }, 768: { slidesPerView: Math.min(per, 4), spaceBetween: 12 }, 1024: { slidesPerView: per, spaceBetween: 12 } },
+          navigation: { nextEl: nav('.swiper-button-next'), prevEl: nav('.swiper-button-prev') }, pagination: { el: nav('.swiper-pagination'), clickable: true }, watchOverflow: true };
       } else if (kind === 'product') {
         opts = { slidesPerView: 1, navigation: { nextEl: $('.swiper-button-next', el), prevEl: $('.swiper-button-prev', el) }, pagination: { el: $('.swiper-pagination', el), clickable: true }, watchOverflow: true };
       } else if (kind === 'space') {

@@ -22,7 +22,9 @@
     {%- if count == 0 -%}
       {%- if request.design_mode -%}<p class="od-reels__empty">Add reels with "Add block".</p>{%- endif -%}
     {%- else -%}
-    <div class="od-reels__row" data-reels-row>
+    <div class="od-carousel od-reels__carousel">
+    <div class="swiper od-reels__row" data-swiper="reels" data-per-row="{{ st.per_row }}" dir="{% if request.locale.iso_code contains 'ar' %}rtl{% else %}ltr{% endif %}">
+    <div class="swiper-wrapper">
       {%- for block in section.blocks -%}
         {%- liquid
           assign b = block.settings
@@ -34,13 +36,21 @@
             assign poster = b.image
           endif
           assign badge = ''
-          case b.shop
+          assign mode = 'none'
+          if b.products.count > 0
+            assign mode = 'products'
+          elsif b.product != blank
+            assign mode = 'product'
+          elsif b.collection != blank
+            assign mode = 'collection'
+          elsif b.link != blank
+            assign mode = 'link'
+          endif
+          case mode
             when 'product'
-              if b.product != blank
-                assign badge = 'reels.item' | t
-                if poster == blank
-                  assign poster = b.product.featured_image
-                endif
+              assign badge = 'reels.item' | t
+              if poster == blank
+                assign poster = b.product.featured_image
               endif
             when 'products'
               assign badge = 'reels.look' | t
@@ -51,25 +61,21 @@
                 endfor
               endif
             when 'collection'
-              if b.collection != blank
-                assign badge = 'reels.collection' | t
-                if poster == blank
-                  assign poster = b.collection.featured_image
-                endif
-                if poster == blank
-                  for pp in b.collection.products limit: 1
-                    assign poster = pp.featured_image
-                  endfor
-                endif
+              assign badge = 'reels.collection' | t
+              if poster == blank
+                assign poster = b.collection.featured_image
+              endif
+              if poster == blank
+                for pp in b.collection.products limit: 1
+                  assign poster = pp.featured_image
+                endfor
               endif
             when 'link'
-              if b.link != blank
-                assign shop_t = 'reels.shop' | t
-                assign badge = b.link_label | default: shop_t
-              endif
+              assign shop_t = 'reels.shop' | t
+              assign badge = b.link_label | default: shop_t
           endcase
         -%}
-        <button type="button" class="od-reels__tile" data-reel-open="{{ forloop.index0 }}" id="reel-{{ block.id }}" {{ block.shopify_attributes }} aria-label="{{ b.caption | default: badge | escape }}">
+        <div class="swiper-slide"><button type="button" class="od-reels__tile" data-reel-open="{{ forloop.index0 }}" id="reel-{{ block.id }}" {{ block.shopify_attributes }} aria-label="{{ b.caption | default: badge | escape }}">
           <span class="od-reels__media">
             {%- if poster != blank -%}
               <img src="{{ poster | image_url: width: 480 }}" srcset="{{ poster | image_url: width: 320 }} 320w, {{ poster | image_url: width: 480 }} 480w, {{ poster | image_url: width: 720 }} 720w" sizes="(max-width: 767px) 42vw, 220px" alt="{{ b.caption | escape }}" loading="lazy" width="{{ poster.width }}" height="{{ poster.height }}">
@@ -86,10 +92,14 @@
           <span class="od-reels__play" aria-hidden="true">{% if b.video != blank %}<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>{% else %}<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 16l5-5 4 4 3-3 6 6"/><circle cx="16" cy="9" r="1.5"/></svg>{% endif %}</span>
           {%- if st.show_labels and badge != blank -%}<span class="od-reels__badge">{{ badge }}</span>{%- endif -%}
           {%- if st.show_captions and b.caption != blank -%}<span class="od-reels__caption">{{ b.caption }}</span>{%- endif -%}
-        </button>
+        </button></div>
       {%- endfor -%}
     </div>
-    <div class="od-reels__dots" data-reels-dots aria-hidden="true"></div>
+    <div class="swiper-pagination"></div>
+    </div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+    </div>
 
     {%- comment -%} Data for the player: one entry per reel, product cards rendered hidden so the quick-add drawer can reuse them {%- endcomment -%}
     <script type="application/json" data-reels-data>
@@ -104,16 +114,26 @@
           if poster == blank
             assign poster = b.image
           endif
-          if poster == blank and b.shop == 'product' and b.product != blank
+          assign mode = 'none'
+          if b.products.count > 0
+            assign mode = 'products'
+          elsif b.product != blank
+            assign mode = 'product'
+          elsif b.collection != blank
+            assign mode = 'collection'
+          elsif b.link != blank
+            assign mode = 'link'
+          endif
+          if poster == blank and mode == 'product'
             assign poster = b.product.featured_image
           endif
-          if poster == blank and b.shop == 'products'
+          if poster == blank and mode == 'products'
             for pp in b.products
               assign poster = pp.featured_image
               break
             endfor
           endif
-          if poster == blank and b.shop == 'collection' and b.collection != blank
+          if poster == blank and mode == 'collection'
             assign poster = b.collection.featured_image
             if poster == blank
               for pp in b.collection.products limit: 1
@@ -128,9 +148,9 @@
           "poster": {% if poster != blank %}{{ poster | image_url: width: 1080 | json }}{% else %}null{% endif %},
           "video": {% if b.video != blank %}[{% assign vn = 0 %}{% for s in b.video.sources %}{% if s.format == 'mp4' %}{% if vn > 0 %},{% endif %}{% assign vn = vn | plus: 1 %}{ "url": {{ s.url | json }}, "h": {{ s.height | default: 0 }} }{% endif %}{% endfor %}]{% else %}null{% endif %},
           "image": {% if b.image != blank %}{{ b.image | image_url: width: 1080 | json }}{% else %}null{% endif %},
-          "shop": {{ b.shop | json }},
-          "collection": {% if b.shop == 'collection' and b.collection != blank %}{ "title": {{ b.collection.title | json }}, "url": {{ b.collection.url | json }}, "count": {{ b.collection.all_products_count }} }{% else %}null{% endif %},
-          "link": {% if b.shop == 'link' and b.link != blank %}{% assign shop_t = 'reels.shop' | t %}{ "label": {{ b.link_label | default: shop_t | json }}, "url": {{ b.link | json }} }{% else %}null{% endif %},
+          "shop": {{ mode | json }},
+          "collection": {% if mode == 'collection' %}{ "title": {{ b.collection.title | json }}, "url": {{ b.collection.url | json }}, "count": {{ b.collection.all_products_count }} }{% else %}null{% endif %},
+          "link": {% if mode == 'link' %}{% assign shop_t = 'reels.shop' | t %}{ "label": {{ b.link_label | default: shop_t | json }}, "url": {{ b.link | json }} }{% else %}null{% endif %},
           "shareUrl": {{ request.origin | append: request.path | append: '#reel-' | append: block.id | json }}
         }{% unless forloop.last %},{% endunless %}
       {%- endfor -%}
@@ -140,9 +160,11 @@
       {%- for block in section.blocks -%}
         {%- assign b = block.settings -%}
         <div data-reel-products="{{ block.id }}">
-          {%- if b.shop == 'product' and b.product != blank -%}
+          {%- if b.products.count > 0 -%}
+            {%- for p in b.products -%}{%- render 'reel-product-card', product: p -%}{%- endfor -%}
+          {%- elsif b.product != blank -%}
             {%- render 'reel-product-card', product: b.product -%}
-          {%- elsif b.shop == 'products' -%}
+          {%- elsif false -%}
             {%- for p in b.products -%}{%- render 'reel-product-card', product: p -%}{%- endfor -%}
           {%- endif -%}
         </div>
@@ -186,8 +208,7 @@
         { "type": "image_picker", "id": "image", "label": "Or image (9:16)" },
         { "type": "image_picker", "id": "cover", "label": "Cover for the tile (optional)", "info": "Default: the video's first frame or the image." },
         { "type": "text", "id": "caption", "label": "Caption", "info": "Shown above the product card in the player." },
-        { "type": "header", "content": "Shop" },
-        { "type": "select", "id": "shop", "label": "What this reel sells", "default": "product", "options": [ { "value": "none", "label": "Nothing (just the video)" }, { "value": "product", "label": "One product" }, { "value": "products", "label": "Several products (look)" }, { "value": "collection", "label": "A collection" }, { "value": "link", "label": "A link (e.g. the shop)" } ] },
+        { "type": "header", "content": "Shop", "info": "Pick ONE: a product, several products (look), a collection, or a link. Filled automatically, nothing else to switch." },
         { "type": "product", "id": "product", "label": "Product" },
         { "type": "product_list", "id": "products", "label": "Products (look)", "limit": 6 },
         { "type": "collection", "id": "collection", "label": "Collection" },
