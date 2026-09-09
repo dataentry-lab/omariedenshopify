@@ -395,6 +395,123 @@
         "pad_top": 48,
         "pad_bottom": 48
       }
+    },
+    "od_reels_6MqhqU": {
+      "type": "od-reels",
+      "blocks": {
+        "reel_9kxpX6": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/instagram_reel_Dc8Qp5eMgQ5_2.mp4",
+            "caption": "",
+            "shop": "product",
+            "product": "",
+            "products": [],
+            "collection": "",
+            "link_label": "Shop now",
+            "link": ""
+          }
+        },
+        "reel_dXMa4K": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/instagram_reel_Dc3X8_MsqIs.mp4",
+            "caption": "",
+            "shop": "product",
+            "product": "",
+            "products": [],
+            "collection": "",
+            "link_label": "Shop now",
+            "link": ""
+          }
+        },
+        "reel_znQVkr": {
+          "type": "reel",
+          "settings": {
+            "caption": "",
+            "shop": "product",
+            "product": "",
+            "products": [],
+            "collection": "",
+            "link_label": "Shop now",
+            "link": ""
+          }
+        },
+        "reel_cXGYx6": {
+          "type": "reel",
+          "settings": {
+            "caption": "",
+            "shop": "product",
+            "product": "",
+            "products": [],
+            "collection": "",
+            "link_label": "Shop now",
+            "link": ""
+          }
+        },
+        "reel_E47R6V": {
+          "type": "reel",
+          "settings": {
+            "caption": "",
+            "shop": "product",
+            "product": "",
+            "products": [],
+            "collection": "",
+            "link_label": "Shop now",
+            "link": ""
+          }
+        },
+        "reel_eqiU6k": {
+          "type": "reel",
+          "settings": {
+            "caption": "",
+            "shop": "product",
+            "product": "",
+            "products": [],
+            "collection": "",
+            "link_label": "Shop now",
+            "link": ""
+          }
+        },
+        "reel_PH4WyH": {
+          "type": "reel",
+          "settings": {
+            "caption": "",
+            "shop": "product",
+            "product": "",
+            "products": [],
+            "collection": "",
+            "link_label": "Shop now",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "reel_9kxpX6",
+        "reel_dXMa4K",
+        "reel_znQVkr",
+        "reel_cXGYx6",
+        "reel_E47R6V",
+        "reel_eqiU6k",
+        "reel_PH4WyH"
+      ],
+      "name": "Omarieden Reels",
+      "settings": {
+        "eyebrow": "",
+        "heading": "OMARIEDEN",
+        "heading_italic": "Reels",
+        "text": "",
+        "align": "start",
+        "per_row": "6",
+        "show_labels": true,
+        "show_captions": false,
+        "hover_play": true,
+        "text_color": "#551c25",
+        "accent": "#595b33",
+        "bg": "rgba(0,0,0,0)",
+        "pad_top": 40,
+        "pad_bottom": 40
+      }
     }
   },
   "order": [
@@ -410,6 +527,7 @@
     "new_brand",
     "marquee",
     "usp",
-    "editorial_cards_R9pJNG"
+    "editorial_cards_R9pJNG",
+    "od_reels_6MqhqU"
   ]
 }
