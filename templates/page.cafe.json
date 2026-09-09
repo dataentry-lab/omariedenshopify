@@ -1,30 +1,80 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "od-big-banner",
       "settings": {
+        "image": "shopify://shop_images/DSCF2407.jpg",
         "height": "m",
         "overlay_color": "#182c29",
         "overlay_opacity": 20,
+        "text_position": "center",
+        "eyebrow": "",
         "title": "",
+        "text": "",
         "text_color": "#f0d58e",
-        "button_label": ""
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#c9a96a",
+        "button_text_color": "#fcf8f2",
+        "pad_top": 0,
+        "pad_bottom": 0
       }
     },
     "intro": {
       "type": "cafe-intro",
-      "settings": {}
+      "settings": {
+        "logo_width": 300,
+        "name": "Super Botanical",
+        "address": "Riyadh Park, Level 1\nRiyadh",
+        "hours": "Daily 8am to 11pm\nLast order 10:30pm",
+        "text": "",
+        "button_label": "",
+        "button_url": "",
+        "bg": "",
+        "text_color": "#182c29",
+        "accent": "#f0d58e",
+        "pad_top": 48,
+        "pad_bottom": 24
+      }
     },
     "tabs": {
       "type": "cafe-tabs",
-      "settings": {}
+      "settings": {
+        "heading": "Menu",
+        "bg": "#fcf8f2",
+        "text_color": "#182c29",
+        "active_bg": "#182c29",
+        "active_text": "#f0d58e",
+        "accent": "#f0d58e"
+      }
     },
     "seasonal": {
       "type": "cafe-seasonal",
       "blocks": {
         "s1": {
           "type": "item",
-          "settings": {}
+          "settings": {
+            "name": "Dates bar",
+            "name_ar": "بار التمر",
+            "desc": "A rich date and sesame layer, topped with a smooth white chocolate layer.",
+            "desc_ar": "",
+            "price": "32",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
         },
         "s2": {
           "type": "item",
@@ -32,7 +82,13 @@
             "name": "Date cheesecake",
             "name_ar": "تشيزكيك التمر",
             "desc": "From the essence of the past to the present, a creamy date cheesecake topped with warm date sauce.",
-            "price": "36"
+            "desc_ar": "",
+            "price": "36",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
           }
         },
         "s3": {
@@ -41,7 +97,13 @@
             "name": "Matcha rose",
             "name_ar": "ماتشا الورد",
             "desc": "Ceremonial matcha with Taif rose.",
-            "price": "30"
+            "desc_ar": "",
+            "price": "30",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
           }
         },
         "s4": {
@@ -50,7 +112,13 @@
             "name": "Rose milk shake",
             "name_ar": "ميلك شيك الورد",
             "desc": "Blended Taif rose, vanilla, milk.",
-            "price": "28"
+            "desc_ar": "",
+            "price": "28",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
           }
         }
       },
@@ -60,14 +128,44 @@
         "s3",
         "s4"
       ],
-      "settings": {}
+      "settings": {
+        "tab_label": "Seasonal",
+        "eyebrow": "Seasonal",
+        "heading": "Dates menu",
+        "text": "",
+        "bg": "#182c29",
+        "overlay_color": "#182c29",
+        "overlay_opacity": 55,
+        "text_color": "#f0d58e",
+        "accent": "#f0d58e",
+        "per_row": 4,
+        "per_row_mobile": "2",
+        "photo_pos": "under",
+        "ornament": true,
+        "ratio": "1-1",
+        "card_bg": "#f5efe3",
+        "card_text": "#182c29",
+        "pad_top": 56,
+        "pad_bottom": 56
+      }
     },
     "sandwiches": {
       "type": "cafe-menu",
       "blocks": {
         "i1": {
           "type": "item",
-          "settings": {}
+          "settings": {
+            "name": "Turkey & cheese ciabatta",
+            "name_ar": "شاباتا الرومي والجبن",
+            "desc": "Toasted ciabatta with garlic butter, turkey ham, Emmental, arugula, tomato and BBQ chilli mayo.",
+            "desc_ar": "",
+            "price": "48",
+            "calories": "880",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
         },
         "i2": {
           "type": "item",
@@ -75,9 +173,13 @@
             "name": "Halloumi sandwich",
             "name_ar": "ساندويتش جبنة الحلوم",
             "desc": "Warm oregano ciabatta with grilled halloumi, labneh, baby arugula, sundried tomatoes and za'atar.",
+            "desc_ar": "",
             "price": "48",
             "calories": "668",
-            "allergens": true
+            "allergens": true,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
           }
         },
         "i3": {
@@ -86,8 +188,13 @@
             "name": "Parmesan fries",
             "name_ar": "بطاطا بارميزان",
             "desc": "Golden crispy fries with grated Parmesan, rosemary and sea salt.",
+            "desc_ar": "",
             "price": "38",
-            "calories": "1050"
+            "calories": "1050",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
           }
         },
         "i4": {
@@ -96,9 +203,13 @@
             "name": "Chicken katsu sando",
             "name_ar": "ساندو كاتسو الدجاج",
             "desc": "Crispy breaded chicken with coleslaw, pickle relish and sweet chilli mayo on toasted milk bread.",
+            "desc_ar": "",
             "price": "48",
             "calories": "920",
-            "allergens": true
+            "allergens": true,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
           }
         }
       },
@@ -109,7 +220,21 @@
         "i4"
       ],
       "settings": {
-        "heading": "Sandwiches"
+        "heading": "Sandwiches",
+        "tab_label": "",
+        "text": "",
+        "columns": "2",
+        "lightbox": true,
+        "photo": "84",
+        "photo_shape": "1-1",
+        "bg": "",
+        "overlay_color": "#182c29",
+        "overlay_opacity": 60,
+        "text_color": "#182c29",
+        "accent": "#f0d58e",
+        "line_color": "#d9d2c3",
+        "pad_top": 40,
+        "pad_bottom": 40
       }
     },
     "hotteas": {
@@ -121,8 +246,13 @@
             "name": "Matcha rose",
             "name_ar": "ماتشا الورد",
             "desc": "Ceremonial matcha, Taif rose.",
+            "desc_ar": "",
             "price": "30",
-            "calories": "120"
+            "calories": "120",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
           }
         },
         "t2": {
@@ -131,8 +261,13 @@
             "name": "Iced cardamom raf",
             "name_ar": "راف الهيل البارد",
             "desc": "Espresso, cream, cardamom.",
+            "desc_ar": "",
             "price": "28",
-            "calories": "210"
+            "calories": "210",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
           }
         }
       },
@@ -141,18 +276,41 @@
         "t2"
       ],
       "settings": {
-        "heading": "Hot teas"
+        "heading": "Hot teas",
+        "tab_label": "",
+        "text": "",
+        "columns": "2",
+        "lightbox": true,
+        "photo": "84",
+        "photo_shape": "1-1",
+        "bg": "",
+        "overlay_color": "#182c29",
+        "overlay_opacity": 60,
+        "text_color": "#182c29",
+        "accent": "#f0d58e",
+        "line_color": "#d9d2c3",
+        "pad_top": 40,
+        "pad_bottom": 40
       }
     },
     "banner": {
       "type": "od-small-banner",
       "settings": {
-        "title": "The tea bar, Prince Faisal Bin Fahd Rd",
-        "button_label": "Get directions",
+        "layout": "row",
+        "overlay_color": "#2a0d12",
+        "overlay_opacity": 40,
         "bg": "#182c29",
         "text_color": "#f0d58e",
+        "eyebrow": "",
+        "title": "The tea bar, Prince Faisal Bin Fahd Rd",
+        "text": "",
+        "button_label": "Get directions",
+        "button_url": "",
+        "button_style": "outline",
         "button_color": "#f0d58e",
-        "button_text_color": "#182c29"
+        "button_text_color": "#182c29",
+        "pad_top": 24,
+        "pad_bottom": 24
       }
     },
     "nitro": {
@@ -164,8 +322,13 @@
             "name": "Toott",
             "name_ar": "توت",
             "desc": "Nitro berry tea on tap.",
+            "desc_ar": "",
             "price": "26",
-            "calories": "40"
+            "calories": "40",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
           }
         },
         "n2": {
@@ -174,8 +337,13 @@
             "name": "Iced V-60",
             "name_ar": "قهوة مقطرة باردة",
             "desc": "Single origin, slow poured.",
+            "desc_ar": "",
             "price": "24",
-            "calories": "5"
+            "calories": "5",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
           }
         },
         "n3": {
@@ -184,8 +352,13 @@
             "name": "Iced botanical latte",
             "name_ar": "بوتانيكال لاتيه بارد",
             "desc": "Espresso, milk, botanical syrup.",
+            "desc_ar": "",
             "price": "26",
-            "calories": "180"
+            "calories": "180",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
           }
         }
       },
@@ -195,7 +368,21 @@
         "n3"
       ],
       "settings": {
-        "heading": "Nitro drinks"
+        "heading": "Nitro drinks",
+        "tab_label": "",
+        "text": "",
+        "columns": "2",
+        "lightbox": true,
+        "photo": "84",
+        "photo_shape": "1-1",
+        "bg": "",
+        "overlay_color": "#182c29",
+        "overlay_opacity": 60,
+        "text_color": "#182c29",
+        "accent": "#f0d58e",
+        "line_color": "#d9d2c3",
+        "pad_top": 40,
+        "pad_bottom": 40
       }
     },
     "desserts": {
@@ -207,9 +394,13 @@
             "name": "Raspberry cake",
             "name_ar": "كعكة التوت",
             "desc": "Layered vanilla sponge, raspberry jam, vanilla cream.",
+            "desc_ar": "",
             "price": "32",
             "calories": "410",
-            "allergens": true
+            "allergens": true,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
           }
         }
       },
@@ -217,7 +408,21 @@
         "d1"
       ],
       "settings": {
-        "heading": "Desserts"
+        "heading": "Desserts",
+        "tab_label": "",
+        "text": "",
+        "columns": "2",
+        "lightbox": true,
+        "photo": "84",
+        "photo_shape": "1-1",
+        "bg": "",
+        "overlay_color": "#182c29",
+        "overlay_opacity": 60,
+        "text_color": "#182c29",
+        "accent": "#f0d58e",
+        "line_color": "#d9d2c3",
+        "pad_top": 40,
+        "pad_bottom": 40
       }
     },
     "row": {
@@ -225,15 +430,33 @@
       "blocks": {
         "r1": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "heading": "",
+            "text": "",
+            "button_label": "",
+            "link": "",
+            "caption": ""
+          }
         },
         "r2": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "heading": "",
+            "text": "",
+            "button_label": "",
+            "link": "",
+            "caption": ""
+          }
         },
         "r3": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "heading": "",
+            "text": "",
+            "button_label": "",
+            "link": "",
+            "caption": ""
+          }
         }
       },
       "block_order": [
@@ -242,10 +465,20 @@
         "r3"
       ],
       "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "per_row": 3,
+        "per_row_mobile": "1",
+        "align": "start",
         "ratio": "4-3",
+        "button_style": "outline",
+        "full_width": false,
+        "lightbox": true,
         "text_color": "#182c29",
         "accent": "#182c29",
-        "per_row": 3
+        "pad_top": 24,
+        "pad_bottom": 24
       }
     },
     "reserve": {
@@ -253,20 +486,38 @@
       "settings": {
         "kind": "cafe",
         "customer_tag": "cafe",
+        "layout": "stack",
         "eyebrow": "",
         "heading": "Reserve a table",
         "text": "<p>Walk-ins welcome. For groups of six or more, book ahead.</p>",
-        "layout": "stack",
+        "image_ratio": "4-3",
+        "show_name": true,
+        "label_name": "Full name",
+        "show_phone": true,
+        "label_phone": "Phone",
+        "phone_placeholder": "+966 5x xxx xxxx",
         "show_email": true,
+        "label_email": "Email",
+        "label_categories": "Categories you love",
+        "categories": "Women, Men, Kids, Bags, Shoes, Jewellery",
+        "label_style": "Your style",
+        "styles": "Classic, Modern, Minimal, Statement",
+        "label_datetime": "Date and time",
+        "label_guests": "Guests",
+        "show_notes": true,
         "label_notes": "Notes",
         "notes_placeholder": "Occasion, allergies, high chair",
+        "consent_text": "",
         "button_label": "Request a table",
+        "note": "",
         "success": "Thank you, we'll confirm your table shortly.",
         "bg": "#182c29",
         "text_color": "#f0d58e",
         "accent": "#f0d58e",
         "accent_text": "#182c29",
-        "field_bg": "#ffffff"
+        "field_bg": "#ffffff",
+        "pad_top": 40,
+        "pad_bottom": 40
       }
     }
   },
