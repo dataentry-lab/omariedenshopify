@@ -45,13 +45,21 @@
             when 'products'
               assign badge = 'reels.look' | t
               if poster == blank
-                assign poster = b.products.first.featured_image
+                for pp in b.products
+                  assign poster = pp.featured_image
+                  break
+                endfor
               endif
             when 'collection'
               if b.collection != blank
                 assign badge = 'reels.collection' | t
                 if poster == blank
                   assign poster = b.collection.featured_image
+                endif
+                if poster == blank
+                  for pp in b.collection.products limit: 1
+                    assign poster = pp.featured_image
+                  endfor
                 endif
               endif
             when 'link'
@@ -99,8 +107,19 @@
           if poster == blank and b.shop == 'product' and b.product != blank
             assign poster = b.product.featured_image
           endif
-          if poster == blank and b.shop == 'products' and b.products.count > 0
-            assign poster = b.products.first.featured_image
+          if poster == blank and b.shop == 'products'
+            for pp in b.products
+              assign poster = pp.featured_image
+              break
+            endfor
+          endif
+          if poster == blank and b.shop == 'collection' and b.collection != blank
+            assign poster = b.collection.featured_image
+            if poster == blank
+              for pp in b.collection.products limit: 1
+                assign poster = pp.featured_image
+              endfor
+            endif
           endif
         -%}
         {

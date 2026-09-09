@@ -79,7 +79,7 @@
       entries.forEach((en) => { if (en.isIntersecting && en.intersectionRatio >= .6) activate(parseInt(en.target.getAttribute('data-rl-index'), 10)); });
     }, { root: scroll, threshold: [.6] });
     R.io = io;
-    window.addEventListener('popstate', () => { if (rl.classList.contains('is-open') && !(history.state && history.state.odReels)) closeReels(true); });
+    window.addEventListener('popstate', () => { if (R.closing) { R.closing = false; return; } if (rl.classList.contains('is-open') && !(history.state && history.state.odReels)) closeReels(true); });
     return rl;
   }
   const R = { reels: [], index: 0, section: null, io: null };
@@ -133,7 +133,7 @@
     lock(false);
     $('[data-rl-scroll]', rl).innerHTML = '';
     $('[data-rl-panel]', rl).innerHTML = '';
-    if (!fromHistory && history.state && history.state.odReels) { try { history.back(); } catch (e) { /* noop */ } }
+    if (!fromHistory && history.state && history.state.odReels) { R.closing = true; try { history.back(); } catch (e) { R.closing = false; } }
   }
   function goTo(i, instant) {
     const items = $$('.od-rl__item', rl);
@@ -284,7 +284,7 @@
       if (e.key === ' ') { e.preventDefault(); pauseStory(!S.paused); }
     });
     on(document, 'visibilitychange', () => { if (sv.classList.contains('is-open')) pauseStory(document.hidden); });
-    window.addEventListener('popstate', () => { if (sv.classList.contains('is-open') && !(history.state && history.state.odStories)) closeStories(true); });
+    window.addEventListener('popstate', () => { if (S.closing) { S.closing = false; return; } if (sv.classList.contains('is-open') && !(history.state && history.state.odStories)) closeStories(true); });
     return sv;
   }
   function openStories(section, storyId) {
@@ -310,7 +310,7 @@
     sv.classList.remove('is-open');
     $('[data-sv-media]', sv).innerHTML = ''; $('[data-sv-foot]', sv).innerHTML = '';
     lock(false);
-    if (!fromHistory && history.state && history.state.odStories) { try { history.back(); } catch (e) { /* noop */ } }
+    if (!fromHistory && history.state && history.state.odStories) { S.closing = true; try { history.back(); } catch (e) { S.closing = false; } }
   }
   function storyStep(dir) {
     const n = S.si + dir;
@@ -329,6 +329,7 @@
     clearTimeout(S.timer); S.timer = null; S.paused = false;
     const st = S.stories[S.si];
     const sl = st.slides[S.li];
+    markSeen(st, S.li);
     const media = $('[data-sv-media]', sv);
     const src = pickSource(sl.video);
     media.innerHTML = src
@@ -362,12 +363,13 @@
       v.muted = muted;
       const tick = () => { if (!v.duration) return; bar.style.width = Math.min(100, v.currentTime / v.duration * 100) + '%'; };
       on(v, 'timeupdate', tick);
-      on(v, 'ended', () => { markSeen(st, S.li); slideStep(1); });
+      on(v, 'ended', () => slideStep(1));
       v.play().catch(() => { v.muted = true; muted = true; v.play().catch(() => {}); });
     } else {
       bar.style.transition = 'none'; bar.style.width = '0%';
-      requestAnimationFrame(() => { bar.style.transition = 'width ' + dur + 'ms linear'; bar.style.width = '100%'; });
-      S.timer = setTimeout(() => { markSeen(st, S.li); slideStep(1); }, dur);
+      void bar.offsetWidth;
+      bar.style.transition = 'width ' + dur + 'ms linear'; bar.style.width = '100%';
+      S.timer = setTimeout(() => slideStep(1), dur);
     }
     const prev = $('[data-sv-prev]', sv), next = $('[data-sv-next]', sv);
     if (prev) prev.disabled = S.si === 0 && S.li === 0;
@@ -385,7 +387,7 @@
     } else if (!p && S.paused) {
       S.paused = false;
       if (v) v.play().catch(() => {});
-      else { S.start = Date.now(); requestAnimationFrame(() => { bar.style.transition = 'width ' + S.remaining + 'ms linear'; bar.style.width = '100%'; }); S.timer = setTimeout(() => { markSeen(st, S.li); slideStep(1); }, S.remaining); }
+      else { S.start = Date.now(); void bar.offsetWidth; bar.style.transition = 'width ' + S.remaining + 'ms linear'; bar.style.width = '100%'; S.timer = setTimeout(() => slideStep(1), S.remaining); }
     }
   }
   function initStoriesSection(section) {
