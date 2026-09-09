@@ -434,6 +434,7 @@
         "r1": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/DSC03967.jpg",
             "heading": "",
             "text": "",
             "button_label": "",
@@ -444,6 +445,7 @@
         "r2": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/DSC03773.jpg",
             "heading": "",
             "text": "",
             "button_label": "",
