@@ -79,6 +79,7 @@
         "s2": {
           "type": "item",
           "settings": {
+            "image": "shopify://shop_images/DSC03735.jpg",
             "name": "Date cheesecake",
             "name_ar": "تشيزكيك التمر",
             "desc": "From the essence of the past to the present, a creamy date cheesecake topped with warm date sauce.",
