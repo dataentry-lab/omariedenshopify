@@ -1,30 +1,76 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-article",
       "settings": {
         "style": "story",
+        "default_label": "Blog",
+        "show_cover": true,
+        "cover_full": false,
+        "show_date": true,
+        "show_author": false,
         "button_label": "Shop now",
-        "cover_full": false
+        "button_url": "",
+        "hide_body": false,
+        "hide_title": false,
+        "show_share": true,
+        "show_back": true,
+        "text_color": "#551c25",
+        "accent": "#595b33",
+        "overlay_color": "#551c25",
+        "overlay_opacity": 40
       }
     },
     "text1": {
       "type": "od-text",
       "settings": {
+        "eyebrow": "",
         "heading": "Sets",
         "text": "<p>Matching sets designed to be mixed and matched.</p>",
+        "align": "center",
         "width": "narrow",
-        "align": "center"
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 32,
+        "pad_bottom": 32
       }
     },
     "grid1": {
       "type": "od-product-grid",
       "settings": {
+        "eyebrow": "",
         "heading": "",
+        "text": "",
+        "align": "center",
         "source": "products",
-        "per_row": 3,
+        "collection": "",
+        "products": [],
         "limit": 6,
-        "align": "center"
+        "per_row": 3,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#c9a96a",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 32,
+        "pad_bottom": 32
       }
     },
     "row1": {
@@ -32,15 +78,33 @@
       "blocks": {
         "i1": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "heading": "",
+            "text": "",
+            "button_label": "",
+            "link": "",
+            "caption": ""
+          }
         },
         "i2": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "heading": "",
+            "text": "",
+            "button_label": "",
+            "link": "",
+            "caption": ""
+          }
         },
         "i3": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "heading": "",
+            "text": "",
+            "button_label": "",
+            "link": "",
+            "caption": ""
+          }
         }
       },
       "block_order": [
@@ -49,19 +113,39 @@
         "i3"
       ],
       "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "per_row": 3,
+        "per_row_mobile": "1",
+        "align": "start",
         "ratio": "3-4",
-        "full_width": true
+        "button_style": "outline",
+        "full_width": true,
+        "lightbox": true,
+        "text_color": "#551c25",
+        "accent": "#551c25",
+        "pad_top": 24,
+        "pad_bottom": 24
       }
     },
     "imgtext": {
       "type": "od-image-text",
       "settings": {
+        "ratio": "4-5",
+        "image_side": "start",
         "eyebrow": "",
         "title": "Prints",
         "text": "<p>Motifs that emulate the feeling of the season.</p>",
         "button_label": "Shop now",
-        "image_side": "start",
-        "ratio": "4-5"
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 40
       }
     },
     "related": {
@@ -69,14 +153,44 @@
       "settings": {
         "mode": "auto",
         "count": 3,
+        "eyebrow": "",
         "heading": "More edits",
-        "card_kind": "portrait"
+        "card_kind": "portrait",
+        "text_color": "#551c25",
+        "accent": "#595b33",
+        "pad_top": 32,
+        "pad_bottom": 32
+      }
+    },
+    "od_product_grid_YPNLGU": {
+      "type": "od-product-grid",
+      "name": "Product grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Reserved for Privé",
+        "text": "",
+        "align": "start",
+        "source": "collection",
+        "collection": "koops-collection",
+        "products": [],
+        "limit": 19,
+        "per_row": 5,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#c9a96a",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 32,
+        "pad_bottom": 32
       }
     }
   },
   "order": [
     "main",
     "text1",
+    "od_product_grid_YPNLGU",
     "grid1",
     "row1",
     "imgtext",

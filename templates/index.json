@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
@@ -6,9 +15,11 @@
         "slide1": {
           "type": "slide",
           "settings": {
+            "top_subtitle": "",
             "title": "Back To Routine",
             "subtitle": "New Arrivals, New Routines, New Inspiration, New You.",
-            "button_label": "Explore"
+            "button_label": "Explore",
+            "button_url": ""
           }
         }
       },
@@ -17,188 +28,6 @@
       ],
       "settings": {
         "autoplay_delay": 5500
-      }
-    },
-    "new_in_trend": {
-      "type": "product-slider",
-      "settings": {
-        "title": "New in trend",
-        "button_label": "Shop all",
-        "limit": 30,
-        "variant": "trend"
-      }
-    },
-    "featured_brands": {
-      "type": "featured-brands",
-      "blocks": {
-        "b1": {
-          "type": "brand",
-          "settings": {
-            "name": "Veja"
-          }
-        },
-        "b2": {
-          "type": "brand",
-          "settings": {
-            "name": "MKI MIYUKI ZOKU"
-          }
-        },
-        "b3": {
-          "type": "brand",
-          "settings": {
-            "name": "Oilily"
-          }
-        },
-        "b4": {
-          "type": "brand",
-          "settings": {
-            "name": "IRO"
-          }
-        }
-      },
-      "block_order": [
-        "b1",
-        "b2",
-        "b3",
-        "b4"
-      ],
-      "settings": {
-        "title": "Featured Brands",
-        "button_label": "Discover all",
-        "button_url": "/pages/discover-all-brands"
-      }
-    },
-    "banner": {
-      "type": "image-banner",
-      "settings": {
-        "top_subtitle": "NOW AT OMARIEDEN",
-        "title": "MARY KATRANTZOU",
-        "subtitle": "A world of expressive prints, impeccable tailoring, and contemporary luxury - designed to turn every look into a work of art.",
-        "button_label": "Explore",
-        "height": 720
-      }
-    },
-    "world": {
-      "type": "world-of-omarieden",
-      "settings": {
-        "eyebrow": "STEP INTO THE",
-        "title": "World Of Omarieden",
-        "text": "Discover the latest collections from the most esteemed fashion houses, designed for the upcoming season. Join the Omarieden Circle loyalty program to enjoy exclusive benefits and be the first to access these stunning arrivals!",
-        "button_label": "Explore"
-      }
-    },
-    "new_brand": {
-      "type": "new-brand",
-      "settings": {
-        "eyebrow": "NEW BRAND",
-        "title": "IRO",
-        "text": "Born in Paris and defined by effortless sophistication, IRO embodies modern confidence through refined tailoring and understated elegance. The brand combines contemporary design with impeccable craftsmanship, creating versatile pieces that balance timeless style with a distinctly urban spirit.",
-        "button_label": "Explore"
-      }
-    },
-    "marquee": {
-      "type": "marquee",
-      "settings": {
-        "text": "the most trusted curated multibrand destination for luxury fashion"
-      }
-    },
-    "usp": {
-      "type": "usp-section",
-      "blocks": {
-        "u1": {
-          "type": "item",
-          "settings": {
-            "icon": "shipping",
-            "title": "Free Shipping",
-            "text": "On orders over [SAR] 500"
-          }
-        },
-        "u2": {
-          "type": "item",
-          "settings": {
-            "icon": "secure",
-            "title": "Secure Payments",
-            "text": "100% secure payment solution"
-          }
-        },
-        "u3": {
-          "type": "item",
-          "settings": {
-            "icon": "returns",
-            "title": "Free Returns",
-            "text": "Within 30 days"
-          }
-        },
-        "u4": {
-          "type": "item",
-          "settings": {
-            "icon": "support",
-            "title": "Need Help?",
-            "text": "Find all the answers to your questions in our FAQ."
-          }
-        }
-      },
-      "block_order": [
-        "u1",
-        "u2",
-        "u3",
-        "u4"
-      ],
-      "settings": {}
-    },
-    "just_arrived": {
-      "type": "just-arrived",
-      "settings": {
-        "heading": "OMARIEDEN",
-        "heading_italic": "Just Arrived",
-        "tagline": "The latest arrivals, as they land in store",
-        "speed": 2
-      }
-    },
-    "curated_edits": {
-      "type": "editorial-cards",
-      "blocks": {
-        "c1": {
-          "type": "card",
-          "settings": {
-            "label": "The edit",
-            "title": "The Autumn Edit",
-            "text": "Layered pieces for cooler evenings, chosen by our stylists.",
-            "link_label": "Shop the edit"
-          }
-        },
-        "c2": {
-          "type": "card",
-          "settings": {
-            "label": "The edit",
-            "title": "Travel Essentials",
-            "text": "Packed and ready for the weekend away.",
-            "link_label": "Shop the edit"
-          }
-        },
-        "c3": {
-          "type": "card",
-          "settings": {
-            "label": "The edit",
-            "title": "Kids Collection",
-            "text": "Soft cottons and playful colours for little ones.",
-            "link_label": "Shop the edit"
-          }
-        }
-      },
-      "block_order": [
-        "c1",
-        "c2",
-        "c3"
-      ],
-      "settings": {
-        "heading": "Curated Edits",
-        "mode": "manual",
-        "count": "3",
-        "card_kind": "portrait",
-        "link_label": "View all",
-        "card_link_label": "Shop the edit",
-        "link_pos": "both"
       }
     },
     "category_carousel_X6EWRd": {
@@ -265,24 +94,102 @@
         "card_button": "Explore"
       }
     },
-    "editorial_cards_R9pJNG": {
-      "type": "editorial-cards",
-      "name": "News & Events cards",
+    "new_in_trend": {
+      "type": "product-slider",
       "settings": {
-        "heading": "News & Events",
-        "blog": "news",
-        "mode": "latest",
-        "count": "3",
-        "card_kind": "landscape",
-        "card_link_label": "",
-        "link_label": "See all",
-        "link_url": "",
-        "link_pos": "both",
-        "bg": "",
+        "title": "New in trend",
+        "collection": "",
+        "limit": 30,
+        "button_label": "Shop all",
+        "button_url": "",
+        "variant": "trend"
+      }
+    },
+    "just_arrived": {
+      "type": "just-arrived",
+      "settings": {
+        "heading": "OMARIEDEN",
+        "heading_italic": "Just Arrived",
+        "show_count": true,
+        "count_text": "[count] new pieces this week",
+        "tagline": "The latest arrivals, as they land in store",
+        "source": "collection",
+        "collection": "",
+        "products": [],
+        "limit": 12,
+        "visible": 6,
+        "visible_mobile": 2.5,
+        "speed": 2,
+        "caption": "text",
+        "caption_text": "Just arrived",
+        "dark": false,
+        "bg": "#fcf8f2",
         "text_color": "#551c25",
         "accent": "#595b33",
-        "pad_top": 48,
-        "pad_bottom": 48
+        "card_bg": "#f1eeea"
+      }
+    },
+    "featured_brands": {
+      "type": "featured-brands",
+      "blocks": {
+        "b1": {
+          "type": "brand",
+          "settings": {
+            "name": "Veja",
+            "collection": "",
+            "url": "",
+            "products": []
+          }
+        },
+        "b2": {
+          "type": "brand",
+          "settings": {
+            "name": "MKI MIYUKI ZOKU",
+            "collection": "",
+            "url": "",
+            "products": []
+          }
+        },
+        "b3": {
+          "type": "brand",
+          "settings": {
+            "name": "Oilily",
+            "collection": "",
+            "url": "",
+            "products": []
+          }
+        },
+        "b4": {
+          "type": "brand",
+          "settings": {
+            "name": "IRO",
+            "collection": "",
+            "url": "",
+            "products": []
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {
+        "title": "Featured Brands",
+        "button_label": "Discover all",
+        "button_url": "/pages/discover-all-brands"
+      }
+    },
+    "banner": {
+      "type": "image-banner",
+      "settings": {
+        "height": 720,
+        "top_subtitle": "NOW AT OMARIEDEN",
+        "title": "MARY KATRANTZOU",
+        "subtitle": "A world of expressive prints, impeccable tailoring, and contemporary luxury - designed to turn every look into a work of art.",
+        "button_label": "Explore",
+        "button_url": ""
       }
     },
     "shop_the_look_CdjJL7": {
@@ -292,7 +199,13 @@
           "type": "look",
           "settings": {
             "name": "Urban Rebel",
-            "products": []
+            "image": "shopify://shop_images/hyITJj21BQEpeWha96zQ77Fr1YO9dDdsWHxyFsLO.jpg",
+            "products": [
+              "rotate-1-cat-eye-frame-1163123098",
+              "rivieras-1622-rivmocassin-1622",
+              "1886-1886-cap-1886-cap",
+              "1886-1886-classic-oversized-g-t-shirt-1886-cogts"
+            ]
           }
         },
         "look_mkTzfY": {
@@ -332,6 +245,155 @@
         "columns": "4",
         "ratio": "2-3",
         "cta_label": "Shop this look"
+      }
+    },
+    "world": {
+      "type": "world-of-omarieden",
+      "settings": {
+        "eyebrow": "STEP INTO THE",
+        "title": "World Of Omarieden",
+        "text": "Discover the latest collections from the most esteemed fashion houses, designed for the upcoming season. Join the Omarieden Circle loyalty program to enjoy exclusive benefits and be the first to access these stunning arrivals!",
+        "button_label": "Explore",
+        "button_url": ""
+      }
+    },
+    "curated_edits": {
+      "type": "editorial-cards",
+      "blocks": {
+        "c1": {
+          "type": "card",
+          "settings": {
+            "article": "",
+            "label": "The edit",
+            "title": "The Autumn Edit",
+            "text": "Layered pieces for cooler evenings, chosen by our stylists.",
+            "link_label": "Shop the edit",
+            "link": ""
+          }
+        },
+        "c2": {
+          "type": "card",
+          "settings": {
+            "article": "",
+            "label": "The edit",
+            "title": "Travel Essentials",
+            "text": "Packed and ready for the weekend away.",
+            "link_label": "Shop the edit",
+            "link": ""
+          }
+        },
+        "c3": {
+          "type": "card",
+          "settings": {
+            "article": "",
+            "label": "The edit",
+            "title": "Kids Collection",
+            "text": "Soft cottons and playful colours for little ones.",
+            "link_label": "Shop the edit",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "settings": {
+        "heading": "Curated Edits",
+        "blog": "",
+        "mode": "manual",
+        "count": "3",
+        "card_kind": "portrait",
+        "card_link_label": "Shop the edit",
+        "link_label": "View all",
+        "link_url": "",
+        "link_pos": "both",
+        "bg": "",
+        "text_color": "#551c25",
+        "accent": "#595b33",
+        "pad_top": 48,
+        "pad_bottom": 48
+      }
+    },
+    "new_brand": {
+      "type": "new-brand",
+      "settings": {
+        "eyebrow": "NEW BRAND",
+        "title": "IRO",
+        "text": "Born in Paris and defined by effortless sophistication, IRO embodies modern confidence through refined tailoring and understated elegance. The brand combines contemporary design with impeccable craftsmanship, creating versatile pieces that balance timeless style with a distinctly urban spirit.",
+        "button_label": "Explore",
+        "button_url": ""
+      }
+    },
+    "marquee": {
+      "type": "marquee",
+      "settings": {
+        "text": "the most trusted curated multibrand destination for luxury fashion"
+      }
+    },
+    "usp": {
+      "type": "usp-section",
+      "blocks": {
+        "u1": {
+          "type": "item",
+          "settings": {
+            "icon": "shipping",
+            "title": "Free Shipping",
+            "text": "On orders over [SAR] 500"
+          }
+        },
+        "u2": {
+          "type": "item",
+          "settings": {
+            "icon": "secure",
+            "title": "Secure Payments",
+            "text": "100% secure payment solution"
+          }
+        },
+        "u3": {
+          "type": "item",
+          "settings": {
+            "icon": "returns",
+            "title": "Free Returns",
+            "text": "Within 30 days"
+          }
+        },
+        "u4": {
+          "type": "item",
+          "settings": {
+            "icon": "support",
+            "title": "Need Help?",
+            "text": "Find all the answers to your questions in our FAQ."
+          }
+        }
+      },
+      "block_order": [
+        "u1",
+        "u2",
+        "u3",
+        "u4"
+      ],
+      "settings": {}
+    },
+    "editorial_cards_R9pJNG": {
+      "type": "editorial-cards",
+      "name": "News & Events cards",
+      "settings": {
+        "heading": "News & Events",
+        "blog": "news",
+        "mode": "latest",
+        "count": "3",
+        "card_kind": "landscape",
+        "card_link_label": "",
+        "link_label": "See all",
+        "link_url": "",
+        "link_pos": "both",
+        "bg": "",
+        "text_color": "#551c25",
+        "accent": "#595b33",
+        "pad_top": 48,
+        "pad_bottom": 48
       }
     }
   },
