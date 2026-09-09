@@ -34,10 +34,10 @@
       "type": "cafe-intro",
       "settings": {
         "logo": "shopify://shop_images/SB-logos.png",
-        "logo_width": 300,
+        "logo_width": 210,
         "name": "Super Botanical",
-        "address": "Riyadh Park, Level 1\nRiyadh",
-        "hours": "Daily 8am to 11pm\nLast order 10:30pm",
+        "address": "Faisal Bin Fahad Road, Khobar",
+        "hours": "Daily 9am to 11pm",
         "text": "",
         "button_label": "",
         "button_url": "",
@@ -301,7 +301,7 @@
       "settings": {
         "layout": "row",
         "overlay_color": "#2a0d12",
-        "overlay_opacity": 40,
+        "overlay_opacity": 0,
         "bg": "#182c29",
         "text_color": "#f0d58e",
         "eyebrow": "",
