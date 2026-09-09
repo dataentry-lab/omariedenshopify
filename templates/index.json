@@ -33,6 +33,14 @@
     "od_stories_HQF6nr": {
       "type": "od-stories",
       "blocks": {
+        "story_PdmkJc": {
+          "type": "story",
+          "settings": {
+            "label": "New in",
+            "start_date": "",
+            "expires_days": 0
+          }
+        },
         "story_ACqbgR": {
           "type": "story",
           "settings": {
@@ -98,6 +106,7 @@
         }
       },
       "block_order": [
+        "story_PdmkJc",
         "story_ACqbgR",
         "slide_n4NUjG",
         "slide_WhTXtJ",
