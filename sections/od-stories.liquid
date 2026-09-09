@@ -1,0 +1,165 @@
+{%- comment -%}
+  Stories (round 8): Instagram-style row of circles with a rotating ring. Mobile by default, optional on desktop.
+  Blocks: "Story" starts a story (cover, label, expiry); every "Slide" block after it belongs to that story
+  (image or video, seconds, plain / banner / product / look). Viewer: assets/od-reels.js + od-reels.css (od-st classes):
+  progress bars, auto-advance, tap right / left for next / previous slide, hold to pause, swipe left / right for the
+  next / previous story, swipe down to close. Seen stories get the grey ring (localStorage).
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign now = 'now' | date: '%s' | plus: 0
+  assign day = 86400
+  assign n = 0
+-%}
+{{ 'od-reels.css' | asset_url | stylesheet_tag }}
+<section class="od-blk od-st{% unless st.show_desktop %} od-st--mobile-only{% endunless %}" id="od-stories-{{ section.id }}" data-od-stories data-section-id="{{ section.id }}" style="padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px; --od-blk-text: {{ st.text_color }}; --od-ring-1: {{ st.ring_1 }}; --od-ring-2: {{ st.ring_2 }}; --od-ring-3: {{ st.ring_3 }}; --od-ring-seen: {{ st.ring_seen }}; --od-ring-speed: {{ st.ring_speed }}s; --od-st-size: {{ st.size }}px; --od-st-gap: {{ st.ring_gap }}px;{% if st.bg != blank and st.bg != 'rgba(0,0,0,0)' %} background: {{ st.bg }};{% endif %}">
+  <div class="_container_1kxnl_30">
+    {%- if st.heading != blank -%}<h2 class="od-st__heading">{{ st.heading }}</h2>{%- endif -%}
+    <div class="od-st__row" data-stories-row>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'story' -%}
+          {%- liquid
+            assign b = block.settings
+            assign show = true
+            if b.expires_days > 0 and b.start_date != blank
+              assign start = b.start_date | date: '%s' | plus: 0
+              assign span = b.expires_days | times: day
+              assign until = start | plus: span
+              if start > 0 and now > until
+                assign show = false
+              endif
+            endif
+            if request.design_mode
+              assign show = true
+            endif
+          -%}
+          {%- if show -%}
+            {%- assign n = n | plus: 1 -%}
+            <button type="button" class="od-st__item" data-story-open="{{ block.id }}" {{ block.shopify_attributes }}>
+              <span class="od-st__ring"><span class="od-st__cover">
+                {%- if b.cover != blank -%}<img src="{{ b.cover | image_url: width: 200 }}" alt="" loading="lazy" width="{{ b.cover.width }}" height="{{ b.cover.height }}">{%- endif -%}
+              </span></span>
+              {%- if st.show_labels and b.label != blank -%}<span class="od-st__label">{{ b.label }}</span>{%- endif -%}
+            </button>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if n == 0 and request.design_mode -%}<p class="od-reels__empty">Add a "Story" block, then "Slide" blocks under it.</p>{%- endif -%}
+    </div>
+
+    <script type="application/json" data-stories-data>
+    [
+      {%- assign open = false -%}
+      {%- assign first = true -%}
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        {%- if block.type == 'story' -%}
+          {%- if open -%}]}{%- endif -%}
+          {%- unless first -%},{%- endunless -%}
+          {%- assign first = false -%}
+          {%- assign open = true -%}
+          { "id": {{ block.id | json }}, "label": {{ b.label | json }}, "cover": {% if b.cover != blank %}{{ b.cover | image_url: width: 200 | json }}{% else %}null{% endif %}, "slides": [
+          {%- assign sfirst = true -%}
+        {%- elsif block.type == 'slide' and open -%}
+          {%- unless sfirst -%},{%- endunless -%}{%- assign sfirst = false -%}
+          {
+            "id": {{ block.id | json }},
+            "kind": {{ b.kind | json }},
+            "seconds": {{ b.seconds | default: 6 }},
+            "image": {% if b.image != blank %}{{ b.image | image_url: width: 1080 | json }}{% else %}null{% endif %},
+            "video": {% if b.video != blank %}[{% assign vn = 0 %}{% for s in b.video.sources %}{% if s.format == 'mp4' %}{% if vn > 0 %},{% endif %}{% assign vn = vn | plus: 1 %}{ "url": {{ s.url | json }}, "h": {{ s.height | default: 0 }} }{% endif %}{% endfor %}]{% else %}null{% endif %},
+            "poster": {% if b.video != blank and b.video.preview_image %}{{ b.video.preview_image | image_url: width: 1080 | json }}{% else %}null{% endif %},
+            "heading": {{ b.heading | json }},
+            "text": {{ b.text | json }},
+            "button": {{ b.button_label | json }},
+            "link": {{ b.link | json }},
+            "textColor": {{ b.text_color | json }},
+            "align": {{ b.align | json }}
+          }
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if open -%}]}{%- endif -%}
+    ]
+    </script>
+    <div hidden data-stories-products>
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        {%- if block.type == 'slide' -%}
+          <div data-slide-products="{{ block.id }}">
+            {%- if b.kind == 'product' and b.product != blank -%}
+              {%- render 'reel-product-card', product: b.product -%}
+            {%- elsif b.kind == 'look' -%}
+              {%- for p in b.products -%}{%- render 'reel-product-card', product: p -%}{%- endfor -%}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- capture reels_t -%}{"items":{{ 'reels.items' | t: count: '__N__' | json }},"look":{{ 'reels.shop_look' | t | json }},"collection":{{ 'reels.shop_collection' | t | json }},"shop":{{ 'reels.shop_now' | t | json }},"copied":{{ 'reels.copied' | t | json }},"close":{{ 'reels.close' | t | json }},"mute":{{ 'reels.mute' | t | json }},"unmute":{{ 'reels.unmute' | t | json }},"share":{{ 'reels.share' | t | json }},"bag":{{ 'reels.bag' | t | json }},"wishlist":{{ 'reels.wishlist' | t | json }},"products":{{ 'reels.products' | t | json }},"next":{{ 'reels.next' | t | json }},"prev":{{ 'reels.prev' | t | json }}}{%- endcapture -%}
+<script>window.OD = window.OD || {}; window.OD.reelsT = {{ reels_t }};</script>
+<script src="{{ 'od-reels.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Stories",
+  "tag": "section",
+  "class": "od-stories-section",
+  "max_blocks": 50,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading (optional)" },
+    { "type": "checkbox", "id": "show_desktop", "label": "Also show on desktop", "default": false, "info": "Off: mobile and tablet only." },
+    { "type": "checkbox", "id": "show_labels", "label": "Show labels under the circles", "default": true },
+    { "type": "select", "id": "size", "label": "Circle size", "default": "68", "options": [ { "value": "56", "label": "Small" }, { "value": "68", "label": "Medium" }, { "value": "84", "label": "Large" } ] },
+    { "type": "header", "content": "Ring" },
+    { "type": "color", "id": "ring_1", "label": "Ring colour 1", "default": "#551c25" },
+    { "type": "color", "id": "ring_2", "label": "Ring colour 2", "default": "#c9a96a" },
+    { "type": "color", "id": "ring_3", "label": "Ring colour 3", "default": "#595b33" },
+    { "type": "color", "id": "ring_seen", "label": "Ring colour when seen", "default": "#d9d2c6" },
+    { "type": "range", "id": "ring_speed", "label": "Ring rotation", "min": 2, "max": 12, "step": 1, "unit": "s", "default": 4 },
+    { "type": "range", "id": "ring_gap", "label": "Gap between ring and photo", "min": 1, "max": 5, "step": 1, "unit": "px", "default": 2 },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "text_color", "label": "Label colour", "default": "#551c25" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "rgba(0,0,0,0)" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 16 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 16 }
+  ],
+  "blocks": [
+    {
+      "type": "story",
+      "name": "Story",
+      "settings": [
+        { "type": "paragraph", "content": "A story is this block plus every Slide block placed under it (until the next Story)." },
+        { "type": "image_picker", "id": "cover", "label": "Circle photo" },
+        { "type": "text", "id": "label", "label": "Label", "default": "New in" },
+        { "type": "text", "id": "start_date", "label": "Published on (YYYY-MM-DD)", "info": "Needed for the expiry below." },
+        { "type": "range", "id": "expires_days", "label": "Hide after", "min": 0, "max": 90, "step": 1, "unit": "d", "default": 0, "info": "0 = never. Always visible in the theme editor." }
+      ]
+    },
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image (9:16)" },
+        { "type": "video", "id": "video", "label": "Or video" },
+        { "type": "range", "id": "seconds", "label": "Seconds on screen (images)", "min": 3, "max": 15, "step": 1, "unit": "s", "default": 6 },
+        { "type": "select", "id": "kind", "label": "Type", "default": "media", "options": [ { "value": "media", "label": "Image or video only" }, { "value": "banner", "label": "Banner: text and button" }, { "value": "product", "label": "Shoppable: one product" }, { "value": "look", "label": "Shoppable: several products" } ] },
+        { "type": "header", "content": "Banner" },
+        { "type": "text", "id": "heading", "label": "Heading" },
+        { "type": "textarea", "id": "text", "label": "Text" },
+        { "type": "text", "id": "button_label", "label": "Button label" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "color", "id": "text_color", "label": "Text colour", "default": "#fcf8f2" },
+        { "type": "select", "id": "align", "label": "Text position", "default": "bottom", "options": [ { "value": "bottom", "label": "Bottom" }, { "value": "center", "label": "Centre" }, { "value": "top", "label": "Top" } ] },
+        { "type": "header", "content": "Shoppable" },
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "product_list", "id": "products", "label": "Products (look)", "limit": 4 }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Stories", "blocks": [ { "type": "story" }, { "type": "slide" }, { "type": "slide" }, { "type": "story" }, { "type": "slide" } ] }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,33 @@
+{%- comment -%}
+  Small product card used inside the Reels player and the Stories viewer (round 8).
+  Thumb, brand, name, price and a maroon plus. The whole card opens the shared quick-add drawer
+  (data-quick-add-open inside a data-qa-source element that carries the product-json blob, see assets/od-card.js).
+  Params: product (required)
+{%- endcomment -%}
+{%- if product != blank -%}
+<div class="od-rl-card{% unless product.available %} is-sold-out{% endunless %}" data-qa-source data-rl-card data-handle="{{ product.handle }}" data-product-id="{{ product.id }}" data-title="{{ product.title | escape }}" data-url="{{ product.url }}">
+  {%- render 'product-json', product: product -%}
+  <button type="button" class="od-rl-card__body" data-quick-add-open aria-label="{{ product.title | escape }}">
+    <span class="od-rl-card__thumb">
+      {%- if product.featured_image -%}
+        <img src="{{ product.featured_image | image_url: width: 160 }}" alt="" loading="lazy" width="{{ product.featured_image.width }}" height="{{ product.featured_image.height }}">
+      {%- endif -%}
+    </span>
+    <span class="od-rl-card__text">
+      {%- if product.vendor != blank -%}<span class="od-rl-card__brand">{{ product.vendor }}</span>{%- endif -%}
+      <span class="od-rl-card__name">{{ product.title }}</span>
+      <span class="od-rl-card__price">
+        {%- if product.available -%}
+          {% render 'sar' %}{{ product.price | money_without_currency }}
+          {%- if product.compare_at_price > product.price -%}<s>{% render 'sar' %}{{ product.compare_at_price | money_without_currency }}</s>{%- endif -%}
+        {%- else -%}
+          {{ 'products.product.sold_out' | t }}
+        {%- endif -%}
+      </span>
+    </span>
+    <span class="od-rl-card__plus" aria-hidden="true">
+      {%- if product.available -%}<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>{%- else -%}<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>{%- endif -%}
+    </span>
+  </button>
+</div>
+{%- endif -%}

@@ -1,0 +1,184 @@
+{%- comment -%}
+  Omarieden Reels (round 8): a row of 9:16 tiles (video or image). Tapping a tile opens the full-screen player over the
+  page (assets/od-reels.js + od-reels.css): swipe up / down between the reels of this section, mute toggle, wishlist,
+  share, bag; each reel can sell one product, several products (look), a collection or link to the shop.
+  Product data for the quick-add drawer comes from snippets/product-json (same drawer as the product cards).
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign count = section.blocks.size
+-%}
+{{ 'od-reels.css' | asset_url | stylesheet_tag }}
+<section class="od-blk od-reels" id="od-reels-{{ section.id }}" data-od-reels data-section-id="{{ section.id }}" data-per-row="{{ st.per_row }}" data-hover-play="{{ st.hover_play }}" style="padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px; --od-blk-text: {{ st.text_color }}; --od-accent: {{ st.accent }};{% if st.bg != blank and st.bg != 'rgba(0,0,0,0)' %} background: {{ st.bg }};{% endif %}">
+  <div class="_container_1kxnl_30">
+    {%- if st.heading != blank or st.heading_italic != blank or st.text != blank -%}
+      <div class="od-blk__head od-blk__head--{{ st.align }} od-blk__head--m">
+        {%- if st.eyebrow != blank -%}<p class="od-blk__eyebrow">{{ st.eyebrow }}</p>{%- endif -%}
+        <h2 class="od-blk__heading od-reels__heading">{{ st.heading }}{% if st.heading_italic != blank %} <em>{{ st.heading_italic }}</em>{% endif %}</h2>
+        {%- if st.text != blank -%}<div class="od-blk__text">{{ st.text }}</div>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if count == 0 -%}
+      {%- if request.design_mode -%}<p class="od-reels__empty">Add reels with "Add block".</p>{%- endif -%}
+    {%- else -%}
+    <div class="od-reels__row" data-reels-row>
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign b = block.settings
+          assign poster = b.cover
+          if poster == blank and b.video != blank
+            assign poster = b.video.preview_image
+          endif
+          if poster == blank
+            assign poster = b.image
+          endif
+          assign badge = ''
+          case b.shop
+            when 'product'
+              if b.product != blank
+                assign badge = 'reels.item' | t
+                if poster == blank
+                  assign poster = b.product.featured_image
+                endif
+              endif
+            when 'products'
+              assign badge = 'reels.look' | t
+              if poster == blank
+                assign poster = b.products.first.featured_image
+              endif
+            when 'collection'
+              if b.collection != blank
+                assign badge = 'reels.collection' | t
+                if poster == blank
+                  assign poster = b.collection.featured_image
+                endif
+              endif
+            when 'link'
+              if b.link != blank
+                assign shop_t = 'reels.shop' | t
+                assign badge = b.link_label | default: shop_t
+              endif
+          endcase
+        -%}
+        <button type="button" class="od-reels__tile" data-reel-open="{{ forloop.index0 }}" id="reel-{{ block.id }}" {{ block.shopify_attributes }} aria-label="{{ b.caption | default: badge | escape }}">
+          <span class="od-reels__media">
+            {%- if poster != blank -%}
+              <img src="{{ poster | image_url: width: 480 }}" srcset="{{ poster | image_url: width: 320 }} 320w, {{ poster | image_url: width: 480 }} 480w, {{ poster | image_url: width: 720 }} 720w" sizes="(max-width: 767px) 42vw, 220px" alt="{{ b.caption | escape }}" loading="lazy" width="{{ poster.width }}" height="{{ poster.height }}">
+            {%- else -%}
+              <span class="od-reels__ph"></span>
+            {%- endif -%}
+            {%- if b.video != blank and st.hover_play -%}
+              {%- for s in b.video.sources -%}{%- if s.format == 'mp4' and s.height <= 720 -%}
+                <video class="od-reels__preview" muted playsinline loop preload="none" data-reel-preview src="{{ s.url }}"></video>
+                {%- break -%}
+              {%- endif -%}{%- endfor -%}
+            {%- endif -%}
+          </span>
+          <span class="od-reels__play" aria-hidden="true">{% if b.video != blank %}<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>{% else %}<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 16l5-5 4 4 3-3 6 6"/><circle cx="16" cy="9" r="1.5"/></svg>{% endif %}</span>
+          {%- if st.show_labels and badge != blank -%}<span class="od-reels__badge">{{ badge }}</span>{%- endif -%}
+          {%- if st.show_captions and b.caption != blank -%}<span class="od-reels__caption">{{ b.caption }}</span>{%- endif -%}
+        </button>
+      {%- endfor -%}
+    </div>
+    <div class="od-reels__dots" data-reels-dots aria-hidden="true"></div>
+
+    {%- comment -%} Data for the player: one entry per reel, product cards rendered hidden so the quick-add drawer can reuse them {%- endcomment -%}
+    <script type="application/json" data-reels-data>
+    [
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        {%- liquid
+          assign poster = b.cover
+          if poster == blank and b.video != blank
+            assign poster = b.video.preview_image
+          endif
+          if poster == blank
+            assign poster = b.image
+          endif
+          if poster == blank and b.shop == 'product' and b.product != blank
+            assign poster = b.product.featured_image
+          endif
+          if poster == blank and b.shop == 'products' and b.products.count > 0
+            assign poster = b.products.first.featured_image
+          endif
+        -%}
+        {
+          "id": {{ block.id | json }},
+          "caption": {{ b.caption | json }},
+          "poster": {% if poster != blank %}{{ poster | image_url: width: 1080 | json }}{% else %}null{% endif %},
+          "video": {% if b.video != blank %}[{% assign vn = 0 %}{% for s in b.video.sources %}{% if s.format == 'mp4' %}{% if vn > 0 %},{% endif %}{% assign vn = vn | plus: 1 %}{ "url": {{ s.url | json }}, "h": {{ s.height | default: 0 }} }{% endif %}{% endfor %}]{% else %}null{% endif %},
+          "image": {% if b.image != blank %}{{ b.image | image_url: width: 1080 | json }}{% else %}null{% endif %},
+          "shop": {{ b.shop | json }},
+          "collection": {% if b.shop == 'collection' and b.collection != blank %}{ "title": {{ b.collection.title | json }}, "url": {{ b.collection.url | json }}, "count": {{ b.collection.all_products_count }} }{% else %}null{% endif %},
+          "link": {% if b.shop == 'link' and b.link != blank %}{% assign shop_t = 'reels.shop' | t %}{ "label": {{ b.link_label | default: shop_t | json }}, "url": {{ b.link | json }} }{% else %}null{% endif %},
+          "shareUrl": {{ request.origin | append: request.path | append: '#reel-' | append: block.id | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+    </script>
+    <div hidden data-reels-products>
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <div data-reel-products="{{ block.id }}">
+          {%- if b.shop == 'product' and b.product != blank -%}
+            {%- render 'reel-product-card', product: b.product -%}
+          {%- elsif b.shop == 'products' -%}
+            {%- for p in b.products -%}{%- render 'reel-product-card', product: p -%}{%- endfor -%}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+  </div>
+</section>
+{%- capture reels_t -%}{"items":{{ 'reels.items' | t: count: '__N__' | json }},"look":{{ 'reels.shop_look' | t | json }},"collection":{{ 'reels.shop_collection' | t | json }},"shop":{{ 'reels.shop_now' | t | json }},"copied":{{ 'reels.copied' | t | json }},"close":{{ 'reels.close' | t | json }},"mute":{{ 'reels.mute' | t | json }},"unmute":{{ 'reels.unmute' | t | json }},"share":{{ 'reels.share' | t | json }},"bag":{{ 'reels.bag' | t | json }},"wishlist":{{ 'reels.wishlist' | t | json }},"products":{{ 'reels.products' | t | json }},"next":{{ 'reels.next' | t | json }},"prev":{{ 'reels.prev' | t | json }}}{%- endcapture -%}
+<script>window.OD = window.OD || {}; window.OD.reelsT = {{ reels_t }};</script>
+<script src="{{ 'od-reels.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Omarieden Reels",
+  "tag": "section",
+  "class": "od-reels-section",
+  "max_blocks": 24,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "OMARIEDEN" },
+    { "type": "text", "id": "heading_italic", "label": "Heading, italic part", "default": "Reels" },
+    { "type": "richtext", "id": "text", "label": "Text under the heading" },
+    { "type": "select", "id": "align", "label": "Heading alignment", "default": "start", "options": [ { "value": "start", "label": "Left" }, { "value": "center", "label": "Centre" } ] },
+    { "type": "select", "id": "per_row", "label": "Tiles per row (desktop)", "default": "6", "options": [ { "value": "4", "label": "4" }, { "value": "5", "label": "5" }, { "value": "6", "label": "6" }, { "value": "7", "label": "7" } ] },
+    { "type": "checkbox", "id": "show_labels", "label": "Show the shop label on the tiles (2 items, Look, Collection)", "default": true },
+    { "type": "checkbox", "id": "show_captions", "label": "Show the caption under the tiles", "default": false },
+    { "type": "checkbox", "id": "hover_play", "label": "Play the video silently when the mouse is over a tile (desktop)", "default": true },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#551c25" },
+    { "type": "color", "id": "accent", "label": "Accent colour (dots, badges)", "default": "#595b33" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "rgba(0,0,0,0)" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "reel",
+      "name": "Reel",
+      "settings": [
+        { "type": "video", "id": "video", "label": "Video (9:16, sound optional)" },
+        { "type": "image_picker", "id": "image", "label": "Or image (9:16)" },
+        { "type": "image_picker", "id": "cover", "label": "Cover for the tile (optional)", "info": "Default: the video's first frame or the image." },
+        { "type": "text", "id": "caption", "label": "Caption", "info": "Shown above the product card in the player." },
+        { "type": "header", "content": "Shop" },
+        { "type": "select", "id": "shop", "label": "What this reel sells", "default": "product", "options": [ { "value": "none", "label": "Nothing (just the video)" }, { "value": "product", "label": "One product" }, { "value": "products", "label": "Several products (look)" }, { "value": "collection", "label": "A collection" }, { "value": "link", "label": "A link (e.g. the shop)" } ] },
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "product_list", "id": "products", "label": "Products (look)", "limit": 6 },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop now" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Omarieden Reels", "blocks": [ { "type": "reel" }, { "type": "reel" }, { "type": "reel" }, { "type": "reel" } ] }
+  ]
+}
+{% endschema %}

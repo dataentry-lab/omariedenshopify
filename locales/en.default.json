@@ -495,5 +495,25 @@
       "signature": "Signature",
       "seasonal": "Seasonal"
     }
+  },
+  "reels": {
+    "items": "{{ count }} items",
+    "look": "Look",
+    "collection": "Collection",
+    "shop": "Shop",
+    "shop_now": "Shop now",
+    "shop_look": "Shop the look",
+    "shop_collection": "Shop the collection",
+    "copied": "Link copied",
+    "close": "Close",
+    "mute": "Mute",
+    "unmute": "Unmute",
+    "share": "Share",
+    "bag": "Bag",
+    "wishlist": "Wishlist",
+    "products": "Shop this reel",
+    "next": "Next",
+    "prev": "Previous",
+    "item": "1 item"
   }
 }
