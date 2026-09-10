@@ -106,6 +106,27 @@
         "pad_bottom": 24
       }
     },
+    "od_text_rVQQhh": {
+      "type": "od-text",
+      "name": "Text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Our Services",
+        "text": "<p>A quiet room above the store, for fittings, previews and a good coffee.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 32,
+        "pad_bottom": 32
+      }
+    },
     "cards": {
       "type": "od-cards",
       "blocks": {
@@ -302,6 +323,7 @@
     "banner",
     "imgtext",
     "row",
+    "od_text_rVQQhh",
     "cards",
     "strip",
     "grid",
