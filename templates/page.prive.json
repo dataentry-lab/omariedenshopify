@@ -21,7 +21,7 @@
         "title": "OMARIEDEN PRIVÉ",
         "text": "<p>A private lounge for our most valued clients</p>",
         "text_color": "#fcf8f2",
-        "button_label": "Book your visit",
+        "button_label": "",
         "button_url": "#od-form-prive",
         "button_style": "outline",
         "button_color": "#c9a96a",
