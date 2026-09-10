@@ -113,7 +113,7 @@
           "type": "card",
           "settings": {
             "icon": "hanger",
-            "title": "Private styling",
+            "title": "Personal Shopper",
             "text": "<p>One-to-one, by appointment</p>",
             "link_label": "",
             "link": ""
@@ -133,7 +133,7 @@
           "type": "card",
           "settings": {
             "icon": "truck",
-            "title": "Home delivery",
+            "title": "Shoes Spa",
             "text": "<p>Try at home, same day in Riyadh</p>",
             "link_label": "",
             "link": ""
