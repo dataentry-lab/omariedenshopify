@@ -12,6 +12,7 @@
     "banner": {
       "type": "od-big-banner",
       "settings": {
+        "image": "shopify://shop_images/DSC04220.jpg",
         "height": "l",
         "overlay_color": "#2a0d12",
         "overlay_opacity": 55,
@@ -32,6 +33,7 @@
     "imgtext": {
       "type": "od-image-text",
       "settings": {
+        "image": "shopify://shop_images/DSC04240.jpg",
         "ratio": "4-3",
         "image_side": "start",
         "eyebrow": "OMARIEDEN PRIVÉ",
