@@ -44,7 +44,6 @@
         "slide_n4NUjG": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/q4SjpAs2fRaTyx8OA2WMg7gpqLxhmp6PMYGKFt8S.webp",
             "seconds": 6,
             "heading": "asdad",
             "text": "adsad",
@@ -67,7 +66,6 @@
         "slide_rJVBHm": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/7CQ7IgJrah4yq1MZuC5F8T2YAaaH2a1zswe3u0Gy.webp",
             "seconds": 6,
             "heading": "",
             "text": "",
@@ -566,7 +564,7 @@
       "name": "Omarieden Reels",
       "settings": {
         "eyebrow": "",
-        "heading": "OMARIEDEN",
+        "heading": "OMARIEDEN In Motion",
         "heading_italic": "Reels",
         "text": "",
         "align": "start",
