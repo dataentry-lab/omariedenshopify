@@ -124,7 +124,7 @@
         "bg": "",
         "text_color": "#551c25",
         "pad_top": 32,
-        "pad_bottom": 32
+        "pad_bottom": 20
       }
     },
     "cards": {
