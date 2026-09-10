@@ -56,9 +56,9 @@
         "i1": {
           "type": "image",
           "settings": {
-            "heading": "",
-            "text": "",
-            "button_label": "",
+            "heading": "Mary Katrantzou",
+            "text": "Mary Katrantzou",
+            "button_label": "Explore",
             "link": "",
             "caption": ""
           }
