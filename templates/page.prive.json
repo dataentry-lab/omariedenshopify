@@ -66,9 +66,9 @@
         "i2": {
           "type": "image",
           "settings": {
-            "heading": "",
-            "text": "",
-            "button_label": "",
+            "heading": "Mona Al Shebil",
+            "text": "Mona Al Shebil",
+            "button_label": "Explore",
             "link": "",
             "caption": ""
           }
@@ -76,9 +76,9 @@
         "i3": {
           "type": "image",
           "settings": {
-            "heading": "",
-            "text": "",
-            "button_label": "",
+            "heading": "Zeena Zaki",
+            "text": "Zeena Zaki",
+            "button_label": "Explore",
             "link": "",
             "caption": ""
           }
