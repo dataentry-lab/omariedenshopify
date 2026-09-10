@@ -1,31 +1,51 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "banner": {
       "type": "od-big-banner",
       "settings": {
         "height": "l",
+        "overlay_color": "#2a0d12",
+        "overlay_opacity": 55,
+        "text_position": "center",
         "eyebrow": "By invitation",
         "title": "Omarieden Privé",
         "text": "<p>A private lounge for our most valued clients</p>",
+        "text_color": "#fcf8f2",
         "button_label": "Book your visit",
         "button_url": "#od-form-prive",
-        "overlay_color": "#2a0d12",
-        "overlay_opacity": 55,
-        "text_color": "#fcf8f2",
+        "button_style": "outline",
         "button_color": "#c9a96a",
-        "button_text_color": "#fcf8f2"
+        "button_text_color": "#fcf8f2",
+        "pad_top": 0,
+        "pad_bottom": 0
       }
     },
     "imgtext": {
       "type": "od-image-text",
       "settings": {
-        "eyebrow": "Privé",
-        "title": "Personal styling, private previews, first access",
-        "text": "<p>Your own stylist, a private fitting suite and new collections before anyone else. Coffee, dates and the door closed behind you.</p>",
+        "ratio": "4-3",
+        "image_side": "start",
+        "eyebrow": "OMARIEDEN PRIVÉ",
+        "title": "The Private Wardrobe",
+        "text": "<p>A more intimate expression of OMARIEDEN. A silhouette selected for an evening. A dress discovered for an occasion yet to come. An extraordinary accessory that changes everything. Each piece enters the conversation with purpose, shaped around the client's life, taste and calendar. A fitting may unfold over coffee. An occasion may begin with a single dress and leave as a complete wardrobe. And sometimes, the most remarkable piece is the one selected before you knew you were looking for it.<br/></p>",
         "button_label": "Book your visit",
         "button_url": "#od-form-prive",
-        "image_side": "start",
-        "ratio": "4-3"
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 40
       }
     },
     "row": {
@@ -33,15 +53,33 @@
       "blocks": {
         "i1": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "heading": "",
+            "text": "",
+            "button_label": "",
+            "link": "",
+            "caption": ""
+          }
         },
         "i2": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "heading": "",
+            "text": "",
+            "button_label": "",
+            "link": "",
+            "caption": ""
+          }
         },
         "i3": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "heading": "",
+            "text": "",
+            "button_label": "",
+            "link": "",
+            "caption": ""
+          }
         }
       },
       "block_order": [
@@ -50,7 +88,20 @@
         "i3"
       ],
       "settings": {
-        "ratio": "3-4"
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "per_row": 3,
+        "per_row_mobile": "1",
+        "align": "start",
+        "ratio": "3-4",
+        "button_style": "outline",
+        "full_width": false,
+        "lightbox": true,
+        "text_color": "#551c25",
+        "accent": "#551c25",
+        "pad_top": 24,
+        "pad_bottom": 24
       }
     },
     "cards": {
@@ -61,7 +112,9 @@
           "settings": {
             "icon": "hanger",
             "title": "Private styling",
-            "text": "<p>One-to-one, by appointment</p>"
+            "text": "<p>One-to-one, by appointment</p>",
+            "link_label": "",
+            "link": ""
           }
         },
         "c2": {
@@ -69,7 +122,9 @@
           "settings": {
             "icon": "key",
             "title": "First access",
-            "text": "<p>Preview new arrivals early</p>"
+            "text": "<p>Preview new arrivals early</p>",
+            "link_label": "",
+            "link": ""
           }
         },
         "c3": {
@@ -77,7 +132,9 @@
           "settings": {
             "icon": "truck",
             "title": "Home delivery",
-            "text": "<p>Try at home, same day in Riyadh</p>"
+            "text": "<p>Try at home, same day in Riyadh</p>",
+            "link_label": "",
+            "link": ""
           }
         }
       },
@@ -87,24 +144,59 @@
         "c3"
       ],
       "settings": {
-        "per_row": 3
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "per_row": 3,
+        "style": "filled",
+        "bg": "",
+        "card_bg": "#f1eeea",
+        "text_color": "#551c25",
+        "pad_top": 32,
+        "pad_bottom": 32
       }
     },
     "strip": {
       "type": "od-small-banner",
       "settings": {
+        "layout": "row",
+        "overlay_color": "#2a0d12",
+        "overlay_opacity": 40,
+        "bg": "#e5d9c7",
+        "text_color": "#551c25",
+        "eyebrow": "",
         "title": "Autumn preview evening, 2 October",
-        "button_label": "Reserve a seat"
+        "text": "",
+        "button_label": "Reserve a seat",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "pad_top": 24,
+        "pad_bottom": 24
       }
     },
     "grid": {
       "type": "od-product-grid",
       "settings": {
+        "eyebrow": "",
         "heading": "The Privé edit",
+        "text": "",
+        "align": "start",
         "source": "collection",
-        "per_row": 4,
+        "collection": "",
+        "products": [],
         "limit": 8,
-        "tag_label": "Privé"
+        "per_row": 4,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "Privé",
+        "tag_bg": "#c9a96a",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 32,
+        "pad_bottom": 32
       }
     },
     "live": {
@@ -112,16 +204,23 @@
       "settings": {
         "heading": "OMARIEDEN",
         "heading_italic": "Privé Live",
+        "show_count": true,
+        "count_text": "",
+        "tagline": "New in Privé",
         "source": "products",
+        "collection": "",
+        "products": [],
+        "limit": 12,
+        "visible": 6,
+        "visible_mobile": 2.5,
+        "speed": 3,
+        "caption": "text",
+        "caption_text": "Exclusive",
         "dark": true,
         "bg": "#2a0d12",
         "text_color": "#fcf8f2",
         "accent": "#c9a96a",
-        "card_bg": "#3a171e",
-        "count_text": "",
-        "tagline": "New in Privé",
-        "caption": "text",
-        "caption_text": "Exclusive"
+        "card_bg": "#3a171e"
       }
     },
     "faq": {
@@ -147,14 +246,53 @@
         "q2"
       ],
       "settings": {
-        "heading": "Questions"
+        "eyebrow": "",
+        "heading": "Questions",
+        "text": "",
+        "open_first": false,
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 32,
+        "pad_bottom": 32
       }
     },
     "form": {
       "type": "od-form",
       "settings": {
         "kind": "prive",
-        "customer_tag": "prive"
+        "customer_tag": "prive",
+        "layout": "split",
+        "eyebrow": "Book your visit",
+        "heading": "Tell us a little about you",
+        "text": "<p>We'll prepare a selection before you arrive and confirm your appointment by phone or WhatsApp within one working day.</p>",
+        "image_ratio": "4-3",
+        "show_name": true,
+        "label_name": "Full name",
+        "show_phone": true,
+        "label_phone": "Phone",
+        "phone_placeholder": "+966 5x xxx xxxx",
+        "show_email": true,
+        "label_email": "Email",
+        "label_categories": "Categories you love",
+        "categories": "Women, Men, Kids, Bags, Shoes, Jewellery",
+        "label_style": "Your style",
+        "styles": "Classic, Modern, Minimal, Statement",
+        "label_datetime": "Date and time",
+        "label_guests": "Guests",
+        "show_notes": true,
+        "label_notes": "Anything we should know?",
+        "notes_placeholder": "Sizes, occasion, preferred day and time",
+        "consent_text": "",
+        "button_label": "Request an appointment",
+        "note": "",
+        "success": "Thank you, we'll be in touch shortly.",
+        "bg": "#2a0d12",
+        "text_color": "#fcf8f2",
+        "accent": "#c9a96a",
+        "accent_text": "#2a0d12",
+        "field_bg": "#ffffff",
+        "pad_top": 40,
+        "pad_bottom": 40
       }
     }
   },
