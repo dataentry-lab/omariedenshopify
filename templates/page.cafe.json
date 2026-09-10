@@ -431,17 +431,6 @@
     "row": {
       "type": "od-image-row",
       "blocks": {
-        "r1": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/DSC03967.jpg",
-            "heading": "",
-            "text": "",
-            "button_label": "",
-            "link": "",
-            "caption": ""
-          }
-        },
         "r2": {
           "type": "image",
           "settings": {
@@ -453,9 +442,21 @@
             "caption": ""
           }
         },
+        "r1": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/DSC03967.jpg",
+            "heading": "",
+            "text": "",
+            "button_label": "",
+            "link": "",
+            "caption": ""
+          }
+        },
         "r3": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/Raspberry-Tart-3.jpg",
             "heading": "",
             "text": "",
             "button_label": "",
@@ -465,8 +466,8 @@
         }
       },
       "block_order": [
-        "r1",
         "r2",
+        "r1",
         "r3"
       ],
       "settings": {
