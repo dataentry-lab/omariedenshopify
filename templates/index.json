@@ -186,9 +186,34 @@
         "show_count": true,
         "count_text": "[count] new pieces this week",
         "tagline": "The latest arrivals, as they land in store",
-        "source": "collection",
+        "source": "products",
         "collection": "",
-        "products": [],
+        "products": [
+          "antler-adventure-wheeled-duffle-travel-companion-4722228042",
+          "antler-bold-stripe-large-spinner-suitcase-luggage-4719214015",
+          "antler-chelsea-four-piece-packing-cube-set-4589124295",
+          "antler-classic-canvas-weekend-holdall-bag-4735217087",
+          "antler-classic-silicone-luggage-identifier-tag-4728157180",
+          "antler-classic-stripe-mid-size-spinner-case-luggage-4719157016",
+          "antler-contemporary-traveller-commute-backpack-travel-bag-4722261082",
+          "antler-discovery-expedition-travel-backpack-4722124081",
+          "antler-discovery-sleek-commuter-travel-backpack-4722124082",
+          "antler-discovery-wheeled-duffle-travel-bag-4722124042",
+          "antler-distinguished-aluminium-frame-cabin-case-luggage-4735240223",
+          "antler-durable-silicone-suitcase-spotter-tag-4728215180",
+          "antler-essential-graduated-packing-cube-set-4589192295",
+          "antler-essential-silicone-luggage-identifier-luggag-tags-4728207180",
+          "antler-expansive-stripe-spinner-travel-suitcase-luggage-4719157015",
+          "antler-flexible-silicone-luggage-label-tag-4728214180",
+          "antler-grand-hardshell-stripe-travel-case-luggage-4719192015",
+          "antler-grand-aluminium-frame-travel-trunk-luggage-4735240224",
+          "antler-heritage-aluminium-frame-cabin-suitcase-luggage-4735239223",
+          "antler-heritage-aluminium-frame-trunk-suitcase-luggage-4735239224",
+          "antler-heritage-scottish-leather-luggage-tag-4735239180",
+          "antler-heritage-scottish-leather-luggage-tag-4735240180",
+          "antler-heritage-structured-canvas-tote-4735114137",
+          "antler-icon-convertible-tote-travel-backpack-4752124084"
+        ],
         "limit": 12,
         "visible": 6,
         "visible_mobile": 2.5,
@@ -208,7 +233,8 @@
         "b1": {
           "type": "brand",
           "settings": {
-            "name": "Veja",
+            "name": "MKI MIYUKI ZOKU",
+            "image": "shopify://shop_images/5X8h5wySI2WjrgV1eOwpb2atE4gNM3qGx3Vjycb9.webp",
             "collection": "",
             "url": "",
             "products": []
@@ -217,7 +243,8 @@
         "b2": {
           "type": "brand",
           "settings": {
-            "name": "MKI MIYUKI ZOKU",
+            "name": "IRO",
+            "image": "shopify://shop_images/ROABtPEY1QCi9oa1rIwZ3LZMgnKpeqZjH3OwOdvZ.webp",
             "collection": "",
             "url": "",
             "products": []
@@ -227,6 +254,7 @@
           "type": "brand",
           "settings": {
             "name": "Oilily",
+            "image": "shopify://shop_images/01JDiAXEUjVlZe8e9yJ8ER5bNFIdFNzjKxYtwzZv.webp",
             "collection": "",
             "url": "",
             "products": []
@@ -235,7 +263,8 @@
         "b4": {
           "type": "brand",
           "settings": {
-            "name": "IRO",
+            "name": "VEJA",
+            "image": "shopify://shop_images/4grBciZjLQRW04Q0Jbgmth0OQGn4S7mLp2gmcXOS.webp",
             "collection": "",
             "url": "",
             "products": []
@@ -318,6 +347,118 @@
         "columns": "4",
         "ratio": "2-3",
         "cta_label": "Shop this look"
+      }
+    },
+    "od_reels_6MqhqU": {
+      "type": "od-reels",
+      "blocks": {
+        "reel_9kxpX6": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/instagram_reel_Dc8Qp5eMgQ5_2.mp4",
+            "caption": "",
+            "product": "alemais-astro-star-print-gown-7681d",
+            "products": [],
+            "collection": "dresses",
+            "link_label": "Shop now",
+            "link": ""
+          }
+        },
+        "reel_dXMa4K": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/instagram_reel_Dc3X8_MsqIs.mp4",
+            "caption": "",
+            "product": "veja-draped-eco-conscious-dark-sneakers-ns0221612a",
+            "products": [],
+            "collection": "",
+            "link_label": "Shop now",
+            "link": ""
+          }
+        },
+        "reel_znQVkr": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/op2.mov",
+            "caption": "",
+            "product": "",
+            "products": [],
+            "collection": "",
+            "link_label": "Shop now",
+            "link": ""
+          }
+        },
+        "reel_cXGYx6": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/WhatsApp Video 2026-09-10 at 5.55.58 PM.mp4",
+            "caption": "",
+            "product": "",
+            "products": [],
+            "collection": "",
+            "link_label": "Shop now",
+            "link": ""
+          }
+        },
+        "reel_E47R6V": {
+          "type": "reel",
+          "settings": {
+            "caption": "",
+            "product": "",
+            "products": [],
+            "collection": "",
+            "link_label": "Shop now",
+            "link": ""
+          }
+        },
+        "reel_eqiU6k": {
+          "type": "reel",
+          "settings": {
+            "caption": "",
+            "product": "",
+            "products": [],
+            "collection": "",
+            "link_label": "Shop now",
+            "link": ""
+          }
+        },
+        "reel_PH4WyH": {
+          "type": "reel",
+          "settings": {
+            "caption": "",
+            "product": "",
+            "products": [],
+            "collection": "",
+            "link_label": "Shop now",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "reel_9kxpX6",
+        "reel_dXMa4K",
+        "reel_znQVkr",
+        "reel_cXGYx6",
+        "reel_E47R6V",
+        "reel_eqiU6k",
+        "reel_PH4WyH"
+      ],
+      "name": "Omarieden Reels",
+      "settings": {
+        "eyebrow": "",
+        "heading": "OMARIEDEN In Motion",
+        "heading_italic": "",
+        "text": "",
+        "align": "start",
+        "per_row": "4",
+        "show_labels": true,
+        "show_captions": false,
+        "hover_play": true,
+        "text_color": "#551c25",
+        "accent": "#595b33",
+        "bg": "rgba(0,0,0,0)",
+        "pad_top": 40,
+        "pad_bottom": 40
       }
     },
     "world": {
@@ -424,116 +565,6 @@
         "accent": "#595b33",
         "pad_top": 48,
         "pad_bottom": 48
-      }
-    },
-    "od_reels_6MqhqU": {
-      "type": "od-reels",
-      "blocks": {
-        "reel_9kxpX6": {
-          "type": "reel",
-          "settings": {
-            "video": "shopify://files/videos/instagram_reel_Dc8Qp5eMgQ5_2.mp4",
-            "caption": "",
-            "product": "alemais-astro-star-print-gown-7681d",
-            "products": [],
-            "collection": "dresses",
-            "link_label": "Shop now",
-            "link": ""
-          }
-        },
-        "reel_dXMa4K": {
-          "type": "reel",
-          "settings": {
-            "video": "shopify://files/videos/instagram_reel_Dc3X8_MsqIs.mp4",
-            "caption": "",
-            "product": "veja-draped-eco-conscious-dark-sneakers-ns0221612a",
-            "products": [],
-            "collection": "",
-            "link_label": "Shop now",
-            "link": ""
-          }
-        },
-        "reel_znQVkr": {
-          "type": "reel",
-          "settings": {
-            "caption": "",
-            "product": "",
-            "products": [],
-            "collection": "",
-            "link_label": "Shop now",
-            "link": ""
-          }
-        },
-        "reel_cXGYx6": {
-          "type": "reel",
-          "settings": {
-            "caption": "",
-            "product": "",
-            "products": [],
-            "collection": "",
-            "link_label": "Shop now",
-            "link": ""
-          }
-        },
-        "reel_E47R6V": {
-          "type": "reel",
-          "settings": {
-            "caption": "",
-            "product": "",
-            "products": [],
-            "collection": "",
-            "link_label": "Shop now",
-            "link": ""
-          }
-        },
-        "reel_eqiU6k": {
-          "type": "reel",
-          "settings": {
-            "caption": "",
-            "product": "",
-            "products": [],
-            "collection": "",
-            "link_label": "Shop now",
-            "link": ""
-          }
-        },
-        "reel_PH4WyH": {
-          "type": "reel",
-          "settings": {
-            "caption": "",
-            "product": "",
-            "products": [],
-            "collection": "",
-            "link_label": "Shop now",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "reel_9kxpX6",
-        "reel_dXMa4K",
-        "reel_znQVkr",
-        "reel_cXGYx6",
-        "reel_E47R6V",
-        "reel_eqiU6k",
-        "reel_PH4WyH"
-      ],
-      "name": "Omarieden Reels",
-      "settings": {
-        "eyebrow": "",
-        "heading": "OMARIEDEN In Motion",
-        "heading_italic": "",
-        "text": "",
-        "align": "start",
-        "per_row": "4",
-        "show_labels": true,
-        "show_captions": false,
-        "hover_play": true,
-        "text_color": "#551c25",
-        "accent": "#595b33",
-        "bg": "rgba(0,0,0,0)",
-        "pad_top": 40,
-        "pad_bottom": 40
       }
     },
     "usp": {
