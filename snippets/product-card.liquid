@@ -1,15 +1,22 @@
 {%- comment -%}
-  Product card v3 (client approved 6 Sep): product-driven badges top-left (max two, snippets/product-badges.liquid),
+  Product card v4 (round 9): product-driven badges top-left (max two, snippets/product-badges.liquid),
   wishlist top-right, thin chevron arrows (desktop on hover, mobile always), dots, hover image swap (image 2 on desktop hover),
-  maroon circle quick-view button with the bag icon (opens the shared quick-add drawer / bottom sheet),
+  maroon circle quick-view button (opens the shared quick-add drawer / bottom sheet),
   sandstone "Sold out" badge instead of the button when unavailable (image at 60%),
   brand, name + price, colour dots + "n colour(s)".
-  Styles: assets/od-card.css  Behaviour: assets/od-card.js (+ theme.js for swatch → image and wishlist)
+  One card per colour (round 9, theme setting card_per_colour + param per_colour): every colour value of the product
+  becomes its own card; image = the colour's variant image, else the photos whose alt text names the colour, then the
+  shared photos (same rule as the product page); its dot is selected; link + quick view preselect the colour (?variant=);
+  a colour with no available variant is shown sold out. Clicking another dot swaps the photos inside the card (od-card.js).
+  Styles: assets/od-card.css  Behaviour: assets/od-card.js
   Params:
-    product        - product drop (required)
-    show_wishlist  - boolean (default true)
-    color_option   - option name used for swatches (default settings.color_option_name or "Color")
-    badge          - legacy, ignored (badges come from the product now)
+    product         - product drop (required)
+    show_wishlist   - boolean (default true)
+    color_option    - option name used for swatches (default settings.color_option_name or "Color"; Colour / اللون also match)
+    per_colour      - boolean: split into one card per colour (only when the theme setting is on and the product has 2+ colours)
+    active_colours  - string "|Red|Blue|" (lowercase) of the active colour filter values: only those colour cards are rendered
+    wrap_class      - optional class: every card is wrapped in <div class="wrap_class"> (e.g. "swiper-slide")
+    badge           - legacy, ignored (badges come from the product now)
 {%- endcomment -%}
 {%- liquid
   assign rtl = false
@@ -20,50 +27,152 @@
     assign show_wishlist = true
   endif
   assign color_name = color_option | default: settings.color_option_name | default: 'Color'
+  assign color_name_d = color_name | downcase | strip
   assign color_opt = nil
   assign color_index = 0
   for opt in product.options_with_values
-    if opt.name == color_name
+    assign on_d = opt.name | downcase | strip
+    if on_d == color_name_d or on_d == 'color' or on_d == 'colour' or on_d == 'اللون' or on_d == 'لون'
       assign color_opt = opt
       assign color_index = forloop.index
+      assign color_name = opt.name
+      break
     endif
   endfor
-
+  assign color_idx0 = color_index | minus: 1
+  assign colour_count = 0
+  if color_opt
+    assign colour_count = color_opt.values.size
+  endif
+  assign split = false
+  if per_colour and settings.card_per_colour != false and colour_count > 1
+    assign split = true
+  endif
+  assign media_map = nil
+  if split
+    capture media_map
+      render 'product-json', product: product, format: 'map'
+    endcapture
+    assign media_map = media_map | strip
+    assign colours = color_opt.values
+  else
+    assign colours = '1' | split: ','
+  endif
+  assign short_desc = product.description | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' ' | replace: '</p>', ' ' | replace: '</li>', ' ' | strip_html | strip_newlines | strip | truncate: 300
+  assign material = product.metafields.custom.material.value | strip_html
+  assign active_colours_d = active_colours | downcase
+-%}
+{%- for card_colour in colours -%}
+{%- liquid
+  assign colour = nil
+  assign colour_variant = nil
   assign img = product.featured_image
   assign img2 = nil
   assign media_count = 0
-  for m in product.media
-    if m.media_type == 'image'
-      assign media_count = media_count | plus: 1
-      if media_count == 2
-        assign img2 = m
-      endif
+  assign card_url = product.url
+  assign price = product.price
+  assign compare = product.compare_at_price
+  assign sold_out = false
+  if product.available == false
+    assign sold_out = true
+  endif
+  if split
+    assign colour = card_colour
+    if active_colours_d != blank
+      assign ck = '|' | append: colour | append: '|'
+      assign ck = ck | downcase
+      unless active_colours_d contains ck
+        continue
+      endunless
     endif
-  endfor
-  if media_count == 0 and img
-    assign media_count = 1
+    assign c_variant = nil
+    assign c_avail = nil
+    assign vmedia = nil
+    for v in product.variants
+      if v.options[color_idx0] == colour
+        if c_variant == nil
+          assign c_variant = v
+        endif
+        if c_avail == nil and v.available
+          assign c_avail = v
+        endif
+        if vmedia == nil and v.featured_media
+          assign vmedia = v.featured_media
+        endif
+      endif
+    endfor
+    assign link_variant = c_avail | default: c_variant
+    if link_variant
+      assign colour_variant = link_variant.id
+      assign card_url = product.url | append: '?variant=' | append: link_variant.id
+      assign price = link_variant.price
+      assign compare = link_variant.compare_at_price
+    endif
+    if c_avail == nil
+      assign sold_out = true
+    endif
+    if vmedia
+      assign img = vmedia
+      assign media_count = 1
+    endif
+    for pass in (1..2)
+      for m in product.media limit: 10
+        if m.media_type != 'image' or m.id == vmedia.id
+          continue
+        endif
+        assign mkey = '|' | append: m.id | append: ':'
+        assign mcol = ''
+        if media_map contains mkey
+          assign mcol = media_map | split: mkey | last | split: '|' | first | default: ''
+        endif
+        if pass == 1 and mcol != colour
+          continue
+        endif
+        if pass == 2 and mcol != ''
+          continue
+        endif
+        assign media_count = media_count | plus: 1
+        if media_count == 1
+          assign img = m
+        elsif media_count == 2
+          assign img2 = m
+        endif
+      endfor
+    endfor
+    if media_count == 0
+      assign img = product.featured_image
+    endif
+  endif
+  if media_count == 0
+    for m in product.media
+      if m.media_type == 'image'
+        assign media_count = media_count | plus: 1
+        if media_count == 2
+          assign img2 = m
+        endif
+      endif
+    endfor
+    if media_count == 0 and img
+      assign media_count = 1
+    endif
   endif
   if media_count > 6
     assign media_count = 6
   endif
   assign on_sale = false
-  if product.compare_at_price > product.price
+  if compare > price
     assign on_sale = true
   endif
-  assign sold_out = false
-  if product.available == false
-    assign sold_out = true
-  endif
-  assign short_desc = product.description | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' ' | replace: '</p>', ' ' | replace: '</li>', ' ' | strip_html | strip_newlines | strip | truncate: 300
-  assign material = product.metafields.custom.material.value | strip_html
-  assign colour_count = 0
-  if color_opt
-    assign colour_count = color_opt.values.size
+  if colour == nil and color_opt
+    assign card_colour_value = color_opt.values.first
+  else
+    assign card_colour_value = colour
   endif
 -%}
-<div class="_new_in_trend_card_13l1w_130 od-card{% if rtl %} od-card--rtl{% endif %}{% if sold_out %} is-sold-out{% endif %}" data-product-card data-od-card data-product-id="{{ product.id }}" data-handle="{{ product.handle }}" data-color-index="{{ color_index }}" data-color-value="{% if color_opt %}{{ color_opt.values.first | escape }}{% endif %}">
+{%- if wrap_class != blank -%}<div class="{{ wrap_class }}">{%- endif -%}
+<div class="_new_in_trend_card_13l1w_130 od-card{% if rtl %} od-card--rtl{% endif %}{% if sold_out %} is-sold-out{% endif %}" data-product-card data-od-card data-product-id="{{ product.id }}" data-handle="{{ product.handle }}" data-color-index="{{ color_index }}" data-color-value="{{ card_colour_value | escape }}"{% if colour %} data-card-colour="{{ colour | escape }}"{% endif %}>
   <div class="od-card__media">
-    <a href="{{ product.url }}" class="od-card__link" data-card-image-link aria-label="{{ product.title | escape }}">
+    <a href="{{ card_url }}" class="od-card__link" data-card-image-link data-card-url="{{ product.url }}" aria-label="{{ product.title | escape }}">
       {%- if img -%}
         <img class="od-card__img" fetchpriority="auto" alt="{{ img.alt | default: product.title | escape }}" src="{{ img | image_url: width: 600 }}" srcset="{{ img | image_url: width: 300 }} 300w, {{ img | image_url: width: 600 }} 600w, {{ img | image_url: width: 900 }} 900w" sizes="(max-width: 480px) 50vw, 320px" width="{{ img.width }}" height="{{ img.height }}" loading="lazy" data-card-image>
       {%- else -%}
@@ -87,35 +196,32 @@
       </div>
     </div>
 
-    {%- if media_count > 1 -%}
-      <button type="button" class="od-card__arrow od-card__arrow--prev" data-card-prev aria-label="{{ 'general.accessibility.previous' | t }}">
-        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <button type="button" class="od-card__arrow od-card__arrow--next" data-card-next aria-label="{{ 'general.accessibility.next' | t }}">
-        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <div class="od-card__dots" data-card-dots aria-hidden="true">
-        {%- for i in (1..media_count) -%}<span{% if forloop.first %} class="is-active"{% endif %}></span>{%- endfor -%}
-      </div>
-    {%- endif -%}
+    <button type="button" class="od-card__arrow od-card__arrow--prev" data-card-prev aria-label="{{ 'general.accessibility.previous' | t }}"{% if media_count < 2 %} hidden{% endif %}>
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button type="button" class="od-card__arrow od-card__arrow--next" data-card-next aria-label="{{ 'general.accessibility.next' | t }}"{% if media_count < 2 %} hidden{% endif %}>
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="od-card__dots" data-card-dots aria-hidden="true"{% if media_count < 2 %} hidden{% endif %}>
+      {%- for i in (1..media_count) -%}<span{% if forloop.first %} class="is-active"{% endif %}></span>{%- endfor -%}
+    </div>
 
-    {%- if sold_out -%}
-      {%- if settings.badge_soldout_enabled != false -%}<span class="od-card__soldout">{{ 'products.product.sold_out' | t }}</span>{%- endif -%}
-    {%- else -%}
-      <button type="button" class="od-card__plus" data-card-quickadd aria-label="{{ 'products.card.quick_add' | t }}" aria-haspopup="dialog">
-        {%- render 'icon-bag-plus' -%}
-      </button>
+    {%- if settings.badge_soldout_enabled != false -%}
+      <span class="od-card__soldout" data-card-soldout{% unless sold_out %} hidden{% endunless %}>{{ 'products.product.sold_out' | t }}</span>
     {%- endif -%}
+    <button type="button" class="od-card__plus" data-card-quickadd aria-label="{{ 'products.card.quick_add' | t }}" aria-haspopup="dialog"{% if sold_out %} hidden{% endif %}>
+      {%- render 'icon-bag-plus' -%}
+    </button>
   </div>
 
   <div class="od-card__body">
     {%- if product.vendor != blank -%}<p class="od-card__brand"><a class="od-brand-link" href="{{ product.vendor | url_for_vendor }}">{{ product.vendor }}</a></p>{%- endif -%}
     <div class="od-card__row">
-      <p class="od-card__name"><a href="{{ product.url }}">{{ product.title }}</a></p>
+      <p class="od-card__name"><a href="{{ card_url }}" data-card-name-link>{{ product.title }}</a></p>
       <div class="od-card__prices">
-        <p class="od-card__price{% if on_sale %} od-card__price--sale{% endif %}">{% render 'sar' %}{{ product.price | money_without_currency }}</p>
+        <p class="od-card__price{% if on_sale %} od-card__price--sale{% endif %}" data-card-price>{% render 'sar' %}{{ price | money_without_currency }}</p>
         {%- if on_sale -%}
-          <p class="od-card__price od-card__price--compare">{% render 'sar' %}{{ product.compare_at_price | money_without_currency }}</p>
+          <p class="od-card__price od-card__price--compare" data-card-compare>{% render 'sar' %}{{ compare | money_without_currency }}</p>
         {%- endif -%}
       </div>
     </div>
@@ -126,13 +232,17 @@
             {%- liquid
               assign v_img = ''
               for variant in product.variants
-                if variant.options contains value and variant.featured_image
+                if variant.options[color_idx0] == value and variant.featured_image
                   assign v_img = variant.featured_image | image_url: width: 600
                   break
                 endif
               endfor
+              assign selected = false
+              if value == card_colour_value
+                assign selected = true
+              endif
             -%}
-            <button type="button" title="{{ value | escape }}" aria-label="{{ value | escape }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" class="_swatch_13l1w_280 od-card__dot {% if forloop.first %}_swatchSelected_13l1w_301{% endif %} " style="background: {% render 'swatch-color', value: value %};" data-card-swatch data-value="{{ value | escape }}" data-image="{{ v_img }}"></button>
+            <button type="button" title="{{ value | escape }}" aria-label="{{ value | escape }}" aria-pressed="{% if selected %}true{% else %}false{% endif %}" class="_swatch_13l1w_280 od-card__dot {% if selected %}_swatchSelected_13l1w_301{% endif %} " style="background: {% render 'swatch-color', value: value %};" data-card-swatch data-value="{{ value | escape }}" data-image="{{ v_img }}"></button>
           {%- endfor -%}
         </div>
         <span class="od-card__colours-text">{{ 'products.card.colours' | t: count: colour_count }}</span>
@@ -140,5 +250,7 @@
     {%- endif -%}
   </div>
 
-  {%- render 'product-json', product: product, color_name: color_name, short_desc: short_desc, material: material -%}
+  {%- render 'product-json', product: product, color_name: color_name, short_desc: short_desc, material: material, colour: colour, colour_variant: colour_variant, media_map: media_map -%}
 </div>
+{%- if wrap_class != blank -%}</div>{%- endif -%}
+{%- endfor -%}

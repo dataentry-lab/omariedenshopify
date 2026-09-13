@@ -40,6 +40,7 @@
     {%- endif -%}
     {{ 'omarieden.css' | asset_url | stylesheet_tag }}
     {{ 'theme-shopify.css' | asset_url | stylesheet_tag }}
+    {{ 'od-round9.css' | asset_url | stylesheet_tag }}
     {{ 'od-card.css' | asset_url | stylesheet_tag }}
     {{ 'od-cart.css' | asset_url | stylesheet_tag }}
     {{ 'od-menu.css' | asset_url | stylesheet_tag }}
@@ -68,6 +69,8 @@
         colorOptionName: {{ settings.color_option_name | default: 'Color' | json }},
         galleryColorMode: {{ settings.gallery_color_mode | default: 'filter' | json }},
         swatchMap: {{ settings.color_swatch_map | json }},
+        cardPerColour: {% if settings.card_per_colour == false %}false{% else %}true{% endif %},
+        multiSwatchImage: {% if settings.multi_swatch_image != blank %}{{ settings.multi_swatch_image | image_url: width: 80 | json }}{% else %}null{% endif %},
         badges: {
           metafield: {{ settings.badge_metafield_enabled | json }},
           newDays: {{ settings.badge_new_days | default: 30 }},

@@ -270,6 +270,7 @@
     const card = sw.closest('[data-product-card]');
     $$('[data-card-swatch]', card).forEach((b) => { b.classList.remove(CLS.swatchSelected); b.setAttribute('aria-pressed', 'false'); });
     sw.classList.add(CLS.swatchSelected); sw.setAttribute('aria-pressed', 'true');
+    if (card && card.hasAttribute('data-od-card')) return; // od-card.js swaps the photos per colour (round 9)
     const img = $('[data-card-image]', card);
     const src = sw.getAttribute('data-image');
     if (img && src) { img.removeAttribute('srcset'); img.src = src; }
@@ -384,7 +385,10 @@
      then the theme map "NAME:#hex" or "NAME:#hex,#hex[,#hex]" (split circle), then the name itself as a CSS colour */
   const swatchMap = {};
   String(OD.swatchMap || '').split(/\r?\n/).forEach((line) => { const i = line.indexOf(':'); if (i > 0) swatchMap[line.slice(0, i).trim().toUpperCase()] = line.slice(i + 1).trim(); });
+  /* round 9: "Multicolour" values (Multicolor / Multi-colour ...) use the theme setting image (OD.multiSwatchImage) */
+  OD.isMultiColour = (value) => /^multicolou?r$/.test(String(value || '').toLowerCase().replace(/[^a-z\u0600-\u06ff]/g, ''));
   OD.swatchColor = (value, swatches) => {
+    if (OD.multiSwatchImage && OD.isMultiColour(value)) return 'url(' + OD.multiSwatchImage + ') center / cover no-repeat';
     if (swatches && swatches[value]) return swatches[value];
     let out = swatchMap[String(value || '').trim().toUpperCase()] || '';
     if (out.indexOf(',') > -1) {
@@ -402,6 +406,15 @@
     const clear = $('[data-search-clear]', modal);
     const results = $('[data-search-results]', modal);
     const skeleton = '<div class="_resultContainer_j9u6d_82"><div class="_resultContainer__content_j9u6d_86"><div class="od-skel od-skel--line" style="width:120px"></div><div class="od-skel od-skel--line" style="width:60%"></div><div class="od-skel od-skel--line" style="width:45%"></div><div class="_products_j9u6d_246"><div class="_products__grid_j9u6d_281">' + '<div class="od-skel od-skel--card"></div>'.repeat(4) + '</div></div></div></div>';
+    /* brands line (round 9): vendors whose name, or any word of it, starts with the query (2+ chars), max 5 */
+    let vendors = [];
+    try { const vj = $('[data-vendors]', modal); if (vj) vendors = JSON.parse(vj.textContent) || []; } catch (e) { vendors = []; }
+    const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const matchVendors = (q) => {
+      const ql = q.toLowerCase();
+      if (ql.length < 2) return [];
+      return vendors.filter((v) => { const vl = String(v).toLowerCase(); return vl.indexOf(ql) === 0 || vl.split(/[\s\-_.,&/]+/).some((w) => w && w.indexOf(ql) === 0); }).slice(0, 5);
+    };
     const render = (q, data) => {
       const queries = (data.resources.results.queries || []).slice(0, 10);
       const products = (data.resources.results.products || []).slice(0, 5);
@@ -411,9 +424,17 @@
         html += '<div class="_suggestions_j9u6d_200"><h3 class="_suggestions__title_j9u6d_203">' + OD.t.suggestion + '</h3><div class="_suggestions__list_j9u6d_218">' +
           queries.map((s) => '<div class="_suggestions__item_j9u6d_222" data-suggestion="' + s.text.replace(/"/g, '&quot;') + '">' + hl(s.text) + '</div>').join('') + '</div></div>';
       }
+      const brands = matchVendors(q);
+      if (brands.length) {
+        html += '<div class="od-search-brands" data-search-brands><span class="od-search-brands__label">' + esc(modal.getAttribute('data-t-brands') || 'Brands') + '</span>' +
+          brands.map((v) => '<a class="od-search-brands__link" href="' + esc(OD.vendorUrl(v)) + '">' + esc(v) + '</a>').join('') + '</div>';
+      }
       if (products.length) {
+        const norm = (p) => ({ id: p.id, handle: p.handle, title: p.title, vendor: p.vendor, url: p.url, featured_image: p.featured_image && (p.featured_image.url || p.featured_image.src || p.featured_image), price: p.price, compare_at_price: p.compare_at_price_max || null, tags: p.tags || [], available: p.available !== false,
+          variants: p.variants && p.variants.length ? p.variants.map((v) => ({ id: v.id, title: v.title, available: v.available !== false, price: v.price, compare_at_price: v.compare_at_price || null, option1: v.option1, option2: v.option2, option3: v.option3, options: v.options, featured_image: v.featured_image || null, featured_media: v.featured_media || null })) : undefined,
+          options: p.options || [], media: p.media || null, images: p.images || null });
         html += '<h3 class="_products__title_j9u6d_265">' + OD.t.products + '</h3><div class="_products_j9u6d_246"><div class="_products__grid_j9u6d_281">' +
-          products.map((p) => (OD.cardHTML || cardHTML)({ id: p.id, handle: p.handle, title: p.title, vendor: p.vendor, url: p.url, featured_image: p.featured_image && p.featured_image.url, price: p.price, compare_at_price: p.compare_at_price_max || null, tags: p.tags || [], available: p.available !== false, variants: p.variants && p.variants.length ? p.variants.map((v) => ({ id: v.id, title: v.title, available: v.available !== false, price: v.price })) : undefined, options: [] })).join('') + '</div></div>';
+          products.map((p) => (OD.cardsHTML ? OD.cardsHTML(norm(p)).join('') : (OD.cardHTML || cardHTML)(norm(p)))).join('') + '</div></div>';
         html += '<button type="button" class="_btn_lnddl_30 _viewAllBtn_j9u6d_377" data-search-submit>' + OD.t.viewResults + '</button>';
       } else if (!queries.length) {
         html += '<p class="_suggestions__title_j9u6d_203">' + OD.t.noResults + '</p>';

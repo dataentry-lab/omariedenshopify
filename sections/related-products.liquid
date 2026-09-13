@@ -23,7 +23,7 @@
             <div class="swiper-wrapper">
               {%- for p in list limit: limit -%}
                 {%- unless p.id == product.id -%}
-                  <div class="swiper-slide">{% render 'product-card', product: p %}</div>
+                  {% render 'product-card', product: p, per_colour: true, wrap_class: 'swiper-slide' %}
                 {%- endunless -%}
               {%- endfor -%}
             </div>

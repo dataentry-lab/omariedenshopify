@@ -12,7 +12,7 @@
   const on = (el, ev, fn, opt) => el && el.addEventListener(ev, fn, opt);
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const isDesktop = () => window.matchMedia('(min-width: 768px)').matches;
-  const T = Object.assign({ items: '{{ count }} items', look: 'Shop the look', collection: 'Shop the collection', shop: 'Shop now', copied: 'Link copied', close: 'Close', mute: 'Mute', unmute: 'Unmute', share: 'Share', bag: 'Bag', wishlist: 'Wishlist', products: 'Shop this reel', next: 'Next', prev: 'Previous' }, OD.reelsT || {});
+  const T = Object.assign({ items: '{{ count }} items', look: 'Shop the look', collection: 'Shop the collection', shop: 'Shop now', copied: 'Link copied', close: 'Close', mute: 'Mute', unmute: 'Unmute', share: 'Share', bag: 'Bag', wishlist: 'Wishlist', products: 'Shop this reel', next: 'Next', prev: 'Previous', hint: 'Swipe up', hint_sub: 'for the next video', hint_desktop: 'Scroll or use the arrows' }, OD.reelsT || {});
   const ICON = {
     close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
     muted: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>',
@@ -53,7 +53,7 @@
       '<div class="od-rl__top"><button type="button" class="od-rl__btn" data-rl-mute aria-label="' + esc(T.unmute) + '">' + ICON.muted + '</button><button type="button" class="od-rl__btn" data-rl-close aria-label="' + esc(T.close) + '">' + ICON.close + '</button></div>' +
       '<div class="od-rl__stage">' +
         '<div class="od-rl__arrows"><button type="button" class="od-rl__btn" data-rl-prev aria-label="' + esc(T.prev) + '">' + ICON.up + '</button><button type="button" class="od-rl__btn" data-rl-next aria-label="' + esc(T.next) + '">' + ICON.down + '</button></div>' +
-        '<div class="od-rl__frame"><div class="od-rl__scroll" data-rl-scroll></div></div>' +
+        '<div class="od-rl__frame"><div class="od-rl__scroll" data-rl-scroll></div><div class="od-rl__hint" data-rl-hint aria-hidden="true">' + ICON.up + '<span class="od-rl__hint-t" data-rl-hint-t></span><span class="od-rl__hint-s" data-rl-hint-s></span></div></div>' +
         '<div class="od-rl__panel" data-rl-panel></div>' +
       '</div>';
     document.body.appendChild(rl);
@@ -62,6 +62,7 @@
     on($('[data-rl-prev]', rl), 'click', () => goTo(R.index - 1));
     on($('[data-rl-next]', rl), 'click', () => goTo(R.index + 1));
     on(rl, 'click', (e) => {
+      hideHint();
       const t = e.target;
       if (t.closest('[data-rl-share]')) { const d = R.reels[R.index]; share(d.caption || document.title, d.shareUrl); return; }
       if (t.closest('[data-rl-bag]')) { OD.openModal && OD.openModal('cart'); return; }
@@ -75,6 +76,9 @@
       if (e.key === 'm' || e.key === 'M') setMuted(!muted);
     });
     const scroll = $('[data-rl-scroll]', rl);
+    on(scroll, 'scroll', hideHint, { passive: true });
+    on(scroll, 'touchstart', hideHint, { passive: true });
+    on(document, 'keydown', () => { if (rl.classList.contains('is-open')) hideHint(); });
     const io = new IntersectionObserver((entries) => {
       entries.forEach((en) => { if (en.isIntersecting && en.intersectionRatio >= .6) activate(parseInt(en.target.getAttribute('data-rl-index'), 10)); });
     }, { root: scroll, threshold: [.6] });
@@ -103,7 +107,33 @@
   }
   function productsFor(section, id) {
     const box = $('[data-reel-products="' + id + '"], [data-slide-products="' + id + '"]', section);
-    return box ? $$('[data-rl-card]', box) : [];
+    if (!box) return [];
+    // the hidden originals never load (lazy + hidden) and carry the site-wide fade class, so their copies stayed invisible
+    $$('img', box).forEach((img) => { if (img.loading === 'lazy') img.loading = 'eager'; img.classList.remove('od-img', 'is-loaded'); });
+    return $$('[data-rl-card]', box);
+  }
+  /* first-open hint: dimmed reel + "Swipe up / for the next video" (once per device, or every time via the section setting) */
+  function showHint(section) {
+    const hint = $('[data-rl-hint]', rl);
+    if (!hint) return;
+    const always = section && section.getAttribute('data-hint-always') === 'true';
+    let seen = false;
+    try { seen = localStorage.getItem('od_reels_hint') === '1'; } catch (e) { /* noop */ }
+    if (seen && !always) return;
+    try { localStorage.setItem('od_reels_hint', '1'); } catch (e) { /* noop */ }
+    const desk = isDesktop();
+    $('[data-rl-hint-t]', hint).textContent = desk ? T.hint_desktop : T.hint;
+    $('[data-rl-hint-s]', hint).textContent = desk ? '' : T.hint_sub;
+    hint.classList.toggle('od-rl__hint--desk', desk);
+    clearTimeout(R.hintTimer);
+    hint.classList.add('is-on');
+    R.hintTimer = setTimeout(hideHint, 2500);
+  }
+  function hideHint() {
+    const hint = rl && $('[data-rl-hint]', rl);
+    if (!hint || !hint.classList.contains('is-on')) return;
+    clearTimeout(R.hintTimer);
+    hint.classList.remove('is-on');
   }
   function openReels(section, index) {
     buildPlayer();
@@ -122,6 +152,7 @@
     rl.classList.add('is-open');
     lock(true);
     setMuted(muted, true);
+    showHint(section);
     try { history.pushState({ odReels: 1 }, '', location.pathname + location.search + '#reel-' + data[Math.max(0, index)].id); } catch (e) { /* noop */ }
     goTo(Math.max(0, Math.min(index || 0, data.length - 1)), true);
   }
@@ -129,6 +160,7 @@
     if (!rl || !rl.classList.contains('is-open')) return;
     $$('video', rl).forEach((v) => { try { v.pause(); } catch (e) { /* noop */ } });
     rl.classList.remove('is-open');
+    hideHint();
     lock(false);
     $('[data-rl-scroll]', rl).innerHTML = '';
     $('[data-rl-panel]', rl).innerHTML = '';

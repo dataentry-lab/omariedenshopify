@@ -1,7 +1,9 @@
 /* od-card: product card behaviour (image carousel with round arrows + dots, colour dots)
    and the shared quick-add drawer (desktop side drawer / mobile bottom sheet,
-   snippets/quick-add-drawer.liquid). Also a JS card renderer (OD.cardHTML) for
-   search / wishlist / cart-trending cards. Loaded after theme.js (window.OD available). */
+   snippets/quick-add-drawer.liquid). Also a JS card renderer (OD.cardHTML / OD.cardsHTML) for
+   search / wishlist / cart-trending cards. Loaded after theme.js (window.OD available).
+   Round 9: one card per colour (OD.cardPerColour), photos per colour on cards and in the quick view
+   (same rule as the product page: variant image, else alt text = colour or "colour - ...", no match = shared photo). */
 (function () {
   'use strict';
   const OD = window.OD || (window.OD = {});
@@ -12,6 +14,15 @@
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const money = (cents) => (OD.SAR || '') + (OD.formatMoney ? OD.formatMoney(cents) : String(cents / 100));
   const isMobile = () => window.matchMedia('(max-width: 767px)').matches;
+  const MAX_IMAGES = 6;
+  const isColourName = (name) => { const n = String(name || '').trim().toLowerCase(); return n === String(OD.colorOptionName || 'Color').trim().toLowerCase() || /^(colou?r|اللون|لون)$/.test(n); };
+  const optVal = (v, i) => v['option' + i];
+  /* alt text -> colour (product page rule): equals the colour, or starts with the colour + separator (space - | : ,) */
+  const altColour = (alt, values) => {
+    const a = String(alt || '').trim().toLowerCase();
+    if (!a) return null;
+    return values.find((c) => { const cl = String(c).trim().toLowerCase(); return cl && (a === cl || (a.indexOf(cl) === 0 && /^[\s\-|:,]/.test(a.slice(cl.length)))); }) || null;
+  };
 
   /* ---------- per-card state ---------- */
   function state(card) {
@@ -26,13 +37,28 @@
     let color = card.getAttribute('data-color-value') || '';
     if (colorIndex < 0) { // element without the card attributes (e.g. cart "Trending now"): derive from the JSON
       colorIndex = 0;
-      (data.options || []).forEach((o, i) => { if (o && o.name === data.color) { colorIndex = i + 1; color = (o.values && o.values[0]) || ''; } });
+      (data.options || []).forEach((o, i) => { if (o && (o.name === data.color || isColourName(o.name)) && colorIndex === 0) { colorIndex = i + 1; color = (o.values && o.values[0]) || ''; } });
     }
-    const s = { data, index: 0, colorIndex, color };
+    const s = { data, index: 0, colorIndex, color, perColour: !!data.colour };
     card._od = s;
+    // a per-colour card (or one with the media list) shows that colour's photos
+    if (data.colour && data.media && data.media.length) s.data.images = imagesFor(s, data.colour);
     return s;
   }
-  const optVal = (v, i) => v['option' + i];
+  /* variants of a colour, the colour's variant image (media id), the photos of a colour */
+  const variantsOf = (s, colour) => (s.colorIndex && colour ? s.data.variants.filter((v) => optVal(v, s.colorIndex) === colour) : s.data.variants);
+  const linkVariant = (s, colour) => { const list = variantsOf(s, colour); return list.find((v) => v.available) || list[0] || null; };
+  const variantMediaId = (s, colour) => { const v = variantsOf(s, colour).find((x) => x.media_id != null); return v ? v.media_id : null; };
+  function imagesFor(s, colour) {
+    const M = s.data.media;
+    if (!M || !M.length || !s.colorIndex || !colour) return s.data.images;
+    const vm = variantMediaId(s, colour);
+    let list = [];
+    if (vm != null) { const m = M.find((x) => String(x.id) === String(vm)); if (m) list.push(m); else { const v = variantsOf(s, colour).find((x) => x.image); if (v) list.push({ id: vm, src: v.image, alt: '', colour }); } }
+    list = list.concat(M.filter((m) => m.colour === colour && String(m.id) !== String(vm)), M.filter((m) => !m.colour));
+    if (!list.length) list = M.slice();
+    return list.slice(0, MAX_IMAGES).map((m) => ({ id: m.id, src: m.src, alt: m.alt || s.data.title || '', colour: m.colour || null }));
+  }
 
   /* ---------- card images ---------- */
   function showImage(card, i) {
@@ -50,15 +76,48 @@
     const idx = typeof forced === 'number' ? forced : s.index;
     $$('[data-card-dots] > span', card).forEach((d, i) => d.classList.toggle('is-active', i === idx));
   }
-  function syncIndexToSrc(card, src) {
+  function rebuildDots(card) {
     const s = state(card);
-    const i = src ? s.data.images.findIndex((x) => x.src === src) : -1;
-    if (i >= 0) { s.index = i; paintDots(card); }
+    const n = s.data.images.length;
+    const dots = $('[data-card-dots]', card);
+    if (dots) { dots.innerHTML = Array.from({ length: n }, (_, i) => '<span' + (i === s.index ? ' class="is-active"' : '') + '></span>').join(''); dots.hidden = n < 2; }
+    $$('[data-card-prev], [data-card-next]', card).forEach((b) => { b.hidden = n < 2; });
   }
+  /* colour dot clicked (round 9): swap the photos inside the card to that colour, its link / quick view preselect the
+     colour's variant, sold-out state and price follow the colour */
   function setColor(card, value) {
     const s = state(card);
     if (value) s.color = value;
     card.setAttribute('data-color-value', s.color);
+    if (!s.colorIndex || !s.color) return;
+    const hasMedia = !!(s.data.media && s.data.media.length);
+    if (hasMedia) {
+      s.data.images = imagesFor(s, s.color);
+      s.index = 0;
+      const img = $('[data-card-image]', card);
+      const first = s.data.images[0];
+      if (img && first && img.getAttribute('src') !== first.src) { img.removeAttribute('srcset'); img.src = first.src; }
+      const h = $('[data-card-image-hover]', card);
+      if (h) { h.classList.remove('is-on'); if (s.data.images[1]) h.src = s.data.images[1].src; else h.remove(); }
+      rebuildDots(card);
+    } else {
+      // no media list: fall back to the colour's variant image
+      const v = variantsOf(s, s.color).find((x) => x.image);
+      const img = $('[data-card-image]', card);
+      if (img && v) { img.removeAttribute('srcset'); img.src = v.image; }
+    }
+    const lv = linkVariant(s, s.color);
+    $$('[data-card-image-link], [data-card-name-link]', card).forEach((a) => {
+      const base = a.getAttribute('data-card-url') || (s.data.url || a.getAttribute('href') || '').split('?')[0];
+      if (lv && base) a.setAttribute('href', base + '?variant=' + lv.id);
+    });
+    const available = variantsOf(s, s.color).some((v) => v.available);
+    card.classList.toggle('is-sold-out', !available);
+    const plus = $('[data-card-quickadd]', card), so = $('[data-card-soldout]', card);
+    if (plus && so) { plus.hidden = !available; so.hidden = available; }
+    const price = $('[data-card-price]', card), cmp = $('[data-card-compare]', card);
+    if (price && lv && lv.price != null) { price.innerHTML = money(lv.price); price.classList.toggle('od-card__price--sale', !!(lv.compare_at_price && lv.compare_at_price > lv.price)); }
+    if (cmp && lv) { const onSale = lv.compare_at_price && lv.compare_at_price > lv.price; cmp.hidden = !onSale; if (onSale) cmp.innerHTML = money(lv.compare_at_price); }
   }
 
   /* =====================================================================
@@ -84,28 +143,62 @@
     return Q.s.data.variants.find((v) => String(v.id) === String(Q.variantId)) || null;
   }
 
+  /* quick view gallery (round 9): photos per colour like the product page, honouring OD.galleryColorMode
+     filter = only that colour's photos (+ shared), sync = all photos, jump to the colour's first photo and the swatch follows
+     the gallery, off = all photos, jump to the variant image only */
   function buildGallery() {
     const wrap = $('[data-qa-slides]', qa);
     if (!wrap) return;
     const s = Q.s;
-    let images = s.data.images.slice();
-    // selected colour's image first
-    if (s.colorIndex && Q.color) {
-      const v = s.data.variants.find((x) => optVal(x, s.colorIndex) === Q.color && x.image);
-      if (v) { const i = images.findIndex((im) => im.src === v.image); if (i > 0) images.unshift(images.splice(i, 1)[0]); else if (i < 0) images.unshift({ src: v.image, alt: s.data.title }); }
+    const M = s.data.media;
+    const mode = OD.galleryColorMode || 'filter';
+    let images, start = 0;
+    if (M && M.length && s.colorIndex && Q.color) {
+      if (mode === 'filter') images = imagesFor(s, Q.color);
+      else {
+        images = M.slice(0, 12);
+        const vm = variantMediaId(s, Q.color);
+        let i = vm != null ? images.findIndex((m) => String(m.id) === String(vm)) : -1;
+        if (i < 0 && mode === 'sync') i = images.findIndex((m) => m.colour === Q.color);
+        start = Math.max(0, i);
+      }
+    } else {
+      images = s.data.images.slice();
+      // selected colour's image first
+      if (s.colorIndex && Q.color) {
+        const v = s.data.variants.find((x) => optVal(x, s.colorIndex) === Q.color && x.image);
+        if (v) { const i = images.findIndex((im) => im.src === v.image); if (i > 0) images.unshift(images.splice(i, 1)[0]); else if (i < 0) images.unshift({ src: v.image, alt: s.data.title }); }
+      }
     }
-    wrap.innerHTML = images.map((im) => '<div class="swiper-slide od-qa__slide"><a href="' + esc(s.data.url) + '"><img src="' + esc(im.src) + '" alt="' + esc(im.alt || s.data.title) + '" loading="lazy"></a></div>').join('');
+    wrap.innerHTML = images.map((im) => '<div class="swiper-slide od-qa__slide" data-media-id="' + esc(im.id != null ? im.id : '') + '" data-colour="' + esc(im.colour || '') + '"><a href="' + esc(s.data.url) + '"><img src="' + esc(im.src) + '" alt="' + esc(im.alt || s.data.title) + '" loading="lazy"></a></div>').join('');
     const gallery = $('[data-qa-gallery]', qa);
     gallery.classList.toggle('is-single', images.length < 2);
     if (Q.swiper) { try { Q.swiper.destroy(true, false); } catch (e) { /* noop */ } Q.swiper = null; }
     const el = $('[data-qa-swiper]', qa);
     if (window.Swiper && el && images.length > 1) {
       Q.swiper = new window.Swiper(el, {
-        slidesPerView: 2, spaceBetween: 2, watchOverflow: true,
+        slidesPerView: 2, spaceBetween: 2, watchOverflow: true, initialSlide: start,
         navigation: { nextEl: $('[data-qa-next]', qa), prevEl: $('[data-qa-prev]', qa) },
         pagination: { el: $('[data-qa-pagination]', qa), clickable: true, bulletClass: 'od-qa__bullet', bulletActiveClass: 'is-active' }
       });
+      if (mode === 'sync' && M && M.length && s.colorIndex) {
+        Q.swiper.on('slideChange', () => {
+          const slide = $$('.swiper-slide', wrap)[Q.swiper.activeIndex];
+          const c = slide && slide.getAttribute('data-colour');
+          if (c && c !== Q.color) selectColour(c, true);
+        });
+      }
     }
+  }
+  function selectColour(value, fromGallery) {
+    Q.color = value;
+    $$('[data-qa-swatch]', qa).forEach((b) => { const sel = b.getAttribute('data-qa-swatch') === value; b.classList.toggle('is-selected', sel); b.setAttribute('aria-pressed', String(sel)); });
+    const lbl = $('[data-qa-colour-label]', qa);
+    if (lbl) lbl.textContent = Q.t('colour').replace('__NAME__', Q.color);
+    if (!fromGallery) buildGallery();
+    buildSizes();
+    // mirror on the card (its photos, link and dot follow the colour)
+    if (Q.card) { const main = $$('[data-card-swatch]', Q.card).find((b) => (b.getAttribute('data-value') || b.title) === Q.color); if (main && !main.classList.contains(SWATCH_SEL)) main.click(); }
   }
 
   function buildColours() {
@@ -256,16 +349,7 @@
       const size = t.closest('[data-qa-size]');
       if (size) { e.preventDefault(); selectSize(size); return; }
       const sw = t.closest('[data-qa-swatch]');
-      if (sw) {
-        e.preventDefault();
-        Q.color = sw.getAttribute('data-qa-swatch');
-        $$('[data-qa-swatch]', qa).forEach((b) => { const sel = b === sw; b.classList.toggle('is-selected', sel); b.setAttribute('aria-pressed', String(sel)); });
-        $('[data-qa-colour-label]', qa).textContent = Q.t('colour').replace('__NAME__', Q.color);
-        buildGallery(); buildSizes();
-        // mirror on the card
-        if (Q.card) { const main = $$('[data-card-swatch]', Q.card).find((b) => (b.getAttribute('data-value') || b.title) === Q.color); if (main) main.click(); }
-        return;
-      }
+      if (sw) { e.preventDefault(); selectColour(sw.getAttribute('data-qa-swatch'), false); return; }
       const atc = t.closest('[data-qa-atc]');
       if (atc) { e.preventDefault(); addFromDrawer(atc); return; }
       const more = t.closest('[data-qa-more]');
@@ -359,7 +443,7 @@
     if (t.closest('[data-card-next]')) { e.preventDefault(); e.stopPropagation(); const i = seen(card) + 1; pin(card); showImage(card, i); return; }
     if (t.closest('[data-card-quickadd]')) { e.preventDefault(); e.stopPropagation(); openQuickAdd(card); return; }
     const sw = t.closest('[data-card-swatch]');
-    if (sw) { pin(card); setColor(card, sw.getAttribute('data-value') || sw.title); syncIndexToSrc(card, sw.getAttribute('data-image')); } // theme.js already swapped the image
+    if (sw) { pin(card); setColor(card, sw.getAttribute('data-value') || sw.title); } // theme.js toggles the selected dot, od-card swaps the photos
   });
 
   function init(root) {
@@ -369,19 +453,60 @@
   OD.initCards = init;
   OD.openQuickAdd = openQuickAdd;
 
-  /* ---------- JSON blob for JS-rendered cards (from /products/{handle}.js) so the quick-add works there too ---------- */
-  function jsonFromProduct(p) {
+  /* ---------- JSON blob for JS-rendered cards (from /products/{handle}.js or the predictive search JSON) so the quick-add works there too ---------- */
+  /* option value i (0-based) of a raw variant: option1..3, else options[], else the title "Red / M" (predictive search variants) */
+  const variantOpt = (v, i) => { if (!v) return undefined; const d = v['option' + (i + 1)]; if (d != null) return d; if (v.options && v.options[i] != null) return v.options[i]; const t = String(v.title || ''); return t ? t.split(' / ')[i] : undefined; };
+  const colourIndexOf = (p) => { const opts = p.options || []; let i = opts.findIndex((o) => isColourName(typeof o === 'string' ? o : (o && o.name))); if (i < 0) i = opts.findIndex((o) => (typeof o === 'string' ? o : (o && o.name)) === (OD.colorOptionName || 'Color')); return i; };
+  function normOptions(p) {
+    const opts = (p.options || []).map((o) => (typeof o === 'string' ? { name: o, values: [] } : { name: o.name, values: (o.values || []).slice() }));
+    opts.forEach((o, i) => { if (!o.values.length && Array.isArray(p.variants)) o.values = Array.from(new Set(p.variants.map((v) => variantOpt(v, i)).filter(Boolean))); });
+    return opts;
+  }
+  const mediaSrc = (m) => (m ? (m.src || (m.preview_image && m.preview_image.src) || (typeof m === 'string' ? m : '')) : '');
+  /* media list with a colour per photo (variant image, else alt text rule); without a media list the variant images stand in */
+  function normMedia(p, opts, ci) {
+    const values = ci > -1 ? opts[ci].values : [];
+    const variants = Array.isArray(p.variants) ? p.variants : [];
+    const vColour = (v) => (ci > -1 ? variantOpt(v, ci) : null);
+    const list = [];
+    if (Array.isArray(p.media) && p.media.length) {
+      p.media.forEach((m) => {
+        if (m.media_type && m.media_type !== 'image') return;
+        const src = mediaSrc(m); if (!src) return;
+        const byVariant = variants.find((v) => v.featured_media && String(v.featured_media.id) === String(m.id));
+        list.push({ id: m.id, src, alt: m.alt || '', colour: byVariant ? vColour(byVariant) : altColour(m.alt, values) });
+      });
+    } else {
+      const seen = {};
+      variants.forEach((v) => {
+        const fi = v.featured_image || v.featured_media || null;
+        const src = fi ? (fi.src || (fi.preview_image && fi.preview_image.src) || (typeof fi === 'string' ? fi : '')) : '';
+        if (!src || seen[src]) return;
+        seen[src] = true;
+        list.push({ id: (fi && fi.id) || 'v' + v.id, src, alt: (fi && fi.alt) || '', colour: vColour(v) });
+      });
+      const main = p.featured_image ? (p.featured_image.src || p.featured_image.url || (typeof p.featured_image === 'string' ? p.featured_image : '')) : '';
+      if (main && !seen[main]) list.unshift({ id: 'main', src: main, alt: '', colour: null });
+      (p.images || []).forEach((src, i) => { const u = typeof src === 'string' ? src : (src && src.src); if (u && !seen[u]) { seen[u] = true; list.push({ id: 'i' + i, src: u, alt: '', colour: null }); } });
+    }
+    return list.slice(0, 12);
+  }
+  /* prices: cents (products/{handle}.js) or "120.00" strings (predictive search) -> cents */
+  const cents = (x) => (x == null || x === '' ? null : (typeof x === 'number' ? x : Math.round(parseFloat(String(x).replace(/[^\d.]/g, '')) * 100) || 0));
+  function jsonFromProduct(p, colour, colourVariant) {
     if (!p || !Array.isArray(p.variants)) return '';
-    const colorName = OD.colorOptionName || 'Color';
-    const opts = (p.options || []).map((o) => (typeof o === 'string' ? { name: o, values: [] } : { name: o.name, values: o.values || [] }));
-    opts.forEach((o, i) => { if (!o.values.length) o.values = Array.from(new Set(p.variants.map((v) => v['option' + (i + 1)]).filter(Boolean))); });
+    const opts = normOptions(p);
+    const ci = colourIndexOf(p);
+    const colorName = ci > -1 ? opts[ci].name : (OD.colorOptionName || 'Color');
     const single = p.variants.length === 1 && /default title/i.test(p.variants[0].title || '');
+    const media = normMedia(p, opts, ci);
     const data = {
-      title: p.title, url: p.url || ((OD.rootUrl || '/') + 'products/' + p.handle), vendor: p.vendor || '', price: p.price, compare_at_price: p.compare_at_price || null,
-      options: opts, color: colorName, single,
-      images: (p.images || []).slice(0, 6).map((src) => ({ src: typeof src === 'string' ? src : (src.src || ''), alt: p.title })),
-      variants: p.variants.map((v) => ({ id: v.id, title: v.title, option1: v.option1, option2: v.option2, option3: v.option3, available: !!v.available, price: v.price, compare_at_price: v.compare_at_price || null, image: v.featured_image ? (v.featured_image.src || v.featured_image) : null, qty: 0, tracked: false })),
-      description: String(p.description || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 300),
+      id: p.id, handle: p.handle, title: p.title, url: p.url || ((OD.rootUrl || '/') + 'products/' + p.handle), vendor: p.vendor || '', price: cents(p.price), compare_at_price: cents(p.compare_at_price),
+      options: opts, color: colorName, colour: colour || null, colour_variant: colourVariant || null,
+      images: (p.images && p.images.length ? p.images : media.map((m) => m.src)).slice(0, 6).map((src) => ({ src: typeof src === 'string' ? src : (src.src || ''), alt: p.title })),
+      media,
+      variants: p.variants.map((v) => ({ id: v.id, title: v.title, option1: variantOpt(v, 0), option2: variantOpt(v, 1), option3: variantOpt(v, 2), available: !!v.available, price: cents(v.price), compare_at_price: cents(v.compare_at_price), image: v.featured_image ? (v.featured_image.src || v.featured_image) : null, media_id: v.featured_media ? v.featured_media.id : (v.featured_image && v.featured_image.id ? v.featured_image.id : null), qty: 0, tracked: false })),
+      description: String(p.description || p.body || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 300),
       material: null,
       badges: OD.badgesFor ? OD.badgesFor(p, 2) : [],
       available: p.variants.some((v) => v.available)
@@ -414,30 +539,66 @@
     return (list || []).map((b) => '<span class="od-card__badge" style="background-color:' + esc(b.bg || '#551c25') + ';color:' + esc(b.text || '#fff') + ';">' + esc(b.label) + '</span>').join('');
   };
 
-  /* ---------- JS-rendered cards (search overlay, wishlist page + drawer, cart trending) ---------- */
-  OD.cardHTML = function (p) {
-    const img = p.featured_image || (p.image && p.image.src) || p.image || (OD.assets && OD.assets.fallback) || '';
-    const price = p.price != null ? (typeof p.price === 'number' ? (OD.formatMoney ? OD.formatMoney(p.price) : String(p.price / 100)) : String(p.price).replace(/[^\d.,]/g, '')) : '';
-    const url = p.url || ((OD.rootUrl || '/') + 'products/' + p.handle);
-    const color = p.options ? p.options.find((o) => /colou?r|لون/i.test((o && o.name) || o)) : null;
-    const values = color && color.values ? color.values : [];
-    const swatches = values.map((v, i) => '<button type="button" title="' + esc(v) + '" aria-label="' + esc(v) + '" aria-pressed="' + (i === 0) + '" class="_swatch_13l1w_280 od-card__dot ' + (i === 0 ? SWATCH_SEL : '') + ' " style="background: ' + esc(OD.swatchColor ? OD.swatchColor(v, p.swatches) : String(v).toLowerCase()) + ';" data-card-swatch data-value="' + esc(v) + '"></button>').join('');
-    const json = jsonFromProduct(p);
-    const available = Array.isArray(p.variants) ? p.variants.some((v) => v.available) : !!p.available;
+  /* ---------- JS-rendered cards (search overlay, wishlist page + drawer, cart trending) ----------
+     cardHTML(p, colour): one card; with a colour it is that colour's card (its photos, link ?variant=, sold-out state).
+     cardsHTML(p): one card per colour when OD.cardPerColour is on (wishlist drawer keeps calling cardHTML: one per product). */
+  const ARROW_PREV = '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const ARROW_NEXT = '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  OD.cardHTML = function (p, colour) {
+    const opts = normOptions(p);
+    const ci = colourIndexOf(p);
+    const values = ci > -1 ? opts[ci].values : [];
+    const variants = Array.isArray(p.variants) ? p.variants : [];
+    const vColour = (v) => (ci > -1 ? variantOpt(v, ci) : null);
+    if (colour && values.indexOf(colour) < 0) colour = null;
+    const selected = colour || values[0] || '';
+    const url = (p.url || ((OD.rootUrl || '/') + 'products/' + p.handle)).split('?')[0];
+    let cardUrl = url, img = p.featured_image || (p.image && p.image.src) || p.image || (OD.assets && OD.assets.fallback) || '';
+    if (img && typeof img === 'object') img = img.src || img.url || '';
+    let available = variants.length ? variants.some((v) => v.available) : !!p.available;
+    let price = cents(p.price), compare = cents(p.compare_at_price), images = [], lv = null;
+    if (colour) {
+      const mine = variants.filter((v) => vColour(v) === colour);
+      lv = mine.find((v) => v.available) || mine[0] || null;
+      if (lv) { cardUrl = url + '?variant=' + lv.id; if (lv.price != null) price = cents(lv.price); compare = cents(lv.compare_at_price); }
+      available = mine.some((v) => v.available);
+      const fake = { data: { media: normMedia(p, opts, ci), variants: variants.map((v) => ({ ['option' + (ci + 1)]: vColour(v), available: !!v.available, image: v.featured_image ? (v.featured_image.src || v.featured_image) : null, media_id: v.featured_media ? v.featured_media.id : (v.featured_image && v.featured_image.id ? v.featured_image.id : null) })), images: [] }, colorIndex: ci + 1 };
+      images = imagesFor(fake, colour);
+      if (images.length) img = images[0].src;
+    } else {
+      // one card per product: all photos (same list as the JSON "images"), so dots / arrows / hover swap work here too
+      const all = p.images && p.images.length ? p.images : normMedia(p, opts, ci).map((m) => m.src);
+      images = all.slice(0, MAX_IMAGES).map((src) => ({ src: typeof src === 'string' ? src : (src && src.src) || '' })).filter((x) => x.src);
+      if (images.length && !img) img = images[0].src;
+    }
+    const priceTxt = price != null ? (OD.formatMoney ? OD.formatMoney(price) : String(price / 100)) : '';
+    const onSale = typeof compare === 'number' && typeof price === 'number' && compare > price;
+    const swatches = values.map((v) => '<button type="button" title="' + esc(v) + '" aria-label="' + esc(v) + '" aria-pressed="' + (v === selected) + '" class="_swatch_13l1w_280 od-card__dot ' + (v === selected ? SWATCH_SEL : '') + ' " style="background: ' + esc(OD.swatchColor ? OD.swatchColor(v, p.swatches) : String(v).toLowerCase()) + ';" data-card-swatch data-value="' + esc(v) + '"></button>').join('');
+    const json = jsonFromProduct(p, colour, lv ? lv.id : null);
     const badges = available ? OD.badgeHTML(OD.badgesFor(p, 2)) : '';
-    const soldOut = !available && OD.badges && OD.badges.soldOut !== false ? '<span class="od-card__soldout">' + esc((OD.badges && OD.badges.soldOutLabel) || 'Sold out') + '</span>' : '';
-    return '<div class="_new_in_trend_card_13l1w_130 od-card' + (OD.rtl ? ' od-card--rtl' : '') + (available ? '' : ' is-sold-out') + '" data-product-card' + (json ? ' data-od-card' : '') + ' data-handle="' + esc(p.handle) + '" data-product-id="' + esc(p.id) + '">' +
+    const soldOut = OD.badges && OD.badges.soldOut !== false ? '<span class="od-card__soldout" data-card-soldout' + (available ? ' hidden' : '') + '>' + esc((OD.badges && OD.badges.soldOutLabel) || 'Sold out') + '</span>' : '';
+    const many = images.length > 1;
+    return '<div class="_new_in_trend_card_13l1w_130 od-card' + (OD.rtl ? ' od-card--rtl' : '') + (available ? '' : ' is-sold-out') + '" data-product-card' + (json ? ' data-od-card' : '') + ' data-handle="' + esc(p.handle) + '" data-product-id="' + esc(p.id) + '" data-color-index="' + (ci + 1) + '" data-color-value="' + esc(selected) + '"' + (colour ? ' data-card-colour="' + esc(colour) + '"' : '') + '>' +
       '<div class="od-card__media">' +
-      '<a href="' + esc(url) + '" class="od-card__link" data-card-image-link aria-label="' + esc(p.title) + '"><img class="od-card__img" alt="' + esc(p.title) + '" src="' + esc(img) + '" loading="lazy" data-card-image></a>' +
+      '<a href="' + esc(cardUrl) + '" class="od-card__link" data-card-image-link data-card-url="' + esc(url) + '" aria-label="' + esc(p.title) + '"><img class="od-card__img" alt="' + esc(p.title) + '" src="' + esc(img) + '" loading="lazy" data-card-image></a>' +
       '<div class="od-card__top"><div class="od-card__top-start" data-card-badges>' + badges + '</div><div class="od-card__top-end"><div class="_globalImg_1tf1q_38 _wishlistIcon_13l1w_356 od-card__wish" data-wishlist-toggle data-wishlist-handle="' + esc(p.handle) + '" data-wishlist-id="' + esc(p.id) + '" role="button" tabindex="0"><img alt="" src="' + ((OD.assets && OD.assets.wishlist) || '') + '"></div></div></div>' +
-      (json && available ? '<button type="button" class="od-card__plus" data-card-quickadd aria-haspopup="dialog" aria-label="' + esc((qa && qa.getAttribute('aria-label')) || 'Quick add') + '">' + BAG_ICON + '</button>' : soldOut) +
+      (json ? '<button type="button" class="od-card__arrow od-card__arrow--prev" data-card-prev' + (many ? '' : ' hidden') + ' aria-label="prev">' + ARROW_PREV + '</button><button type="button" class="od-card__arrow od-card__arrow--next" data-card-next' + (many ? '' : ' hidden') + ' aria-label="next">' + ARROW_NEXT + '</button><div class="od-card__dots" data-card-dots aria-hidden="true"' + (many ? '' : ' hidden') + '>' + images.map((_, i) => '<span' + (i === 0 ? ' class="is-active"' : '') + '></span>').join('') + '</div>' : '') +
+      (json ? '<button type="button" class="od-card__plus" data-card-quickadd aria-haspopup="dialog"' + (available ? '' : ' hidden') + ' aria-label="' + esc((qa && qa.getAttribute('aria-label')) || 'Quick add') + '">' + BAG_ICON + '</button>' + soldOut : (available ? '' : soldOut)) +
       '</div>' +
       '<div class="od-card__body">' +
       (p.vendor ? '<p class="od-card__brand"><a class="od-brand-link" href="' + OD.vendorUrl(p.vendor) + '">' + esc(p.vendor) + '</a></p>' : '') +
-      '<div class="od-card__row"><p class="od-card__name"><a href="' + esc(url) + '">' + esc(p.title) + '</a></p>' +
-      '<div class="od-card__prices"><p class="od-card__price">' + (OD.SAR || '') + price + '</p></div></div>' +
+      '<div class="od-card__row"><p class="od-card__name"><a href="' + esc(cardUrl) + '" data-card-name-link>' + esc(p.title) + '</a></p>' +
+      '<div class="od-card__prices"><p class="od-card__price' + (onSale ? ' od-card__price--sale' : '') + '" data-card-price>' + (OD.SAR || '') + priceTxt + '</p><p class="od-card__price od-card__price--compare" data-card-compare' + (onSale ? '' : ' hidden') + '>' + (onSale ? money(compare) : '') + '</p></div></div>' +
       (swatches ? '<div class="od-card__colours"><div class="' + (OD.rtl ? '_new_in_trend_card__colorsRtl_13l1w_139' : '_new_in_trend_card__colorsLtr_13l1w_139') + ' od-card__swatches">' + swatches + '</div></div>' : '') +
       '</div>' + json + '</div>';
+  };
+  OD.cardsHTML = function (p) {
+    if (OD.cardPerColour === false || !p) return [OD.cardHTML(p)];
+    const opts = normOptions(p);
+    const ci = colourIndexOf(p);
+    const values = ci > -1 ? opts[ci].values : [];
+    if (values.length < 2) return [OD.cardHTML(p)];
+    return values.map((v) => OD.cardHTML(p, v));
   };
 
   /* =====================================================================

@@ -25,7 +25,7 @@
       <div class="swiper sliderBorder category_carousel {{ swiper_class }} {% if rtl %}custom_rtl{% endif %}" dir="{% if rtl %}rtl{% else %}ltr{% endif %}" data-swiper="cards">
         <div class="swiper-wrapper">
           {%- for product in products limit: limit -%}
-            <div class="swiper-slide">{% render 'product-card', product: product, show_wishlist: show_wishlist %}</div>
+            {% render 'product-card', product: product, show_wishlist: show_wishlist, per_colour: true, wrap_class: 'swiper-slide' %}
           {%- endfor -%}
         </div>
         <div class="swiper-pagination"></div>

@@ -8,6 +8,9 @@
   Submits with fetch (no reload, assets/od-blocks.js): a contact form (emails the store) and, when an email is given,
   a customer form (saves the customer with the tag + choices as tags). Falls back to a normal submit if Shopify asks
   for a captcha challenge.
+  Round 9: premium glass panel on a dark background. Templates saved with the old light preset
+  (sandstone background, maroon accent) or the old gold accent are moved to the new palette below,
+  custom colours chosen by the client are kept.
 {%- endcomment -%}
 {%- liquid
   assign st = section.settings
@@ -15,8 +18,21 @@
   assign fid = 'od-form-' | append: section.id
   assign cats = st.categories | split: ','
   assign styles = st.styles | split: ','
+  assign f_bg = st.bg | downcase
+  assign f_text = st.text_color | downcase
+  assign f_accent = st.accent | downcase
+  assign f_accent_text = st.accent_text | downcase
+  if f_accent == '#c9a96a'
+    assign f_accent = '#e5d9c7'
+  endif
+  if f_bg == '#e5d9c7' and f_accent == '#551c25'
+    assign f_bg = '#2a0d12'
+    assign f_text = '#fcf8f2'
+    assign f_accent = '#e5d9c7'
+    assign f_accent_text = '#2a0d12'
+  endif
 -%}
-<section class="od-blk od-formblk od-formblk--{{ kind }} od-formblk--{{ st.layout }}" id="od-form-{{ kind }}" data-section-id="{{ section.id }}" style="--od-blk-bg: {{ st.bg }}; --od-blk-text: {{ st.text_color }}; --od-accent: {{ st.accent }}; --od-accent-text: {{ st.accent_text }}; --od-field-bg: {{ st.field_bg }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+<section class="od-blk od-formblk od-formblk--{{ kind }} od-formblk--{{ st.layout }}" id="od-form-{{ kind }}" data-section-id="{{ section.id }}" style="--od-blk-bg: {{ f_bg }}; --od-blk-text: {{ f_text }}; --od-accent: {{ f_accent }}; --od-accent-text: {{ f_accent_text }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
   <div class="_container_1kxnl_30">
     <div class="od-formblk__box">
       <div class="od-formblk__intro">
@@ -95,7 +111,7 @@
   "name": "Form",
   "tag": "section",
   "settings": [
-    { "type": "select", "id": "kind", "label": "Form type", "default": "prive", "options": [ { "value": "prive", "label": "Book your visit (Privé)" }, { "value": "event-interest", "label": "Join the next event" }, { "value": "cafe", "label": "Reserve a table (cafe)" } ] },
+    { "type": "select", "id": "kind", "label": "Form type", "default": "prive", "options": [ { "value": "prive", "label": "Book your visit (Privé)" }, { "value": "event-interest", "label": "Join the next event" }, { "value": "cafe", "label": "Reserve a table (Super Botanical)" } ] },
     { "type": "paragraph", "content": "Submissions are emailed to the store (Settings > Notifications > Customer contact) and the person is saved in Customers with the tag below." },
     { "type": "text", "id": "customer_tag", "label": "Customer tag", "default": "prive" },
     { "type": "select", "id": "layout", "label": "Layout", "default": "split", "options": [ { "value": "split", "label": "Text left, form right" }, { "value": "stack", "label": "Centred, form below" } ] },
@@ -117,8 +133,8 @@
     { "type": "text", "id": "categories", "label": "Categories (comma separated, Privé)", "default": "Women, Men, Kids, Bags, Shoes, Jewellery" },
     { "type": "text", "id": "label_style", "label": "Style label (Privé)", "default": "Your style" },
     { "type": "text", "id": "styles", "label": "Styles (comma separated, Privé)", "default": "Classic, Modern, Minimal, Statement" },
-    { "type": "text", "id": "label_datetime", "label": "Date and time label (cafe)", "default": "Date and time" },
-    { "type": "text", "id": "label_guests", "label": "Guests label (cafe)", "default": "Guests" },
+    { "type": "text", "id": "label_datetime", "label": "Date and time label (Super Botanical)", "default": "Date and time" },
+    { "type": "text", "id": "label_guests", "label": "Guests label (Super Botanical)", "default": "Guests" },
     { "type": "checkbox", "id": "show_notes", "label": "Notes field", "default": true },
     { "type": "text", "id": "label_notes", "label": "Notes label", "default": "Anything we should know?" },
     { "type": "text", "id": "notes_placeholder", "label": "Notes placeholder", "default": "Sizes, occasion, preferred day and time" },
@@ -129,16 +145,15 @@
     { "type": "header", "content": "Colours" },
     { "type": "color", "id": "bg", "label": "Background", "default": "#2a0d12" },
     { "type": "color", "id": "text_color", "label": "Text colour", "default": "#fcf8f2" },
-    { "type": "color", "id": "accent", "label": "Button / selected chip colour", "default": "#c9a96a" },
-    { "type": "color", "id": "accent_text", "label": "Button text colour", "default": "#2a0d12" },
-    { "type": "color", "id": "field_bg", "label": "Field background", "default": "#ffffff" },
+    { "type": "color", "id": "accent", "label": "Accent (labels, fields, chips, button)", "default": "#e5d9c7" },
+    { "type": "color", "id": "accent_text", "label": "Button / selected chip text colour", "default": "#2a0d12" },
     { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
     { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
   ],
   "presets": [
-    { "name": "Form: Book your visit (Privé)" },
-    { "name": "Form: Join the next event", "settings": { "kind": "event-interest", "customer_tag": "event-interest", "eyebrow": "Be the first to know", "heading": "Join us at the next event", "text": "<p>Leave your details and we'll send you a personal invitation before the next preview, pop-up or trunk show. No booking needed, no spam.</p>", "show_notes": false, "consent_text": "I'd like invitations by email and WhatsApp", "button_label": "Keep me posted", "success": "Thank you, you're on the list.", "bg": "#e5d9c7", "text_color": "#551c25", "accent": "#551c25", "accent_text": "#fcf8f2" } },
-    { "name": "Form: Reserve a table (cafe)", "settings": { "kind": "cafe", "customer_tag": "cafe", "eyebrow": "", "heading": "Reserve a table", "text": "<p>Walk-ins welcome. For groups of six or more, book ahead.</p>", "layout": "stack", "show_email": true, "label_notes": "Notes", "notes_placeholder": "Occasion, allergies, high chair", "button_label": "Request a table", "success": "Thank you, we'll confirm your table shortly.", "bg": "#182c29", "text_color": "#f0d58e", "accent": "#f0d58e", "accent_text": "#182c29" } }
+    { "name": "Form: Book your visit" },
+    { "name": "Form: Join the next event", "settings": { "kind": "event-interest", "customer_tag": "event-interest", "eyebrow": "Be the first to know", "heading": "Join us at the next event", "text": "<p>Leave your details and we'll send you a personal invitation before the next preview, pop-up or trunk show. No booking needed, no spam.</p>", "show_notes": false, "consent_text": "I'd like invitations by email and WhatsApp", "button_label": "Keep me posted", "success": "Thank you, you're on the list.", "bg": "#2a0d12", "text_color": "#fcf8f2", "accent": "#e5d9c7", "accent_text": "#2a0d12" } },
+    { "name": "Form: Reserve a table", "settings": { "kind": "cafe", "customer_tag": "cafe", "eyebrow": "", "heading": "Reserve a table", "text": "<p>Walk-ins welcome. For groups of six or more, book ahead.</p>", "layout": "stack", "show_email": true, "label_notes": "Notes", "notes_placeholder": "Occasion, allergies, high chair", "button_label": "Request a table", "success": "Thank you, we'll confirm your table shortly.", "bg": "#182c29", "text_color": "#f0d58e", "accent": "#f0d58e", "accent_text": "#182c29" } }
   ]
 }
 {% endschema %}

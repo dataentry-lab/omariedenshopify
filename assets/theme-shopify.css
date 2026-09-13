@@ -19,10 +19,15 @@ button { font: inherit; color: inherit; }
 .od-toast__icon { display: flex; margin: 0 6px 0 4px; }
 .od-toast__msg { display: flex; justify-content: center; margin: 4px 10px; color: inherit; flex: 1 1 auto; white-space: pre-line; }
 
-/* skeletons (shimmer, same gradient as the original) */
-@keyframes od-shimmer { 0% { background-position: -450px 0; } 100% { background-position: 450px 0; } }
-.od-skel { position: relative; overflow: hidden; background: #e9e4dc; border-radius: 4px; }
-.od-skel:before { position: absolute; content: ""; inset: 0; background-image: linear-gradient(to right, #d9d9d9, rgba(0,0,0,.05) 20%, #d9d9d9 40% 100%); background-repeat: no-repeat; background-size: 450px 400px; animation: od-shimmer 1.2s linear infinite; }
+/* skeletons (round 9): ONE shared shimmer for every placeholder (grid / next page / drawers / search / gallery):
+   warm sand base, a soft cream sweep travelling left to right (right to left in RTL) on a pseudo-element
+   (translateX -100% -> 100%, so the loop is seamless and the sweep never disappears abruptly) */
+@keyframes od-shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+@keyframes od-shimmer-rtl { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
+.od-skel { position: relative; overflow: hidden; background: #ede5d8; border-radius: 4px; }
+.od-skel::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(252, 248, 242, .8) 50%, transparent 70%); transform: translateX(-100%); animation: od-shimmer 1.6s ease-in-out infinite; will-change: transform; pointer-events: none; }
+[dir=rtl] .od-skel::after { transform: translateX(100%); animation-name: od-shimmer-rtl; }
+@media (prefers-reduced-motion: reduce) { .od-skel::after { animation: none; display: none; } }
 .od-skel--line { height: 14px; margin: 8px 0; }
 .od-skel--card { aspect-ratio: 4/6; width: 100%; }
 
@@ -406,3 +411,10 @@ body[data-dark-header="true"] .od-crumbs-wrap--overlay { top: 150px; }
   [data-search-results] .od-card__colours { display: none; }
   [data-search-results] ._products__title_j9u6d_265 { margin-top: 20px; }
 }
+
+/* ---------- search modal "Brands" line (round 9): vendors matching the query, above the product results ---------- */
+[data-search-results] .od-search-brands { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin: 0 0 12px; font-family: Bricolage, sans-serif; font-size: 13px; line-height: 1.4; color: #551c25; }
+[dir=rtl] [data-search-results] .od-search-brands { font-family: Arabic-Regular, Bricolage, sans-serif; }
+[data-search-results] .od-search-brands__label { letter-spacing: .06em; text-transform: uppercase; opacity: .7; }
+[data-search-results] .od-search-brands__link { color: #551c25; text-decoration: none; }
+[data-search-results] .od-search-brands__link:hover, [data-search-results] .od-search-brands__link:focus-visible { text-decoration: underline; text-underline-offset: 3px; }

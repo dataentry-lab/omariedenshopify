@@ -1,0 +1,83 @@
+/* =====================================================================
+   Round 9 (13 Sep 2026): empty states, cart page spacing, Shop the Look
+   caption, brands A-Z grid, footer text block. Loaded right after
+   theme-shopify.css (layout/theme.liquid).
+   ===================================================================== */
+
+/* ---- 10. Empty cart page: button 28px under the text, trending 48px under the button ---- */
+[data-cart-page] ._shoppingBagContainer_179js_169 { min-height: 0; padding: 24px 40px 0; justify-content: flex-start; }
+[data-cart-page] ._shoppingBagContainer_179js_169 ._noProducts_1f8fu_34,
+[data-cart-page] ._shoppingBagContainer__emptyCart_179js_183 { min-height: 0 !important; }
+[data-cart-page] ._shoppingBagContainer_179js_169 ._noProducts_1f8fu_34 > h4 { margin-top: 0; }
+[data-cart-page] ._shoppingBagContainer_179js_169 ._noProducts_1f8fu_34 > p { margin-bottom: 0; }
+[data-cart-page] ._shoppingBagContainer_179js_169 > ._shopBtn_1f8fu_30 { margin: 28px auto 0; }
+[data-cart-page] ._shoppingBagContainer_179js_169 + ._bag__trending_179js_124 { margin-top: 48px; }
+@media only screen and (max-width: 480px) {
+  [data-cart-page] ._shoppingBagContainer_179js_169 { min-height: 0; padding: 16px 16px 0; margin-bottom: 0; }
+}
+
+/* ---- 11. Empty states: heading + line + button only (illustrations hidden in files not owned by this round) ---- */
+/* wishlist drawer: snippets/wishlist-drawer.liquid, <div class="_globalImg_1tf1q_38"><img src="noresult_empty_wishlist.svg"></div> */
+[data-wl-empty] > ._globalImg_1tf1q_38,
+[data-wl-empty] img[src*="noresult_"],
+/* search no results: sections/main-search.liquid, noresult_no_products.svg */
+[data-product-grid] ._noProducts_1f8fu_34 > ._globalImg_1tf1q_38,
+._SearchProductList_1cn7p_30 ._noProducts_1f8fu_34 > ._globalImg_1tf1q_38,
+/* empty collection: sections/main-collection.liquid, noresult_no_products.svg */
+._ProductCollection_1ajxu_41 ._noProducts_1f8fu_34 > ._globalImg_1tf1q_38,
+/* any other empty state that still carries a noresult_*.svg (search modal, FAQ search, JS-rendered grids) */
+._noProducts_1f8fu_34 > ._globalImg_1tf1q_38:has(> img[src*="noresult_"]),
+._noProducts_1f8fu_34 img[src*="noresult_"] { display: none !important; }
+._noProducts_1f8fu_34 > h4 { margin-top: 0; }
+/* cart drawer has no illustration (sections/cart-drawer.liquid), kept as is */
+
+/* wishlist page + cart page "Shop now": the same olive button (was cream outline on cream on the wishlist page) */
+[data-wishlist-empty] > ._shopBtn_1f8fu_30,
+[data-wishlist-empty] > button._btn_lnddl_30,
+[data-cart-page] ._shoppingBagContainer_179js_169 > button._btn_lnddl_30 {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: auto; min-width: 121px; height: 51px; padding: 0 24px !important;
+  background: #595b33; color: #fff; border: 0; border-radius: 2px;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  font-size: 14px; letter-spacing: .08em; text-transform: uppercase; line-height: 1.2; cursor: pointer;
+  transition: background-color .2s ease;
+}
+[data-wishlist-empty] > ._shopBtn_1f8fu_30:hover,
+[data-cart-page] ._shoppingBagContainer_179js_169 > button._btn_lnddl_30:hover { background: #4a4c2a; color: #fff; }
+[data-wishlist-empty] { min-height: 0; padding: 24px 40px 0; justify-content: flex-start; }
+[data-wishlist-empty] ._noProducts_1f8fu_34 { min-height: 0 !important; }
+[data-wishlist-empty] ._noProducts_1f8fu_34 > h4 { margin-top: 0; }
+[data-wishlist-empty] ._noProducts_1f8fu_34 > p { margin-bottom: 0; }
+[data-wishlist-empty] > ._shopBtn_1f8fu_30 { margin: 28px auto 40px; }
+@media only screen and (max-width: 480px) {
+  [data-wishlist-empty] { padding: 16px 16px 0; }
+}
+
+/* ---- 13. Brands A-Z: one flat list, reading order left to right, row by row ---- */
+._right__top__brands_etq9e_70.od-brands__list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px 40px; }
+._right__top__brands_etq9e_70.od-brands__list > p { margin: 0; font-family: Bricolage, sans-serif; font-weight: 400; font-size: 14px; line-height: 160%; color: var(--maroon, #551c25); cursor: pointer; transition: all .2s ease; min-width: 0; overflow-wrap: anywhere; }
+:dir(rtl) ._right__top__brands_etq9e_70.od-brands__list > p { font-family: Arabic-Regular, sans-serif; }
+._right__top__brands_etq9e_70.od-brands__list > p:hover { text-decoration: underline; }
+._right__top__brands_etq9e_70.od-brands__list > p[hidden] { display: none; }
+@media only screen and (max-width: 991px) {
+  ._right__top__brands_etq9e_70.od-brands__list { grid-template-columns: repeat(2, 1fr); gap: 20px 24px; }
+}
+.od-brands__imglink { display: block; text-decoration: none; color: inherit; }
+.od-brands__imglink ._leftContainer__img_1fzpw_57 { cursor: pointer; }
+
+/* ---- 14. Shop the Look caption: flush with the image edge (left in EN, right in AR) ---- */
+.od-stl .swiper-slide { padding: 0; margin-inline-start: 0; }
+.od-stl__look { display: block; width: 100%; padding: 0; }
+.od-stl__caption { width: 100%; margin-inline: 0; padding-inline: 0; text-indent: 0; justify-content: flex-start; text-align: start; }
+.od-stl__caption .od-stl__label:first-child { margin-inline-start: 0; }
+.od-stl__caption .od-stl__label { letter-spacing: .12em; line-height: 1; }
+:dir(rtl) .od-stl__caption { justify-content: flex-start; }
+:dir(rtl) .od-stl__caption .od-stl__label { letter-spacing: 0; }
+
+/* ---- 16a. Footer text block (same column look as the link columns) ---- */
+._listLinks_n0o7o_126 .od-footer__text, ._lists_n0o7o_157 .od-footer__text { font-family: Bricolage, sans-serif; font-weight: 400; font-size: 14px; line-height: 160%; color: var(--maroon, #551c25); }
+:dir(rtl) ._listLinks_n0o7o_126 .od-footer__text, :dir(rtl) ._lists_n0o7o_157 .od-footer__text { font-family: Arabic-Regular, sans-serif; }
+.od-footer__text p { margin: 0 0 8px; }
+.od-footer__text p:last-child { margin-bottom: 0; }
+.od-footer__text a { color: inherit; }
+._lists_n0o7o_157 .od-footer__text { padding-bottom: 16px; }

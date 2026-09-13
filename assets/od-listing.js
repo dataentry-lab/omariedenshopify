@@ -106,6 +106,66 @@
     try { sessionStorage.setItem(COLS_KEY, cols); } catch (err) {}
   });
 
+  /* ===================== category buttons: one row + "+ n more" (desktop, round 9) =====================
+     Desktop (>= 768px): only the buttons that fit one row stay visible, then a "+ n more" button; clicking it shows every
+     row ("Less" collapses). The active category is moved to the front when it would not fit the first row.
+     Recomputed on resize and after every AJAX load. Mobile keeps the sideways scroll row (no JS). */
+  var catsMq = window.matchMedia('(min-width: 768px)');
+  function layoutCats(nav) {
+    if (!nav) return;
+    var more = $('[data-cats-more]', nav);
+    var links = $$('[data-cat]', nav);
+    if (!more || !links.length) return;
+    if (!nav._odOrder) nav._odOrder = links.slice();
+    var order = nav._odOrder;
+    // reset to the original order and show everything before measuring
+    order.forEach(function (a) { a.classList.remove('is-overflow'); nav.insertBefore(a, more); });
+    nav.classList.remove('is-collapsed');
+    if (!catsMq.matches) { more.hidden = true; nav.classList.remove('is-expanded'); return; }
+    var expanded = nav.classList.contains('is-expanded');
+    var width = nav.clientWidth;
+    var gap = parseFloat(getComputedStyle(nav).columnGap || getComputedStyle(nav).gap || '8') || 8;
+    var widths = order.map(function (a) { return a.getBoundingClientRect().width; });
+    var total = widths.reduce(function (t, w, i) { return t + w + (i ? gap : 0); }, 0);
+    if (total <= width + 0.5) { more.hidden = true; nav.classList.remove('is-expanded'); return; }
+    var tMore = nav.getAttribute('data-t-more') || '+ __N__ more';
+    var tLess = nav.getAttribute('data-t-less') || 'Less';
+    more.hidden = false;
+    more.textContent = tMore.replace('__N__', String(order.length));
+    var moreW = more.getBoundingClientRect().width + gap;
+    var fit = function (list) {
+      var used = 0, n = 0;
+      for (var i = 0; i < list.length; i++) {
+        var w = widths[order.indexOf(list[i])] + (i ? gap : 0);
+        if (used + w + moreW > width) break;
+        used += w; n++;
+      }
+      return Math.max(1, n);
+    };
+    var list = order.slice();
+    var active = list.filter(function (a) { return a.classList.contains('is-active'); })[0];
+    var n = fit(list);
+    if (active && list.indexOf(active) >= n) { list.splice(list.indexOf(active), 1); list.unshift(active); n = fit(list); }
+    // second pass with the real "+ n more" width
+    more.textContent = tMore.replace('__N__', String(list.length - n));
+    moreW = more.getBoundingClientRect().width + gap;
+    n = fit(list);
+    if (active && list.indexOf(active) >= n) { list.splice(list.indexOf(active), 1); list.unshift(active); n = fit(list); }
+    list.forEach(function (a, i) { nav.insertBefore(a, more); a.classList.toggle('is-overflow', i >= n); });
+    more.textContent = expanded ? tLess : tMore.replace('__N__', String(list.length - n));
+    more.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    nav.classList.toggle('is-collapsed', !expanded);
+  }
+  function initCats() { $$('[data-listing-cats]', listing).forEach(layoutCats); }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-cats-more]');
+    if (!b) return;
+    e.preventDefault();
+    var nav = b.closest('[data-listing-cats]');
+    nav.classList.toggle('is-expanded');
+    layoutCats(nav);
+  });
+
   /* ===================== skeletons ===================== */
   function skeletonCard() {
     return '<div class="od-skel-card" aria-hidden="true"><div class="od-skel od-skel-card__img"></div><div class="od-skel od-skel--line" style="width:40%"></div><div class="od-skel od-skel--line" style="width:80%"></div><div class="od-skel od-skel--line" style="width:30%"></div></div>';
@@ -133,6 +193,7 @@
     refreshSticky();
     observeLoadMore();
     initTrees(document);
+    initCats();
   }
   function load(url, push) {
     var g = grid();
@@ -259,6 +320,9 @@
   if (saved) applyCols(saved); else applyCols(grid() ? (grid().getAttribute('data-cols') || '4') : '4');
   if ('ResizeObserver' in window && header) new ResizeObserver(function () { refreshSticky(); }).observe(header);
   window.addEventListener('resize', (OD.debounce ? OD.debounce(refreshSticky, 100) : refreshSticky));
+  initCats();
+  window.addEventListener('resize', (OD.debounce ? OD.debounce(initCats, 120) : initCats));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(initCats);
   if (mq.addEventListener) mq.addEventListener('change', refreshSticky); else if (mq.addListener) mq.addListener(refreshSticky);
   window.addEventListener('load', refreshSticky);
   document.addEventListener('keydown', function (e) {

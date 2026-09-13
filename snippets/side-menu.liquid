@@ -102,32 +102,22 @@
         </div>
         <div class="_content_9316i_45 od-sm__body od-sm__body--l2">
           <a class="od-sm__viewAll" href="{{ link.url }}">{{ 'header.view_all' | t: name: link.title }}</a>
+          {%- comment -%} Round 9: every sub-group is the same closed accordion row (title, plus, "View all" inside) {%- endcomment -%}
           {%- for sub in link.links -%}
-            {%- if forloop.first -%}
-              <div class="od-sm__group">
-                <p class="od-sm__label"><a href="{{ sub.url }}">{{ sub.title }}</a></p>
-                <ul class="od-sm__links">
-                  {%- for cat in sub.links -%}
-                    <li><a href="{{ cat.url }}">{{ cat.title }}</a></li>
-                  {%- endfor -%}
-                </ul>
-              </div>
-            {%- else -%}
-              <div class="_accordion_container_ve0fr_30 od-sm__acc" data-accordion>
-                <div>
-                  <button type="button" class="_menu_button_ve0fr_36 od-sm__accBtn " data-accordion-toggle><span>{{ sub.title | downcase }}</span><span class="_icon_ve0fr_59 "><div class="_globalImg_1tf1q_38 _icon__img_ve0fr_59"><img width="16" height="16" alt="" src="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-plus="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-minus="{{ 'icons_light_minus.svg' | asset_url }}"></div></span></button>
-                  <div class="_content_ve0fr_84 od-sm__accContent" style="height: 0px; overflow: hidden; transition: height 0.3s; margin-bottom: 0px;" data-accordion-content>
-                    <ul class="od-sm__links">
-                      {%- assign sub_name = sub.title | downcase -%}
-                      <li class="od-sm__viewAllSub"><a href="{{ sub.url }}">{{ 'header.view_all' | t: name: sub_name }}</a></li>
-                      {%- for cat in sub.links -%}
-                        <li><a href="{{ cat.url }}">{{ cat.title }}</a></li>
-                      {%- endfor -%}
-                    </ul>
-                  </div>
+            <div class="_accordion_container_ve0fr_30 od-sm__acc" data-accordion>
+              <div>
+                <button type="button" class="_menu_button_ve0fr_36 od-sm__accBtn " data-accordion-toggle><span>{{ sub.title | downcase }}</span><span class="_icon_ve0fr_59 "><div class="_globalImg_1tf1q_38 _icon__img_ve0fr_59"><img width="16" height="16" alt="" src="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-plus="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-minus="{{ 'icons_light_minus.svg' | asset_url }}"></div></span></button>
+                <div class="_content_ve0fr_84 od-sm__accContent" style="height: 0px; overflow: hidden; transition: height 0.3s; margin-bottom: 0px;" data-accordion-content>
+                  <ul class="od-sm__links">
+                    {%- assign sub_name = sub.title | downcase -%}
+                    <li class="od-sm__viewAllSub"><a href="{{ sub.url }}">{{ 'header.view_all' | t: name: sub_name }}</a></li>
+                    {%- for cat in sub.links -%}
+                      <li><a href="{{ cat.url }}">{{ cat.title }}</a></li>
+                    {%- endfor -%}
+                  </ul>
                 </div>
               </div>
-            {%- endif -%}
+            </div>
           {%- endfor -%}
           {%- if has_banners -%}
             <div class="od-mb od-mb--grid od-sm__banners">

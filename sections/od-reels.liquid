@@ -9,7 +9,7 @@
   assign count = section.blocks.size
 -%}
 {{ 'od-reels.css' | asset_url | stylesheet_tag }}
-<section class="od-blk od-reels" id="od-reels-{{ section.id }}" data-od-reels data-section-id="{{ section.id }}" data-per-row="{{ st.per_row }}" data-hover-play="{{ st.hover_play }}" style="padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px; --od-blk-text: {{ st.text_color }}; --od-accent: {{ st.accent }};{% if st.bg != blank and st.bg != 'rgba(0,0,0,0)' %} background: {{ st.bg }};{% endif %}">
+<section class="od-blk od-reels" id="od-reels-{{ section.id }}" data-od-reels data-section-id="{{ section.id }}" data-per-row="{{ st.per_row }}" data-hover-play="{{ st.hover_play }}" data-hint-always="{{ st.hint_always }}" style="padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px; --od-blk-text: {{ st.text_color }}; --od-accent: {{ st.accent }};{% if st.bg != blank and st.bg != 'rgba(0,0,0,0)' %} background: {{ st.bg }};{% endif %}">
   <div class="_container_1kxnl_30">
     {%- if st.heading != blank or st.heading_italic != blank or st.text != blank -%}
       <div class="od-blk__head od-blk__head--{{ st.align }} od-blk__head--m">
@@ -173,7 +173,7 @@
     {%- endif -%}
   </div>
 </section>
-{%- capture reels_t -%}{"items":{{ 'reels.items' | t: count: '__N__' | json }},"look":{{ 'reels.shop_look' | t | json }},"collection":{{ 'reels.shop_collection' | t | json }},"shop":{{ 'reels.shop_now' | t | json }},"copied":{{ 'reels.copied' | t | json }},"close":{{ 'reels.close' | t | json }},"mute":{{ 'reels.mute' | t | json }},"unmute":{{ 'reels.unmute' | t | json }},"share":{{ 'reels.share' | t | json }},"bag":{{ 'reels.bag' | t | json }},"wishlist":{{ 'reels.wishlist' | t | json }},"products":{{ 'reels.products' | t | json }},"next":{{ 'reels.next' | t | json }},"prev":{{ 'reels.prev' | t | json }}}{%- endcapture -%}
+{%- capture reels_t -%}{"items":{{ 'reels.items' | t: count: '__N__' | json }},"look":{{ 'reels.shop_look' | t | json }},"collection":{{ 'reels.shop_collection' | t | json }},"shop":{{ 'reels.shop_now' | t | json }},"copied":{{ 'reels.copied' | t | json }},"close":{{ 'reels.close' | t | json }},"mute":{{ 'reels.mute' | t | json }},"unmute":{{ 'reels.unmute' | t | json }},"share":{{ 'reels.share' | t | json }},"bag":{{ 'reels.bag' | t | json }},"wishlist":{{ 'reels.wishlist' | t | json }},"products":{{ 'reels.products' | t | json }},"next":{{ 'reels.next' | t | json }},"prev":{{ 'reels.prev' | t | json }},"hint":{{ 'reels.hint' | t | json }},"hint_sub":{{ 'reels.hint_sub' | t | json }},"hint_desktop":{{ 'reels.hint_desktop' | t | json }}}{%- endcapture -%}
 <script>window.OD = window.OD || {}; window.OD.reelsT = {{ reels_t }};</script>
 <script src="{{ 'od-reels.js' | asset_url }}" defer></script>
 
@@ -193,6 +193,7 @@
     { "type": "checkbox", "id": "show_labels", "label": "Show the shop label on the tiles (2 items, Look, Collection)", "default": true },
     { "type": "checkbox", "id": "show_captions", "label": "Show the caption under the tiles", "default": false },
     { "type": "checkbox", "id": "hover_play", "label": "Play the video silently when the mouse is over a tile (desktop)", "default": true },
+    { "type": "checkbox", "id": "hint_always", "label": "Show the swipe-up hint every time", "default": false, "info": "Off: the hint shows once per device when the player opens." },
     { "type": "color", "id": "text_color", "label": "Text colour", "default": "#551c25" },
     { "type": "color", "id": "accent", "label": "Accent colour (dots, badges)", "default": "#595b33" },
     { "type": "color", "id": "bg", "label": "Background", "default": "rgba(0,0,0,0)" },

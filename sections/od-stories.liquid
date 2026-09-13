@@ -107,7 +107,7 @@
     </div>
   </div>
 </section>
-{%- capture reels_t -%}{"items":{{ 'reels.items' | t: count: '__N__' | json }},"look":{{ 'reels.shop_look' | t | json }},"collection":{{ 'reels.shop_collection' | t | json }},"shop":{{ 'reels.shop_now' | t | json }},"copied":{{ 'reels.copied' | t | json }},"close":{{ 'reels.close' | t | json }},"mute":{{ 'reels.mute' | t | json }},"unmute":{{ 'reels.unmute' | t | json }},"share":{{ 'reels.share' | t | json }},"bag":{{ 'reels.bag' | t | json }},"wishlist":{{ 'reels.wishlist' | t | json }},"products":{{ 'reels.products' | t | json }},"next":{{ 'reels.next' | t | json }},"prev":{{ 'reels.prev' | t | json }}}{%- endcapture -%}
+{%- capture reels_t -%}{"items":{{ 'reels.items' | t: count: '__N__' | json }},"look":{{ 'reels.shop_look' | t | json }},"collection":{{ 'reels.shop_collection' | t | json }},"shop":{{ 'reels.shop_now' | t | json }},"copied":{{ 'reels.copied' | t | json }},"close":{{ 'reels.close' | t | json }},"mute":{{ 'reels.mute' | t | json }},"unmute":{{ 'reels.unmute' | t | json }},"share":{{ 'reels.share' | t | json }},"bag":{{ 'reels.bag' | t | json }},"wishlist":{{ 'reels.wishlist' | t | json }},"products":{{ 'reels.products' | t | json }},"next":{{ 'reels.next' | t | json }},"prev":{{ 'reels.prev' | t | json }},"hint":{{ 'reels.hint' | t | json }},"hint_sub":{{ 'reels.hint_sub' | t | json }},"hint_desktop":{{ 'reels.hint_desktop' | t | json }}}{%- endcapture -%}
 <script>window.OD = window.OD || {}; window.OD.reelsT = {{ reels_t }};</script>
 <script src="{{ 'od-reels.js' | asset_url }}" defer></script>
 

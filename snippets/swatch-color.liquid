@@ -1,23 +1,35 @@
 {%- comment -%}
   Outputs a CSS `background` value for a colour option value (use as style="background: ...").
-  Accepts: value (product option value drop or string)
-  Priority (round 7):
-    1. Shopify's own swatch on the linked Color option: image (cropped, cover) else solid colour
-    2. theme setting map, one per line "NAME:#hex" or "NAME:#hex,#hex[,#hex]" (2-3 colours split the circle diagonally)
-    3. the value name itself as a CSS colour
+  Accepts: value (product option value drop or string), swatch (optional swatch drop, e.g. a filter value's swatch)
+  Priority (round 9):
+    1. "Multicolour" values (Multicolor / Multicolour / MultiColor / Multi-colour ...) -> theme setting image multi_swatch_image
+    2. Shopify's own swatch on the linked Color option: image (cropped, cover) else solid colour
+    3. theme setting map, one per line "NAME:#hex" or "NAME:#hex,#hex[,#hex]" (2-3 colours split the circle diagonally)
+    4. the value name itself as a CSS colour
+  Mirrored in JS: OD.swatchColor (assets/theme.js).
 {%- endcomment -%}
 {%- liquid
   assign out = ''
   assign name = value | strip
-  if value.swatch
-    if value.swatch.image
-      assign img = value.swatch.image | image_url: width: 80
+  if swatch == nil
+    assign swatch = value.swatch
+  endif
+  assign clean = name | downcase | remove: ' ' | remove: '-' | remove: '_' | remove: '/' | remove: '.' | remove: ',' | remove: '(' | remove: ')' | remove: '+' | remove: '&'
+  if settings.multi_swatch_image != blank
+    if clean == 'multicolor' or clean == 'multicolour'
+      assign mimg = settings.multi_swatch_image | image_url: width: 80
+      assign out = 'url(' | append: mimg | append: ') center / cover no-repeat'
+    endif
+  endif
+  if out == '' and swatch
+    if swatch.image
+      assign img = swatch.image | image_url: width: 80
       assign out = 'url(' | append: img | append: ') center / cover no-repeat'
-      if value.swatch.color
-        assign out = out | append: ' ' | append: value.swatch.color
+      if swatch.color
+        assign out = out | append: ' ' | append: swatch.color
       endif
-    elsif value.swatch.color
-      assign out = value.swatch.color
+    elsif swatch.color
+      assign out = swatch.color
     endif
   endif
   if out == ''

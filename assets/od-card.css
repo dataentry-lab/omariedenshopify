@@ -49,7 +49,7 @@
 .od-card__top-start { flex-direction: column; gap: 6px; align-items: flex-start; }
 .od-card__badge--sale { background: #8a2b2b; }
 .od-card__badge--limited, .od-card__badge--sand { background: var(--od-sand); color: var(--od-maroon); }
-.od-card__badge--prive { background: #c9a96a; color: #2a0d12; }
+.od-card__badge--prive { background: #e5d9c7; color: #2a0d12; }
 .od-card__top {
   position: absolute; top: 12px; left: 12px; right: 12px;
   display: flex; justify-content: space-between; align-items: flex-start;

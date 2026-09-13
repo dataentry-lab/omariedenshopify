@@ -9,22 +9,38 @@
     <div class="_container_1kxnl_30 _footerContainer_n0o7o_30">
       <div class="_globalImg_1tf1q_38 _pFooter__logo_n0o7o_81"><img fetchpriority="auto" alt="{{ shop.name | escape }} sun logo" src="{{ 'images_logo-eye.svg' | asset_url }}"></div>
 
-      {%- comment -%} Mobile: accordion version of every link column {%- endcomment -%}
+      {%- comment -%}
+        Round 9: block based. "column" = heading + menu (legacy type "menu" still accepted), "text" = heading + rich text,
+        "social" = heading + the social icons (URLs stay in the section settings). Mobile shows the columns as accordions
+        (original markup), desktop as plain columns, the social block is the same on both.
+      {%- endcomment -%}
+      {%- comment -%} Mobile: accordion version of every column {%- endcomment -%}
       {%- for block in section.blocks -%}
-        {%- if block.type == 'menu' -%}
+        {%- if block.type == 'column' or block.type == 'menu' or block.type == 'text' -%}
+          {%- liquid
+            if block.type == 'text'
+              assign col_title = block.settings.heading
+            else
+              assign col_title = block.settings.heading | default: block.settings.title | default: linklists[block.settings.menu].title
+            endif
+          -%}
           <div class="_accordion_container_ve0fr_30 _accContainer_n0o7o_58" data-accordion {{ block.shopify_attributes }}>
             <div>
               <button class="_menu_button_ve0fr_36 _title_n0o7o_108 " data-accordion-toggle>
-                <span>{{ block.settings.title | default: linklists[block.settings.menu].title }}</span>
+                <span>{{ col_title }}</span>
                 <span class="_icon_ve0fr_59 "><div class="_globalImg_1tf1q_38 _icon__img_ve0fr_59"><img fetchpriority="auto" alt="" src="{{ 'icons_dark_plus.svg' | asset_url }}" data-icon-plus="{{ 'icons_dark_plus.svg' | asset_url }}" data-icon-minus="{{ 'icons_dark_minus.svg' | asset_url }}"></div></span>
               </button>
               <div class="_content_ve0fr_84 undefined" style="height: 0px; overflow: hidden; transition: height 0.3s; margin-bottom: 0px;" data-accordion-content>
                 <div class="_lists_n0o7o_157">
-                  <ul>
-                    {%- for link in linklists[block.settings.menu].links -%}
-                      <li class="_item_n0o7o_175" style="cursor: pointer;"><a href="{{ link.url }}">{{ link.title }}</a></li>
-                    {%- endfor -%}
-                  </ul>
+                  {%- if block.type == 'text' -%}
+                    <div class="od-footer__text">{{ block.settings.text }}</div>
+                  {%- else -%}
+                    <ul>
+                      {%- for link in linklists[block.settings.menu].links -%}
+                        <li class="_item_n0o7o_175" style="cursor: pointer;"><a href="{{ link.url }}">{{ link.title }}</a></li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
                 </div>
               </div>
             </div>
@@ -32,41 +48,47 @@
         {%- endif -%}
       {%- endfor -%}
 
-      {%- comment -%} Desktop: plain columns {%- endcomment -%}
+      {%- comment -%} Desktop: plain columns, social block on every screen size {%- endcomment -%}
       {%- for block in section.blocks -%}
-        {%- if block.type == 'menu' -%}
+        {%- if block.type == 'column' or block.type == 'menu' -%}
           <div class="_listLinks_n0o7o_126" {{ block.shopify_attributes }}>
-            <h4>{{ block.settings.title | default: linklists[block.settings.menu].title }}</h4>
+            <h4>{{ block.settings.heading | default: block.settings.title | default: linklists[block.settings.menu].title }}</h4>
             <ul>
               {%- for link in linklists[block.settings.menu].links -%}
                 <li class="_item_n0o7o_175" style="cursor: pointer;"><a href="{{ link.url }}">{{ link.title }}</a></li>
               {%- endfor -%}
             </ul>
           </div>
+        {%- elsif block.type == 'text' -%}
+          <div class="_listLinks_n0o7o_126" {{ block.shopify_attributes }}>
+            {%- if block.settings.heading != blank -%}<h4>{{ block.settings.heading }}</h4>{%- endif -%}
+            <div class="od-footer__text">{{ block.settings.text }}</div>
+          </div>
+        {%- elsif block.type == 'social' -%}
+          <div class="_imgLists_n0o7o_137" {{ block.shopify_attributes }}>
+            {%- assign social_title = 'footer.follow_us' | t -%}
+            <h4>{{ block.settings.heading | default: social_title }}</h4>
+            <div class="content">
+              {%- if section.settings.facebook != blank -%}
+                <a href="{{ section.settings.facebook }}" target="_blank" rel="noopener" aria-label="Facebook"><div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="facebook" src="{{ 'icons_fb.svg' | asset_url }}"></div></a>
+              {%- endif -%}
+              {%- if section.settings.instagram != blank -%}
+                <a href="{{ section.settings.instagram }}" target="_blank" rel="noopener" aria-label="Instagram"><div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="instagram" src="{{ 'icons_insta.svg' | asset_url }}"></div></a>
+              {%- endif -%}
+              {%- if section.settings.tiktok != blank -%}
+                <a href="{{ section.settings.tiktok }}" target="_blank" rel="noopener" aria-label="TikTok"><div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="tiktok" src="{{ 'icons_tiktok.svg' | asset_url }}"></div></a>
+              {%- else -%}
+                <div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="tiktok" src="{{ 'icons_tiktok.svg' | asset_url }}"></div>
+              {%- endif -%}
+              {%- if section.settings.linkedin != blank -%}
+                <a href="{{ section.settings.linkedin }}" target="_blank" rel="noopener" aria-label="LinkedIn"><div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="linkedin" src="{{ 'icons_linkedin.svg' | asset_url }}"></div></a>
+              {%- else -%}
+                <div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="linkedin" src="{{ 'icons_linkedin.svg' | asset_url }}"></div>
+              {%- endif -%}
+            </div>
+          </div>
         {%- endif -%}
       {%- endfor -%}
-
-      <div class="_imgLists_n0o7o_137">
-        <h4>{{ 'footer.follow_us' | t }}</h4>
-        <div class="content">
-          {%- if section.settings.facebook != blank -%}
-            <a href="{{ section.settings.facebook }}" target="_blank" rel="noopener"><div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="facebook" src="{{ 'icons_fb.svg' | asset_url }}"></div></a>
-          {%- endif -%}
-          {%- if section.settings.instagram != blank -%}
-            <a href="{{ section.settings.instagram }}" target="_blank" rel="noopener"><div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="instagram" src="{{ 'icons_insta.svg' | asset_url }}"></div></a>
-          {%- endif -%}
-          {%- if section.settings.tiktok != blank -%}
-            <a href="{{ section.settings.tiktok }}" target="_blank" rel="noopener"><div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="tiktok" src="{{ 'icons_tiktok.svg' | asset_url }}"></div></a>
-          {%- else -%}
-            <div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="tiktok" src="{{ 'icons_tiktok.svg' | asset_url }}"></div>
-          {%- endif -%}
-          {%- if section.settings.linkedin != blank -%}
-            <a href="{{ section.settings.linkedin }}" target="_blank" rel="noopener"><div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="linkedin" src="{{ 'icons_linkedin.svg' | asset_url }}"></div></a>
-          {%- else -%}
-            <div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="linkedin" src="{{ 'icons_linkedin.svg' | asset_url }}"></div>
-          {%- endif -%}
-        </div>
-      </div>
     </div>
   </div>
   <div class="_sFooter_pfgeh_78">
@@ -87,10 +109,12 @@
 {
   "name": "Footer",
   "tag": "footer",
+  "max_blocks": 8,
   "settings": [
     { "type": "text", "id": "company_name", "label": "Company name (copyright line)", "default": "Omarieden Company" },
     { "type": "text", "id": "vat", "label": "VAT No.", "default": "312878014500003" },
     { "type": "text", "id": "cr", "label": "C.R.", "default": "2051263702" },
+    { "type": "header", "content": "Social links (shown by the \"Follow us\" block)" },
     { "type": "url", "id": "facebook", "label": "Facebook URL" },
     { "type": "url", "id": "instagram", "label": "Instagram URL" },
     { "type": "url", "id": "tiktok", "label": "TikTok URL" },
@@ -98,20 +122,38 @@
   ],
   "blocks": [
     {
-      "type": "menu",
+      "type": "column",
       "name": "Link column",
       "settings": [
-        { "type": "text", "id": "title", "label": "Heading (leave blank to use the menu title)" },
+        { "type": "text", "id": "heading", "label": "Heading (leave blank to use the menu title)" },
         { "type": "link_list", "id": "menu", "label": "Menu" }
+      ]
+    },
+    {
+      "type": "social",
+      "name": "Follow us",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading (leave blank for the translated \"Follow us\")" },
+        { "type": "paragraph", "content": "The social URLs are in the section settings above." }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text column",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading" },
+        { "type": "richtext", "id": "text", "label": "Text" }
       ]
     }
   ],
   "default": {
     "blocks": [
-      { "type": "menu", "settings": { "title": "about", "menu": "footer-about" } },
-      { "type": "menu", "settings": { "title": "at your service", "menu": "footer-service" } },
-      { "type": "menu", "settings": { "title": "Policies", "menu": "footer-policies" } },
-      { "type": "menu", "settings": { "title": "privacy & settings", "menu": "footer-privacy" } }
+      { "type": "column", "settings": { "heading": "about", "menu": "footer-about" } },
+      { "type": "column", "settings": { "heading": "at your service", "menu": "footer-service" } },
+      { "type": "column", "settings": { "heading": "Policies", "menu": "footer-policies" } },
+      { "type": "column", "settings": { "heading": "privacy & settings", "menu": "footer-privacy" } },
+      { "type": "social" }
     ]
   }
 }

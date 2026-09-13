@@ -1,6 +1,23 @@
 {%- liquid
   assign per_page = settings.products_per_page | default: 24
   assign sort_by = search.sort_by
+  comment
+    round 9: active colour filter values -> only those colour cards are rendered (one card per colour)
+  endcomment
+  assign active_colours = ''
+  assign cname_d = settings.color_option_name | default: 'Color' | downcase | strip
+  for filter in search.filters
+    assign fl = filter.label | downcase | strip
+    if fl == cname_d or fl == 'color' or fl == 'colour' or fl == 'اللون' or fl == 'لون'
+      if filter.active_values.size > 0
+        assign active_colours = '|'
+        for av in filter.active_values
+          assign active_colours = active_colours | append: av.value | append: '|'
+        endfor
+      endif
+      break
+    endif
+  endfor
 -%}
 <div class="_container_1kxnl_30 od-listing od-listing--search" data-listing>
   {%- assign search_eyebrow = 'search.results_for' | t -%}
@@ -11,7 +28,7 @@
     <div class="_SearchProductList_1cn7p_30 od-listing__grid" data-product-grid data-cols="4">
       {%- for item in search.results -%}
         {%- if item.object_type == 'product' -%}
-          {%- render 'product-card', product: item -%}
+          {%- render 'product-card', product: item, per_colour: true, active_colours: active_colours -%}
         {%- endif -%}
       {%- else -%}
         <div style="grid-column: 1 / -1;">

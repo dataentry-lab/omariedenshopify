@@ -1,16 +1,32 @@
+{%- comment -%}
+  Round 9: one flat list in a CSS grid (3 columns desktop, 2 below 992px) so the reading order is
+  left to right, row by row. Vendors listed in "Exclude brands" (one per line) are skipped.
+{%- endcomment -%}
 {%- liquid
   assign rtl = false
   if request.locale.iso_code contains 'ar'
     assign rtl = true
   endif
   assign letters = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,0-9' | split: ','
-  assign vendors = shop.vendors | sort_natural
+  assign excluded = section.settings.exclude | default: '' | downcase | newline_to_br | split: '<br />'
+  assign vendors = '' | split: ','
+  for v in shop.vendors
+    assign v_key = v | downcase | strip
+    assign skip = false
+    for ex in excluded
+      assign ex_key = ex | strip
+      if ex_key != blank and ex_key == v_key
+        assign skip = true
+        break
+      endif
+    endfor
+    unless skip
+      assign v_arr = v | split: '|||'
+      assign vendors = vendors | concat: v_arr
+    endunless
+  endfor
+  assign vendors = vendors | sort_natural
   assign total = vendors.size
-  assign per_column = total | plus: 2 | divided_by: 3
-  if per_column < 1
-    assign per_column = 1
-  endif
-  assign last_pos = per_column | minus: 1
 -%}
 <div class="_container_1kxnl_30 " data-brands data-section-id="{{ section.id }}">
   <div class="_alphaSearchContent_omffk_30">
@@ -26,23 +42,21 @@
         <input placeholder="{{ 'pages.brands.search' | t | escape }}" class="_inputPaddingRight_1fzpw_70 _searchContainer__input_1fzpw_96" type="text" value="" data-brand-search aria-label="{{ 'pages.brands.search' | t | escape }}">
         <p style="display: none !important;" data-brand-clear role="button">{{ 'pages.brands.clear' | t }}</p>
       </div>
+      {%- if section.settings.image_link != blank -%}<a class="od-brands__imglink" href="{{ section.settings.image_link }}">{%- endif -%}
       <div class="_leftContainer__img_1fzpw_57"{% if section.settings.image != blank %} style="background-image: url(&quot;{{ section.settings.image | image_url: width: 1000 }}&quot;);"{% endif %}></div>
+      {%- if section.settings.image_link != blank -%}</a>{%- endif -%}
     </div>
     <div class="_right_etq9e_44">
       <div class="_right__top_etq9e_47">
         <h2 data-brands-heading data-all="{{ 'pages.brands.all' | t | escape }}">{{ 'pages.brands.all' | t }}</h2>
         {%- if total > 0 -%}
-          <div class="_right__top__brands_etq9e_70">
+          <div class="_right__top__brands_etq9e_70 od-brands__list">
             {%- for vendor in vendors -%}
-              {%- assign col_pos = forloop.index0 | modulo: per_column -%}
-              {%- if col_pos == 0 -%}<div>{%- endif -%}
               <p data-brand><a href="{{ vendor | url_for_vendor }}" style="color: inherit; text-decoration: none;">{{ vendor }}</a></p>
-              {%- if col_pos == last_pos or forloop.last -%}</div>{%- endif -%}
             {%- endfor -%}
           </div>
         {%- else -%}
           <div class="_noProducts_1f8fu_34" style="text-align:center;padding:40px 0;min-height:0;">
-            <div class="_globalImg_1tf1q_38" style="width:220px;margin:0 auto 16px;"><img src="{{ 'noresult_no_brands.svg' | asset_url }}" alt=""></div>
             <p>{{ 'pages.brands.empty' | t }}</p>
           </div>
         {%- endif -%}
@@ -55,7 +69,9 @@
 {
   "name": "Brands A-Z page",
   "settings": [
-    { "type": "image_picker", "id": "image", "label": "Decorative image under the search box (fallback: brandsImg.webp)" }
+    { "type": "image_picker", "id": "image", "label": "Decorative image under the search box (fallback: brandsImg.webp)" },
+    { "type": "url", "id": "image_link", "label": "Banner link (optional)" },
+    { "type": "textarea", "id": "exclude", "label": "Exclude brands", "info": "One brand name per line, exactly as written on the products" }
   ]
 }
 {% endschema %}

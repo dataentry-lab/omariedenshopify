@@ -44,11 +44,102 @@
     </header>
     <div class="od-live__viewport" data-od-live-viewport>
       <div class="od-live__row" data-od-live-row>
+        {%- liquid
+          comment
+            round 9: one card per colour (theme setting card_per_colour): the colour's variant image, else the first photo whose
+            alt text names the colour (product-json media map), else the product image; link + quick view preselect the colour
+          endcomment
+          assign cname_d = settings.color_option_name | default: 'Color' | downcase | strip
+        -%}
         {%- for product in products limit: limit -%}
-          {%- assign img = product.featured_image -%}
-          <div class="od-live__card od-card{% if rtl %} od-card--rtl{% endif %}" data-od-card data-product-card data-handle="{{ product.handle }}" data-product-id="{{ product.id }}">
+          {%- liquid
+            assign colour_opt = nil
+            assign colour_idx0 = -1
+            for opt in product.options_with_values
+              assign on_d = opt.name | downcase | strip
+              if on_d == cname_d or on_d == 'color' or on_d == 'colour' or on_d == 'اللون' or on_d == 'لون'
+                assign colour_opt = opt
+                assign colour_idx0 = forloop.index0
+                break
+              endif
+            endfor
+            assign split = false
+            if settings.card_per_colour != false and colour_opt and colour_opt.values.size > 1
+              assign split = true
+              capture media_map
+                render 'product-json', product: product, format: 'map'
+              endcapture
+              assign media_map = media_map | strip
+              assign colours = colour_opt.values
+            else
+              assign media_map = nil
+              assign colours = '1' | split: ','
+            endif
+          -%}
+          {%- for card_colour in colours -%}
+          {%- liquid
+            assign img = product.featured_image
+            assign card_url = product.url
+            assign colour = nil
+            assign colour_variant = nil
+            assign available = product.available
+            if split
+              assign colour = card_colour
+              assign c_variant = nil
+              assign c_avail = nil
+              assign vmedia = nil
+              for v in product.variants
+                if v.options[colour_idx0] == colour
+                  if c_variant == nil
+                    assign c_variant = v
+                  endif
+                  if c_avail == nil and v.available
+                    assign c_avail = v
+                  endif
+                  if vmedia == nil and v.featured_media
+                    assign vmedia = v.featured_media
+                  endif
+                endif
+              endfor
+              assign link_variant = c_avail | default: c_variant
+              if link_variant
+                assign colour_variant = link_variant.id
+                assign card_url = product.url | append: '?variant=' | append: link_variant.id
+              endif
+              if c_avail == nil
+                assign available = false
+              endif
+              if vmedia
+                assign img = vmedia
+              else
+                assign shared_img = nil
+                assign found_img = nil
+                for m in product.media limit: 10
+                  if m.media_type != 'image'
+                    continue
+                  endif
+                  assign mkey = '|' | append: m.id | append: ':'
+                  if media_map contains mkey
+                    assign mcol = media_map | split: mkey | last | split: '|' | first | default: ''
+                    if mcol == colour
+                      assign found_img = m
+                      break
+                    elsif mcol == '' and shared_img == nil
+                      assign shared_img = m
+                    endif
+                  endif
+                endfor
+                if found_img
+                  assign img = found_img
+                elsif shared_img
+                  assign img = shared_img
+                endif
+              endif
+            endif
+          -%}
+          <div class="od-live__card od-card{% if rtl %} od-card--rtl{% endif %}{% unless available %} is-sold-out{% endunless %}" data-od-card data-product-card data-handle="{{ product.handle }}" data-product-id="{{ product.id }}"{% if colour %} data-color-index="{{ colour_idx0 | plus: 1 }}" data-color-value="{{ colour | escape }}" data-card-colour="{{ colour | escape }}"{% endif %}>
             <div class="od-card__media od-live__media">
-              <a href="{{ product.url }}" class="od-card__link" aria-label="{{ product.title | escape }}">
+              <a href="{{ card_url }}" class="od-card__link" data-card-image-link data-card-url="{{ product.url }}" aria-label="{{ product.title | escape }}">
                 {%- if img -%}
                   <img class="od-card__img" alt="{{ img.alt | default: product.title | escape }}" src="{{ img | image_url: width: 500 }}" width="{{ img.width }}" height="{{ img.height }}" loading="lazy" data-card-image>
                 {%- else -%}
@@ -61,20 +152,23 @@
                   <div class="_globalImg_1tf1q_38 _wishlistIcon_13l1w_356 od-card__wish" data-wishlist-toggle data-wishlist-id="{{ product.id }}" data-wishlist-handle="{{ product.handle }}" role="button" tabindex="0" aria-label="{{ 'wishlist.add' | t }}"><img alt="" width="24" height="24" src="{{ 'icons_light_wishlist.svg' | asset_url }}"></div>
                 </div>
               </div>
-              {%- if product.available -%}
+              {%- if available -%}
                 <button type="button" class="od-card__plus" data-card-quickadd aria-label="{{ 'products.card.quick_add' | t }}" aria-haspopup="dialog">{%- render 'icon-bag-plus' -%}</button>
+              {%- elsif settings.badge_soldout_enabled != false -%}
+                <span class="od-card__soldout">{{ 'products.product.sold_out' | t }}</span>
               {%- endif -%}
             </div>
             <div class="od-live__text">
               {%- if product.vendor != blank -%}<p class="od-live__brand">{{ product.vendor }}</p>{%- endif -%}
-              <p class="od-live__name"><a href="{{ product.url }}">{{ product.title }}</a></p>
+              <p class="od-live__name"><a href="{{ card_url }}" data-card-name-link>{{ product.title }}</a></p>
               {%- case st.caption -%}
                 {%- when 'text' -%}<p class="od-live__caption">{{ st.caption_text }}</p>
                 {%- when 'price' -%}<p class="od-live__caption od-live__caption--price">{% render 'sar' %}{{ product.price | money_without_currency }}</p>
               {%- endcase -%}
             </div>
-            {%- render 'product-json', product: product -%}
+            {%- render 'product-json', product: product, colour: colour, colour_variant: colour_variant, media_map: media_map -%}
           </div>
+          {%- endfor -%}
         {%- endfor -%}
       </div>
     </div>
@@ -115,7 +209,7 @@
   ],
   "presets": [
     { "name": "Just Arrived (live)" },
-    { "name": "Privé Live", "settings": { "heading": "OMARIEDEN", "heading_italic": "Privé Live", "source": "products", "dark": true, "bg": "#2a0d12", "text_color": "#fcf8f2", "accent": "#c9a96a", "card_bg": "#3a171e", "count_text": "", "tagline": "Reserved for Privé members" } }
+    { "name": "Privé Live", "settings": { "heading": "OMARIEDEN", "heading_italic": "Privé Live", "source": "products", "dark": true, "bg": "#2a0d12", "text_color": "#fcf8f2", "accent": "#e5d9c7", "card_bg": "#3a171e", "count_text": "", "tagline": "Reserved for Privé members" } }
   ]
 }
 {% endschema %}

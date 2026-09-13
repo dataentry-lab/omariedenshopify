@@ -43,6 +43,19 @@
         "default": "BLACK:#313131\nWHITE:#ffffff\nBROWN:#a37146\nRAISIN:#a37146\nHAZEBLUE:#679ad1\nBLUESTRIPE:#679ad1\nBARK:#a37146\nOATMEAL:#f0e8d6\nPIERRE:#f0e8d6\nCHALK:#ffffff\nGREIGE:#bbbbbb\nNAVY:#1f2a44\nRED:#bc2027\nGREEN:#595b33\nBEIGE:#e5d9c7\nPINK:#e8b4c0\nYELLOW:#e6c34a\nGREY:#9a9a9a\nGRAY:#9a9a9a"
       },
       {
+        "type": "checkbox",
+        "id": "card_per_colour",
+        "label": "Show one card per colour",
+        "default": true,
+        "info": "Each colour of a product becomes its own card in collections, search and sliders"
+      },
+      {
+        "type": "image_picker",
+        "id": "multi_swatch_image",
+        "label": "Multicolour swatch image",
+        "info": "Shown in the swatch circle for colour values named Multicolor / Multicolour / MultiColor / Multi-colour"
+      },
+      {
         "type": "select",
         "id": "gallery_color_mode",
         "label": "Product gallery and colours",
@@ -516,7 +529,7 @@
         "type": "color",
         "id": "badge_6_bg",
         "label": "Background",
-        "default": "#c9a96a"
+        "default": "#e5d9c7"
       },
       {
         "type": "color",

@@ -134,16 +134,11 @@
               <div class="_content_ve0fr_84 undefined" style="height: {% if open %}auto{% else %}0px{% endif %}; overflow: hidden; transition: height 0.3s; margin-bottom: {% if open %}16px{% else %}0px{% endif %};" data-accordion-content {% if open %}data-accordion-open{% endif %}>
                 {%- case filter.type -%}
                   {%- when 'list' -%}
+                    {%- comment -%} round 9: every value is a square checkbox (multi-select); colour values also show a swatch dot {%- endcomment -%}
                     {%- for value in filter.values -%}
-                      {%- if is_color -%}
-                        <div class="_radioButton_1ivr7_41">
-                          <label><input id="{{ filter.param_name }}-{{ forloop.index }}" type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %} style="appearance:radio;-webkit-appearance:radio;"><p>{{ value.label }} <span>({{ value.count }})</span></p></label>
-                        </div>
-                      {%- else -%}
-                        <div class="_CheckboxButton_8c7of_30">
-                          <label><div><input id="{{ filter.param_name }}-{{ forloop.index }}" type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}><span class="_CustomCheck_8c7of_52"></span></div><p>{{ value.label }}</p></label>
-                        </div>
-                      {%- endif -%}
+                      <div class="_CheckboxButton_8c7of_30">
+                        <label><div><input id="{{ filter.param_name }}-{{ forloop.index }}" type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}><span class="_CustomCheck_8c7of_52"></span></div>{% if is_color %}<span class="od-ft__swatch" aria-hidden="true" style="background: {% render 'swatch-color', value: value.label, swatch: value.swatch %};"></span>{% endif %}<p>{{ value.label }} <span>({{ value.count }})</span></p></label>
+                      </div>
                     {%- endfor -%}
                   {%- when 'boolean' -%}
                     {%- for value in filter.values -%}

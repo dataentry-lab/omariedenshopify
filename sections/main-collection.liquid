@@ -3,6 +3,23 @@
   assign sort_by = collection.sort_by
   assign menu_handle = settings.main_menu | default: 'main-menu'
   assign listing_title = section.settings.title | default: collection.title
+  comment
+    round 9: active colour filter values -> only those colour cards are rendered (one card per colour)
+  endcomment
+  assign active_colours = ''
+  assign cname_d = settings.color_option_name | default: 'Color' | downcase | strip
+  for filter in collection.filters
+    assign fl = filter.label | downcase | strip
+    if fl == cname_d or fl == 'color' or fl == 'colour' or fl == 'اللون' or fl == 'لون'
+      if filter.active_values.size > 0
+        assign active_colours = '|'
+        for av in filter.active_values
+          assign active_colours = active_colours | append: av.value | append: '|'
+        endfor
+      endif
+      break
+    endif
+  endfor
 -%}
 
 <div class="_container_1kxnl_30 _pc_1ajxu_31 od-listing" data-listing>
@@ -12,7 +29,7 @@
   {%- paginate collection.products by per_page -%}
     <div class="_ProductCollection_1ajxu_41 od-listing__grid" data-product-grid data-cols="4">
       {%- for product in collection.products -%}
-        {%- render 'product-card', product: product -%}
+        {%- render 'product-card', product: product, per_colour: true, active_colours: active_colours -%}
       {%- else -%}
         <div style="grid-column: 1 / -1;">
           <div class="_noProducts_1f8fu_34" style="text-align:center;padding:60px 0;">

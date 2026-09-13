@@ -36,9 +36,11 @@
   endif
 -%}
 {%- if items.size > 0 -%}
-  <nav class="od-listing__cats" aria-label="{{ 'listing.categories' | t }}" data-listing-cats>
+  {%- comment -%} round 9 (desktop): one row of buttons + "+ n more" / "Less", the active one always in the first row (od-listing.js initCats); mobile keeps the scroll row {%- endcomment -%}
+  <nav class="od-listing__cats" aria-label="{{ 'listing.categories' | t }}" data-listing-cats data-t-more="{{ 'listing.more' | t: count: '__N__' | escape }}" data-t-less="{{ 'listing.less' | t | escape }}">
     {%- for link in items -%}
-      <a class="od-cat{% if link.active %} is-active{% endif %}" href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title }}</a>
+      <a class="od-cat{% if link.active %} is-active{% endif %}" href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %} data-cat>{{ link.title }}</a>
     {%- endfor -%}
+    <button type="button" class="od-cat od-cat--more" data-cats-more aria-expanded="false" hidden></button>
   </nav>
 {%- endif -%}

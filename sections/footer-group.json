@@ -5,12 +5,13 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "about": { "type": "menu", "settings": { "title": "about", "menu": "footer-about" } },
-        "service": { "type": "menu", "settings": { "title": "at your service", "menu": "footer-service" } },
-        "policies": { "type": "menu", "settings": { "title": "Policies", "menu": "footer-policies" } },
-        "privacy": { "type": "menu", "settings": { "title": "privacy & settings", "menu": "footer-privacy" } }
+        "about": { "type": "column", "settings": { "heading": "about", "menu": "footer-about" } },
+        "service": { "type": "column", "settings": { "heading": "at your service", "menu": "footer-service" } },
+        "policies": { "type": "column", "settings": { "heading": "Policies", "menu": "footer-policies" } },
+        "privacy": { "type": "column", "settings": { "heading": "privacy & settings", "menu": "footer-privacy" } },
+        "social": { "type": "social", "settings": {} }
       },
-      "block_order": ["about", "service", "policies", "privacy"],
+      "block_order": ["about", "service", "policies", "privacy", "social"],
       "settings": {
         "company_name": "Omarieden Company",
         "vat": "312878014500003",

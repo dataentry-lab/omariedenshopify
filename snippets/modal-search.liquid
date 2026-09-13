@@ -1,6 +1,8 @@
 {%- comment -%} Full-width olive search overlay with live (predictive) results {%- endcomment -%}
 <div class="_backdrop_9316i_30 undefined" data-modal-backdrop="search" data-show-class="_backdropShow_j9u6d_48"></div>
-<div class="_modal_9316i_132 _modalAddCls_j9u6d_30" data-modal="search" data-show-class="_show_j9u6d_42">
+<div class="_modal_9316i_132 _modalAddCls_j9u6d_30" data-modal="search" data-show-class="_show_j9u6d_42" data-t-brands="{{ 'search.brands' | t | escape }}">
+  {%- comment -%} round 9: vendor list for the "Brands" line above the results (no API call, theme.js initSearch) {%- endcomment -%}
+  <script type="application/json" data-vendors>{{ shop.vendors | json }}</script>
   <div class="_content_9316i_45">
     <form class="_searchWrapper_j9u6d_54" action="{{ routes.search_url }}" method="get" role="search" data-search-form>
       <div class="_searchContainer_j9u6d_98">
