@@ -343,24 +343,36 @@
 .od-ft__row.is-current { font-weight: 400; text-decoration: underline; text-underline-offset: 3px; }
 .od-ft__row--all { font-weight: 400; }
 
-/* ---------- filter drawer values (round 9): every value is a 16px square checkbox, 1px maroon border, 2px radius,
-   cream fill; checked = maroon tick on the same box (not a filled box); label 14px. Colour values get a swatch dot. ---------- */
+/* ---------- filter drawer values (round 10): 20px square checkbox, 1px maroon border, 2px radius, white fill;
+   checked = filled maroon box with a white tick (reference). Colour values keep a swatch dot; every value shows (count). ---------- */
 [data-modal="filter"] ._CheckboxButton_8c7of_30 { padding: 6px 0; }
-[data-modal="filter"] ._CheckboxButton_8c7of_30 label { gap: 10px; cursor: pointer; }
+[data-modal="filter"] ._CheckboxButton_8c7of_30 label { gap: 12px; cursor: pointer; }
 [data-modal="filter"] ._CheckboxButton_8c7of_30 label > div { display: flex; flex: none; }
 [data-modal="filter"] ._CheckboxButton_8c7of_30 label ._CustomCheck_8c7of_52 {
-  width: 16px; height: 16px; flex: none; box-sizing: border-box;
+  width: 20px; height: 20px; flex: none; box-sizing: border-box;
   border: 1px solid var(--maroon, #551c25); border-radius: 2px; background: #fff;
   transition: border-color .2s ease, background-color .2s ease;
 }
-[data-modal="filter"] ._CheckboxButton_8c7of_30 label input:checked + ._CustomCheck_8c7of_52 { background-color: #fff; border-color: var(--maroon, #551c25); }
+[data-modal="filter"] ._CheckboxButton_8c7of_30 label input:checked + ._CustomCheck_8c7of_52 { background-color: var(--maroon, #551c25); border-color: var(--maroon, #551c25); }
 [data-modal="filter"] ._CheckboxButton_8c7of_30 label input:checked + ._CustomCheck_8c7of_52:after {
   content: ""; position: absolute; inset: 0; width: auto; height: auto;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.4l2.8 2.8 6.2-6.4' fill='none' stroke='%23551c25' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: center; background-size: 12px 12px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.4l2.8 2.8 6.2-6.4' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: center; background-size: 13px 13px;
 }
 [data-modal="filter"] ._CheckboxButton_8c7of_30 label input:disabled + ._CustomCheck_8c7of_52 { opacity: .35; }
 [data-modal="filter"] ._CheckboxButton_8c7of_30 label input:disabled ~ p { opacity: .5; }
 [data-modal="filter"] ._CheckboxButton_8c7of_30 label p { font-size: 14px; line-height: 1.4; }
 [data-modal="filter"] ._CheckboxButton_8c7of_30 label p span { font-size: 12px; }
-[data-modal="filter"] .od-ft__swatch { width: 16px; height: 16px; flex: none; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(85, 28, 37, .25); background-size: cover; background-position: center; }
+[data-modal="filter"] .od-ft__swatch { width: 20px; height: 20px; flex: none; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(85, 28, 37, .25); background-size: cover; background-position: center; }
+
+/* ---------- active filter chips (round 10) ---------- */
+.od-listing__active { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 0 4px; font-family: Bricolage, sans-serif; }
+[dir=rtl] .od-listing__active { font-family: Arabic-Regular, Bricolage, sans-serif; }
+.od-chipx { display: inline-flex; align-items: center; gap: 10px; height: 36px; padding-inline: 14px 12px; background: #f1eeea; color: var(--maroon, #551c25); font-size: 14px; line-height: 1; text-decoration: none; transition: background-color .2s ease; }
+.od-chipx:hover { background: #e5d9c7; color: var(--maroon, #551c25); }
+.od-chipx__t { white-space: nowrap; }
+.od-chipx__t ._sar_1ef42_1 { display: inline-block; vertical-align: -1px; margin-inline-end: 2px; }
+.od-chipx__t ._sar_1ef42_1 svg { width: 10px; height: 11px; fill: currentColor; display: block; }
+.od-chipx__x { font-size: 17px; line-height: 1; opacity: .75; }
+.od-listing__clear { font-size: 14px; color: var(--maroon, #551c25); text-decoration: underline; text-underline-offset: 3px; margin-inline-start: 6px; white-space: nowrap; }
+@media (max-width: 767px) { .od-listing__active { padding: 10px 0 0; } .od-chipx { height: 32px; font-size: 13px; } }

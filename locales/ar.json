@@ -383,7 +383,10 @@
     "grid_5": "5 في الصف",
     "updating": "جارٍ التحديث",
     "more": "+ {{ count }} المزيد",
-    "less": "أقل"
+    "less": "أقل",
+    "clear_all": "مسح الكل",
+    "remove_filter": "إزالة {{ name }}",
+    "active_filters": "الفلاتر المفعّلة"
   },
   "blogs": {
     "general": {

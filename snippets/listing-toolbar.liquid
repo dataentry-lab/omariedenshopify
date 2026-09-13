@@ -58,3 +58,53 @@
     <span class="od-listing__updating" aria-live="polite"><i aria-hidden="true"></i>{{ 'listing.updating' | t }}</span>
   </div>
 </div>
+
+{%- comment -%} round 10: active filter chips (one per applied value + price range) with x to remove, and Clear all {%- endcomment -%}
+{%- liquid
+  if is_search
+    assign results = search
+  else
+    assign results = collection
+  endif
+  assign active_n = 0
+  for f in results.filters
+    if f.type == 'price_range'
+      if f.min_value.value != nil or f.max_value.value != nil
+        assign active_n = active_n | plus: 1
+      endif
+    else
+      assign active_n = active_n | plus: f.active_values.size
+    endif
+  endfor
+  if is_search
+    assign clear_url = search.terms | url_encode | prepend: '?q=' | prepend: routes.search_url
+    if sort_by
+      assign clear_url = clear_url | append: '&sort_by=' | append: sort_by
+    endif
+  else
+    assign clear_url = collection.url
+    if sort_by
+      assign clear_url = clear_url | append: '?sort_by=' | append: sort_by
+    endif
+  endif
+-%}
+{%- if active_n > 0 -%}
+<div class="od-listing__active" data-listing-active data-listing-ajax aria-label="{{ 'listing.active_filters' | t }}">
+  {%- for f in results.filters -%}
+    {%- if f.type == 'price_range' -%}
+      {%- if f.min_value.value != nil or f.max_value.value != nil -%}
+        {%- assign pmin = f.min_value.value | default: 0 -%}
+        {%- assign pmax = f.max_value.value | default: f.range_max -%}
+        <a class="od-chipx" href="{{ f.url_to_remove }}" aria-label="{{ 'listing.remove_filter' | t: name: f.label }}"><span class="od-chipx__t">{% render 'sar' %}{{ pmin | money_without_currency }} &ndash; {% render 'sar' %}{{ pmax | money_without_currency }}</span><span class="od-chipx__x" aria-hidden="true">&times;</span></a>
+      {%- endif -%}
+    {%- else -%}
+      {%- for v in f.active_values -%}
+        {%- assign vl = v.label -%}
+        {%- if vl.size <= 3 -%}{%- assign vl = f.label | append: ' ' | append: v.label -%}{%- endif -%}
+        <a class="od-chipx" href="{{ v.url_to_remove }}" aria-label="{{ 'listing.remove_filter' | t: name: v.label }}"><span class="od-chipx__t">{{ vl }}</span><span class="od-chipx__x" aria-hidden="true">&times;</span></a>
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endfor -%}
+  <a class="od-listing__clear" href="{{ clear_url }}">{{ 'listing.clear_all' | t }}</a>
+</div>
+{%- endif -%}

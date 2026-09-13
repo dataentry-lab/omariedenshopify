@@ -164,7 +164,7 @@ a.od-imgrow__media:hover .od-ratio img { transform: scale(1.03); }
 .od-formblk::before { width: 520px; height: 520px; top: -160px; inset-inline-start: -120px; background: var(--od-accent, #e5d9c7); opacity: .22; }
 .od-formblk::after { width: 420px; height: 420px; bottom: -140px; inset-inline-end: -80px; background: var(--od-blk-text, #fcf8f2); opacity: .12; }
 .od-formblk .od-blk__heading { color: inherit; }
-.od-formblk__box { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1.25fr; gap: 40px; padding: 34px; color: inherit; background: rgba(229, 217, 199, .10); background: color-mix(in srgb, var(--od-accent, #e5d9c7) 10%, transparent); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); border: 1.5px solid rgba(229, 217, 199, .55); border-color: color-mix(in srgb, var(--od-accent, #e5d9c7) 55%, transparent); border-radius: 22px; }
+.od-formblk__box { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1.25fr; gap: 40px; padding: 34px; color: inherit; background: rgba(229, 217, 199, .10); background: color-mix(in srgb, var(--od-accent, #e5d9c7) 10%, transparent); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); border: 0; border-radius: 22px; }
 .od-formblk--stack .od-formblk__box { grid-template-columns: 1fr; text-align: center; max-width: 760px; margin: 0 auto; }
 .od-formblk__intro { display: flex; flex-direction: column; justify-content: center; }
 .od-formblk__intro .od-blk__eyebrow { color: var(--od-accent, #e5d9c7); }
@@ -188,7 +188,8 @@ a.od-imgrow__media:hover .od-ratio img { transform: scale(1.03); }
 .od-consent { grid-column: 1 / -1; display: flex; align-items: flex-start; gap: 8px; font-size: 12px; opacity: .9; cursor: pointer; }
 .od-consent input { margin-top: 2px; accent-color: var(--od-accent, #551c25); }
 /* glass fields inside the form sections (Privé, events, cafe) */
-.od-formblk .od-field__label { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--od-accent, #e5d9c7); opacity: 1; }
+.od-formblk .od-field__label { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--od-accent, #e5d9c7); opacity: 1; margin-bottom: 4px; }
+.od-formblk .od-field { gap: 8px; }
 .od-formblk--stack .od-field__label { text-align: start; }
 .od-formblk .od-field input, .od-formblk .od-field textarea, .od-formblk .od-field select { height: 50px; min-height: 50px; padding: 0 16px; border: 1px solid rgba(229, 217, 199, .45); border-color: color-mix(in srgb, var(--od-accent, #e5d9c7) 45%, transparent); background: rgba(229, 217, 199, .10); background: color-mix(in srgb, var(--od-accent, #e5d9c7) 10%, transparent); color: var(--od-accent, #e5d9c7); font-size: 15px; border-radius: 0; -webkit-appearance: none; appearance: none; transition: border-color .2s ease, background-color .2s ease; }
 .od-formblk .od-field input::placeholder, .od-formblk .od-field textarea::placeholder { color: rgba(229, 217, 199, .55); color: color-mix(in srgb, var(--od-accent, #e5d9c7) 55%, transparent); opacity: 1; }
@@ -655,3 +656,10 @@ a.od-imgrow__media:hover .od-ratio img { transform: scale(1.03); }
 @media (max-width: 767px) {
   .od-artext__title { font-size: 30px; }
 }
+
+/* round 10: Super Botanical form fields keep the gold to the labels and the button only (faint field borders, no panel outline) */
+.template-page-super-botanical .od-formblk .od-field input, .template-page-super-botanical .od-formblk .od-field textarea, .template-page-super-botanical .od-formblk .od-field select { border-color: rgba(240, 213, 142, .22); background: rgba(245, 239, 227, .06); color: #f5efe3; }
+.template-page-super-botanical .od-formblk .od-field input::placeholder, .template-page-super-botanical .od-formblk .od-field textarea::placeholder { color: rgba(245, 239, 227, .5); }
+.template-page-super-botanical .od-formblk .od-field input:focus, .template-page-super-botanical .od-formblk .od-field textarea:focus { border-color: rgba(240, 213, 142, .6); background: rgba(245, 239, 227, .1); }
+.template-page-super-botanical .od-formblk .od-chip span { border-color: rgba(240, 213, 142, .35); }
+.template-page-super-botanical .od-formblk__box { background: rgba(245, 239, 227, .04); }

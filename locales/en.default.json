@@ -383,7 +383,10 @@
     "grid_5": "5 per row",
     "updating": "Updating",
     "more": "+ {{ count }} more",
-    "less": "Less"
+    "less": "Less",
+    "clear_all": "Clear all",
+    "remove_filter": "Remove {{ name }}",
+    "active_filters": "Active filters"
   },
   "blogs": {
     "general": {
