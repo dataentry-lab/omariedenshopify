@@ -228,12 +228,12 @@ a._btnCont__addBtn_1rblz_43 { text-decoration: none; }
 button._login_with_social_button_111bg_296 { width: 100%; font-family: inherit; }
 
 /* ---- Shop the look (Figma motion guide frame 10) ---- */
-.od-stl { padding: 80px 0 40px; }
+.od-stl { padding-top: 80px; padding-bottom: 40px; }
 .od-stl__swiper { overflow: hidden; position: relative; }
 .od-stl__arrow { width: 44px; height: 44px; border-radius: 50%; background: var(--background); color: var(--maroon); box-shadow: 0 4px 12px rgba(0,0,0,.12); top: 42%; }
 .od-stl__arrow.swiper-button-lock { display: none; }
 .od-stl__arrow .swiper-navigation-icon { width: 9px; height: 16px; }
-@media (max-width: 768px) { .od-stl { padding: 40px 0 20px; } .od-stl__arrow { width: 40px; height: 40px; top: 40%; } }
+@media (max-width: 768px) { .od-stl { padding-top: 40px; padding-bottom: 20px; } .od-stl__arrow { width: 40px; height: 40px; top: 40%; } }
 .od-stl__look { cursor: pointer; }
 .od-stl__look-img { position: relative; aspect-ratio: 2 / 3; width: 100%; border-radius: 4px; overflow: hidden; background: #f3f0ea; }
 .od-stl__swiper--1-2 .od-stl__look-img { aspect-ratio: 1 / 2; }
