@@ -1,11 +1,31 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header group",
   "sections": {
     "header": {
       "type": "header",
-      "settings": {},
       "blocks": {
+        "menu_banners_UmmzHg": {
+          "type": "menu_banners",
+          "settings": {
+            "department": "Women",
+            "image_1": "shopify://shop_images/VEgcAXQwfbUZMF0UTDA0RG71Ot0qM35m1mzv6mPy.webp",
+            "caption_1": "ELEVATED ESSENTIALS",
+            "link_1": "",
+            "image_2": "shopify://shop_images/DeHjXzHiWcPHWlgAA0zdskeQfsGaVQ7o3Ofk0woa.webp",
+            "caption_2": "SIMPLE PLEASURE",
+            "link_2": ""
+          }
+        },
         "women_banners": {
           "type": "menu_banners",
           "settings": {
@@ -17,8 +37,14 @@
           }
         }
       },
-      "block_order": ["women_banners"]
+      "block_order": [
+        "menu_banners_UmmzHg",
+        "women_banners"
+      ],
+      "settings": {}
     }
   },
-  "order": ["header"]
+  "order": [
+    "header"
+  ]
 }
