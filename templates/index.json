@@ -15,6 +15,7 @@
         "slide1": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/eLZRGcxlyORu81VGQTNQ55xsZFEAsmnP8WHMwWNE.webp",
             "top_subtitle": "",
             "title": "Back To Routine",
             "subtitle": "New Arrivals, New Routines, New Inspiration, New You.",
@@ -286,6 +287,7 @@
     "banner": {
       "type": "image-banner",
       "settings": {
+        "image": "shopify://shop_images/I0mjH9Ddj27lVgve3lW1lOcPj07MSjD3t1NQyhHE_1.webp",
         "height": 720,
         "top_subtitle": "NOW AT OMARIEDEN",
         "title": "MARY KATRANTZOU",
@@ -467,6 +469,7 @@
         "eyebrow": "STEP INTO THE",
         "title": "World Of Omarieden",
         "text": "Discover the latest collections from the most esteemed fashion houses, designed for the upcoming season. Join the Omarieden Circle loyalty program to enjoy exclusive benefits and be the first to access these stunning arrivals!",
+        "image": "shopify://shop_images/g4ZPtlohqKqlDtB7BOejnZngyG1VFlW9CcljuCs2.png",
         "button_label": "Explore",
         "button_url": ""
       }
@@ -533,6 +536,7 @@
     "new_brand": {
       "type": "new-brand",
       "settings": {
+        "image": "shopify://shop_images/6q0zlqerNcCk8OtZWKs86wKuZF7sGRhJhoBgHFMc.jpg",
         "eyebrow": "NEW BRAND",
         "title": "IRO",
         "text": "Born in Paris and defined by effortless sophistication, IRO embodies modern confidence through refined tailoring and understated elegance. The brand combines contemporary design with impeccable craftsmanship, creating versatile pieces that balance timeless style with a distinctly urban spirit.",
