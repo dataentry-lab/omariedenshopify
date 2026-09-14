@@ -119,7 +119,7 @@
         "category_yiwMgH": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "men",
             "image": "shopify://shop_images/Men_04a0e8cc-0f1a-4b76-8bc0-44d392f1e774.jpg",
             "subtitle": "",
             "title": "",
@@ -129,10 +129,10 @@
         "category_MHwcy6": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "kids-girls-3-16-years",
             "image": "shopify://shop_images/Kids_Girls_7cb2dd6b-9120-4997-9c02-1ea38b4ae733.jpg",
-            "subtitle": "",
-            "title": "",
+            "subtitle": "Kids 3-16 Years",
+            "title": "Girls",
             "url": ""
           }
         },
@@ -141,8 +141,8 @@
           "settings": {
             "collection": "",
             "image": "shopify://shop_images/Kids_Boys_fda8a115-fa79-401e-b63e-806abceca1a1.jpg",
-            "subtitle": "",
-            "title": "",
+            "subtitle": "Kids 3-16 Years",
+            "title": "Boys",
             "url": ""
           }
         },
