@@ -303,7 +303,7 @@
           "type": "look",
           "settings": {
             "name": "Urban Rebel",
-            "image": "shopify://shop_images/hyITJj21BQEpeWha96zQ77Fr1YO9dDdsWHxyFsLO.jpg",
+            "image": "shopify://shop_images/hf_20260913_133358_cff4cd0d-5a54-46d9-9c42-bf50a6b07b7f.jpg",
             "products": [
               "rotate-1-cat-eye-frame-1163123098",
               "rivieras-1622-rivmocassin-1622",
@@ -316,6 +316,7 @@
           "type": "look",
           "settings": {
             "name": "Urban Rebel",
+            "image": "shopify://shop_images/ChatGPT_Image_Sep_14_2026_at_09_44_27_AM.jpg",
             "products": []
           }
         },
@@ -323,6 +324,7 @@
           "type": "look",
           "settings": {
             "name": "Simple Modernist",
+            "image": "shopify://shop_images/hf_20260914_090103_8bf07d77-24e0-4917-9420-b956ff1a6605.png",
             "products": []
           }
         },
@@ -330,6 +332,7 @@
           "type": "look",
           "settings": {
             "name": "Night Out",
+            "image": "shopify://shop_images/hf_20260914_085034_cc1d6ba9-bb2e-4ed8-a25f-628a6b1090b7.png",
             "products": []
           }
         }
@@ -456,6 +459,7 @@
         "show_labels": true,
         "show_captions": false,
         "hover_play": true,
+        "hint_always": false,
         "text_color": "#551c25",
         "accent": "#595b33",
         "bg": "rgba(0,0,0,0)",
