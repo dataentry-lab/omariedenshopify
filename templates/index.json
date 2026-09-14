@@ -303,6 +303,14 @@
     "shop_the_look_CdjJL7": {
       "type": "shop-the-look",
       "blocks": {
+        "look_mgdLNq": {
+          "type": "look",
+          "settings": {
+            "name": "Urban Rebel",
+            "image": "shopify://shop_images/hf_20260914_122844_4be6b825-7593-46da-8ebd-f2800ed777b5.png",
+            "products": []
+          }
+        },
         "look_eYynPb": {
           "type": "look",
           "settings": {
@@ -350,6 +358,7 @@
         }
       },
       "block_order": [
+        "look_mgdLNq",
         "look_eYynPb",
         "look_4C7Jbx",
         "look_mkTzfY",
