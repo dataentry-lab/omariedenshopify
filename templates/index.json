@@ -116,29 +116,11 @@
             "url": ""
           }
         },
-        "category_NR7aw8": {
-          "type": "category",
-          "settings": {
-            "collection": "",
-            "image": "shopify://shop_images/Jewelry_7676d20f-81fa-4f26-9845-7f1f1d3957d5.jpg",
-            "subtitle": "",
-            "title": "jewellery",
-            "url": ""
-          }
-        },
         "category_yiwMgH": {
           "type": "category",
           "settings": {
             "collection": "",
-            "subtitle": "",
-            "title": "",
-            "url": ""
-          }
-        },
-        "category_e6n798": {
-          "type": "category",
-          "settings": {
-            "collection": "",
+            "image": "shopify://shop_images/Men_04a0e8cc-0f1a-4b76-8bc0-44d392f1e774.jpg",
             "subtitle": "",
             "title": "",
             "url": ""
@@ -148,18 +130,39 @@
           "type": "category",
           "settings": {
             "collection": "",
+            "image": "shopify://shop_images/Kids_Girls_7cb2dd6b-9120-4997-9c02-1ea38b4ae733.jpg",
             "subtitle": "",
             "title": "",
+            "url": ""
+          }
+        },
+        "category_e6n798": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "image": "shopify://shop_images/Kids_Boys_fda8a115-fa79-401e-b63e-806abceca1a1.jpg",
+            "subtitle": "",
+            "title": "",
+            "url": ""
+          }
+        },
+        "category_NR7aw8": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "image": "shopify://shop_images/Jewelry_7676d20f-81fa-4f26-9845-7f1f1d3957d5.jpg",
+            "subtitle": "",
+            "title": "jewellery",
             "url": ""
           }
         }
       },
       "block_order": [
         "category_eHaqcG",
-        "category_NR7aw8",
         "category_yiwMgH",
+        "category_MHwcy6",
         "category_e6n798",
-        "category_MHwcy6"
+        "category_NR7aw8"
       ],
       "name": "Category carousel",
       "settings": {
