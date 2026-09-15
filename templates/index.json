@@ -113,7 +113,7 @@
             "collection": "",
             "image": "shopify://shop_images/oHeknmSyCj1a7cdNi0XIdlQXEFh95Dz1XjBSUOPT_85977509-678b-4665-ba4c-b6473459a84e.webp",
             "subtitle": "",
-            "title": "",
+            "title": "Women",
             "url": ""
           }
         },
@@ -123,7 +123,7 @@
             "collection": "",
             "image": "shopify://shop_images/Men_09f2745d-f8dc-42a4-9c2f-c581a68d72e3.jpg",
             "subtitle": "",
-            "title": "",
+            "title": "Men",
             "url": ""
           }
         },
@@ -132,8 +132,8 @@
           "settings": {
             "collection": "",
             "image": "shopify://shop_images/Kids_Girls_83ae6887-0b1a-4c9e-bec9-ceca00bbcf24.jpg",
-            "subtitle": "",
-            "title": "",
+            "subtitle": "Kids 3-16 Years",
+            "title": "Girls",
             "url": ""
           }
         },
@@ -141,8 +141,9 @@
           "type": "category",
           "settings": {
             "collection": "",
-            "subtitle": "",
-            "title": "",
+            "image": "shopify://shop_images/Kids_Boys_4096ae82-716b-4522-9eb8-ac105bd4cb1e.jpg",
+            "subtitle": "Kids 3-16 Years",
+            "title": "Boys",
             "url": ""
           }
         },
@@ -152,7 +153,7 @@
             "collection": "",
             "image": "shopify://shop_images/Jewelry_4bd9a584-10cb-4748-a9f9-c21fdd0a4415.jpg",
             "subtitle": "",
-            "title": "",
+            "title": "Jewellery",
             "url": ""
           }
         }
