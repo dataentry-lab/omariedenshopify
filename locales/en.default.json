@@ -592,5 +592,16 @@
       "refunded": "Refunded",
       "online": "Online"
     }
+  },
+  "catalogue": {
+    "pages": "Pages",
+    "share": "Share",
+    "fullscreen": "Fullscreen",
+    "prev": "Previous page",
+    "next": "Next page",
+    "page": "Page",
+    "hint": "Swipe to turn the page",
+    "read": "Read",
+    "copied": "Link copied"
   }
 }

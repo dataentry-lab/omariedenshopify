@@ -1,0 +1,112 @@
+{%- comment -%}
+  Catalogues hub (round 11): lists the catalogue books (pages using the "catalogue" template).
+  Automatic: every page with the catalogue template, newest first. Add "Catalogue" blocks to pick the order,
+  give a cover image and a subtitle, or hide one. Usable on any page (hub page, home, Privé).
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign read = 'catalogue.read' | t
+  assign hidden = ''
+  for block in section.blocks
+    if block.settings.hide and block.settings.page != blank
+      assign hidden = hidden | append: '|' | append: block.settings.page.handle | append: '|'
+    endif
+  endfor
+  assign listed = ''
+-%}
+{{ 'od-catalogue.css' | asset_url | stylesheet_tag }}
+<section class="od-blk od-cats" data-section-id="{{ section.id }}" style="padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px; --od-blk-text: {{ st.text_color }}; --od-cats-cols: {{ st.per_row }};{% if st.bg != blank and st.bg != 'rgba(0,0,0,0)' %} background: {{ st.bg }};{% endif %}">
+  <div class="_container_1kxnl_30">
+    {%- if st.heading != blank or st.text != blank -%}
+      <div class="od-blk__head od-blk__head--{{ st.align }} od-blk__head--m">
+        {%- if st.eyebrow != blank -%}<p class="od-blk__eyebrow">{{ st.eyebrow }}</p>{%- endif -%}
+        {%- if st.heading != blank -%}<h2 class="od-blk__heading">{{ st.heading }}</h2>{%- endif -%}
+        {%- if st.text != blank -%}<div class="od-blk__text">{{ st.text }}</div>{%- endif -%}
+      </div>
+    {%- endif -%}
+    <div class="od-cats__grid">
+      {%- comment -%} 1. hand-picked catalogues first, in block order {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        {%- if b.page == blank or b.hide -%}{%- continue -%}{%- endif -%}
+        {%- assign listed = listed | append: '|' | append: b.page.handle | append: '|' -%}
+        <a class="od-cats__item" href="{{ b.page.url }}" {{ block.shopify_attributes }}>
+          <div class="od-cats__cover">
+            {%- if b.cover != blank -%}<img src="{{ b.cover | image_url: width: 700 }}" alt="{{ b.page.title | escape }}" loading="lazy" width="{{ b.cover.width }}" height="{{ b.cover.height }}">{%- endif -%}
+            <span class="od-cats__spine"></span>
+            {%- if b.cover == blank or st.title_on_cover -%}<span class="od-cats__cover-title">{{ b.title | default: b.page.title }}</span>{%- endif -%}
+          </div>
+          <div class="od-cats__meta">
+            <span class="od-cats__name">{{ b.title | default: b.page.title }}</span>
+            {%- if b.subtitle != blank -%}<span class="od-cats__sub">{{ b.subtitle }}</span>{%- endif -%}
+            <span class="od-cats__read">{{ read }}</span>
+          </div>
+        </a>
+      {%- endfor -%}
+      {%- comment -%} 2. every other catalogue page, automatically {%- endcomment -%}
+      {%- if st.auto -%}
+        {%- for p in pages -%}
+          {%- if p.template_suffix != 'catalogue' -%}{%- continue -%}{%- endif -%}
+          {%- assign key = '|' | append: p.handle | append: '|' -%}
+          {%- if listed contains key or hidden contains key -%}{%- continue -%}{%- endif -%}
+          <a class="od-cats__item" href="{{ p.url }}">
+            <div class="od-cats__cover">
+              {%- if p.metafields.custom.cover != blank -%}<img src="{{ p.metafields.custom.cover | image_url: width: 700 }}" alt="{{ p.title | escape }}" loading="lazy">{%- endif -%}
+              <span class="od-cats__spine"></span>
+              {%- if p.metafields.custom.cover == blank or st.title_on_cover -%}<span class="od-cats__cover-title">{{ p.title }}</span>{%- endif -%}
+            </div>
+            <div class="od-cats__meta">
+              <span class="od-cats__name">{{ p.title }}</span>
+              <span class="od-cats__sub">{{ p.published_at | date: '%B %Y' }}</span>
+              <span class="od-cats__read">{{ read }}</span>
+            </div>
+          </a>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+    {%- if section.blocks.size == 0 and request.design_mode -%}
+      <p class="od-cats__empty" style="margin-top: 16px;">Catalogues appear here automatically (pages with the Catalogue template). Add a "Catalogue" block to set a cover image, the order or a subtitle.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Catalogues",
+  "tag": "section",
+  "class": "od-catalogues-section",
+  "max_blocks": 24,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Catalogues" },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "select", "id": "align", "label": "Heading alignment", "default": "left", "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Centre" } ] },
+    { "type": "checkbox", "id": "auto", "label": "List every catalogue page automatically", "default": true, "info": "Pages using the Catalogue template. Blocks below come first and can give a cover, subtitle or hide one." },
+    { "type": "checkbox", "id": "title_on_cover", "label": "Show the title on the cover image", "default": false },
+    { "type": "range", "id": "per_row", "label": "Per row (desktop)", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#551c25" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "rgba(0,0,0,0)" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "catalogue",
+      "name": "Catalogue",
+      "settings": [
+        { "type": "page", "id": "page", "label": "Catalogue page" },
+        { "type": "image_picker", "id": "cover", "label": "Cover image (3:4)" },
+        { "type": "text", "id": "title", "label": "Title (empty = page title)" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "info": "e.g. Spring 26 · 24 pages" },
+        { "type": "checkbox", "id": "hide", "label": "Hide this catalogue", "default": false }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Catalogues" } ]
+}
+{% endschema %}

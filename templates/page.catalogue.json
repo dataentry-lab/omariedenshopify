@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-catalogue",
+      "blocks": {
+        "cover": { "type": "cover", "settings": { "eyebrow": "Spring 26", "heading": "New season", "position": "bottom", "align": "left" } },
+        "p1": { "type": "products", "settings": { "heading": "New arrivals", "position": "top" } },
+        "img": { "type": "image", "settings": { "caption": "" } },
+        "p2": { "type": "products", "settings": { "heading": "", "position": "bottom" } },
+        "back": { "type": "back", "settings": { "heading": "OMARIEDEN", "position": "center", "align": "center" } }
+      },
+      "block_order": ["cover", "p1", "img", "p2", "back"],
+      "settings": { "back_url": "/pages/catalogues" }
+    }
+  },
+  "order": ["main"]
+}
