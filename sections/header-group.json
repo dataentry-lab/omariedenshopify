@@ -14,6 +14,18 @@
     "header": {
       "type": "header",
       "blocks": {
+        "menu_banners_gpEiVN": {
+          "type": "menu_banners",
+          "settings": {
+            "department": "Men",
+            "image_1": "shopify://shop_images/PERCIVAL_MENSWEAR_7_ad8ed3de-4ae6-45cd-b637-3045c7b8b774.jpg",
+            "caption_1": "Modern Classics",
+            "link_1": "",
+            "image_2": "shopify://shop_images/Copy_of_25_ae915cca-661b-4927-b911-58d9a6b54f3d.jpg",
+            "caption_2": "Refined Ease",
+            "link_2": ""
+          }
+        },
         "menu_banners_UmmzHg": {
           "type": "menu_banners",
           "settings": {
@@ -38,6 +50,7 @@
         }
       },
       "block_order": [
+        "menu_banners_gpEiVN",
         "menu_banners_UmmzHg",
         "women_banners"
       ],
