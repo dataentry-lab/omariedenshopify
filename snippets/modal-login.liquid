@@ -16,15 +16,17 @@
       <div class="_globalImg_1tf1q_38 _mobileLogo_111bg_80"><img fetchpriority="auto" alt="{{ shop.name | escape }}" src="{{ 'icons_light_logo-sun.svg' | asset_url }}"></div>
       <h4>{{ 'customer.login.title' | t }}</h4>
       <div>
-        <form method="get" action="{{ routes.account_login_url }}" data-login-form>
-          <label>{{ 'customer.login.email' | t }}</label>
+        {%- comment -%} not a real <form>: a GET submit would drop the signed query string of routes.account_login_url and land on a 404.
+            The button is a plain link to Shopify's hosted login; the email is only remembered for the return. {%- endcomment -%}
+        <div data-login-form>
+          <label for="od-login-email">{{ 'customer.login.email' | t }}</label>
           <div dir="ltr">
             <div class="react-international-phone-input-container _inputContainer_111bg_248">
-              <input class="react-international-phone-input _input_111bg_248" type="email" name="email" autocomplete="email" placeholder="{{ 'customer.login.email_placeholder' | t }}" required style="padding:0 12px;font-size:16px;">
+              <input id="od-login-email" class="react-international-phone-input _input_111bg_248" type="email" name="email" autocomplete="email" placeholder="{{ 'customer.login.email_placeholder' | t }}" style="padding:0 12px;font-size:16px;">
             </div>
           </div>
-          <button type="submit" class="_btn_lnddl_30 _modalLogin__button_111bg_191" style="margin-top:16px;width:100%;">{{ 'customer.login.continue' | t }}</button>
-        </form>
+          <a href="{{ routes.account_login_url }}" class="_btn_lnddl_30 _modalLogin__button_111bg_191" data-login-go style="margin-top:16px;width:100%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-sizing:border-box;">{{ 'customer.login.continue' | t }}</a>
+        </div>
       </div>
       <div class="_login_seprator_111bg_335"><span>{{ 'customer.login.or' | t }}</span></div>
       <div class="_login_with_social_111bg_296">
