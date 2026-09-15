@@ -173,15 +173,53 @@
         "card_button": "Explore"
       }
     },
-    "new_in_trend": {
-      "type": "product-slider",
+    "just_arrived": {
+      "type": "just-arrived",
       "settings": {
-        "title": "New in trend",
+        "heading": "OMARIEDEN",
+        "heading_italic": "Just Arrived",
+        "show_count": true,
+        "count_text": "[count] new pieces this week",
+        "tagline": "The latest arrivals, as they land in store",
+        "source": "products",
         "collection": "",
-        "limit": 30,
-        "button_label": "Shop all",
-        "button_url": "",
-        "variant": "trend"
+        "products": [
+          "antler-adventure-wheeled-duffle-travel-companion-4722228042",
+          "antler-bold-stripe-large-spinner-suitcase-luggage-4719214015",
+          "antler-chelsea-four-piece-packing-cube-set-4589124295",
+          "antler-classic-canvas-weekend-holdall-bag-4735217087",
+          "antler-classic-silicone-luggage-identifier-tag-4728157180",
+          "antler-classic-stripe-mid-size-spinner-case-luggage-4719157016",
+          "antler-contemporary-traveller-commute-backpack-travel-bag-4722261082",
+          "antler-discovery-expedition-travel-backpack-4722124081",
+          "antler-discovery-sleek-commuter-travel-backpack-4722124082",
+          "antler-discovery-wheeled-duffle-travel-bag-4722124042",
+          "antler-distinguished-aluminium-frame-cabin-case-luggage-4735240223",
+          "antler-durable-silicone-suitcase-spotter-tag-4728215180",
+          "antler-essential-graduated-packing-cube-set-4589192295",
+          "antler-essential-silicone-luggage-identifier-luggag-tags-4728207180",
+          "antler-expansive-stripe-spinner-travel-suitcase-luggage-4719157015",
+          "antler-flexible-silicone-luggage-label-tag-4728214180",
+          "antler-grand-hardshell-stripe-travel-case-luggage-4719192015",
+          "antler-grand-aluminium-frame-travel-trunk-luggage-4735240224",
+          "antler-heritage-aluminium-frame-cabin-suitcase-luggage-4735239223",
+          "antler-heritage-aluminium-frame-trunk-suitcase-luggage-4735239224",
+          "antler-heritage-scottish-leather-luggage-tag-4735239180",
+          "antler-heritage-scottish-leather-luggage-tag-4735240180",
+          "antler-heritage-structured-canvas-tote-4735114137",
+          "antler-icon-convertible-tote-travel-backpack-4752124084"
+        ],
+        "limit": 12,
+        "visible": 6,
+        "visible_mobile": 2.5,
+        "speed": 2,
+        "caption": "text",
+        "caption_text": "Just arrived",
+        "dark": false,
+        "bg": "#fcf8f2",
+        "text_color": "#551c25",
+        "accent": "#595b33",
+        "card_bg": "#f1eeea"
       }
     },
     "featured_brands": {
@@ -240,6 +278,17 @@
         "button_url": "/pages/discover-all-brands"
       }
     },
+    "new_in_trend": {
+      "type": "product-slider",
+      "settings": {
+        "title": "New in trend",
+        "collection": "",
+        "limit": 30,
+        "button_label": "Shop all",
+        "button_url": "",
+        "variant": "trend"
+      }
+    },
     "banner": {
       "type": "image-banner",
       "settings": {
@@ -252,62 +301,13 @@
         "button_url": ""
       }
     },
-    "just_arrived": {
-      "type": "just-arrived",
-      "settings": {
-        "heading": "OMARIEDEN",
-        "heading_italic": "Just Arrived",
-        "show_count": true,
-        "count_text": "[count] new pieces this week",
-        "tagline": "The latest arrivals, as they land in store",
-        "source": "products",
-        "collection": "",
-        "products": [
-          "antler-adventure-wheeled-duffle-travel-companion-4722228042",
-          "antler-bold-stripe-large-spinner-suitcase-luggage-4719214015",
-          "antler-chelsea-four-piece-packing-cube-set-4589124295",
-          "antler-classic-canvas-weekend-holdall-bag-4735217087",
-          "antler-classic-silicone-luggage-identifier-tag-4728157180",
-          "antler-classic-stripe-mid-size-spinner-case-luggage-4719157016",
-          "antler-contemporary-traveller-commute-backpack-travel-bag-4722261082",
-          "antler-discovery-expedition-travel-backpack-4722124081",
-          "antler-discovery-sleek-commuter-travel-backpack-4722124082",
-          "antler-discovery-wheeled-duffle-travel-bag-4722124042",
-          "antler-distinguished-aluminium-frame-cabin-case-luggage-4735240223",
-          "antler-durable-silicone-suitcase-spotter-tag-4728215180",
-          "antler-essential-graduated-packing-cube-set-4589192295",
-          "antler-essential-silicone-luggage-identifier-luggag-tags-4728207180",
-          "antler-expansive-stripe-spinner-travel-suitcase-luggage-4719157015",
-          "antler-flexible-silicone-luggage-label-tag-4728214180",
-          "antler-grand-hardshell-stripe-travel-case-luggage-4719192015",
-          "antler-grand-aluminium-frame-travel-trunk-luggage-4735240224",
-          "antler-heritage-aluminium-frame-cabin-suitcase-luggage-4735239223",
-          "antler-heritage-aluminium-frame-trunk-suitcase-luggage-4735239224",
-          "antler-heritage-scottish-leather-luggage-tag-4735239180",
-          "antler-heritage-scottish-leather-luggage-tag-4735240180",
-          "antler-heritage-structured-canvas-tote-4735114137",
-          "antler-icon-convertible-tote-travel-backpack-4752124084"
-        ],
-        "limit": 12,
-        "visible": 6,
-        "visible_mobile": 2.5,
-        "speed": 2,
-        "caption": "text",
-        "caption_text": "Just arrived",
-        "dark": false,
-        "bg": "#fcf8f2",
-        "text_color": "#551c25",
-        "accent": "#595b33",
-        "card_bg": "#f1eeea"
-      }
-    },
     "shop_the_look_CdjJL7": {
       "type": "shop-the-look",
       "blocks": {
         "look_mgdLNq": {
           "type": "look",
           "settings": {
-            "name": "Urban Rebel",
+            "name": "Floral Poise",
             "image": "shopify://shop_images/hf_20260914_122844_02fe7a6c-f31b-44db-958d-e149247bd75e.png",
             "products": []
           }
