@@ -14,6 +14,18 @@
     "header": {
       "type": "header",
       "blocks": {
+        "menu_banners_hD8ghF": {
+          "type": "menu_banners",
+          "settings": {
+            "department": "Home",
+            "image_1": "shopify://shop_images/cote_boguie-2_740bbfc5-2ab8-48e9-af7e-d4834eaed9f5.jpg",
+            "caption_1": "Quiet Comforts",
+            "link_1": "",
+            "image_2": "shopify://shop_images/Archivist_d088d6cf-f22d-4b28-bc79-a1fd5fcbbfbc.jpg",
+            "caption_2": "Little Luxuries",
+            "link_2": ""
+          }
+        },
         "menu_banners_Xe98TX": {
           "type": "menu_banners",
           "settings": {
@@ -62,6 +74,7 @@
         }
       },
       "block_order": [
+        "menu_banners_hD8ghF",
         "menu_banners_Xe98TX",
         "menu_banners_gpEiVN",
         "menu_banners_UmmzHg",
