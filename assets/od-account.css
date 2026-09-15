@@ -138,3 +138,7 @@
 .od-acct-drawer ._container__card__content_3mwtq_180 > ul > li > span:last-child { text-align: end; font-size: 12px; overflow-wrap: anywhere; }
 .od-acct-drawer ._container__card__content_3mwtq_180 > ul > li > span:last-child > ._sar_1ef42_1 svg { height: 11px; }
 .od-acct-drawer .od-acct-drawer__email { text-transform: none; }
+/* no breadcrumb trail on the account page (the original had none); breathing room under the header */
+body.template-page-my-account [data-breadcrumbs], body.template-page-my-account .od-crumbs-wrap { display: none !important; }
+body.template-page-my-account ._myAccountContainer_16lzy_123 { padding-top: 24px; }
+@media (max-width: 767px) { body.template-page-my-account ._myAccountContainer_16lzy_123 { padding-top: 12px; padding-bottom: 90px; } }
