@@ -335,13 +335,31 @@
             "image": "shopify://shop_images/hf_20260913_111531_17a6096a-72f7-4e17-ae6a-071756c075e3.png",
             "products": []
           }
+        },
+        "look_87T9tY": {
+          "type": "look",
+          "settings": {
+            "name": "Urban Rebel",
+            "image": "shopify://shop_images/hf_20260914_085034_c3a531b0-1078-4107-906b-255d2413806e.png",
+            "products": []
+          }
+        },
+        "look_ALVDYT": {
+          "type": "look",
+          "settings": {
+            "name": "Urban Rebel",
+            "image": "shopify://shop_images/hf_20260914_090103_8bf07d77-24e0-4917-9420-b956ff1a6605.png",
+            "products": []
+          }
         }
       },
       "block_order": [
         "look_4C7Jbx",
         "look_86EndB",
         "look_mkTzfY",
-        "look_VMdqXg"
+        "look_VMdqXg",
+        "look_87T9tY",
+        "look_ALVDYT"
       ],
       "name": "Shop the look",
       "settings": {
