@@ -14,6 +14,18 @@
     "header": {
       "type": "header",
       "blocks": {
+        "menu_banners_QwpJbC": {
+          "type": "menu_banners",
+          "settings": {
+            "department": "Jewellery",
+            "image_1": "shopify://shop_images/missoma-3_3d2b92ed-43f7-45de-9a6f-5ca0fb56c928.webp",
+            "caption_1": "Precious Details",
+            "link_1": "",
+            "image_2": "shopify://shop_images/missoma-2_73b7e78b-6024-4c89-accc-4556d0d948b8.webp",
+            "caption_2": "Timeless Treasures",
+            "link_2": ""
+          }
+        },
         "menu_banners_hD8ghF": {
           "type": "menu_banners",
           "settings": {
@@ -74,6 +86,7 @@
         }
       },
       "block_order": [
+        "menu_banners_QwpJbC",
         "menu_banners_hD8ghF",
         "menu_banners_Xe98TX",
         "menu_banners_gpEiVN",
