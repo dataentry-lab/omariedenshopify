@@ -14,6 +14,18 @@
     "header": {
       "type": "header",
       "blocks": {
+        "menu_banners_Xe98TX": {
+          "type": "menu_banners",
+          "settings": {
+            "department": "Kids",
+            "image_1": "shopify://shop_images/Oilily_YS26BPA502_BROWN_3_a5f3f16b-df13-4358-85ae-da3446bd318c.jpg",
+            "caption_1": "Little Wonders",
+            "link_1": "",
+            "image_2": "shopify://shop_images/DSC00410_fb47d8aa-32f4-4309-9f58-ea70aa4d35c2.jpg",
+            "caption_2": "Playful Elegance",
+            "link_2": ""
+          }
+        },
         "menu_banners_gpEiVN": {
           "type": "menu_banners",
           "settings": {
@@ -50,6 +62,7 @@
         }
       },
       "block_order": [
+        "menu_banners_Xe98TX",
         "menu_banners_gpEiVN",
         "menu_banners_UmmzHg",
         "women_banners"
