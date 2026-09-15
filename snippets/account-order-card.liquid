@@ -1,0 +1,53 @@
+{%- comment -%}
+  One order card on the My Account > Orders list (original: _card_wyf3u_30).
+  Usage: {% render 'account-order-card', order: order %}
+  "View order" opens the matching drawer (snippets/account-order-drawer.liquid, data-modal="order-<id>").
+{%- endcomment -%}
+{%- liquid
+  if order.cancelled
+    assign od_status = 'account.statuses.cancelled' | t
+  elsif order.financial_status == 'refunded' or order.financial_status == 'voided'
+    assign od_status = 'account.statuses.refunded' | t
+  else
+    case order.fulfillment_status
+      when 'unfulfilled'
+        assign od_status = 'account.statuses.pending' | t
+      when 'partial'
+        assign od_status = 'account.statuses.partial' | t
+      when 'fulfilled'
+        assign od_status = 'account.statuses.delivered' | t
+      when 'restocked'
+        assign od_status = 'account.statuses.returned' | t
+      else
+        assign od_status = order.fulfillment_status_label
+    endcase
+  endif
+-%}
+<div class="_card_wyf3u_30 od-acct__order" data-acct-order="{{ order.id }}">
+  <div class="_card__left_wyf3u_43">
+    <div class="_imgLists_wyf3u_132">
+      <div class="content">
+        {%- for line_item in order.line_items limit: 3 -%}
+          <div class="_globalImg_1tf1q_38 _itemClass_wyf3u_148 od-acct__thumb">
+            {%- if line_item.image -%}
+              <img fetchpriority="auto" loading="lazy" alt="{{ line_item.title | escape }}" src="{{ line_item.image | image_url: width: 240 }}" width="120" height="149">
+            {%- else -%}
+              <img fetchpriority="auto" alt="" src="{{ 'images_fallback.svg' | asset_url }}" width="120" height="149">
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+    <ul>
+      <li><h4>{{ 'account.order_number' | t }}</h4><p dir="ltr">{{ order.name }}</p></li>
+      <div class="_separator_wyf3u_121"></div>
+      <li><h4>{{ 'account.order_date' | t }}</h4><p>{{ order.created_at | date: '%d %B %Y' }}</p></li>
+      <div class="_separator_wyf3u_121"></div>
+      <li><h4>{{ 'account.status' | t }}</h4><p>{{ od_status }}</p></li>
+    </ul>
+  </div>
+  <div class="_card__right_wyf3u_92">
+    <button type="button" class="_btn_lnddl_30 _card__right__btnOrder_wyf3u_109" data-open-modal="order-{{ order.id }}">{{ 'account.view_order' | t }}</button>
+    <a class="_btn_lnddl_30 _card__right__btnOrder_wyf3u_109" href="{{ order.order_status_url }}" target="_blank" rel="noopener">{{ 'account.track_order' | t }}</a>
+  </div>
+</div>

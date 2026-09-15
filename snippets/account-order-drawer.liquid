@@ -1,0 +1,169 @@
+{%- comment -%}
+  Order detail drawer for the My Account page (original: right drawer with _container_3mwtq_75).
+  Usage: {% render 'account-order-drawer', order: order, rtl: rtl %}
+  Same modal pattern as sections/cart-drawer.liquid: backdrop + panel with data-modal="order-<id>",
+  opened by any [data-open-modal="order-<id>"] (theme.js), closed by the X / backdrop / Escape.
+{%- endcomment -%}
+{%- liquid
+  if order.cancelled
+    assign od_status = 'account.statuses.cancelled' | t
+  elsif order.financial_status == 'refunded' or order.financial_status == 'voided'
+    assign od_status = 'account.statuses.refunded' | t
+  else
+    case order.fulfillment_status
+      when 'unfulfilled'
+        assign od_status = 'account.statuses.pending' | t
+      when 'partial'
+        assign od_status = 'account.statuses.partial' | t
+      when 'fulfilled'
+        assign od_status = 'account.statuses.delivered' | t
+      when 'restocked'
+        assign od_status = 'account.statuses.returned' | t
+      else
+        assign od_status = order.fulfillment_status_label
+    endcase
+  endif
+
+  assign can_cancel = false
+  if order.cancelled == false and order.fulfillment_status != 'fulfilled'
+    assign can_cancel = true
+  endif
+
+  assign tracking = ''
+  for fulfillment in order.fulfillments
+    if fulfillment.tracking_number != blank
+      assign tracking = fulfillment.tracking_number
+      break
+    endif
+  endfor
+  if tracking == blank
+    assign tracking = order.name
+  endif
+
+  assign addr = order.shipping_address
+  if addr == blank
+    assign addr = order.billing_address
+  endif
+  assign cust_name = ''
+  if addr != blank
+    assign cust_name = addr.name
+  endif
+  if cust_name == blank
+    assign cust_name = order.customer.name
+  endif
+  assign cust_phone = order.phone
+  if cust_phone == blank and addr != blank
+    assign cust_phone = addr.phone
+  endif
+  if cust_phone == blank
+    assign cust_phone = order.customer.phone
+  endif
+
+  assign pay_type = ''
+  assign first_tx = order.transactions | first
+  if first_tx
+    assign pay_type = first_tx.gateway_display_name
+    if pay_type == blank
+      assign pay_type = first_tx.gateway | replace: '_', ' ' | capitalize
+    endif
+  endif
+  if pay_type == blank
+    assign pay_type = 'account.statuses.online' | t
+  endif
+
+  assign modal_name = 'order-' | append: order.id
+-%}
+<div class="_backdrop_9316i_30 undefined" data-modal-backdrop="{{ modal_name }}" data-show-class="_backdropShow_1bfe0_295"></div>
+<div class="_modal_9316i_132 undefined od-cartd od-acct-drawer {% if rtl %}_modalAddClsRtl_1bfe0_251 od-cartd--rtl{% else %}_modalAddCls_1bfe0_251{% endif %}" data-modal="{{ modal_name }}" data-show-class="_show_1bfe0_289" role="dialog" aria-modal="true" aria-label="{{ 'account.order_id' | t | escape }} {{ order.name | escape }}">
+  <div class="od-cartd__inner">
+    <div class="_mHeader_9316i_67 od-cartd__header od-acct-drawer__header">
+      <div class="_mHeader__imgContainer_9316i_89 od-acct-drawer__head">
+        <h2 class="od-cartd__title{% if rtl %} _h2Rtl_9316i_50{% endif %}">{{ 'account.order_id' | t }} <span class="od-acct-drawer__num" dir="ltr">#{{ order.name | remove_first: '#' }}</span></h2>
+        <p class="od-acct-drawer__date">{{ order.created_at | date: '%B %d, %Y' }}</p>
+      </div>
+      <div class="_globalImg_1tf1q_38 _close_9316i_125" data-close-modal="{{ modal_name }}" role="button" tabindex="0" aria-label="{{ 'general.accessibility.close' | t }}"><img fetchpriority="auto" alt="" src="{{ 'icons_cross.svg' | asset_url }}" width="20" height="20"></div>
+    </div>
+
+    <div class="_content_9316i_45 od-cartd__body od-acct-drawer__body">
+      <div class="_container_3mwtq_75 od-acct-drawer__container">
+        {%- if can_cancel -%}
+          <a class="_btn_lnddl_30 _returnProduct_3mwtq_54" href="{{ order.customer_url }}">{{ 'account.cancel_order' | t }}</a>
+        {%- endif -%}
+
+        {%- for line_item in order.line_items -%}
+          <div class="_container__pCard_3mwtq_92">
+            <div class="_globalImg_1tf1q_38 _container__pCard__left_3mwtq_102">
+              {%- if line_item.image -%}
+                <img fetchpriority="auto" loading="lazy" alt="{{ line_item.title | escape }}" src="{{ line_item.image | image_url: width: 120 }}" width="40" height="52">
+              {%- else -%}
+                <img fetchpriority="auto" alt="" src="{{ 'images_fallback.svg' | asset_url }}" width="40" height="52">
+              {%- endif -%}
+            </div>
+            <div class="_container__pCard__right_3mwtq_111">
+              <div class="_container__pCard__right__info_3mwtq_117">
+                <h4>{{ line_item.product.title | default: line_item.title }}</h4>
+                <p class="_container__pCard__right__info__qty_3mwtq_122">{{ 'account.qty' | t }}: {{ line_item.quantity }}</p>
+              </div>
+              <div class="_container__pCard__right__info_3mwtq_117">
+                <p>
+                  {%- if line_item.variant.title != blank and line_item.variant.title != 'Default Title' -%}
+                    {{ line_item.variant.title }}
+                  {%- elsif line_item.sku != blank -%}
+                    {{ line_item.sku }}
+                  {%- endif -%}
+                </p>
+                <p>{% render 'sar' %}{{ line_item.final_line_price | money_without_currency }}</p>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+
+        <div class="_container__card_3mwtq_162">
+          <h4>{{ 'account.order_summary' | t }}</h4>
+          <div class="_container__card__content_3mwtq_180">
+            <ul>
+              <li><span>{{ 'account.order_status' | t }}</span><span>{{ od_status }}</span></li>
+              <li><span>{{ 'account.shipping_method' | t }}</span><span>{{ order.shipping_method.title | default: '-' }}</span></li>
+              <li><span>{{ 'account.tracking_number' | t }}</span><span dir="ltr">{{ tracking }}</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="_container__card_3mwtq_162">
+          <h4>{{ 'account.customer_info' | t }}</h4>
+          <div class="_container__card__content_3mwtq_180">
+            <ul>
+              <li><span>{{ 'account.name' | t }}</span><span>{{ cust_name }}</span></li>
+              <li><span>{{ 'account.email' | t }}</span><span class="od-acct-drawer__email" dir="ltr">{{ order.email | default: order.customer.email }}</span></li>
+              <li><span>{{ 'account.phone' | t }}</span><span dir="ltr">{{ cust_phone | default: '-' }}</span></li>
+              <li><span>{{ 'account.address' | t }}</span><span>{% if addr != blank %}{{ addr.address1 }}{% if addr.address2 != blank %}, {{ addr.address2 }}{% endif %}{% if addr.city != blank %}, {{ addr.city }}{% endif %}{% if addr.province != blank %}, {{ addr.province }}{% endif %}{% if addr.country != blank %}, {{ addr.country }}{% endif %}{% else %}-{% endif %}</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="_container__card_3mwtq_162">
+          <h4>{{ 'account.payment' | t }}</h4>
+          <div class="_container__card__content_3mwtq_180">
+            <ul>
+              <li><span>{{ 'account.subtotal' | t }}</span><span>{% render 'sar' %}{{ order.subtotal_price | money_without_currency }}</span></li>
+              <li><span>{{ 'account.discount' | t }}</span><span>{% render 'sar' %}{{ order.total_discounts | money_without_currency }}</span></li>
+              <li><span>{{ 'account.shipping_cost' | t }}</span><span>{% render 'sar' %}{{ order.shipping_price | money_without_currency }}</span></li>
+              <li><span>{{ 'account.tax' | t }}</span><span>{% render 'sar' %}{{ order.tax_price | money_without_currency }}</span></li>
+              <li class="_total_3mwtq_230"><span>{{ 'account.total' | t }}</span><span>{% render 'sar' %}{{ order.total_price | money_without_currency }}</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="_container__card_3mwtq_162">
+          <h4>{{ 'account.additional_info' | t }}</h4>
+          <div class="_container__card__content_3mwtq_180">
+            <ul>
+              <li><span>{{ 'account.payment_type' | t }}</span><span>{{ pay_type }}</span></li>
+              <li><span>{{ 'account.payment_status' | t }}</span><span>{{ order.financial_status_label }}</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

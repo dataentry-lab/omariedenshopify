@@ -14,75 +14,15 @@
     "header": {
       "type": "header",
       "blocks": {
-        "menu_banners_QLqkMN": {
-          "type": "menu_banners",
-          "settings": {
-            "department": "Travel",
-            "image_1": "shopify://shop_images/anteler-1.webp",
-            "caption_1": "Journey Essentials",
-            "link_1": "",
-            "image_2": "shopify://shop_images/antler-2.webp",
-            "caption_2": "Travel Essentials",
-            "link_2": ""
-          }
-        },
-        "menu_banners_PVGNxH": {
-          "type": "menu_banners",
-          "settings": {
-            "department": "Home",
-            "image_1": "shopify://shop_images/cote_boguie-2.jpg",
-            "caption_1": "Quiet Comforts",
-            "link_1": "",
-            "image_2": "shopify://shop_images/Archivist.jpg",
-            "caption_2": "Little Luxuries",
-            "link_2": ""
-          }
-        },
-        "menu_banners_H7bQax": {
-          "type": "menu_banners",
-          "settings": {
-            "department": "Jewellery",
-            "image_1": "shopify://shop_images/missoma-2.webp",
-            "caption_1": "ELEVATED ESSENTIALS",
-            "link_1": "",
-            "image_2": "shopify://shop_images/missoma-3.webp",
-            "caption_2": "SIMPLE PLEASURE",
-            "link_2": ""
-          }
-        },
-        "menu_banners_h3iXQ9": {
-          "type": "menu_banners",
-          "settings": {
-            "department": "Kids",
-            "image_1": "shopify://shop_images/Oilily_YS26BPA502_BROWN_3.jpg",
-            "caption_1": "Little Wonders",
-            "link_1": "",
-            "image_2": "shopify://shop_images/DSC00410.jpg",
-            "caption_2": "Playful Elegance",
-            "link_2": ""
-          }
-        },
-        "menu_banners_BghGmj": {
-          "type": "menu_banners",
-          "settings": {
-            "department": "Men",
-            "image_1": "shopify://shop_images/PERCIVAL_MENSWEAR_7.jpg",
-            "caption_1": "Modern Classics",
-            "link_1": "",
-            "image_2": "shopify://shop_images/Copy_of_25.jpg",
-            "caption_2": "Refined Ease",
-            "link_2": ""
-          }
-        },
         "menu_banners_UmmzHg": {
           "type": "menu_banners",
           "settings": {
             "department": "Women",
-            "image_1": "shopify://shop_images/221628_1.webp",
-            "caption_1": "Quiet Elegance",
+            "image_1": "shopify://shop_images/VEgcAXQwfbUZMF0UTDA0RG71Ot0qM35m1mzv6mPy.webp",
+            "caption_1": "ELEVATED ESSENTIALS",
             "link_1": "",
-            "image_2": "shopify://shop_images/WhatsApp_Image_2026-08-10_at_2.56.48_PM_1.webp",
-            "caption_2": "Elevated Essentials",
+            "image_2": "shopify://shop_images/DeHjXzHiWcPHWlgAA0zdskeQfsGaVQ7o3Ofk0woa.webp",
+            "caption_2": "SIMPLE PLEASURE",
             "link_2": ""
           }
         },
@@ -98,11 +38,6 @@
         }
       },
       "block_order": [
-        "menu_banners_QLqkMN",
-        "menu_banners_PVGNxH",
-        "menu_banners_H7bQax",
-        "menu_banners_h3iXQ9",
-        "menu_banners_BghGmj",
         "menu_banners_UmmzHg",
         "women_banners"
       ],

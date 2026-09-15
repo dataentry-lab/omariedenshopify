@@ -157,6 +157,20 @@
     nav.classList.toggle('is-collapsed', !expanded);
   }
   function initCats() { $$('[data-listing-cats]', listing).forEach(layoutCats); }
+  /* ===================== mobile title: fit each " - " segment on one line (round 11) ===================== */
+  function fitTitle() {
+    $$('[data-listing-title].od-listing__heading--split', listing).forEach(function (h) {
+      var segs = $$('.od-listing__seg', h);
+      if (!segs.length) return;
+      if (window.innerWidth >= 768) { h.style.fontSize = ''; return; }
+      var max = 32, min = 20, size = max;
+      h.style.fontSize = size + 'px';
+      var w = h.clientWidth;
+      function over() { for (var i = 0; i < segs.length; i++) { if (segs[i].scrollWidth > w + 1) return true; } return false; }
+      while (over() && size > min) { size -= 1; h.style.fontSize = size + 'px'; }
+    });
+  }
+
   document.addEventListener('click', function (e) {
     var b = e.target.closest('[data-cats-more]');
     if (!b) return;
@@ -194,6 +208,7 @@
     observeLoadMore();
     initTrees(document);
     initCats();
+    fitTitle();
   }
   function load(url, push) {
     var g = grid();
@@ -322,6 +337,9 @@
   window.addEventListener('resize', (OD.debounce ? OD.debounce(refreshSticky, 100) : refreshSticky));
   initCats();
   window.addEventListener('resize', (OD.debounce ? OD.debounce(initCats, 120) : initCats));
+  fitTitle();
+  window.addEventListener('resize', (OD.debounce ? OD.debounce(fitTitle, 120) : fitTitle));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitTitle);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(initCats);
   if (mq.addEventListener) mq.addEventListener('change', refreshSticky); else if (mq.addListener) mq.addListener(refreshSticky);
   window.addEventListener('load', refreshSticky);

@@ -111,17 +111,33 @@
           "type": "category",
           "settings": {
             "collection": "",
-            "image": "shopify://shop_images/oHeknmSyCj1a7cdNi0XIdlQXEFh95Dz1XjBSUOPT_4ff0745c-29d9-4376-8cb4-400987456694.webp",
             "subtitle": "",
-            "title": "Women",
+            "title": "",
+            "url": ""
+          }
+        },
+        "category_NR7aw8": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "subtitle": "",
+            "title": "",
             "url": ""
           }
         },
         "category_yiwMgH": {
           "type": "category",
           "settings": {
-            "collection": "men",
-            "image": "shopify://shop_images/Men_04a0e8cc-0f1a-4b76-8bc0-44d392f1e774.jpg",
+            "collection": "",
+            "subtitle": "",
+            "title": "",
+            "url": ""
+          }
+        },
+        "category_e6n798": {
+          "type": "category",
+          "settings": {
+            "collection": "",
             "subtitle": "",
             "title": "",
             "url": ""
@@ -130,40 +146,19 @@
         "category_MHwcy6": {
           "type": "category",
           "settings": {
-            "collection": "kids-girls-3-16-years",
-            "image": "shopify://shop_images/Kids_Girls_7cb2dd6b-9120-4997-9c02-1ea38b4ae733.jpg",
-            "subtitle": "Kids 3-16 Years",
-            "title": "Girls",
-            "url": ""
-          }
-        },
-        "category_e6n798": {
-          "type": "category",
-          "settings": {
             "collection": "",
-            "image": "shopify://shop_images/Kids_Boys_fda8a115-fa79-401e-b63e-806abceca1a1.jpg",
-            "subtitle": "Kids 3-16 Years",
-            "title": "Boys",
-            "url": ""
-          }
-        },
-        "category_NR7aw8": {
-          "type": "category",
-          "settings": {
-            "collection": "",
-            "image": "shopify://shop_images/Jewelry_7676d20f-81fa-4f26-9845-7f1f1d3957d5.jpg",
             "subtitle": "",
-            "title": "jewellery",
+            "title": "",
             "url": ""
           }
         }
       },
       "block_order": [
         "category_eHaqcG",
+        "category_NR7aw8",
         "category_yiwMgH",
-        "category_MHwcy6",
         "category_e6n798",
-        "category_NR7aw8"
+        "category_MHwcy6"
       ],
       "name": "Category carousel",
       "settings": {
@@ -304,27 +299,11 @@
     "shop_the_look_CdjJL7": {
       "type": "shop-the-look",
       "blocks": {
-        "look_mgdLNq": {
-          "type": "look",
-          "settings": {
-            "name": "Urban Rebel",
-            "image": "shopify://shop_images/hf_20260914_122844_02fe7a6c-f31b-44db-958d-e149247bd75e.png",
-            "products": []
-          }
-        },
-        "look_eYynPb": {
-          "type": "look",
-          "settings": {
-            "name": "Bloom in Pink",
-            "image": "shopify://shop_images/hf_20260914_111127_c89e507e-4210-4c41-a063-4cef9af94c12.png",
-            "products": []
-          }
-        },
         "look_4C7Jbx": {
           "type": "look",
           "settings": {
-            "name": "Urban Ease",
-            "image": "shopify://shop_images/hf_20260913_133358_cff4cd0d-5a54-46d9-9c42-bf50a6b07b7f.jpg",
+            "name": "Urban Rebel",
+            "image": "shopify://shop_images/hyITJj21BQEpeWha96zQ77Fr1YO9dDdsWHxyFsLO.jpg",
             "products": [
               "rotate-1-cat-eye-frame-1163123098",
               "rivieras-1622-rivmocassin-1622",
@@ -336,31 +315,26 @@
         "look_mkTzfY": {
           "type": "look",
           "settings": {
-            "name": "The Natural Edit",
-            "image": "shopify://shop_images/ChatGPT_Image_Sep_14_2026_at_09_44_27_AM.jpg",
+            "name": "Urban Rebel",
             "products": []
           }
         },
         "look_VMdqXg": {
           "type": "look",
           "settings": {
-            "name": "Junior Classic",
-            "image": "shopify://shop_images/hf_20260914_090103_8bf07d77-24e0-4917-9420-b956ff1a6605.png",
+            "name": "Simple Modernist",
             "products": []
           }
         },
         "look_86EndB": {
           "type": "look",
           "settings": {
-            "name": "Little Soleil",
-            "image": "shopify://shop_images/hf_20260914_085034_cc1d6ba9-bb2e-4ed8-a25f-628a6b1090b7.png",
+            "name": "Night Out",
             "products": []
           }
         }
       },
       "block_order": [
-        "look_mgdLNq",
-        "look_eYynPb",
         "look_4C7Jbx",
         "look_mkTzfY",
         "look_VMdqXg",
@@ -482,7 +456,6 @@
         "show_labels": true,
         "show_captions": false,
         "hover_play": true,
-        "hint_always": false,
         "text_color": "#551c25",
         "accent": "#595b33",
         "bg": "rgba(0,0,0,0)",

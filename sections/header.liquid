@@ -76,7 +76,8 @@
                 <img fetchpriority="auto" alt="{{ 'header.search' | t }}" src="{{ 'icons_' | append: icon_set | append: '_search.svg' | asset_url }}" data-icon-dark="{{ 'icons_dark_search.svg' | asset_url }}" data-icon-light="{{ 'icons_light_search.svg' | asset_url }}">
               </div>
               {%- if customer -%}
-                <a class="_globalImg_1tf1q_38 _itemClass_1fb5v_208" href="{{ routes.account_url }}">
+                {%- assign my_account_url = routes.root_url | append: '/pages/my-account' | replace: '//', '/' -%}
+                <a class="_globalImg_1tf1q_38 _itemClass_1fb5v_208" href="{{ my_account_url }}">
                   <img fetchpriority="auto" alt="{{ 'header.account' | t }}" src="{{ 'icons_' | append: icon_set | append: '_profile.svg' | asset_url }}" data-icon-dark="{{ 'icons_dark_profile.svg' | asset_url }}" data-icon-light="{{ 'icons_light_profile.svg' | asset_url }}">
                 </a>
               {%- else -%}

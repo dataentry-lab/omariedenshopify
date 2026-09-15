@@ -376,3 +376,14 @@
 .od-chipx__x { font-size: 17px; line-height: 1; opacity: .75; }
 .od-listing__clear { font-size: 14px; color: var(--maroon, #551c25); text-decoration: underline; text-underline-offset: 3px; margin-inline-start: 6px; white-space: nowrap; }
 @media (max-width: 767px) { .od-listing__active { padding: 10px 0 0; } .od-chipx { height: 32px; font-size: 13px; } }
+
+/* ---------- listing title split (round 11): mobile = one " - " segment per line, fitted font ---------- */
+.od-listing__count--m { display: none; }
+@media (max-width: 767px) {
+  .od-listing__heading--split { display: block; }
+  .od-listing__heading--split .od-listing__name { display: block; }
+  .od-listing__heading--split .od-listing__seg { display: block; white-space: nowrap; overflow: hidden; }
+  .od-listing__heading--split .od-listing__sep { display: none; }
+  .od-listing__heading--split .od-listing__count--d { display: none; }
+  .od-listing__heading--split .od-listing__count--m { display: inline-block; vertical-align: top; padding-top: 6px; margin-inline-start: 8px; }
+}

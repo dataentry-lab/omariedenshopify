@@ -16,10 +16,20 @@
   {%- if eyebrow != blank -%}
     <p class="od-listing__eyebrow">{{ eyebrow }}</p>
   {%- endif -%}
-  <h1 class="od-listing__heading{% if rtl %} od-listing__heading--rtl{% endif %}">
-    <span class="od-listing__name">{% if quoted %}&ldquo;{{ title }}&rdquo;{% else %}{{ title }}{% endif %}</span>
+  {%- comment -%} round 11: on mobile the title splits at " - " (one segment per line, font fitted by od-listing.js);
+      the count sits on the first line there and after the whole title on desktop {%- endcomment -%}
+  {%- assign segs = title | split: ' - ' -%}
+  <h1 class="od-listing__heading{% if rtl %} od-listing__heading--rtl{% endif %}{% if segs.size > 1 %} od-listing__heading--split{% endif %}" data-listing-title>
+    <span class="od-listing__name">
+      {%- if quoted -%}&ldquo;{{ title }}&rdquo;{%- else -%}
+        {%- for seg in segs -%}
+          <span class="od-listing__seg">{{ seg | strip }}{% if forloop.first and count != blank %} <span class="od-listing__count od-listing__count--m">({{ count }})</span>{% endif %}</span>
+          {%- unless forloop.last %}<span class="od-listing__sep"> - </span>{% endunless -%}
+        {%- endfor -%}
+      {%- endif -%}
+    </span>
     {%- if count != blank -%}
-      <span class="od-listing__count">({{ count }})</span>
+      <span class="od-listing__count od-listing__count--d">({{ count }})</span>
     {%- endif -%}
   </h1>
 </div>

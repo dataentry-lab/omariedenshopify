@@ -663,3 +663,12 @@ a.od-imgrow__media:hover .od-ratio img { transform: scale(1.03); }
 .template-page-super-botanical .od-formblk .od-field input:focus, .template-page-super-botanical .od-formblk .od-field textarea:focus { border-color: rgba(240, 213, 142, .6); background: rgba(245, 239, 227, .1); }
 .template-page-super-botanical .od-formblk .od-chip span { border-color: rgba(240, 213, 142, .35); }
 .template-page-super-botanical .od-formblk__box { background: rgba(245, 239, 227, .04); }
+
+/* round 11: form background image + overlay (theme editor: Background) */
+.od-formblk__bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.od-formblk__bg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.od-formblk__overlay { position: absolute; inset: 0; }
+.od-formblk--has-bg::before, .od-formblk--has-bg::after { display: none; }
+.od-formblk--has-bg .od-formblk__box { background: color-mix(in srgb, var(--od-blk-bg, #2a0d12) 45%, transparent); background: rgba(42, 13, 18, .45); }
+@supports (color-mix(in srgb, red 50%, transparent)) { .od-formblk--has-bg .od-formblk__box { background: color-mix(in srgb, var(--od-blk-bg, #2a0d12) 45%, transparent); } }
+.od-formblk > ._container_1kxnl_30 { position: relative; z-index: 1; }

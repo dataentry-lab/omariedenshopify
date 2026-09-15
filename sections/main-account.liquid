@@ -1,0 +1,220 @@
+{%- comment -%}
+  My Account page (page template "my-account"). Rebuilds the original omarieden.com /my-account/* pages
+  with the captured CSS-module classes (assets/omarieden.css.liquid) + small overrides in assets/od-account.css.
+  The store uses Shopify's hosted customer accounts, so every edit links out (routes.account_url,
+  routes.account_addresses_url, order.customer_url, order.order_status_url). Tabs are switched by
+  assets/od-account.js from the URL hash (#orders | #wishlists | #profile | #address). The wishlist tab is the
+  same shell as sections/main-page-wishlist.liquid so theme.js fills it. Order drawers reuse the cart drawer
+  modal pattern (data-modal / data-modal-backdrop / data-show-class, opened with data-open-modal).
+{%- endcomment -%}
+{%- liquid
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign shop_url = routes.all_products_collection_url
+-%}
+{{ 'od-account.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'od-account.js' | asset_url }}" defer></script>
+
+{%- if customer -%}
+{%- paginate customer.orders by 10 -%}
+<div class="_container_1kxnl_30 _myAccountContainer_16lzy_123 od-acct" data-account data-section-id="{{ section.id }}">
+  <div class="_myAccountContent_16lzy_30">
+
+    {%- comment -%} Desktop: left tab column {%- endcomment -%}
+    <div class="_tabContainer_15vco_30">
+      <h2>{{ 'account.title' | t }}</h2>
+      <div class="_tab_dllx9_30">
+        <a class="_tab__link_dllx9_30 _active_dllx9_71" href="#orders" data-acct-tab="orders" data-acct-label="{{ 'account.orders' | t | escape }}" aria-current="page">
+          <h3>{{ 'account.orders' | t }}</h3>
+          <div class="_globalImg_1tf1q_38 od-acct__arrow"><img fetchpriority="auto" alt="" src="{{ 'icons_light_arrow_right.svg' | asset_url }}" width="20" height="20"></div>
+        </a>
+      </div>
+      <div class="_tab_dllx9_30">
+        <a class="_tab__link_dllx9_30" href="#wishlists" data-acct-tab="wishlists" data-acct-label="{{ 'account.wishlists' | t | escape }}">
+          <h3>{{ 'account.wishlists' | t }}</h3>
+          <div class="_globalImg_1tf1q_38 od-acct__arrow"><img fetchpriority="auto" alt="" src="{{ 'icons_light_arrow_right.svg' | asset_url }}" width="20" height="20"></div>
+        </a>
+      </div>
+      <div class="_tab_dllx9_30">
+        <a class="_tab__link_dllx9_30" href="#profile" data-acct-tab="profile" data-acct-label="{{ 'account.personal_data' | t | escape }}">
+          <h3>{{ 'account.profile' | t }}</h3>
+          <div class="_globalImg_1tf1q_38 od-acct__arrow"><img fetchpriority="auto" alt="" src="{{ 'icons_light_arrow_right.svg' | asset_url }}" width="20" height="20"></div>
+        </a>
+      </div>
+      <div class="_tab_dllx9_30">
+        <a class="_tab__link_dllx9_30" href="#address" data-acct-tab="address" data-acct-label="{{ 'account.address' | t | escape }}">
+          <h3>{{ 'account.address' | t }}</h3>
+          <div class="_globalImg_1tf1q_38 od-acct__arrow"><img fetchpriority="auto" alt="" src="{{ 'icons_light_arrow_right.svg' | asset_url }}" width="20" height="20"></div>
+        </a>
+      </div>
+      <div class="_tab_dllx9_30">
+        <a class="_tab__link_dllx9_30" href="{{ routes.account_logout_url }}" data-acct-logout>
+          <h3>{{ 'account.sign_out' | t }}</h3>
+          <div class="_globalImg_1tf1q_38 od-acct__arrow"><img fetchpriority="auto" alt="" src="{{ 'icons_light_arrow_right.svg' | asset_url }}" width="20" height="20"></div>
+        </a>
+      </div>
+    </div>
+
+    {%- comment -%} Right column: title + one panel at a time {%- endcomment -%}
+    <div class="_rightMarginBottom_v3tvj_57 _right_v3tvj_30">
+      <div class="_right__top_v3tvj_33"><h2 data-acct-title>{{ 'account.orders' | t }}</h2></div>
+
+      {%- comment -%} ORDERS {%- endcomment -%}
+      <div class="od-acct__panel" data-acct-panel="orders">
+        <div class="_orders_jb4vg_30" data-acct-orders>
+          {%- for order in customer.orders -%}
+            {%- render 'account-order-card', order: order -%}
+          {%- else -%}
+            <div class="_shoppingBagContainer_179js_169 od-acct__empty">
+              <div class="_shoppingBagContainer__emptyCart_179js_183 _noProducts_1f8fu_34">
+                <h4>{{ 'account.no_orders' | t }}</h4>
+                <p>{{ 'account.no_orders_text' | t }}</p>
+              </div>
+              <a class="_btn_lnddl_30 _shopBtn_1f8fu_30 od-acct__shop" href="{{ shop_url }}">{{ 'account.shop_now' | t }}</a>
+            </div>
+          {%- endfor -%}
+          {%- if paginate.next -%}
+            <a class="_btn_lnddl_30 _loadMore_jb4vg_46 od-acct__more" href="{{ paginate.next.url }}#orders" data-acct-more>
+              <span data-acct-more-label>{{ 'account.load_more' | t }}</span>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- comment -%} WISHLISTS: same shell as sections/main-page-wishlist.liquid, filled by theme.js {%- endcomment -%}
+      <div class="od-acct__panel" data-acct-panel="wishlists" hidden>
+        <div data-wishlist-page>
+          <div class="_favContainer_1p8xa_34 od-acct__fav">
+            <p class="od-acct__count"><span data-wishlist-count>(0)</span></p>
+            <div class="_ProductCollection_1ajxu_41 od-acct__wl-grid" style="grid-template-columns: repeat(4, 1fr);" data-wishlist-grid></div>
+            <div class="_shoppingBagContainer_179js_169" data-wishlist-empty hidden>
+              <div class="_shoppingBagContainer__emptyCart_179js_183 _noProducts_1f8fu_34">
+                <h4>{{ 'wishlist.empty_title' | t }}</h4>
+                <p>{{ 'wishlist.empty_text' | t }}</p>
+              </div>
+              <button type="button" class="_btn_lnddl_30 _shopBtn_1f8fu_30" data-href="{{ shop_url }}">{{ 'wishlist.shop' | t }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {%- comment -%} PROFILE (read only, edits on the hosted account page) {%- endcomment -%}
+      <div class="od-acct__panel" data-acct-panel="profile" hidden>
+        <div class="_profile_jyk9f_30">
+          <div class="_profile__picture_jyk9f_39 od-acct__avatar">
+            <div class="_globalImg_1tf1q_38">
+              {%- assign ini_first = customer.first_name | default: '' | slice: 0 | upcase -%}
+              {%- assign ini_last = customer.last_name | default: '' | slice: 0 | upcase -%}
+              {%- assign initials = ini_first | append: ini_last -%}
+              {%- if initials != blank -%}
+                <span class="od-acct__initials" aria-hidden="true">{{ initials }}</span>
+              {%- else -%}
+                <img fetchpriority="auto" alt="" src="{{ 'images_fallback.svg' | asset_url }}" width="90" height="90">
+              {%- endif -%}
+            </div>
+          </div>
+          <div class="_profile__name_jyk9f_77">
+            <div class="_inputWithLabel_1s8yh_30">
+              <label class="_label_1g1i8_30" for="od-acct-first">{{ 'account.first_name' | t }}</label>
+              <input id="od-acct-first" class="_input_1vioh_49" type="text" value="{{ customer.first_name | escape }}" readonly>
+            </div>
+            <div class="_inputWithLabel_1s8yh_30">
+              <label class="_label_1g1i8_30" for="od-acct-last">{{ 'account.last_name' | t }}</label>
+              <input id="od-acct-last" class="_input_1vioh_49" type="text" value="{{ customer.last_name | escape }}" readonly>
+            </div>
+          </div>
+          <div class="_profile__other_jyk9f_77">
+            <div class="_inputWithLabel_1s8yh_30">
+              <label class="_label_1g1i8_30" for="od-acct-email">{{ 'account.email' | t }}</label>
+              <input id="od-acct-email" class="_input_1vioh_49" type="email" value="{{ customer.email | escape }}" readonly dir="ltr">
+            </div>
+            <div class="_inputWithLabel_1s8yh_30">
+              <label class="_label_1g1i8_30" for="od-acct-phone">{{ 'account.phone_number' | t }}</label>
+              <input id="od-acct-phone" class="_input_1vioh_49" type="tel" value="{{ customer.phone | escape }}" readonly dir="ltr">
+            </div>
+          </div>
+          <a class="_btn_lnddl_30 _profile__pBtn_jyk9f_92" href="{{ routes.account_url }}">{{ 'account.edit_profile' | t }}</a>
+        </div>
+      </div>
+
+      {%- comment -%} ADDRESS (read only, add / edit / delete on the hosted addresses page) {%- endcomment -%}
+      <div class="od-acct__panel" data-acct-panel="address" hidden>
+        <div class="_addContent_16lzy_65 od-acct__addresses">
+          <a class="_btn_lnddl_30 _addContent__addressBtn_16lzy_69" href="{{ routes.account_addresses_url }}">{{ 'account.add_address' | t }}</a>
+          {%- for address in customer.addresses -%}
+            {%- assign is_default = false -%}
+            {%- if customer.default_address and address.id == customer.default_address.id -%}{%- assign is_default = true -%}{%- endif -%}
+            <div class="_addressCard_mwe20_72{% if is_default %} od-acct__addr--default{% endif %}">
+              <div class="_addressCard__left_mwe20_155">
+                <h4>{{ address.first_name }} {{ address.last_name }}</h4>
+                {%- if address.phone != blank -%}<p style="margin-bottom: 0px;" dir="ltr">{{ address.phone }}</p>{%- endif -%}
+                <p style="margin-bottom: 0px;">{{ address.address1 }}{% if address.address2 != blank %}, {{ address.address2 }}{% endif %}</p>
+                <p>{{ address.city }}{% if address.province != blank %}, {{ address.province }}{% endif %}{% if address.country != blank %}, {{ address.country }}{% endif %}</p>
+              </div>
+              <div class="_addressCard__right_mwe20_187">
+                <a class="_bbtn_lnddl_75 _addressBtn_mwe20_193" href="{{ routes.account_addresses_url }}">{{ 'account.edit' | t }}</a>
+                <a class="_bbtn_lnddl_75 _addressBtn_mwe20_193" href="{{ routes.account_addresses_url }}">{{ 'account.delete' | t }}</a>
+              </div>
+              <div class="_radioBtn_mwe20_61"{% if is_default %} title="{{ 'account.default_address' | t | escape }}"{% endif %}>
+                <label class="_colorButton_a8uha_30 _selectedAddress_mwe20_131 od-acct__radio{% if is_default %} is-default{% endif %}">
+                  <div class="_selected_a8uha_45"><span class="_circle_a8uha_38"></span></div>
+                </label>
+              </div>
+            </div>
+          {%- else -%}
+            <div class="od-acct__addr-empty">
+              <p>{{ 'account.no_address' | t }}</p>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Mobile bottom bar {%- endcomment -%}
+  <div class="_myAccountContentForMobile_16lzy_128">
+    <ul>
+      <a class="_active_16lzy_77" href="#orders" data-acct-tab="orders" data-acct-label="{{ 'account.orders' | t | escape }}" aria-current="page">
+        <li><div class="_globalImg_1tf1q_38"><img fetchpriority="auto" alt="" src="{{ 'icons_light_order.svg' | asset_url }}" width="24" height="24"></div><span>{{ 'account.orders' | t }}</span></li>
+      </a>
+      <a href="#wishlists" data-acct-tab="wishlists" data-acct-label="{{ 'account.wishlists' | t | escape }}">
+        <li><div class="_globalImg_1tf1q_38"><img fetchpriority="auto" alt="" src="{{ 'icons_light_wishlist.svg' | asset_url }}" width="24" height="24"></div><span>{{ 'account.wishlists' | t }}</span></li>
+      </a>
+      <a href="#profile" data-acct-tab="profile" data-acct-label="{{ 'account.personal_data' | t | escape }}">
+        <li><div class="_globalImg_1tf1q_38"><img fetchpriority="auto" alt="" src="{{ 'icons_light_profile.svg' | asset_url }}" width="24" height="24"></div><span>{{ 'account.profile' | t }}</span></li>
+      </a>
+      <a href="#address" data-acct-tab="address" data-acct-label="{{ 'account.address' | t | escape }}">
+        <li><div class="_globalImg_1tf1q_38"><img fetchpriority="auto" alt="" src="{{ 'icons_light_address.svg' | asset_url }}" width="24" height="24"></div><span>{{ 'account.address' | t }}</span></li>
+      </a>
+      <a class="od-acct__mlogout" href="{{ routes.account_logout_url }}" data-acct-logout>
+        <li class="_logout_16lzy_99"><div class="_globalImg_1tf1q_38"><img fetchpriority="auto" alt="" src="{{ 'icons_light_logout.svg' | asset_url }}" width="24" height="24"></div><span>{{ 'account.logout' | t }}</span></li>
+      </a>
+    </ul>
+  </div>
+
+  {%- comment -%} One hidden order drawer per order on this page (appended by Load More) {%- endcomment -%}
+  <div data-acct-drawers>
+    {%- for order in customer.orders -%}
+      {%- render 'account-order-drawer', order: order, rtl: rtl -%}
+    {%- endfor -%}
+  </div>
+</div>
+{%- endpaginate -%}
+
+{%- else -%}
+<div class="_container_1kxnl_30 _myAccountContainer_16lzy_123 od-acct od-acct--guest" data-section-id="{{ section.id }}">
+  <div class="od-acct__signin">
+    <h2>{{ 'account.sign_in_title' | t }}</h2>
+    <a class="_btn_lnddl_30 od-acct__signin-btn" href="{{ routes.account_login_url }}">{{ 'account.sign_in' | t }}</a>
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "My Account page",
+  "settings": []
+}
+{% endschema %}
