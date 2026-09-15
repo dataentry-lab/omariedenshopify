@@ -378,6 +378,7 @@
 @media (max-width: 767px) { .od-listing__active { padding: 10px 0 0; } .od-chipx { height: 32px; font-size: 13px; } }
 
 /* ---------- listing title split (round 11): mobile = one " - " segment per line, fitted font ---------- */
+.od-listing__seg, .od-listing__sep { font-family: inherit; font-size: inherit; font-weight: inherit; line-height: inherit; letter-spacing: normal; color: inherit; text-transform: inherit; }
 .od-listing__count--m { display: none; }
 @media (max-width: 767px) {
   .od-listing__heading--split { display: block; }
