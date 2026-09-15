@@ -173,17 +173,6 @@
         "card_button": "Explore"
       }
     },
-    "new_in_trend": {
-      "type": "product-slider",
-      "settings": {
-        "title": "New in trend",
-        "collection": "",
-        "limit": 30,
-        "button_label": "Shop all",
-        "button_url": "",
-        "variant": "trend"
-      }
-    },
     "just_arrived": {
       "type": "just-arrived",
       "settings": {
@@ -287,6 +276,17 @@
         "title": "Featured Brands",
         "button_label": "Discover all",
         "button_url": "/pages/discover-all-brands"
+      }
+    },
+    "new_in_trend": {
+      "type": "product-slider",
+      "settings": {
+        "title": "New in trend",
+        "collection": "",
+        "limit": 30,
+        "button_label": "Shop all",
+        "button_url": "",
+        "variant": "trend"
       }
     },
     "banner": {
@@ -626,9 +626,9 @@
     "hero",
     "od_stories_HQF6nr",
     "category_carousel_X6EWRd",
-    "new_in_trend",
     "just_arrived",
     "featured_brands",
+    "new_in_trend",
     "banner",
     "shop_the_look_CdjJL7",
     "od_reels_6MqhqU",
