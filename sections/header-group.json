@@ -14,6 +14,18 @@
     "header": {
       "type": "header",
       "blocks": {
+        "menu_banners_4bCr8R": {
+          "type": "menu_banners",
+          "settings": {
+            "department": "Travel",
+            "image_1": "shopify://shop_images/anteler-1_ca04e1fb-a6f0-4cd3-b202-999b4567bcce.webp",
+            "caption_1": "Journey Essentials",
+            "link_1": "",
+            "image_2": "shopify://shop_images/antler-2_6efa765f-beee-4edc-91cb-a738c08b2919.webp",
+            "caption_2": "Travel Essentials",
+            "link_2": ""
+          }
+        },
         "menu_banners_QwpJbC": {
           "type": "menu_banners",
           "settings": {
@@ -86,6 +98,7 @@
         }
       },
       "block_order": [
+        "menu_banners_4bCr8R",
         "menu_banners_QwpJbC",
         "menu_banners_hD8ghF",
         "menu_banners_Xe98TX",
