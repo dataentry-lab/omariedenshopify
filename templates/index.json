@@ -422,7 +422,9 @@
           "settings": {
             "name": "Floral Poise",
             "image": "shopify://shop_images/hf_20260914_122844_02fe7a6c-f31b-44db-958d-e149247bd75e.png",
-            "products": []
+            "products": [
+              "mary-katrantzou-mk-ss2026-d60-verba-capelet-maxi-dress"
+            ]
           }
         },
         "look_86EndB": {
@@ -438,7 +440,9 @@
           "settings": {
             "name": "Bloom in Pink",
             "image": "shopify://shop_images/hf_20260914_111127_c89e507e-4210-4c41-a063-4cef9af94c12.png",
-            "products": []
+            "products": [
+              "mary-katrantzou-mk-ss2026-d54-alma-halter-open-back-maxi-dress"
+            ]
           }
         },
         "look_VMdqXg": {
