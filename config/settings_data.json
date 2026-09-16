@@ -1,14 +1,70 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "main_menu": "main-menu",
     "color_option_name": "Color",
     "size_option_name": "Size",
+    "color_swatch_map": "BLACK:#313131\nWHITE:#ffffff\nBROWN:#a37146\nRAISIN:#a37146\nHAZEBLUE:#679ad1\nBLUESTRIPE:#679ad1\nBARK:#a37146\nOATMEAL:#f0e8d6\nPIERRE:#f0e8d6\nCHALK:#ffffff\nGREIGE:#bbbbbb\nNAVY:#1f2a44\nRED:#e74a5d\nGREEN:#71c286\nBEIGE:#e5d9c7\nPINK:#db83b7\nYELLOW:#faec72\nGREY:#bbbbbb\nGRAY:#bbbbbb\nBLUE:#679ad1\nORANGE:#fbb44c\nGOLD:#ffd70b\nSILVER:#bfc0bf\nPURPLE:#b19cd9",
+    "multi_swatch_image": "shopify://shop_images/Screenshot_1448-04-02_at_11.56.28_7fd51503-ee04-479e-a108-af50494f53f2.png",
     "return_days": 30,
     "free_shipping_threshold": 500,
     "style_code_metafield": "custom.style_code",
     "material_metafield": "custom.material",
     "care_metafield": "custom.care",
     "products_per_page": 24,
-    "circle_text": "A new way to belong is on its way. The OMARIEDEN Circle, arriving soon."
+    "circle_text": "A new way to belong is on its way. The OMARIEDEN Circle, arriving soon.",
+    "sections": {
+      "cart-drawer": {
+        "type": "cart-drawer",
+        "settings": {
+          "trending_collection": "",
+          "trending_limit": 8
+        }
+      },
+      "welcome-popup": {
+        "type": "welcome-popup",
+        "settings": {
+          "enabled": false,
+          "delay": 6,
+          "exit_intent": true,
+          "days": 30,
+          "hide_paths": "/pages/prive",
+          "eyebrow": "Welcome to Omarieden",
+          "heading": "10% off your first order",
+          "text": "<p>Sign up for new arrivals, Curated Edits and invitations to our events.</p>",
+          "email_placeholder": "Email",
+          "interests": "Women, Men, Kids",
+          "tag": "newsletter",
+          "button_label": "Continue",
+          "no_label": "No thanks",
+          "consent": "By signing up you agree to receive marketing emails. Unsubscribe any time.",
+          "step2": false,
+          "step2_heading": "Stay in touch on WhatsApp",
+          "step2_text": "<p>Be the first to hear about new arrivals and event invitations.</p>",
+          "step2_cc": "+966",
+          "step2_placeholder": "5x xxx xxxx",
+          "step2_button": "Send",
+          "step2_consent": "By signing up you agree to receive marketing messages. Reply STOP to unsubscribe.",
+          "step2_no": "No, I don't want messages",
+          "success_heading": "Welcome",
+          "success_text": "<p>Use this code at checkout for 10% off your first order.</p>",
+          "code": "WELCOME10",
+          "success_button": "Start shopping",
+          "bg": "#fcf8f2",
+          "text_color": "#551c25",
+          "accent": "#551c25",
+          "accent_text": "#fcf8f2"
+        }
+      }
+    },
+    "content_for_index": []
   }
 }
