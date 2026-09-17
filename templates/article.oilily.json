@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -56,7 +65,10 @@
         "button_label": "",
         "button_url": "",
         "button_style": "outline",
-        "button_color": "#e5d9c7"
+        "button_color": "#e5d9c7",
+        "button_text_color": "#fcf8f2",
+        "pad_top": 0,
+        "pad_bottom": 0
       }
     },
     "t_tees": {
@@ -170,7 +182,10 @@
         "button_label": "",
         "button_url": "",
         "button_style": "outline",
-        "button_color": "#e5d9c7"
+        "button_color": "#e5d9c7",
+        "button_text_color": "#fcf8f2",
+        "pad_top": 0,
+        "pad_bottom": 0
       }
     },
     "t_bottoms": {
@@ -320,10 +335,10 @@
     "b3": {
       "type": "od-big-banner",
       "settings": {
-        "image": "shopify://shop_images/IA0WMWYPVMoUieqw675TdsUkq9BJG5NYYLaDWCKb.jpg",
+        "image": "shopify://shop_images/Oilily_MEOIL1356-517_BLUE_2.webp",
         "height": "m",
-        "overlay_color": "#2a0d12",
-        "overlay_opacity": 25,
+        "overlay_color": "#361746",
+        "overlay_opacity": 60,
         "text_position": "center",
         "eyebrow": "For her, for them",
         "title": "Bags & accessories",
@@ -332,7 +347,10 @@
         "button_label": "",
         "button_url": "",
         "button_style": "outline",
-        "button_color": "#e5d9c7"
+        "button_color": "#e5d9c7",
+        "button_text_color": "#fcf8f2",
+        "pad_top": 0,
+        "pad_bottom": 0
       }
     },
     "t_bags": {
@@ -352,7 +370,7 @@
         "bg": "",
         "text_color": "#551c25",
         "pad_top": 40,
-        "pad_bottom": 8
+        "pad_bottom": 40
       }
     },
     "g_bags": {
@@ -366,11 +384,15 @@
         "collection": "",
         "products": [
           "oilily-meoil1353-023-bobbya-postcard-print-backpack",
-          "oilily-meoil1364-500-huma-gingham-tiger-tote",
           "oilily-meoil1356-517-tuktuk-novelty-shoulder-bag",
-          "oilily-meoil1334-011-haroon-embroidered-tiger-handbag"
+          "oilily-meoil1360-011-aloha-patch-sports-bag",
+          "oilily-meoil1323-011-cady-floral-beauty-case",
+          "oilily-meoil1341-017-coosje-postcard-print-overnighter",
+          "oilily-meoil1342-017-babita-postcard-print-backpack",
+          "oilily-meoil1371-325-haria-floral-mini-handbag",
+          "oilily-meoil1355-326-teapot-novelty-handbag"
         ],
-        "limit": 6,
+        "limit": 8,
         "per_row": 4,
         "link_label": "",
         "link_url": "",
@@ -434,7 +456,7 @@
     "ethos": {
       "type": "od-image-text",
       "settings": {
-        "image": "shopify://shop_images/kbQIcfPrOiUvKkaT2Vbxv1Avrhvle8al00MgSk5q.jpg",
+        "image": "shopify://shop_images/OILILY_studio_SS26_53_1024x1024_77949aad-f654-4ade-b4cb-97d57510c274.webp",
         "ratio": "4-5",
         "image_side": "start",
         "eyebrow": "The ethos",
