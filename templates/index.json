@@ -272,49 +272,13 @@
             "link_label": "Shop now",
             "link": ""
           }
-        },
-        "reel_E47R6V": {
-          "type": "reel",
-          "settings": {
-            "caption": "",
-            "product": "",
-            "products": [],
-            "collection": "",
-            "link_label": "Shop now",
-            "link": ""
-          }
-        },
-        "reel_eqiU6k": {
-          "type": "reel",
-          "settings": {
-            "caption": "",
-            "product": "",
-            "products": [],
-            "collection": "",
-            "link_label": "Shop now",
-            "link": ""
-          }
-        },
-        "reel_PH4WyH": {
-          "type": "reel",
-          "settings": {
-            "caption": "",
-            "product": "",
-            "products": [],
-            "collection": "",
-            "link_label": "Shop now",
-            "link": ""
-          }
         }
       },
       "block_order": [
         "reel_9kxpX6",
         "reel_dXMa4K",
         "reel_znQVkr",
-        "reel_cXGYx6",
-        "reel_E47R6V",
-        "reel_eqiU6k",
-        "reel_PH4WyH"
+        "reel_cXGYx6"
       ],
       "name": "Omarieden Reels",
       "settings": {
