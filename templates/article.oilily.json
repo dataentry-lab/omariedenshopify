@@ -53,10 +53,10 @@
     "b1": {
       "type": "od-big-banner",
       "settings": {
-        "image": "shopify://shop_images/kbQIcfPrOiUvKkaT2Vbxv1Avrhvle8al00MgSk5q.jpg",
+        "image": "shopify://shop_images/YF25GCO201_314_8.jpg",
         "height": "l",
         "overlay_color": "#2a0d12",
-        "overlay_opacity": 25,
+        "overlay_opacity": 50,
         "text_position": "center",
         "eyebrow": "Since 1963",
         "title": "Made in the Netherlands, worn everywhere",
