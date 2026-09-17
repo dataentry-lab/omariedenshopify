@@ -1,0 +1,522 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "settings": {
+        "style": "story",
+        "default_label": "Brand story",
+        "show_cover": true,
+        "cover_full": true,
+        "show_date": true,
+        "show_author": false,
+        "button_label": "",
+        "button_url": "",
+        "hide_body": false,
+        "hide_title": false,
+        "show_share": true,
+        "show_back": true,
+        "text_color": "#551c25",
+        "accent": "#595b33",
+        "overlay_color": "#551c25",
+        "overlay_opacity": 40
+      }
+    },
+    "intro": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "Oilily at OMARIEDEN",
+        "heading": "Colour as a way of life",
+        "text": "<p><em>Oilily has never done quiet. Since 1963 the Dutch label has dressed children, and later their mothers, in prints that clash on purpose, colours that refuse to fade into the background and a spirit of play that survives the school run. This season the collection lands at OMARIEDEN in full: tees and blouses, dresses, bottoms, knits, socks, bags and scarves, all made to be mixed, matched and worn with a grin.</em></p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 24,
+        "pad_bottom": 24
+      }
+    },
+    "b1": {
+      "type": "od-big-banner",
+      "settings": {
+        "image": "shopify://shop_images/kbQIcfPrOiUvKkaT2Vbxv1Avrhvle8al00MgSk5q.jpg",
+        "height": "l",
+        "overlay_color": "#2a0d12",
+        "overlay_opacity": 25,
+        "text_position": "center",
+        "eyebrow": "Since 1963",
+        "title": "Made in the Netherlands, worn everywhere",
+        "text": "<p>Founded in Alkmaar by Willem and Marieke Olsthoorn, Oilily started with a single idea: children's clothes should be as joyful as childhood itself.</p>",
+        "text_color": "#fcf8f2",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#e5d9c7"
+      }
+    },
+    "t_tees": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Tops & Tees",
+        "text": "<p>Everyday tees that are anything but plain. The Tuk Rainbow Logo T-Shirt spells the name in colour, the Tristany Tiger Sketch and Tristan Palm graphics carry the season's animal and holiday motifs, and the Timothy Wave Print Polo brings the print to a collar for the boys.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g_tees": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "oilily-ys26gje221-tuk-rainbow-logo-t-shirt",
+          "oilily-ys26bje503-tristany-tiger-sketch-t-shirt",
+          "oilily-ys26bje502-tristan-palm-graphic-t-shirt",
+          "oilily-ys26bje501-timothy-wave-print-polo-shirt"
+        ],
+        "limit": 6,
+        "per_row": 4,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "t_dresses": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Dresses",
+        "text": "<p>The heart of every Oilily season. Folk prints, embroidered denim and postcard motifs run across silhouettes from a twirl-ready jersey dress to a tiered maxi, finished with dip-dye sunsets and ruffle hems. Discover the Dounia Folk Print Dress, the Dolly Embroidered Denim Maxi and the Daya Postcard Print Maxi.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g_dresses": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "oilily-ys26gdr212-dounia-folk-print-dress",
+          "oilily-ys26gdr206-dolly-embroidered-denim-maxi-dress",
+          "oilily-s26wdr6110-daya-postcard-print-maxi-dress",
+          "oilily-ys26gdr202-deevika-dip-dye-dress"
+        ],
+        "limit": 6,
+        "per_row": 4,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "b2": {
+      "type": "od-big-banner",
+      "settings": {
+        "image": "shopify://shop_images/88Nx1PRdKBfg1tmPkZrnNh5ybzvyU5jRAVK12Erf.jpg",
+        "height": "m",
+        "overlay_color": "#2a0d12",
+        "overlay_opacity": 25,
+        "text_position": "center",
+        "eyebrow": "The Oilily print",
+        "title": "Patterns that talk to each other",
+        "text": "<p>Florals next to checks, postcards next to paisley. Oilily prints are drawn in-house and designed to be layered, never matched.</p>",
+        "text_color": "#fcf8f2",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#e5d9c7"
+      }
+    },
+    "t_bottoms": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Bottoms",
+        "text": "<p>Palazzo pants in postcard prints and madras checks, pleated gingham skirts, flare leggings in fruit and geometric patterns, and scalloped shorts for the warm months. Cut loose and easy so the print does the talking.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g_bottoms": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "oilily-ys26gpa201-palazzo-postcard-print-pants",
+          "oilily-ys26gsk203-solo-gingham-pleated-skirt",
+          "oilily-ys26gpa281-peace-geometric-flare-leggings",
+          "oilily-ys26gpa211-pomme-floral-scallop-shorts"
+        ],
+        "limit": 6,
+        "per_row": 4,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "t_knits": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Knits & Layers",
+        "text": "<p>For cooler evenings: the Katha Intarsia V-Neck Sweater with its lettered front, the Hoki Peacock Emblem Sweatshirt, the Chakra Floral Hooded Raincoat that makes rain a good thing, and the Vluffy Chunky Knit Cardigan in electric blue.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g_knits": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "oilily-s26wkn3021-katha-intarsia-v-neck-sweater",
+          "oilily-ys26ghj212-hoki-peacock-emblem-sweatshirt",
+          "oilily-ys26gco203-chakra-floral-hooded-raincoat",
+          "oilily-ys26gkn244-vluffy-chunky-knit-cardigan"
+        ],
+        "limit": 6,
+        "per_row": 4,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "t_socks": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Socks & Tights",
+        "text": "<p>The easiest way into the Oilily world. Bird, strawberry and tuk-tuk motifs on calf and knee socks, ombre stripe tights for the little ones, each pair signed OILILY on the sole.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g_socks": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "oilily-ys26gti205-mangalore-bird-calf-socks",
+          "oilily-ys26gti221-malegre-ombre-stripe-tights",
+          "oilily-ys26gti211-mukmuk-tuktuk-knee-socks",
+          "oilily-ys26gti204-mandi-strawberry-calf-socks"
+        ],
+        "limit": 6,
+        "per_row": 4,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "b3": {
+      "type": "od-big-banner",
+      "settings": {
+        "image": "shopify://shop_images/IA0WMWYPVMoUieqw675TdsUkq9BJG5NYYLaDWCKb.jpg",
+        "height": "m",
+        "overlay_color": "#2a0d12",
+        "overlay_opacity": 25,
+        "text_position": "center",
+        "eyebrow": "For her, for them",
+        "title": "Bags & accessories",
+        "text": "<p>The women's line carries the same joy: postcard backpacks, gingham tiger totes, novelty tuk-tuk bags and embroidered handbags.</p>",
+        "text_color": "#fcf8f2",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#e5d9c7"
+      }
+    },
+    "t_bags": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Bags",
+        "text": "<p>Oilily bags are collected as much as they are carried. The Bobbya Postcard Print Backpack, the Huma Gingham Tiger Tote, the Tuktuk Novelty Shoulder Bag and the Haroon Embroidered Tiger Handbag each tell a small story.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g_bags": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "oilily-meoil1353-023-bobbya-postcard-print-backpack",
+          "oilily-meoil1364-500-huma-gingham-tiger-tote",
+          "oilily-meoil1356-517-tuktuk-novelty-shoulder-bag",
+          "oilily-meoil1334-011-haroon-embroidered-tiger-handbag"
+        ],
+        "limit": 6,
+        "per_row": 4,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "t_acc": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Scarves & Accessories",
+        "text": "<p>Finishing touches: floral and tiger print scarves for her, a floral bow hairband and the Elephas elephant charm that clips onto any bag.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g_acc": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "oilily-s26wac9040-amalai-floral-print-scarf",
+          "oilily-s26wac9090-anindianbeauty-tiger-print-scarf",
+          "oilily-ys26gac206-aniknak-floral-bow-hairband",
+          "oilily-meoil1359-023-elephas-elephant-bag-charm"
+        ],
+        "limit": 6,
+        "per_row": 4,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "ethos": {
+      "type": "od-image-text",
+      "settings": {
+        "image": "shopify://shop_images/kbQIcfPrOiUvKkaT2Vbxv1Avrhvle8al00MgSk5q.jpg",
+        "ratio": "4-5",
+        "image_side": "start",
+        "eyebrow": "The ethos",
+        "title": "Joy, drawn by hand",
+        "text": "<p>Oilily was born in 1963 in Alkmaar, the Netherlands, when Willem and Marieke Olsthoorn decided their own children deserved clothes with personality. Six decades on, the house still designs its prints by hand, still mixes patterns other brands would keep apart, and still believes that getting dressed should be the happiest moment of the day.</p><p>Every piece is made to last through play and to be handed down, which is why the collections are cut generously, sewn to be washed a hundred times and printed in colours that stay bright.</p>",
+        "button_label": "Shop all Oilily",
+        "button_url": "/collections/vendors?q=Oilily",
+        "button_style": "solid",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 48,
+        "pad_bottom": 48
+      }
+    },
+    "quote": {
+      "type": "od-quote",
+      "settings": {
+        "quote": "Colour is not a trend. It is a mood we want children, and their parents, to keep.",
+        "name": "Oilily",
+        "detail": "Alkmaar, since 1963",
+        "bg": "#e5d9c7",
+        "text_color": "#551c25",
+        "accent": "#551c25",
+        "pad_top": 48,
+        "pad_bottom": 48
+      }
+    },
+    "all": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "The full collection",
+        "heading": "Shop Oilily at OMARIEDEN",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "oilily-ys26gdr212-dounia-folk-print-dress",
+          "oilily-ys26gje221-tuk-rainbow-logo-t-shirt",
+          "oilily-meoil1353-023-bobbya-postcard-print-backpack",
+          "oilily-ys26gpa201-palazzo-postcard-print-pants",
+          "oilily-ys26gti205-mangalore-bird-calf-socks",
+          "oilily-s26wac9040-amalai-floral-print-scarf"
+        ],
+        "limit": 6,
+        "per_row": 3,
+        "link_label": "View all Oilily",
+        "link_url": "/collections/vendors?q=Oilily",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 64
+      }
+    }
+  },
+  "order": [
+    "main",
+    "intro",
+    "b1",
+    "t_tees",
+    "g_tees",
+    "t_dresses",
+    "g_dresses",
+    "b2",
+    "t_bottoms",
+    "g_bottoms",
+    "t_knits",
+    "g_knits",
+    "t_socks",
+    "g_socks",
+    "b3",
+    "t_bags",
+    "g_bags",
+    "t_acc",
+    "g_acc",
+    "ethos",
+    "quote",
+    "all"
+  ]
+}
