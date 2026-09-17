@@ -11,10 +11,74 @@
   "sections": {
     "main": {
       "type": "main-article",
-      "settings": {}
+      "settings": {
+        "style": "story",
+        "default_label": "Brand story",
+        "show_cover": true,
+        "cover_full": true,
+        "show_date": true,
+        "show_author": false,
+        "button_label": "",
+        "button_url": "",
+        "hide_body": false,
+        "hide_title": false,
+        "show_share": false,
+        "show_back": true,
+        "text_color": "#551c25",
+        "accent": "#595b33",
+        "overlay_color": "#551c25",
+        "overlay_opacity": 40
+      }
+    },
+    "t": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Gowns",
+        "text": "<p>Everyday tees that are anything but plain. The Tuk Rainbow Logo T-Shirt spells the name in colour, the Tristany Tiger Sketch and Tristan Palm graphics carry the season's animal and holiday motifs, and the Timothy Wave Print Polo brings the print to a collar for the boys.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "sau-lee-f26d23-sabina-draped-halter-satin-gown"
+        ],
+        "limit": 8,
+        "per_row": 4,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "t",
+    "g"
   ]
 }
