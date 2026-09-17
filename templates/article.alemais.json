@@ -1,0 +1,361 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "settings": {
+        "style": "story",
+        "default_label": "Brand story",
+        "show_cover": true,
+        "cover_full": true,
+        "show_date": true,
+        "show_author": false,
+        "button_label": "",
+        "button_url": "",
+        "hide_body": false,
+        "hide_title": false,
+        "show_share": true,
+        "show_back": true,
+        "text_color": "#551c25",
+        "accent": "#595b33",
+        "overlay_color": "#551c25",
+        "overlay_opacity": 40
+      }
+    },
+    "intro": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "ALÉMAIS at OMARIEDEN",
+        "heading": "Wearable art from Sydney",
+        "text": "<p><em>ALÉMAIS treats a dress as a canvas. Founded in Sydney in 2020 by Lesleigh Jermanus, the label works with artists and artisans on prints, embroidery and hand-finished details, then cuts them into pieces made to be kept. The edit at OMARIEDEN spans silk twill sets, printed sundresses, lace and beading, and two gowns for the evenings that matter.</em></p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 24,
+        "pad_bottom": 24
+      }
+    },
+    "b1": {
+      "type": "od-big-banner",
+      "settings": {
+        "image": "shopify://shop_images/yVVAVIb67rNUSWXcj2kimg8523OPP4cJCabuGqaN.webp",
+        "height": "l",
+        "overlay_color": "#2a0d12",
+        "overlay_opacity": 30,
+        "text_position": "center",
+        "eyebrow": "Sydney, Australia",
+        "title": "Print first, always",
+        "text": "<p>Every ALÉMAIS collection starts with artwork: painted, embroidered or drawn by hand, then translated onto silk, cotton and linen.</p>",
+        "text_color": "#fcf8f2",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#e5d9c7"
+      }
+    },
+    "t0": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "The Joni silk twill set",
+        "text": "<p>Joni is the season's signature print, worked across a scarf-tie blouse, balloon trousers, a midi dress and a camp-collar shirtdress. Wear the pieces together as a set or split them across the week.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g0": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "alemais-joni-silk-twill-scarf-tie-blouse-7575t",
+          "alemais-joni-silk-twill-balloon-trousers-7576p",
+          "alemais-joni-silk-twill-midi-dress-7578d",
+          "alemais-joni-camp-collar-midi-shirtdress-7579d"
+        ],
+        "limit": 6,
+        "per_row": 4,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "t1": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Sundresses & shirtdresses",
+        "text": "<p>Easy midi lengths for the day: the Nanci Shirred Back Sundress, the MLAK Smocked Waist Shirtdress, the Jerry Belted Floral Shirtdress and the Jerry Ballet Floral Sundress, all in the label's painterly florals.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g1": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "alemais-nanci-shirred-back-midi-sundress-7610d",
+          "alemais-mlak-smocked-waist-midi-shirtdress-7668d",
+          "alemais-jerry-belted-floral-print-midi-shirtdress-7745d",
+          "alemais-jerry-ballet-floral-print-midi-sundress-7966d"
+        ],
+        "limit": 6,
+        "per_row": 4,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "b2": {
+      "type": "od-big-banner",
+      "settings": {
+        "image": "shopify://shop_images/LUQLp9RE17DsYVZCSJJmVFyaB106dALHoqeDwiUc.webp",
+        "height": "m",
+        "overlay_color": "#2a0d12",
+        "overlay_opacity": 30,
+        "text_position": "center",
+        "eyebrow": "Made with care",
+        "title": "Slow by design",
+        "text": "<p>Small runs, natural fibres and artisan techniques, from hand embroidery to beading, keep every piece close to the artwork it came from.</p>",
+        "text_color": "#fcf8f2",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#e5d9c7"
+      }
+    },
+    "t2": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Lace, beads & silk",
+        "text": "<p>Pieces with a little more ceremony: the Francine Beaded Strap Lace Midi, the Tangible Love Silk Scarf Slip, the Paula Racerback Belted Midi and the MLAK Halter Neck Midi.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g2": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "alemais-francine-beaded-strap-lace-midi-dress-7602d",
+          "alemais-tangible-love-silk-scarf-slip-midi-dress-7660d",
+          "alemais-paula-racerback-belted-midi-dress-7695d",
+          "alemais-mlak-halter-neck-midi-dress-7963d"
+        ],
+        "limit": 6,
+        "per_row": 4,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "t3": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Gowns & knits",
+        "text": "<p>For the evening, the Astro Star Print Gown and the MLAK Handkerchief Hem Halter Gown. To throw over everything, the MLAK Oversized Embroidered Knit Cardigan.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g3": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "alemais-astro-star-print-gown-7681d",
+          "alemais-mlak-handkerchief-hem-halter-gown-7674d",
+          "alemais-mlak-oversized-embroidered-knit-cardigan-7547k"
+        ],
+        "limit": 6,
+        "per_row": 3,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "ethos": {
+      "type": "od-image-text",
+      "settings": {
+        "image": "shopify://shop_images/miK0EPoDytaeC11P4kAJCJhxDSrwPfCm5prDMthR.webp",
+        "ratio": "4-5",
+        "image_side": "start",
+        "eyebrow": "The ethos",
+        "title": "Art you can wear",
+        "text": "<p>ALÉMAIS was founded in Sydney in 2020 by Lesleigh Jermanus with a clear idea: fashion made the slow way, in collaboration with artists and craftspeople, on fabrics that feel as good as they look. Prints are commissioned as artworks first; embroidery and beading are done by hand; runs are kept small.</p><p>The result is a wardrobe of pieces that carry a story, made to be worn for years and passed on.</p>",
+        "button_label": "Shop all ALÉMAIS",
+        "button_url": "/collections/vendors?q=AL%C3%89MAIS",
+        "button_style": "solid",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 48,
+        "pad_bottom": 48
+      }
+    },
+    "quote": {
+      "type": "od-quote",
+      "settings": {
+        "quote": "A print should feel like a painting you get to live in.",
+        "name": "ALÉMAIS",
+        "detail": "Sydney",
+        "bg": "#e5d9c7",
+        "text_color": "#551c25",
+        "accent": "#551c25",
+        "pad_top": 48,
+        "pad_bottom": 48
+      }
+    },
+    "all": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "The full edit",
+        "heading": "Shop ALÉMAIS at OMARIEDEN",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "alemais-joni-silk-twill-midi-dress-7578d",
+          "alemais-astro-star-print-gown-7681d",
+          "alemais-nanci-shirred-back-midi-sundress-7610d",
+          "alemais-francine-beaded-strap-lace-midi-dress-7602d",
+          "alemais-joni-silk-twill-scarf-tie-blouse-7575t",
+          "alemais-mlak-oversized-embroidered-knit-cardigan-7547k"
+        ],
+        "limit": 6,
+        "per_row": 3,
+        "link_label": "View all ALÉMAIS",
+        "link_url": "/collections/vendors?q=AL%C3%89MAIS",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 64
+      }
+    }
+  },
+  "order": [
+    "main",
+    "intro",
+    "b1",
+    "t0",
+    "g0",
+    "t1",
+    "g1",
+    "b2",
+    "t2",
+    "g2",
+    "t3",
+    "g3",
+    "ethos",
+    "quote",
+    "all"
+  ]
+}
