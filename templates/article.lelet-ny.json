@@ -1,0 +1,412 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "settings": {
+        "style": "story",
+        "default_label": "Brand story",
+        "show_cover": true,
+        "cover_full": true,
+        "show_date": true,
+        "show_author": false,
+        "button_label": "",
+        "button_url": "",
+        "hide_body": false,
+        "hide_title": false,
+        "show_share": true,
+        "show_back": true,
+        "text_color": "#551c25",
+        "accent": "#595b33",
+        "overlay_color": "#551c25",
+        "overlay_opacity": 40
+      }
+    },
+    "intro": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "LELET NY at OMARIEDEN",
+        "heading": "Jewellery for the hair",
+        "text": "<p><em>LELET NY makes hair accessories the way a jeweller makes jewellery: in metal, by hand, in New York. Founded by designer Sarah Lelet, the label turned the humble hair cuff and claw clip into objects worth collecting. The edit at OMARIEDEN brings the polished pony cuffs, sculptural claws, barrettes, headbands and halos, plus the earrings that match them.</em></p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 24,
+        "pad_bottom": 24
+      }
+    },
+    "b1": {
+      "type": "od-big-banner",
+      "settings": {
+        "image": "shopify://shop_images/52NXuByBjEwrc8iBSC5NAvo5xUcp9Svo3uf6aJAx.webp",
+        "height": "l",
+        "overlay_color": "#2a0d12",
+        "overlay_opacity": 30,
+        "text_position": "center",
+        "eyebrow": "New York, NY",
+        "title": "Hair jewellery, made by hand",
+        "text": "<p>Every LELET NY piece is cut, polished and finished in the studio, in gold and rhodium tones designed to be worn every day.</p>",
+        "text_color": "#fcf8f2",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#e5d9c7"
+      }
+    },
+    "t0": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Pony cuffs",
+        "text": "<p>The piece that made the name. The Modern Polished Double Arch and the Glossy Double Arch Cuff wrap a ponytail in metal; the Polished Arch Hair Tie Cuff and the Glossy Arch Cuff do the same in a single line.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g0": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "lelet-ny-lelfw20-31g-modern-polished-double-arch-hair-cuff",
+          "lelet-ny-lelfw20-31rh-glossy-double-arch-pony-hair-cuff",
+          "lelet-ny-lelfw20-32g-polished-arch-hair-tie-cuff",
+          "lelet-ny-lelfw20-32rh-glossy-arch-pony-hair-cuff"
+        ],
+        "limit": 6,
+        "per_row": 4,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "t1": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Claw clips",
+        "text": "<p>Sculptural claws that hold a full twist: the Elegance Enveloped Statement Claw, the Lustrous Sculptural Mega Clip, the Sculpted Heart Claw and the Ornate Link Claw.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g1": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "lelet-ny-lelfw24-1902g-elegance-enveloped-statement-hair-claw",
+          "lelet-ny-lelfw24-1959g-lustrous-sculptural-mega-hair-clip",
+          "lelet-ny-lelhr24-1986g-sculpted-heart-hair-claw",
+          "lelet-ny-lelhr24-201g-ornate-link-hair-claw"
+        ],
+        "limit": 6,
+        "per_row": 4,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "b2": {
+      "type": "od-big-banner",
+      "settings": {
+        "image": "shopify://shop_images/gxP2yOaJZeR7IZqFUcEwDdJeUc46MITzbzqN4TN8.webp",
+        "height": "m",
+        "overlay_color": "#2a0d12",
+        "overlay_opacity": 30,
+        "text_position": "center",
+        "eyebrow": "The claw, rethought",
+        "title": "An everyday object, made precious",
+        "text": "<p>LELET NY took the plastic claw clip and remade it in polished metal, with weight, shine and a clean silhouette.</p>",
+        "text_color": "#fcf8f2",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#e5d9c7"
+      }
+    },
+    "t2": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Barrettes",
+        "text": "<p>Small, precise and easy to layer: the Ethereal Sheer Bow Barrette, the Luminous Rectangular Barrette, the Sleek Sculptural Barrette Pin and the Glossy Bar Barrette.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g2": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "lelet-ny-lelfw20-18-ethereal-sheer-dark-hair-bow-barrette",
+          "lelet-ny-lelss25-03p-luminous-light-rectangular-hair-barrette",
+          "lelet-ny-lelfw20-33g-sleek-sculptural-barrette-pin",
+          "lelet-ny-lelfw20-33rh-glossy-bar-barrette"
+        ],
+        "limit": 6,
+        "per_row": 4,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "t3": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Headbands & halos",
+        "text": "<p>From the thin Essential Headwrap to the Radiant Sculpted Halo, the Celestial Radiance Double Strand Headband and the Vera Vee Halo: pieces that finish an outfit from the top.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g3": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "lelet-ny-lelss25-2147b-dark-sleek-essential-thin-headwrap-headband",
+          "lelet-ny-ss24-1234g-radiant-sculpted-halo",
+          "lelet-ny-lelhr24-1926rh-celestial-radiance-double-strand-headband",
+          "lelet-ny-lelpf22-11rh-vera-vee-halo"
+        ],
+        "limit": 6,
+        "per_row": 4,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "t4": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Earrings",
+        "text": "<p>The same hands, the same metal: Gleaming Drop Statement Earrings, Exquisite Ribbon Earrings, Intertwined Dark-Tone Studs and Lustrous Baroque Drops, made to pair with the hair pieces above.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g4": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "lelet-ny-lelfw23-1583-gleaming-drop-statement-earrings",
+          "lelet-ny-lelfw24-1872g-exquisite-gleaming-ribbon-earrings-accessory",
+          "lelet-ny-lelfw24-1970g-elegant-intertwined-dark-tone-stud-earrings",
+          "lelet-ny-lelj23-49g-lustrous-baroque-drop-earrings"
+        ],
+        "limit": 6,
+        "per_row": 4,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "ethos": {
+      "type": "od-image-text",
+      "settings": {
+        "image": "shopify://shop_images/3RcouYoVk5kJli6yLZXChMirCRdIL9MidLRWC7md.webp",
+        "ratio": "4-5",
+        "image_side": "start",
+        "eyebrow": "The ethos",
+        "title": "Made in New York, worn everywhere",
+        "text": "<p>LELET NY was founded in New York by designer Sarah Lelet, who wanted hair accessories that felt like jewellery rather than an afterthought. The pieces are designed and finished by hand in the city, in gold and rhodium tones, with the weight and polish of fine jewellery.</p><p>The house works in small runs and keeps its shapes simple, so a cuff bought this year still looks right in ten.</p>",
+        "button_label": "Shop all LELET NY",
+        "button_url": "/collections/vendors?q=LELET+NY",
+        "button_style": "solid",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 48,
+        "pad_bottom": 48
+      }
+    },
+    "quote": {
+      "type": "od-quote",
+      "settings": {
+        "quote": "Your hair deserves jewellery too.",
+        "name": "LELET NY",
+        "detail": "New York",
+        "bg": "#e5d9c7",
+        "text_color": "#551c25",
+        "accent": "#551c25",
+        "pad_top": 48,
+        "pad_bottom": 48
+      }
+    },
+    "all": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "The full edit",
+        "heading": "Shop LELET NY at OMARIEDEN",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "lelet-ny-lelfw20-31g-modern-polished-double-arch-hair-cuff",
+          "lelet-ny-lelfw24-1902g-elegance-enveloped-statement-hair-claw",
+          "lelet-ny-ss24-1234g-radiant-sculpted-halo",
+          "lelet-ny-lelss25-03p-luminous-light-rectangular-hair-barrette",
+          "lelet-ny-lelfw23-1583-gleaming-drop-statement-earrings",
+          "lelet-ny-lelhr24-1986g-sculpted-heart-hair-claw"
+        ],
+        "limit": 6,
+        "per_row": 3,
+        "link_label": "View all LELET NY",
+        "link_url": "/collections/vendors?q=LELET+NY",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 64
+      }
+    }
+  },
+  "order": [
+    "main",
+    "intro",
+    "b1",
+    "t0",
+    "g0",
+    "t1",
+    "g1",
+    "b2",
+    "t2",
+    "g2",
+    "t3",
+    "g3",
+    "t4",
+    "g4",
+    "ethos",
+    "quote",
+    "all"
+  ]
+}
