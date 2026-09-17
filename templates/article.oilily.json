@@ -101,12 +101,16 @@
         "source": "products",
         "collection": "",
         "products": [
-          "oilily-ys26gje221-tuk-rainbow-logo-t-shirt",
-          "oilily-ys26bje503-tristany-tiger-sketch-t-shirt",
-          "oilily-ys26bje502-tristan-palm-graphic-t-shirt",
-          "oilily-ys26bje501-timothy-wave-print-polo-shirt"
+          "oilily-ys26gbl202-besito-wave-border-blouse",
+          "oilily-ys26bbl503-bowl-postcard-print-shirt",
+          "oilily-ys26gdr210-dotcom-floral-tee-dress",
+          "oilily-ys26gbl204-bla-check-collar-blouse",
+          "oilily-ys26gbl203-beso-floral-puff-sleeve-blouse",
+          "oilily-ys26gbl208-beso-print-puff-sleeve-blouse",
+          "oilily-ys26bbl501-bikkel-sticker-print-shirt",
+          "oilily-ys26gbl207-borissa-ditsy-smocked-blouse"
         ],
-        "limit": 6,
+        "limit": 8,
         "per_row": 4,
         "link_label": "",
         "link_url": "",
@@ -504,7 +508,7 @@
           "oilily-s26wac9040-amalai-floral-print-scarf"
         ],
         "limit": 6,
-        "per_row": 3,
+        "per_row": 4,
         "link_label": "View all Oilily",
         "link_url": "/collections/vendors?q=Oilily",
         "tag_label": "",
