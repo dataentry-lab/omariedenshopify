@@ -30,12 +30,53 @@
         "overlay_opacity": 40
       }
     },
-    "t": {
+    "intro": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "SAU LEE at OMARIEDEN",
+        "heading": "Dressing for the moment",
+        "text": "<p><em>SAU LEE makes clothes for the evenings you remember: satin that catches the light, lace that reads as heirloom, and a column silhouette that has become the label's signature. Founded in Melbourne by designer Sau Lee, the house draws on her Chinese heritage and a very modern idea of occasion dressing. The first edit lands at OMARIEDEN with gowns, mini dresses, skirts and two knits with a Tang collar.</em></p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 24,
+        "pad_bottom": 24
+      }
+    },
+    "b1": {
+      "type": "od-big-banner",
+      "settings": {
+        "image": "shopify://shop_images/MfOsVjEiBQBXx9HyalVRq5UK3xhJ2LtVDPe27lsz.webp",
+        "height": "l",
+        "overlay_color": "#2a0d12",
+        "overlay_opacity": 30,
+        "text_position": "center",
+        "eyebrow": "Melbourne, Australia",
+        "title": "Occasion dressing, redrawn",
+        "text": "<p>Long lines, clean cuts and fabrics chosen to move. Every SAU LEE piece is designed to be worn more than once and remembered every time.</p>",
+        "text_color": "#fcf8f2",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#e5d9c7",
+        "button_text_color": "#fcf8f2",
+        "pad_top": 0,
+        "pad_bottom": 0
+      }
+    },
+    "t_gowns": {
       "type": "od-text",
       "settings": {
         "eyebrow": "",
         "heading": "Gowns",
-        "text": "<p>Everyday tees that are anything but plain. The Tuk Rainbow Logo T-Shirt spells the name in colour, the Tristany Tiger Sketch and Tristan Palm graphics carry the season's animal and holiday motifs, and the Timothy Wave Print Polo brings the print to a collar for the boys.</p>",
+        "text": "<p>The centre of the collection. The Sabina Draped Halter Satin Gown falls in one fluid line from a halter neck, the Taron Lace Bodice Satin Column Gown pairs a sheer lace bodice with a satin column, and the Savie Strapless Jacquard Column Gown lets the fabric speak.</p>",
         "align": "center",
         "width": "narrow",
         "size": "m",
@@ -50,7 +91,7 @@
         "pad_bottom": 8
       }
     },
-    "g": {
+    "g_gowns": {
       "type": "od-product-grid",
       "settings": {
         "eyebrow": "",
@@ -60,10 +101,12 @@
         "source": "products",
         "collection": "",
         "products": [
-          "sau-lee-f26d23-sabina-draped-halter-satin-gown"
+          "sau-lee-f26d23-sabina-draped-halter-satin-gown",
+          "sau-lee-f26d12-taron-lace-bodice-satin-column-gown",
+          "sau-lee-f26d18-savie-strapless-jacquard-column-gown"
         ],
         "limit": 8,
-        "per_row": 4,
+        "per_row": 3,
         "link_label": "",
         "link_url": "",
         "tag_label": "",
@@ -74,11 +117,245 @@
         "pad_top": 8,
         "pad_bottom": 40
       }
+    },
+    "t_dresses": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Mini dresses",
+        "text": "<p>For dinners and late nights. The Isabel Cutout Long Sleeve Mini Dress plays with a single cutout at the waist; the Ellen Lace Yoke Satin Mini Dress brings lace to a satin body for a softer take on the short length.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g_dresses": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "sau-lee-f26d26-isabel-cutout-long-sleeve-mini-dress",
+          "sau-lee-f26d09-ellen-lace-yoke-satin-mini-dress"
+        ],
+        "limit": 8,
+        "per_row": 3,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "b2": {
+      "type": "od-big-banner",
+      "settings": {
+        "image": "shopify://shop_images/Oe7ewHWKsxdWIStiWjUiFv3kVx0u518zYydOBmUj.webp",
+        "height": "m",
+        "overlay_color": "#2a0d12",
+        "overlay_opacity": 30,
+        "text_position": "center",
+        "eyebrow": "The column",
+        "title": "One line, done well",
+        "text": "<p>The column silhouette runs through gowns and skirts alike: narrow, floor-length and cut to lengthen.</p>",
+        "text_color": "#fcf8f2",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#e5d9c7",
+        "button_text_color": "#fcf8f2",
+        "pad_top": 0,
+        "pad_bottom": 0
+      }
+    },
+    "t_skirts": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Skirts",
+        "text": "<p>The Roman Column Maxi Skirt is the label's signature in skirt form, while the Elva Floral Appliqué Satin Skirt adds hand-placed flowers to the same silhouette. Both pair with the knits below for day, and with a simple top for night.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g_skirts": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "sau-lee-f26s03-roman-column-maxi-skirt",
+          "sau-lee-f26s07-elva-floral-applique-satin-skirt"
+        ],
+        "limit": 8,
+        "per_row": 3,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "t_knits": {
+      "type": "od-text",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Knits",
+        "text": "<p>Two fine knits with the house's Tang collar, a nod to the designer's heritage: the Petar Collared Fine Knit Top and the Otto Tang Collar Knit Cardigan. Worn with the skirts, they turn eveningwear into everyday.</p>",
+        "align": "center",
+        "width": "narrow",
+        "size": "m",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 8
+      }
+    },
+    "g_knits": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "sau-lee-f26t03-petar-collared-fine-knit-top",
+          "sau-lee-f26t04-otto-tang-collar-knit-cardigan"
+        ],
+        "limit": 8,
+        "per_row": 3,
+        "link_label": "",
+        "link_url": "",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 8,
+        "pad_bottom": 40
+      }
+    },
+    "ethos": {
+      "type": "od-image-text",
+      "settings": {
+        "image": "shopify://shop_images/RZ3TmplvGMWyXbZuRDK3Lm8JeAswJUFDEXoRqz1f.webp",
+        "ratio": "4-5",
+        "image_side": "start",
+        "eyebrow": "The ethos",
+        "title": "Made to be worn, and worn again",
+        "text": "<p>SAU LEE was started in Melbourne by designer Sau Lee with a simple brief: occasion wear that feels considered rather than costume. Chinese heritage shows in the details, from Tang collars to the discipline of a clean line, while the fabrics, satin, lace and jacquard, are chosen for how they move on a body, not on a hanger.</p><p>Pieces are designed to be re-worn across seasons and occasions, which is why the palette stays quiet and the cuts stay pure.</p>",
+        "button_label": "Shop all SAU LEE",
+        "button_url": "/collections/vendors?q=SAU+LEE",
+        "button_style": "solid",
+        "button_color": "#551c25",
+        "button_text_color": "#fcf8f2",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 48,
+        "pad_bottom": 48
+      }
+    },
+    "quote": {
+      "type": "od-quote",
+      "settings": {
+        "quote": "A dress should make the evening easier, not louder.",
+        "name": "SAU LEE",
+        "detail": "Melbourne",
+        "bg": "#e5d9c7",
+        "text_color": "#551c25",
+        "accent": "#551c25",
+        "pad_top": 48,
+        "pad_bottom": 48
+      }
+    },
+    "all": {
+      "type": "od-product-grid",
+      "settings": {
+        "eyebrow": "The full edit",
+        "heading": "Shop SAU LEE at OMARIEDEN",
+        "text": "",
+        "align": "center",
+        "source": "products",
+        "collection": "",
+        "products": [
+          "sau-lee-f26d23-sabina-draped-halter-satin-gown",
+          "sau-lee-f26d26-isabel-cutout-long-sleeve-mini-dress",
+          "sau-lee-f26s03-roman-column-maxi-skirt",
+          "sau-lee-f26d09-ellen-lace-yoke-satin-mini-dress",
+          "sau-lee-f26s07-elva-floral-applique-satin-skirt",
+          "sau-lee-f26t04-otto-tang-collar-knit-cardigan"
+        ],
+        "limit": 6,
+        "per_row": 4,
+        "link_label": "View all SAU LEE",
+        "link_url": "/collections/vendors?q=SAU+LEE",
+        "tag_label": "",
+        "tag_bg": "#e5d9c7",
+        "tag_text": "#2a0d12",
+        "bg": "",
+        "text_color": "#551c25",
+        "pad_top": 40,
+        "pad_bottom": 64
+      }
     }
   },
   "order": [
     "main",
-    "t",
-    "g"
+    "intro",
+    "b1",
+    "t_gowns",
+    "g_gowns",
+    "t_dresses",
+    "g_dresses",
+    "b2",
+    "t_skirts",
+    "g_skirts",
+    "t_knits",
+    "g_knits",
+    "ethos",
+    "quote",
+    "all"
   ]
 }
