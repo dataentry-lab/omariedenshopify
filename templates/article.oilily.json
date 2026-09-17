@@ -22,12 +22,34 @@
         "button_url": "",
         "hide_body": false,
         "hide_title": false,
-        "show_share": true,
+        "show_share": false,
         "show_back": true,
         "text_color": "#551c25",
         "accent": "#595b33",
         "overlay_color": "#551c25",
         "overlay_opacity": 40
+      }
+    },
+    "od_big_banner_ML7gAf": {
+      "type": "od-big-banner",
+      "name": "Big banner",
+      "settings": {
+        "image": "shopify://shop_images/111.jpg",
+        "height": "m",
+        "overlay_color": "#551c25",
+        "overlay_opacity": 40,
+        "text_position": "center",
+        "eyebrow": "",
+        "title": "",
+        "text": "",
+        "text_color": "#fcf8f2",
+        "button_label": "",
+        "button_url": "",
+        "button_style": "outline",
+        "button_color": "#e5d9c7",
+        "button_text_color": "#fcf8f2",
+        "pad_top": 0,
+        "pad_bottom": 0
       }
     },
     "intro": {
@@ -175,6 +197,7 @@
       "type": "od-big-banner",
       "settings": {
         "image": "shopify://shop_images/88Nx1PRdKBfg1tmPkZrnNh5ybzvyU5jRAVK12Erf.jpg",
+        "mobile_image": "shopify://shop_images/YF26GDR206_336_5_1024x1024_35a9708e-682f-4239-a515-d52dcc2d07a3.webp",
         "height": "m",
         "overlay_color": "#2a0d12",
         "overlay_opacity": 25,
@@ -523,6 +546,7 @@
   },
   "order": [
     "main",
+    "od_big_banner_ML7gAf",
     "intro",
     "b1",
     "t_tees",
