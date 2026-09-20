@@ -471,9 +471,10 @@
           "type": "card",
           "settings": {
             "article": "",
+            "image": "shopify://shop_images/Screenshot_1448-04-09_at_12.21.56.png",
             "label": "The edit",
-            "title": "The Autumn Edit",
-            "text": "Layered pieces for cooler evenings, chosen by our stylists.",
+            "title": "Wearable Art from Sydney",
+            "text": "Silk twill sets, painterly sundresses, lace and beading, and two gowns from the Sydney label that treats every dress as a canvas.",
             "link_label": "Shop the edit",
             "link": ""
           }
