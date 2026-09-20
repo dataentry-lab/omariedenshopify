@@ -56,10 +56,11 @@
         "i1": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/MK_SS26220376_1.jpg",
             "heading": "Mary Katrantzou",
             "text": "Mary Katrantzou",
             "button_label": "Explore",
-            "link": "",
+            "link": "https://bpsv5j-2w.myshopify.com/collections/vendors?q=Mary%20Katrantzou",
             "caption": ""
           }
         },
@@ -309,6 +310,8 @@
         "button_label": "Request an appointment",
         "note": "",
         "success": "Thank you, we'll be in touch shortly.",
+        "overlay_color": "#2a0d12",
+        "overlay_opacity": 60,
         "bg": "#2a0d12",
         "text_color": "#fcf8f2",
         "accent": "#e5d9c7",
