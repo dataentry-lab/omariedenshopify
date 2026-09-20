@@ -53,7 +53,7 @@
     "b1": {
       "type": "od-big-banner",
       "settings": {
-        "image": "shopify://shop_images/yVVAVIb67rNUSWXcj2kimg8523OPP4cJCabuGqaN.webp",
+        "image": "shopify://shop_images/ALEMAIS_7578D_GREEN_2_copy.webp",
         "height": "l",
         "overlay_color": "#2a0d12",
         "overlay_opacity": 30,
@@ -65,7 +65,10 @@
         "button_label": "",
         "button_url": "",
         "button_style": "outline",
-        "button_color": "#e5d9c7"
+        "button_color": "#e5d9c7",
+        "button_text_color": "#fcf8f2",
+        "pad_top": 0,
+        "pad_bottom": 0
       }
     },
     "t0": {
@@ -167,7 +170,7 @@
     "b2": {
       "type": "od-big-banner",
       "settings": {
-        "image": "shopify://shop_images/LUQLp9RE17DsYVZCSJJmVFyaB106dALHoqeDwiUc.webp",
+        "image": "shopify://shop_images/ALEMAIS_7674D_MULTICOLOR_5.webp",
         "height": "m",
         "overlay_color": "#2a0d12",
         "overlay_opacity": 30,
@@ -179,7 +182,10 @@
         "button_label": "",
         "button_url": "",
         "button_style": "outline",
-        "button_color": "#e5d9c7"
+        "button_color": "#e5d9c7",
+        "button_text_color": "#fcf8f2",
+        "pad_top": 0,
+        "pad_bottom": 0
       }
     },
     "t2": {
@@ -280,7 +286,7 @@
     "ethos": {
       "type": "od-image-text",
       "settings": {
-        "image": "shopify://shop_images/miK0EPoDytaeC11P4kAJCJhxDSrwPfCm5prDMthR.webp",
+        "image": "shopify://shop_images/ALEMAIS_7668D_MULTICOLOR_2.webp",
         "ratio": "4-5",
         "image_side": "start",
         "eyebrow": "The ethos",
