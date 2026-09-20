@@ -67,6 +67,7 @@
         "i2": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/Silver_Velvet_Structured_Jacket_Dress_Set_2.webp",
             "heading": "Mona Al Shebil",
             "text": "Mona Al Shebil",
             "button_label": "Explore",
@@ -77,6 +78,7 @@
         "i3": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/FW25-26-01-YBK-5.webp",
             "heading": "Zeena Zaki",
             "text": "Zeena Zaki",
             "button_label": "Explore",
