@@ -53,7 +53,7 @@
     "b1": {
       "type": "od-big-banner",
       "settings": {
-        "image": "shopify://shop_images/52NXuByBjEwrc8iBSC5NAvo5xUcp9Svo3uf6aJAx.webp",
+        "image": "shopify://shop_images/Lelet_NY_LELHR25-2413O_OXBLOOD_2_dfca63c2-a381-4405-8d99-b976a509ac6d.webp",
         "height": "l",
         "overlay_color": "#2a0d12",
         "overlay_opacity": 30,
@@ -65,7 +65,10 @@
         "button_label": "",
         "button_url": "",
         "button_style": "outline",
-        "button_color": "#e5d9c7"
+        "button_color": "#e5d9c7",
+        "button_text_color": "#fcf8f2",
+        "pad_top": 0,
+        "pad_bottom": 0
       }
     },
     "t0": {
@@ -167,7 +170,7 @@
     "b2": {
       "type": "od-big-banner",
       "settings": {
-        "image": "shopify://shop_images/gxP2yOaJZeR7IZqFUcEwDdJeUc46MITzbzqN4TN8.webp",
+        "image": "shopify://shop_images/Lelet_NY_LELHR25-2445G_GOLD_4.webp",
         "height": "m",
         "overlay_color": "#2a0d12",
         "overlay_opacity": 30,
@@ -179,7 +182,10 @@
         "button_label": "",
         "button_url": "",
         "button_style": "outline",
-        "button_color": "#e5d9c7"
+        "button_color": "#e5d9c7",
+        "button_text_color": "#fcf8f2",
+        "pad_top": 0,
+        "pad_bottom": 0
       }
     },
     "t2": {
@@ -329,7 +335,7 @@
     "ethos": {
       "type": "od-image-text",
       "settings": {
-        "image": "shopify://shop_images/3RcouYoVk5kJli6yLZXChMirCRdIL9MidLRWC7md.webp",
+        "image": "shopify://shop_images/Lelet_NY_LELHR25-2489RH_RHODIUM_3.webp",
         "ratio": "4-5",
         "image_side": "start",
         "eyebrow": "The ethos",
