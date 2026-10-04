@@ -418,3 +418,24 @@ body[data-dark-header="true"] .od-crumbs-wrap--overlay { top: 150px; }
 [data-search-results] .od-search-brands__label { letter-spacing: .06em; text-transform: uppercase; opacity: .7; }
 [data-search-results] .od-search-brands__link { color: #551c25; text-decoration: none; }
 [data-search-results] .od-search-brands__link:hover, [data-search-results] .od-search-brands__link:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Sliders before Swiper initialises (JS is deferred): lay the slides out at their final widths so the first
+   card is not painted full width and then snapped into place. Mirrors the breakpoints in theme.js initSwipers. */
+.swiper[data-swiper="cards"]:not(.swiper-initialized),
+.swiper[data-swiper="reels"]:not(.swiper-initialized) { overflow: hidden; }
+.swiper[data-swiper="cards"]:not(.swiper-initialized) .swiper-wrapper,
+.swiper[data-swiper="reels"]:not(.swiper-initialized) .swiper-wrapper { display: flex; gap: var(--od-pre-gap, 30px); }
+.swiper[data-swiper="cards"]:not(.swiper-initialized) .swiper-slide,
+.swiper[data-swiper="reels"]:not(.swiper-initialized) .swiper-slide { flex: 0 0 auto; width: calc((100% - (var(--od-pre-n, 5) - 1) * var(--od-pre-gap, 30px)) / var(--od-pre-n, 5)); margin: 0; }
+.swiper[data-swiper="cards"]:not(.swiper-initialized) { --od-pre-n: 5; --od-pre-gap: 30px; }
+.swiper[data-swiper="reels"]:not(.swiper-initialized) { --od-pre-n: 6; --od-pre-gap: 12px; }
+@media (max-width: 1279px) { .swiper[data-swiper="cards"]:not(.swiper-initialized) { --od-pre-n: 4; } }
+@media (max-width: 1023px) { .swiper[data-swiper="reels"]:not(.swiper-initialized) { --od-pre-n: 4; } }
+@media (max-width: 767px) {
+  .swiper[data-swiper="cards"]:not(.swiper-initialized),
+  .swiper[data-swiper="reels"]:not(.swiper-initialized) { --od-pre-n: 2.3; --od-pre-gap: 10px; }
+  .swiper[data-swiper="cards"]:not(.swiper-initialized) .swiper-slide,
+  .swiper[data-swiper="reels"]:not(.swiper-initialized) .swiper-slide { width: calc((100% - 2 * var(--od-pre-gap)) / 2.3); }
+}
+.swiper[data-swiper="hero"]:not(.swiper-initialized) .swiper-slide:not(:first-child),
+.swiper[data-swiper="space"]:not(.swiper-initialized) .swiper-slide:not(:first-child) { display: none; }
