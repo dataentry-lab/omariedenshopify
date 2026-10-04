@@ -17,6 +17,10 @@
 <html lang="{{ request.locale.iso_code }}">
   <head>
     <meta charset="UTF-8">
+    {%- comment -%} /collections/all is Shopify's system collection with no admin sort setting: open it newest first (round 12). Runs before paint, so no flash. {%- endcomment -%}
+    {%- if template.name == 'collection' and collection.handle == 'all' and collection.sort_by == blank -%}
+    <script>(function(){var u=new URL(location.href);if(!u.searchParams.get('sort_by')){u.searchParams.set('sort_by','created-descending');location.replace(u.toString());}})();</script>
+    {%- endif -%}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="icon" type="image/svg+xml" href="{{ 'icons_omariden.svg' | asset_url }}">
