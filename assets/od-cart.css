@@ -158,3 +158,9 @@
 .od-cartd__skel-item { display: flex; gap: 14px; margin-top: 18px; }
 .od-cartd__skel-img { width: 96px; aspect-ratio: 2 / 3; flex: none; }
 .od-cartd__skel-text { flex: 1; padding-top: 6px; }
+
+/* round 12: soft state changes in the drawer (remove -> totals update at once, list collapses, empty state fades in) */
+@keyframes od-cartd-fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.od-cartd-fade { animation: od-cartd-fade .3s ease both; }
+.od-cartd__items { transition: opacity .2s ease; }
+.od-cartd__inner.is-refreshing .od-cartd__items { opacity: 1; }

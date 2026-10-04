@@ -71,17 +71,21 @@
     '</div>';
   }
   let lastCart = null;
-  function render(cart) {
-    const box = inner();
-    if (!box || !cart || !Array.isArray(cart.items)) return false;
-    lastCart = cart;
-    const items = $('[data-cartd-items]', box), bag = $('[data-cartd-bag]', box), empty = $('[data-cartd-empty]', box), foot = $('[data-cartd-footer]', box), skel = $('[data-cartd-skeleton]', box);
-    if (skel) skel.hidden = true;
+  /* show / hide the bag, empty state and footer with a short crossfade (no hard swap) */
+  function setState(box, n) {
+    const bag = $('[data-cartd-bag]', box), empty = $('[data-cartd-empty]', box), foot = $('[data-cartd-footer]', box);
+    const toEmpty = n === 0;
+    if (bag && bag.hidden !== toEmpty) { bag.hidden = toEmpty; if (!toEmpty) fadeIn(bag); }
+    if (foot && foot.hidden !== toEmpty) { foot.hidden = toEmpty; if (!toEmpty) fadeIn(foot); }
+    if (empty && empty.hidden !== !toEmpty) { empty.hidden = !toEmpty; if (toEmpty) fadeIn(empty); }
+  }
+  function fadeIn(el) {
+    el.classList.remove('od-cartd-fade');
+    void el.offsetWidth;
+    el.classList.add('od-cartd-fade');
+  }
+  function paintTotals(box, cart) {
     const n = cart.item_count || 0;
-    if (items) items.innerHTML = cart.items.map(itemHTML).join('');
-    if (bag) bag.hidden = n === 0;
-    if (empty) empty.hidden = n > 0;
-    if (foot) foot.hidden = n === 0;
     const c = $('[data-cart-drawer-count]', box); if (c) c.textContent = '(' + n + ')';
     const sub = $('[data-cartd-subtotal]', box); if (sub) sub.innerHTML = money(cart.total_price || 0);
     // free shipping bar
@@ -96,6 +100,17 @@
     }
     box.setAttribute('data-cart-item-count', n);
     OD.setCartCount(n);
+  }
+  function render(cart) {
+    const box = inner();
+    if (!box || !cart || !Array.isArray(cart.items)) return false;
+    lastCart = cart;
+    const items = $('[data-cartd-items]', box), skel = $('[data-cartd-skeleton]', box);
+    if (skel) skel.hidden = true;
+    const n = cart.item_count || 0;
+    if (items) items.innerHTML = cart.items.map(itemHTML).join('');
+    setState(box, n);
+    paintTotals(box, cart);
     OD.wlPaint && OD.wlPaint(box);
     return true;
   }
@@ -145,12 +160,22 @@
           const doc = new DOMParser().parseFromString(html, 'text/html');
           const fresh = $('[data-cart-drawer-content]', doc);
           if (fresh) {
-            box.innerHTML = fresh.innerHTML;
             const n = parseInt(fresh.getAttribute('data-cart-item-count') || '', 10);
-            if (!isNaN(n)) { OD.setCartCount(n); counted = true; }
-            initSwiper(box);
+            // swap only the parts that depend on the cart (items, totals, shipping bar); the trending row,
+            // the empty state and the skeleton stay in place so nothing jumps while the drawer is open
+            const swap = (sel, mode) => {
+              const a = $(sel, box), b = $(sel, fresh);
+              if (!a || !b) return;
+              if (mode === 'text') a.textContent = b.textContent; else a.innerHTML = b.innerHTML;
+            };
+            swap('[data-cartd-items]');
+            swap('[data-cartd-subtotal]');
+            swap('[data-cartd-shipping-text]');
+            swap('[data-cart-drawer-count]', 'text');
+            const fb = $('[data-cartd-shipping-bar]', fresh), cb = $('[data-cartd-shipping-bar]', box);
+            if (fb && cb) cb.style.width = fb.style.width;
+            if (!isNaN(n)) { setState(box, n); box.setAttribute('data-cart-item-count', n); OD.setCartCount(n); counted = true; }
             OD.wlPaint && OD.wlPaint(box);
-            OD.initCards && OD.initCards(box);
           }
         }
       } catch (err) {
@@ -215,7 +240,12 @@
     try {
       const cart = await OD.cartRequest(OD.cartChangeUrl + '.js', { id: key, quantity: Math.max(0, quantity) });
       pending--;
-      if (removing && item) { setTimeout(() => render(cart), 320); } else render(cart);
+      if (removing && item) {
+        const box = inner();
+        if (box) paintTotals(box, cart);
+        // keep the collapse animation, then swap the list (the empty state fades in through setState)
+        setTimeout(() => render(cart), 330);
+      } else render(cart);
       scheduleRefresh();
     } catch (err) {
       pending--;
