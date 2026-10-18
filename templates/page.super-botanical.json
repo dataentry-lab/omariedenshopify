@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
@@ -143,9 +152,14 @@
       ],
       "settings": {
         "tab_label": "Dates",
+        "tab_label_ar": "قائمة التمور",
         "eyebrow": "Seasonal",
+        "eyebrow_ar": "موسمي",
         "heading": "Dates menu",
+        "heading_ar": "قائمة التمور",
         "text": "<p>Seasonal selection, changes weekly</p>",
+        "text_ar": "<p>تشكيلة موسمية تتغير أسبوعياً</p>",
+        "show_alt": false,
         "image": "shopify://shop_images/SB-Patterns-_2.jpg",
         "bg": "#182c29",
         "overlay_color": "#182c29",
@@ -160,12 +174,7 @@
         "card_bg": "#f5efe3",
         "card_text": "#182c29",
         "pad_top": 56,
-        "pad_bottom": 56,
-        "heading_ar": "قائمة التمور",
-        "tab_label_ar": "قائمة التمور",
-        "eyebrow_ar": "موسمي",
-        "text_ar": "<p>تشكيلة موسمية تتغير أسبوعياً</p>",
-        "show_alt": false
+        "pad_bottom": 56
       }
     },
     "menu_hot": {
@@ -431,8 +440,12 @@
       ],
       "settings": {
         "heading": "Hot Beverages",
+        "heading_ar": "المشروبات الساخنة",
         "tab_label": "",
+        "tab_label_ar": "",
         "text": "",
+        "text_ar": "",
+        "show_alt": false,
         "columns": "2",
         "lightbox": true,
         "photo": "84",
@@ -444,11 +457,7 @@
         "accent": "#f0d58e",
         "line_color": "#d9d2c3",
         "pad_top": 40,
-        "pad_bottom": 40,
-        "heading_ar": "المشروبات الساخنة",
-        "tab_label_ar": "",
-        "text_ar": "",
-        "show_alt": false
+        "pad_bottom": 40
       }
     },
     "menu_cold": {
@@ -765,8 +774,12 @@
       ],
       "settings": {
         "heading": "Cold Beverages",
+        "heading_ar": "المشروبات الباردة",
         "tab_label": "",
+        "tab_label_ar": "",
         "text": "",
+        "text_ar": "",
+        "show_alt": false,
         "columns": "2",
         "lightbox": true,
         "photo": "84",
@@ -778,11 +791,7 @@
         "accent": "#f0d58e",
         "line_color": "#d9d2c3",
         "pad_top": 40,
-        "pad_bottom": 40,
-        "heading_ar": "المشروبات الباردة",
-        "tab_label_ar": "",
-        "text_ar": "",
-        "show_alt": false
+        "pad_bottom": 40
       }
     },
     "menu_tea": {
@@ -912,8 +921,12 @@
       ],
       "settings": {
         "heading": "Tea",
+        "heading_ar": "الشاي",
         "tab_label": "",
+        "tab_label_ar": "",
         "text": "<p>Loose leaf, brewed to order</p>",
+        "text_ar": "<p>أوراق شاي تحضر عند الطلب</p>",
+        "show_alt": false,
         "columns": "2",
         "lightbox": true,
         "photo": "84",
@@ -925,11 +938,7 @@
         "accent": "#f0d58e",
         "line_color": "#d9d2c3",
         "pad_top": 40,
-        "pad_bottom": 40,
-        "heading_ar": "الشاي",
-        "tab_label_ar": "",
-        "text_ar": "<p>أوراق شاي تحضر عند الطلب</p>",
-        "show_alt": false
+        "pad_bottom": 40
       }
     },
     "banner": {
@@ -1162,8 +1171,12 @@
       ],
       "settings": {
         "heading": "Sandwiches",
+        "heading_ar": "السندويشات",
         "tab_label": "",
+        "tab_label_ar": "",
         "text": "<p>Served with fries or potato salad</p>",
+        "text_ar": "<p>تقدم مع البطاطس المقلية أو سلطة البطاطس</p>",
+        "show_alt": false,
         "columns": "2",
         "lightbox": true,
         "photo": "84",
@@ -1175,11 +1188,7 @@
         "accent": "#f0d58e",
         "line_color": "#d9d2c3",
         "pad_top": 40,
-        "pad_bottom": 40,
-        "heading_ar": "السندويشات",
-        "tab_label_ar": "",
-        "text_ar": "<p>تقدم مع البطاطس المقلية أو سلطة البطاطس</p>",
-        "show_alt": false
+        "pad_bottom": 40
       }
     },
     "menu_bakery": {
@@ -1474,8 +1483,12 @@
       ],
       "settings": {
         "heading": "Bakery",
+        "heading_ar": "المخبوزات",
         "tab_label": "",
+        "tab_label_ar": "",
         "text": "<p>Baked fresh every morning</p>",
+        "text_ar": "<p>تخبز طازجة كل صباح</p>",
+        "show_alt": false,
         "columns": "2",
         "lightbox": true,
         "photo": "84",
@@ -1487,11 +1500,7 @@
         "accent": "#f0d58e",
         "line_color": "#d9d2c3",
         "pad_top": 40,
-        "pad_bottom": 40,
-        "heading_ar": "المخبوزات",
-        "tab_label_ar": "",
-        "text_ar": "<p>تخبز طازجة كل صباح</p>",
-        "show_alt": false
+        "pad_bottom": 40
       }
     },
     "menu_desserts": {
@@ -1757,8 +1766,12 @@
       ],
       "settings": {
         "heading": "Desserts",
+        "heading_ar": "الحلويات",
         "tab_label": "",
+        "tab_label_ar": "",
         "text": "",
+        "text_ar": "",
+        "show_alt": false,
         "columns": "2",
         "lightbox": true,
         "photo": "84",
@@ -1770,11 +1783,7 @@
         "accent": "#f0d58e",
         "line_color": "#d9d2c3",
         "pad_top": 40,
-        "pad_bottom": 40,
-        "heading_ar": "الحلويات",
-        "tab_label_ar": "",
-        "text_ar": "",
-        "show_alt": false
+        "pad_bottom": 40
       }
     },
     "row": {
@@ -1870,7 +1879,6 @@
         "text_color": "#f0d58e",
         "accent": "#f0d58e",
         "accent_text": "#182c29",
-        "field_bg": "#ffffff",
         "pad_top": 40,
         "pad_bottom": 40
       }
