@@ -45,9 +45,9 @@
                   {%- if st.ornament -%}<div class="od-stamp__line"><span aria-hidden="true">&#10048;</span></div>{%- endif -%}
                   {%- if st.show_alt or b.name_ar == blank -%}<h4 class="od-stamp__name">{{ b.name }}</h4>{%- endif -%}
                 {%- else -%}
-                  {%- if st.show_alt and b.name_ar != blank -%}<p class="od-stamp__ar" dir="rtl">{{ b.name_ar }}</p>{%- endif -%}
+                  <h4 class="od-stamp__name od-stamp__name--top">{{ b.name }}</h4>
                   {%- if st.ornament -%}<div class="od-stamp__line"><span aria-hidden="true">&#10048;</span></div>{%- endif -%}
-                  <h4 class="od-stamp__name">{{ b.name }}</h4>
+                  {%- if st.show_alt and b.name_ar != blank -%}<p class="od-stamp__ar od-stamp__ar--under" dir="rtl">{{ b.name_ar }}</p>{%- endif -%}
                 {%- endif -%}
                 {%- if b.image != blank -%}
                   <div class="od-stamp__img od-ratio od-ratio--{{ st.ratio }}"><img src="{{ b.image | image_url: width: 800 }}" alt="{{ b.name | escape }}" width="{{ b.image.width }}" height="{{ b.image.height }}" loading="lazy"></div>

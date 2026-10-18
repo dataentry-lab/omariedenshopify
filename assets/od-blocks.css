@@ -537,6 +537,8 @@ a.od-imgrow__media:hover .od-ratio img { transform: scale(1.03); }
 .od-stamp__line { display: flex; align-items: center; gap: 10px; margin: 8px 18px; color: var(--od-card-text, #182c29); }
 .od-stamp__line::before, .od-stamp__line::after { content: ""; flex: 1; height: 1px; background: currentColor; }
 .od-stamp__line span { font-size: 12px; }
+.od-stamp__name--top { margin: 0; }
+.od-stamp__ar--under { margin: 0 0 14px; }
 .od-stamp__name { margin: 0 0 14px; font-size: 15px; font-weight: 400; letter-spacing: .08em; text-transform: uppercase; }
 .od-stamp__img { width: 100%; margin: 0 0 14px; background: transparent; align-self: stretch; }
 .od-stamp__desc { margin: 0 0 10px; font-size: 12px; line-height: 1.6; }

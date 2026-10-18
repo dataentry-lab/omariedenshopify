@@ -152,7 +152,7 @@
         "overlay_opacity": 55,
         "text_color": "#f0d58e",
         "accent": "#f0d58e",
-        "per_row": 4,
+        "per_row": 5,
         "per_row_mobile": "2",
         "photo_pos": "under",
         "ornament": true,
