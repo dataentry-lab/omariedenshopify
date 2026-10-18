@@ -366,7 +366,7 @@
 [data-modal="filter"] .od-ft__swatch { width: 20px; height: 20px; flex: none; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(85, 28, 37, .25); background-size: cover; background-position: center; }
 
 /* ---------- active filter chips (round 10) ---------- */
-.od-listing__active { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 0 4px; font-family: Bricolage, sans-serif; }
+.od-listing__active { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 0 28px; font-family: Bricolage, sans-serif; }
 [dir=rtl] .od-listing__active { font-family: Arabic-Regular, Bricolage, sans-serif; }
 .od-chipx { display: inline-flex; align-items: center; gap: 10px; height: 36px; padding-inline: 14px 12px; background: #f1eeea; color: var(--maroon, #551c25); font-size: 14px; line-height: 1; text-decoration: none; transition: background-color .2s ease; }
 .od-chipx:hover { background: #e5d9c7; color: var(--maroon, #551c25); }
@@ -375,7 +375,7 @@
 .od-chipx__t ._sar_1ef42_1 svg { width: 10px; height: 11px; fill: currentColor; display: block; }
 .od-chipx__x { font-size: 17px; line-height: 1; opacity: .75; }
 .od-listing__clear { font-size: 14px; color: var(--maroon, #551c25); text-decoration: underline; text-underline-offset: 3px; margin-inline-start: 6px; white-space: nowrap; }
-@media (max-width: 767px) { .od-listing__active { padding: 10px 0 0; } .od-chipx { height: 32px; font-size: 13px; } }
+@media (max-width: 767px) { .od-listing__active { padding: 10px 0 20px; } .od-chipx { height: 32px; font-size: 13px; } }
 
 /* ---------- listing title split (round 11): mobile = one " - " segment per line, fitted font ---------- */
 .od-listing__seg, .od-listing__sep { font-family: inherit; font-size: inherit; font-weight: inherit; line-height: inherit; letter-spacing: normal; color: inherit; text-transform: inherit; }
