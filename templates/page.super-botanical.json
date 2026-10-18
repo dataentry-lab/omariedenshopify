@@ -56,7 +56,7 @@
         "sk_0119": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/sb-dates-pie.jpg",
+            "image": "shopify://shop_images/sb-dates-pie-v2.jpg",
             "name": "Dates Pie",
             "name_ar": "فطيرة التمر",
             "desc": "Buttery pastry filled with soft Saudi dates.",
@@ -65,7 +65,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "signature",
+            "tag": "none",
             "hide": false
           }
         },
@@ -81,7 +81,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "signature",
+            "tag": "none",
             "hide": false
           }
         },
@@ -129,7 +129,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "signature",
+            "tag": "none",
             "hide": false
           }
         }
@@ -164,7 +164,8 @@
         "heading_ar": "قائمة التمور",
         "tab_label_ar": "قائمة التمور",
         "eyebrow_ar": "موسمي",
-        "text_ar": "<p>تشكيلة موسمية تتغير أسبوعياً</p>"
+        "text_ar": "<p>تشكيلة موسمية تتغير أسبوعياً</p>",
+        "show_alt": false
       }
     },
     "menu_hot": {
@@ -182,7 +183,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "signature",
+            "tag": "none",
             "hide": false
           }
         },
@@ -198,7 +199,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "black",
+            "tag": "none",
             "hide": false
           }
         },
@@ -246,7 +247,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "signature",
+            "tag": "none",
             "hide": false
           }
         },
@@ -278,7 +279,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "black",
+            "tag": "none",
             "hide": true
           }
         },
@@ -294,7 +295,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "black",
+            "tag": "none",
             "hide": false
           }
         },
@@ -342,7 +343,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "black",
+            "tag": "none",
             "hide": false
           }
         },
@@ -446,7 +447,8 @@
         "pad_bottom": 40,
         "heading_ar": "المشروبات الساخنة",
         "tab_label_ar": "",
-        "text_ar": ""
+        "text_ar": "",
+        "show_alt": false
       }
     },
     "menu_cold": {
@@ -464,7 +466,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "signature",
+            "tag": "none",
             "hide": false
           }
         },
@@ -480,7 +482,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "signature",
+            "tag": "none",
             "hide": false
           }
         },
@@ -496,7 +498,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "signature",
+            "tag": "none",
             "hide": false
           }
         },
@@ -544,7 +546,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "black",
+            "tag": "none",
             "hide": false
           }
         },
@@ -656,7 +658,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "black",
+            "tag": "none",
             "hide": false
           }
         },
@@ -779,7 +781,8 @@
         "pad_bottom": 40,
         "heading_ar": "المشروبات الباردة",
         "tab_label_ar": "",
-        "text_ar": ""
+        "text_ar": "",
+        "show_alt": false
       }
     },
     "menu_tea": {
@@ -925,7 +928,8 @@
         "pad_bottom": 40,
         "heading_ar": "الشاي",
         "tab_label_ar": "",
-        "text_ar": "<p>أوراق شاي تحضر عند الطلب</p>"
+        "text_ar": "<p>أوراق شاي تحضر عند الطلب</p>",
+        "show_alt": false
       }
     },
     "banner": {
@@ -963,7 +967,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "best",
+            "tag": "none",
             "hide": false
           }
         },
@@ -995,7 +999,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "vegetarian",
+            "tag": "none",
             "hide": false
           }
         },
@@ -1027,7 +1031,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "vegetarian",
+            "tag": "none",
             "hide": false
           }
         },
@@ -1043,7 +1047,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "vegetarian",
+            "tag": "none",
             "hide": true
           }
         },
@@ -1075,22 +1079,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "vegetarian",
-            "hide": false
-          }
-        },
-        "sk_0125": {
-          "type": "item",
-          "settings": {
-            "name": "Premier League Combo",
-            "name_ar": "كومبو الدوري الإنجليزي",
-            "desc": "Match day combo. Ask our team for today's pairing.",
-            "desc_ar": "كومبو يوم المباراة. اسأل فريقنا عن اختيار اليوم.",
-            "price": "59",
-            "calories": "",
-            "allergens": false,
-            "allergen_note": "",
-            "tag": "signature",
+            "tag": "none",
             "hide": false
           }
         },
@@ -1106,7 +1095,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "vegetarian",
+            "tag": "none",
             "hide": false
           }
         },
@@ -1152,7 +1141,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "vegan",
+            "tag": "none",
             "hide": true
           }
         }
@@ -1166,7 +1155,6 @@
         "sk_0076",
         "sk_0079",
         "sk_0094",
-        "sk_0125",
         "sk_0078",
         "sk_0029",
         "sk_0074",
@@ -1190,7 +1178,8 @@
         "pad_bottom": 40,
         "heading_ar": "السندويشات",
         "tab_label_ar": "",
-        "text_ar": "<p>تقدم مع البطاطس المقلية أو سلطة البطاطس</p>"
+        "text_ar": "<p>تقدم مع البطاطس المقلية أو سلطة البطاطس</p>",
+        "show_alt": false
       }
     },
     "menu_bakery": {
@@ -1256,7 +1245,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "vegetarian",
+            "tag": "none",
             "hide": false
           }
         },
@@ -1288,7 +1277,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "vegetarian",
+            "tag": "none",
             "hide": false
           }
         },
@@ -1379,7 +1368,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "best",
+            "tag": "none",
             "hide": false
           }
         },
@@ -1459,7 +1448,7 @@
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "vegetarian",
+            "tag": "none",
             "hide": false
           }
         }
@@ -1501,7 +1490,8 @@
         "pad_bottom": 40,
         "heading_ar": "المخبوزات",
         "tab_label_ar": "",
-        "text_ar": "<p>تخبز طازجة كل صباح</p>"
+        "text_ar": "<p>تخبز طازجة كل صباح</p>",
+        "show_alt": false
       }
     },
     "menu_desserts": {
@@ -1783,7 +1773,8 @@
         "pad_bottom": 40,
         "heading_ar": "الحلويات",
         "tab_label_ar": "",
-        "text_ar": ""
+        "text_ar": "",
+        "show_alt": false
       }
     },
     "row": {

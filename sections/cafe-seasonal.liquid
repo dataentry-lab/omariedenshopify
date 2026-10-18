@@ -40,9 +40,15 @@
             {%- if b.hide -%}{%- continue -%}{%- endif -%}
             <article class="od-stamp" {{ block.shopify_attributes }}>
               <div class="od-stamp__inner">
-                {%- if b.name_ar != blank -%}<p class="od-stamp__ar" dir="rtl">{{ b.name_ar }}</p>{%- endif -%}
-                {%- if st.ornament -%}<div class="od-stamp__line"><span aria-hidden="true">&#10048;</span></div>{%- endif -%}
-                <h4 class="od-stamp__name">{{ b.name }}</h4>
+                {%- if rtl -%}
+                  {%- if b.name_ar != blank -%}<p class="od-stamp__ar" dir="rtl">{{ b.name_ar }}</p>{%- endif -%}
+                  {%- if st.ornament -%}<div class="od-stamp__line"><span aria-hidden="true">&#10048;</span></div>{%- endif -%}
+                  {%- if st.show_alt or b.name_ar == blank -%}<h4 class="od-stamp__name">{{ b.name }}</h4>{%- endif -%}
+                {%- else -%}
+                  {%- if st.show_alt and b.name_ar != blank -%}<p class="od-stamp__ar" dir="rtl">{{ b.name_ar }}</p>{%- endif -%}
+                  {%- if st.ornament -%}<div class="od-stamp__line"><span aria-hidden="true">&#10048;</span></div>{%- endif -%}
+                  <h4 class="od-stamp__name">{{ b.name }}</h4>
+                {%- endif -%}
                 {%- if b.image != blank -%}
                   <div class="od-stamp__img od-ratio od-ratio--{{ st.ratio }}"><img src="{{ b.image | image_url: width: 800 }}" alt="{{ b.name | escape }}" width="{{ b.image.width }}" height="{{ b.image.height }}" loading="lazy"></div>
                 {%- endif -%}
@@ -72,6 +78,7 @@
     { "type": "text", "id": "heading_ar", "label": "Heading (Arabic)" },
     { "type": "richtext", "id": "text", "label": "Subtext" },
     { "type": "richtext", "id": "text_ar", "label": "Text (Arabic)" },
+    { "type": "checkbox", "id": "show_alt", "label": "Show the name in both languages", "default": false },
     { "type": "header", "content": "Background" },
     { "type": "image_picker", "id": "image", "label": "Background image (desktop)" },
     { "type": "image_picker", "id": "image_mobile", "label": "Background image (mobile)" },

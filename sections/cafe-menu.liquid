@@ -49,10 +49,10 @@
               <div class="od-citem__body">
                 {%- if rtl -%}
                   <h4 class="od-citem__name">{{ b.name_ar | default: b.name }}{% if b.tag != 'none' and b.tag != blank %}<span class="od-cafe-tag od-cafe-tag--{{ b.tag }}">{% assign tagkey = 'cafe.tags.' | append: b.tag %}{{ tagkey | t }}</span>{% endif %}</h4>
-                  {%- if b.name_ar != blank and b.name != blank -%}<p class="od-citem__alt" dir="ltr">{{ b.name }}</p>{%- endif -%}
+                  {%- if st.show_alt and b.name_ar != blank and b.name != blank -%}<p class="od-citem__alt" dir="ltr">{{ b.name }}</p>{%- endif -%}
                 {%- else -%}
                   <h4 class="od-citem__name">{{ b.name }}{% if b.tag != 'none' and b.tag != blank %}<span class="od-cafe-tag od-cafe-tag--{{ b.tag }}">{% assign tagkey = 'cafe.tags.' | append: b.tag %}{{ tagkey | t }}</span>{% endif %}</h4>
-                  {%- if b.name_ar != blank -%}<p class="od-citem__alt" dir="rtl">{{ b.name_ar }}</p>{%- endif -%}
+                  {%- if st.show_alt and b.name_ar != blank -%}<p class="od-citem__alt" dir="rtl">{{ b.name_ar }}</p>{%- endif -%}
                 {%- endif -%}
                 {%- if rtl and b.desc_ar != blank -%}<p class="od-citem__desc">{{ b.desc_ar }}</p>{%- elsif b.desc != blank -%}<p class="od-citem__desc">{{ b.desc }}</p>{%- endif -%}
                 {%- if b.calories != blank or b.allergens -%}<p class="od-citem__meta">{% if b.calories != blank %}{{ b.calories }} {{ 'cafe.cal' | t }}{% endif %}{% if b.allergens %}{% if b.calories != blank %} · {% endif %}<span class="od-citem__allergen" title="{{ b.allergen_note | escape }}">{{ 'cafe.allergens' | t }}</span>{% endif %}</p>{%- endif -%}
@@ -77,6 +77,7 @@
     { "type": "text", "id": "tab_label_ar", "label": "Tab label (Arabic)" },
     { "type": "richtext", "id": "text", "label": "Intro text" },
     { "type": "richtext", "id": "text_ar", "label": "Intro text (Arabic)" },
+    { "type": "checkbox", "id": "show_alt", "label": "Show the name in both languages", "default": false },
     { "type": "select", "id": "columns", "label": "Columns (desktop)", "default": "2", "options": [ { "value": "1", "label": "1" }, { "value": "2", "label": "2" } ] },
     { "type": "checkbox", "id": "lightbox", "label": "Click a photo to enlarge", "default": true },
     { "type": "select", "id": "photo", "label": "Item photo", "default": "84", "options": [ { "value": "off", "label": "Off (text only)" }, { "value": "72", "label": "Small, 72px" }, { "value": "84", "label": "Medium, 84px" }, { "value": "110", "label": "Large, 110px" } ] },
