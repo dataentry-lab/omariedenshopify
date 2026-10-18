@@ -56,6 +56,7 @@
         "sk_0119": {
           "type": "item",
           "settings": {
+            "image": "shopify://shop_images/sb-dates-pie.jpg",
             "name": "Dates Pie",
             "name_ar": "فطيرة التمر",
             "desc": "Buttery pastry filled with soft Saudi dates.",
@@ -204,6 +205,7 @@
         "sk_0115": {
           "type": "item",
           "settings": {
+            "image": "shopify://shop_images/sb-cafe-brev.jpg",
             "name": "Cafe Brevé",
             "name_ar": "كافيه بريفيه",
             "desc": "Espresso with steamed half and half, rich and velvety.",
@@ -219,6 +221,7 @@
         "sk_0008": {
           "type": "item",
           "settings": {
+            "image": "shopify://shop_images/sb-cappuccino.jpg",
             "name": "Cappuccino",
             "name_ar": "كابتشينو",
             "desc": "Espresso, steamed milk and a thick cap of foam.",
@@ -282,6 +285,7 @@
         "sk_0003": {
           "type": "item",
           "settings": {
+            "image": "shopify://shop_images/sb-espresso.jpg",
             "name": "Espresso",
             "name_ar": "إسبريسو",
             "desc": "Concentrated and intense, with a golden crema.",
@@ -467,6 +471,7 @@
         "sk_0081": {
           "type": "item",
           "settings": {
+            "image": "shopify://shop_images/sb-orangccino.jpg",
             "name": "Orangccino",
             "name_ar": "اورانجينو",
             "desc": "Layered fresh orange juice, milk, cream and espresso.",
@@ -642,6 +647,7 @@
         "sk_0096": {
           "type": "item",
           "settings": {
+            "image": "shopify://shop_images/sb-iced-v-60.jpg",
             "name": "Iced V-60",
             "name_ar": "قهوة مقطرة باردة",
             "desc": "Ethiopian V60 over ice, light, clean and vibrant.",
@@ -964,6 +970,7 @@
         "sk_0093": {
           "type": "item",
           "settings": {
+            "image": "shopify://shop_images/sb-parmesan-fries.jpg",
             "name": "Parmesan Fries",
             "name_ar": "بطاطس بالبارميزان",
             "desc": "Crispy fries with parmesan, rosemary and sea salt.",
@@ -1695,6 +1702,7 @@
         "sk_0091": {
           "type": "item",
           "settings": {
+            "image": "shopify://shop_images/sb-rose-eclair.jpg",
             "name": "Rose Eclair",
             "name_ar": "إكلير الورد",
             "desc": "Choux pastry filled with delicate rose cream.",
