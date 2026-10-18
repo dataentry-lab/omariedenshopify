@@ -439,3 +439,13 @@ body[data-dark-header="true"] .od-crumbs-wrap--overlay { top: 150px; }
 }
 .swiper[data-swiper="hero"]:not(.swiper-initialized) .swiper-slide:not(:first-child),
 .swiper[data-swiper="space"]:not(.swiper-initialized) .swiper-slide:not(:first-child) { display: none; }
+
+/* login popover (18 Oct 2026): one Sign in button + create account link */
+.od-login { display: flex; flex-direction: column; }
+.od-login__hello { margin: 0 0 6px; font-family: "Basteleur Moonlight", serif; font-weight: 300; font-size: 22px; color: #551c25; }
+.od-login__text { margin: 0 0 18px; font-size: 13px; line-height: 1.6; color: #6b4a50; }
+.od-login__btn { width: 100%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-sizing: border-box; letter-spacing: .14em; text-transform: uppercase; }
+.od-login__new { margin: 14px 0 0; text-align: center; font-size: 13px; color: #551c25; }
+.od-login__link { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+[dir=rtl] .od-login__hello { font-family: Arabic-Regular, serif; }
+[dir=rtl] .od-login__btn { letter-spacing: 0; }

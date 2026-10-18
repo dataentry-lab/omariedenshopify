@@ -179,9 +179,12 @@
       "password": "Password",
       "forgot": "Forgot your password?",
       "submit": "Sign in",
-      "create": "Create account",
+      "create": "Create an account",
       "guest": "Continue as a guest",
-      "or_text": "Or"
+      "or_text": "Or",
+      "welcome": "Welcome back",
+      "intro": "Sign in to see your orders, wishlists and saved addresses.",
+      "new_here": "New here?"
     },
     "register": {
       "title": "Create account",

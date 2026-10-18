@@ -1,6 +1,7 @@
 {%- comment -%}
-  Top-right login popover. Shopify customer accounts use email (+ one-time code with "new customer accounts"),
-  so the phone field of the original becomes an email field; layout, colours and animation are unchanged.
+  Top-right login popover (18 Oct 2026): one Sign in button to Shopify's hosted sign-in (email + one-time code), a
+  "Create an account" link, the Circle card. The email field and the Google button of the old site are gone
+  (Google is not connected on this store). return_to brings the customer back to /pages/my-account.
 {%- endcomment -%}
 {%- liquid
   assign rtl = false
@@ -15,25 +16,12 @@
     <div class="_modalLogin_111bg_93">
       <div class="_globalImg_1tf1q_38 _mobileLogo_111bg_80"><img fetchpriority="auto" alt="{{ shop.name | escape }}" src="{{ 'icons_light_logo-sun.svg' | asset_url }}"></div>
       <h4>{{ 'customer.login.title' | t }}</h4>
-      <div>
-        {%- comment -%} not a real <form>: a GET submit would drop the signed query string of routes.account_login_url and land on a 404.
-            The button is a plain link to Shopify's hosted login; the email is only remembered for the return. {%- endcomment -%}
-        <div data-login-form>
-          <label for="od-login-email">{{ 'customer.login.email' | t }}</label>
-          <div dir="ltr">
-            <div class="react-international-phone-input-container _inputContainer_111bg_248">
-              <input id="od-login-email" class="react-international-phone-input _input_111bg_248" type="email" name="email" autocomplete="email" placeholder="{{ 'customer.login.email_placeholder' | t }}" style="padding:0 12px;font-size:16px;">
-            </div>
-          </div>
-          <a href="{{ routes.account_login_url }}" class="_btn_lnddl_30 _modalLogin__button_111bg_191" data-login-go style="margin-top:16px;width:100%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-sizing:border-box;">{{ 'customer.login.continue' | t }}</a>
-        </div>
-      </div>
-      <div class="_login_seprator_111bg_335"><span>{{ 'customer.login.or' | t }}</span></div>
-      <div class="_login_with_social_111bg_296">
-        <a class="_login_with_social_button_111bg_296" href="{{ routes.account_login_url }}" style="text-decoration:none;">
-          <div class="_globalImg_1tf1q_38 _login_with_social_icon_111bg_325"><img fetchpriority="auto" alt="Google" src="{{ 'icons_google.svg' | asset_url }}"></div>
-          <p{% if rtl %} class="_pRtl_111bg_321"{% endif %}>{{ 'customer.login.google' | t }}</p>
-        </a>
+      <div class="od-login">
+        <p class="od-login__hello">{{ 'customer.login.welcome' | t }}</p>
+        <p class="od-login__text">{{ 'customer.login.intro' | t }}</p>
+        {%- comment -%} one link to Shopify's hosted sign-in (email + one-time code); return_to lands the customer on our My Account page {%- endcomment -%}
+        <a href="{{ routes.account_login_url }}{% if routes.account_login_url contains '?' %}&{% else %}?{% endif %}return_to=/pages/my-account" class="_btn_lnddl_30 _modalLogin__button_111bg_191 od-login__btn" data-login-go>{{ 'customer.login.submit' | t }}</a>
+        <p class="od-login__new">{{ 'customer.login.new_here' | t }} <a href="{{ routes.account_register_url }}" class="od-login__link">{{ 'customer.login.create' | t }}</a></p>
       </div>
       {%- render 'od-circle' -%}
     </div>

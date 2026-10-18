@@ -752,10 +752,7 @@
       apply();
     }
     // login popover → Shopify login (new customer accounts show an email code screen)
-    const lf = $('[data-login-form]');
-    const lfGo = () => { try { sessionStorage.setItem('od_login_email', ($('[name=email]', lf) || {}).value || ''); } catch (err) { /* noop */ } window.location.href = ($('[data-login-go]', lf) || {}).href || OD.loginUrl; };
-    on(lf, 'keydown', (e) => { if (e.key === 'Enter' && e.target.matches('[name=email]')) { e.preventDefault(); lfGo(); } });
-    on($('[data-login-go]', lf), 'click', (e) => { e.preventDefault(); lfGo(); });
+    /* login popover (18 Oct 2026): plain links to the hosted sign-in, nothing to wire */
     // quantity steppers outside cart (generic)
     on(document, 'click', (e) => {
       const s = e.target.closest('[data-qty-step]'); if (!s) return;
