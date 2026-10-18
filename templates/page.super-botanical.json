@@ -53,14 +53,46 @@
     "seasonal": {
       "type": "cafe-seasonal",
       "blocks": {
-        "s1": {
+        "sk_0119": {
           "type": "item",
           "settings": {
-            "name": "Dates bar",
+            "name": "Dates Pie",
+            "name_ar": "فطيرة التمر",
+            "desc": "Buttery pastry filled with soft Saudi dates.",
+            "desc_ar": "عجينة بالزبدة محشوة بالتمر السعودي الطري.",
+            "price": "20",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "signature",
+            "hide": false
+          }
+        },
+        "sk_0116": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-dates-tahini-croissants.jpg",
+            "name": "Dates & Tahini Croissants",
+            "name_ar": "كرواسون الطحينة والتمر",
+            "desc": "Flaky croissant layered with date paste and tahini.",
+            "desc_ar": "كرواسون هش بطبقات من معجون التمر والطحينة.",
+            "price": "21",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "signature",
+            "hide": false
+          }
+        },
+        "sk_0117": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-dates-bar.jpg",
+            "name": "Dates Bar",
             "name_ar": "بار التمر",
-            "desc": "A rich date and sesame layer, topped with a smooth white chocolate layer.",
-            "desc_ar": "",
-            "price": "32",
+            "desc": "Chewy date bar with oats and toasted nuts.",
+            "desc_ar": "بار تمر طري مع الشوفان والمكسرات المحمصة.",
+            "price": "19",
             "calories": "",
             "allergens": false,
             "allergen_note": "",
@@ -68,15 +100,15 @@
             "hide": false
           }
         },
-        "s2": {
+        "sk_0118": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/DSC03735.jpg",
-            "name": "Date cheesecake",
-            "name_ar": "تشيزكيك التمر",
-            "desc": "From the essence of the past to the present, a creamy date cheesecake topped with warm date sauce.",
-            "desc_ar": "",
-            "price": "36",
+            "image": "shopify://shop_images/sb-dates-cheesecake.jpg",
+            "name": "Dates Cheesecake",
+            "name_ar": "تشيز كيك التمر",
+            "desc": "Creamy cheesecake on a date and biscuit base.",
+            "desc_ar": "تشيز كيك كريمي على قاعدة التمر والبسكويت.",
+            "price": "22",
             "calories": "",
             "allergens": false,
             "allergen_note": "",
@@ -84,48 +116,35 @@
             "hide": false
           }
         },
-        "s3": {
+        "sk_0120": {
           "type": "item",
           "settings": {
-            "name": "Matcha rose",
-            "name_ar": "ماتشا الورد",
-            "desc": "Ceremonial matcha with Taif rose.",
-            "desc_ar": "",
-            "price": "30",
+            "image": "shopify://shop_images/sb-sb-jubniah.jpg",
+            "name": "SB Jubniah",
+            "name_ar": "جبنية سوبر بوتانيكال",
+            "desc": "Our signature warm cheese dessert.",
+            "desc_ar": "حلى الجبن الدافئ المميز لدينا.",
+            "price": "25",
             "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "none",
-            "hide": false
-          }
-        },
-        "s4": {
-          "type": "item",
-          "settings": {
-            "name": "Rose milk shake",
-            "name_ar": "ميلك شيك الورد",
-            "desc": "Blended Taif rose, vanilla, milk.",
-            "desc_ar": "",
-            "price": "28",
-            "calories": "",
-            "allergens": false,
-            "allergen_note": "",
-            "tag": "none",
+            "tag": "signature",
             "hide": false
           }
         }
       },
       "block_order": [
-        "s1",
-        "s2",
-        "s3",
-        "s4"
+        "sk_0119",
+        "sk_0116",
+        "sk_0117",
+        "sk_0118",
+        "sk_0120"
       ],
       "settings": {
-        "tab_label": "Seasonal",
+        "tab_label": "Dates",
         "eyebrow": "Seasonal",
         "heading": "Dates menu",
-        "text": "",
+        "text": "<p>Seasonal selection, changes weekly</p>",
         "image": "shopify://shop_images/SB-Patterns-_2.jpg",
         "bg": "#182c29",
         "overlay_color": "#182c29",
@@ -140,81 +159,273 @@
         "card_bg": "#f5efe3",
         "card_text": "#182c29",
         "pad_top": 56,
-        "pad_bottom": 56
+        "pad_bottom": 56,
+        "heading_ar": "قائمة التمور",
+        "tab_label_ar": "قائمة التمور",
+        "eyebrow_ar": "موسمي",
+        "text_ar": "<p>تشكيلة موسمية تتغير أسبوعياً</p>"
       }
     },
-    "sandwiches": {
+    "menu_hot": {
       "type": "cafe-menu",
       "blocks": {
-        "i1": {
+        "sk_0010": {
           "type": "item",
           "settings": {
-            "name": "Turkey & cheese ciabatta",
-            "name_ar": "شاباتا الرومي والجبن",
-            "desc": "Toasted ciabatta with garlic butter, turkey ham, Emmental, arugula, tomato and BBQ chilli mayo.",
-            "desc_ar": "",
-            "price": "48",
-            "calories": "880",
+            "image": "shopify://shop_images/sb-botanical-latte.jpg",
+            "name": "Botanical Latte",
+            "name_ar": "لاتيه بوتانيكال",
+            "desc": "Our signature latte, infused with fresh basil.",
+            "desc_ar": "لاتيه بوتانيكال المميز، منقوع بأوراق الريحان الطازجة.",
+            "price": "23",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "signature",
+            "hide": false
+          }
+        },
+        "sk_0005": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-americano.jpg",
+            "name": "Americano",
+            "name_ar": "أمريكانو",
+            "desc": "Espresso lengthened with hot water, clean and smooth.",
+            "desc_ar": "إسبريسو مخفف بالماء الساخن، نقي وناعم.",
+            "price": "14",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "black",
+            "hide": false
+          }
+        },
+        "sk_0115": {
+          "type": "item",
+          "settings": {
+            "name": "Cafe Brevé",
+            "name_ar": "كافيه بريفيه",
+            "desc": "Espresso with steamed half and half, rich and velvety.",
+            "desc_ar": "إسبريسو مع كريمة الحليب المبخرة، غني ومخملي.",
+            "price": "17",
+            "calories": "",
             "allergens": false,
             "allergen_note": "",
             "tag": "none",
             "hide": false
           }
         },
-        "i2": {
+        "sk_0008": {
           "type": "item",
           "settings": {
-            "name": "Halloumi sandwich",
-            "name_ar": "ساندويتش جبنة الحلوم",
-            "desc": "Warm oregano ciabatta with grilled halloumi, labneh, baby arugula, sundried tomatoes and za'atar.",
-            "desc_ar": "",
-            "price": "48",
-            "calories": "668",
-            "allergens": true,
-            "allergen_note": "",
-            "tag": "none",
-            "hide": false
-          }
-        },
-        "i3": {
-          "type": "item",
-          "settings": {
-            "name": "Parmesan fries",
-            "name_ar": "بطاطا بارميزان",
-            "desc": "Golden crispy fries with grated Parmesan, rosemary and sea salt.",
-            "desc_ar": "",
-            "price": "38",
-            "calories": "1050",
+            "name": "Cappuccino",
+            "name_ar": "كابتشينو",
+            "desc": "Espresso, steamed milk and a thick cap of foam.",
+            "desc_ar": "إسبريسو وحليب مبخر مع طبقة سميكة من الرغوة.",
+            "price": "18",
+            "calories": "",
             "allergens": false,
             "allergen_note": "",
             "tag": "none",
             "hide": false
           }
         },
-        "i4": {
+        "sk_0087": {
           "type": "item",
           "settings": {
-            "name": "Chicken katsu sando",
-            "name_ar": "ساندو كاتسو الدجاج",
-            "desc": "Crispy breaded chicken with coleslaw, pickle relish and sweet chilli mayo on toasted milk bread.",
-            "desc_ar": "",
-            "price": "48",
-            "calories": "920",
-            "allergens": true,
+            "image": "shopify://shop_images/sb-cardamom-raf.jpg",
+            "name": "Cardamom Raf",
+            "name_ar": "راف بالهيل",
+            "desc": "Creamy raf coffee scented with fragrant cardamom.",
+            "desc_ar": "قهوة راف كريمية بنكهة الهيل العطري.",
+            "price": "23",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "signature",
+            "hide": false
+          }
+        },
+        "sk_0006": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-cortado.jpg",
+            "name": "Cortado",
+            "name_ar": "كورتادو",
+            "desc": "Equal parts espresso and lightly textured warm milk.",
+            "desc_ar": "إسبريسو وحليب دافئ بكميات متساوية.",
+            "price": "16",
+            "calories": "",
+            "allergens": false,
             "allergen_note": "",
             "tag": "none",
             "hide": false
+          }
+        },
+        "sk_0004": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-double-espresso.jpg",
+            "name": "Double Espresso",
+            "name_ar": "إسبريسو دوبل",
+            "desc": "A double shot, richer body and bolder flavour.",
+            "desc_ar": "جرعة مزدوجة بقوام أغنى ونكهة أقوى.",
+            "price": "22",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "black",
+            "hide": true
+          }
+        },
+        "sk_0003": {
+          "type": "item",
+          "settings": {
+            "name": "Espresso",
+            "name_ar": "إسبريسو",
+            "desc": "Concentrated and intense, with a golden crema.",
+            "desc_ar": "قهوة مركزة وغنية بطبقة كريما ذهبية.",
+            "price": "14",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "black",
+            "hide": false
+          }
+        },
+        "sk_0007": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-flat-white.jpg",
+            "name": "Flat White",
+            "name_ar": "فلات وايت",
+            "desc": "Espresso under a thin, glossy layer of micro foam.",
+            "desc_ar": "إسبريسو مع طبقة رقيقة لامعة من الرغوة الناعمة.",
+            "price": "18",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0067": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-hot-chocolate.jpg",
+            "name": "Hot Chocolate",
+            "name_ar": "شوكولاتة ساخنة",
+            "desc": "Velvety hot chocolate, whipped cream, a pinch of sea salt.",
+            "desc_ar": "شوكولاتة ساخنة مخملية مع كريمة ورشة ملح بحري.",
+            "price": "25",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0097": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-hot-v-60.jpg",
+            "name": "Hot V-60",
+            "name_ar": "قهوة مقطرة ساخنة",
+            "desc": "Ethiopian V60, tropical fruit and berry notes.",
+            "desc_ar": "في ٦٠ إثيوبية بنكهات الفواكه الاستوائية والتوت.",
+            "price": "26",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "black",
+            "hide": false
+          }
+        },
+        "sk_0009": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-latte.jpg",
+            "name": "Latte",
+            "name_ar": "لاتيه",
+            "desc": "Espresso with plenty of silky steamed milk.",
+            "desc_ar": "إسبريسو مع كمية وافرة من الحليب المبخر الناعم.",
+            "price": "21",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0019": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-matcha-latte.jpg",
+            "name": "Matcha Latte",
+            "name_ar": "ماتشا لاتيه",
+            "desc": "Premium matcha whisked into steamed milk.",
+            "desc_ar": "ماتشا فاخرة مخفوقة مع الحليب المبخر.",
+            "price": "25",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0069": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-raf.jpg",
+            "name": "Raf",
+            "name_ar": "راف",
+            "desc": "Espresso, milk and cream with vanilla sugar.",
+            "desc_ar": "إسبريسو وحليب وقشدة مع سكر الفانيليا.",
+            "price": "21",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0011": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-white-mocha.jpg",
+            "name": "White Mocha",
+            "name_ar": "وايت موكا",
+            "desc": "Espresso and steamed milk with white chocolate.",
+            "desc_ar": "إسبريسو وحليب مبخر مع الشوكولاتة البيضاء.",
+            "price": "25",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
           }
         }
       },
       "block_order": [
-        "i1",
-        "i2",
-        "i3",
-        "i4"
+        "sk_0010",
+        "sk_0005",
+        "sk_0115",
+        "sk_0008",
+        "sk_0087",
+        "sk_0006",
+        "sk_0004",
+        "sk_0003",
+        "sk_0007",
+        "sk_0067",
+        "sk_0097",
+        "sk_0009",
+        "sk_0019",
+        "sk_0069",
+        "sk_0011"
       ],
       "settings": {
-        "heading": "Sandwiches",
+        "heading": "Hot Beverages",
         "tab_label": "",
         "text": "",
         "columns": "2",
@@ -228,36 +439,295 @@
         "accent": "#f0d58e",
         "line_color": "#d9d2c3",
         "pad_top": 40,
-        "pad_bottom": 40
+        "pad_bottom": 40,
+        "heading_ar": "المشروبات الساخنة",
+        "tab_label_ar": "",
+        "text_ar": ""
       }
     },
-    "hotteas": {
+    "menu_cold": {
       "type": "cafe-menu",
       "blocks": {
-        "t1": {
+        "sk_0023": {
           "type": "item",
           "settings": {
-            "name": "Matcha rose",
-            "name_ar": "ماتشا الورد",
-            "desc": "Ceremonial matcha, Taif rose.",
-            "desc_ar": "",
-            "price": "30",
-            "calories": "120",
+            "image": "shopify://shop_images/sb-iced-botanical-latte.jpg",
+            "name": "Iced Botanical Latte",
+            "name_ar": "آيس لاتيه بوتانيكال",
+            "desc": "Espresso and condensed milk infused with fresh basil.",
+            "desc_ar": "إسبريسو وحليب مكثف منقوع بأوراق الريحان الطازجة.",
+            "price": "23",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "signature",
+            "hide": false
+          }
+        },
+        "sk_0081": {
+          "type": "item",
+          "settings": {
+            "name": "Orangccino",
+            "name_ar": "اورانجينو",
+            "desc": "Layered fresh orange juice, milk, cream and espresso.",
+            "desc_ar": "طبقات من عصير البرتقال الطازج والحليب والقشدة والإسبريسو.",
+            "price": "25",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "signature",
+            "hide": false
+          }
+        },
+        "sk_0028": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-super-colada.jpg",
+            "name": "Super Colada",
+            "name_ar": "سوبر كولادا",
+            "desc": "Nitro green tea with tropical fruit, creamy and crisp.",
+            "desc_ar": "شاي أخضر بالنيتروجين مع الفواكه الاستوائية، كريمي ومنعش.",
+            "price": "25",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "signature",
+            "hide": false
+          }
+        },
+        "sk_0046": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-evian-sparking-water.jpg",
+            "name": "Evian Sparking Water",
+            "name_ar": "مياه إيفيان الغازية",
+            "desc": "Chilled sparkling mineral water.",
+            "desc_ar": "مياه معدنية فوارة مبردة.",
+            "price": "13",
+            "calories": "",
             "allergens": false,
             "allergen_note": "",
             "tag": "none",
             "hide": false
           }
         },
-        "t2": {
+        "sk_0045": {
           "type": "item",
           "settings": {
-            "name": "Iced cardamom raf",
-            "name_ar": "راف الهيل البارد",
-            "desc": "Espresso, cream, cardamom.",
-            "desc_ar": "",
-            "price": "28",
-            "calories": "210",
+            "image": "shopify://shop_images/sb-evian-still-water.jpg",
+            "name": "Evian Still Water",
+            "name_ar": "مياه إيفيان",
+            "desc": "Chilled still mineral water.",
+            "desc_ar": "مياه معدنية مبردة.",
+            "price": "12",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0020": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-freddo.jpg",
+            "name": "Freddo",
+            "name_ar": "فريدو",
+            "desc": "Frothy iced black coffee, shaken and served over ice.",
+            "desc_ar": "قهوة سوداء مثلجة مخفوقة ومرغية تقدم مع الثلج.",
+            "price": "14",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "black",
+            "hide": false
+          }
+        },
+        "sk_0022": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-iced-cappuccino.jpg",
+            "name": "Iced Cappuccino",
+            "name_ar": "آيس كابتشينو",
+            "desc": "Espresso, milk and a frothy layer of foam over ice.",
+            "desc_ar": "إسبريسو وحليب مع طبقة رغوة على الثلج.",
+            "price": "18",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0086": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-iced-cardamom-raf.jpg",
+            "name": "Iced Cardamom Raf",
+            "name_ar": "راف مثلج بالهيل",
+            "desc": "Iced raf coffee scented with fragrant cardamom.",
+            "desc_ar": "قهوة راف مثلجة بنكهة الهيل العطري.",
+            "price": "23",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0088": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-iced-coconut-raf.jpg",
+            "name": "Iced Coconut Raf",
+            "name_ar": "راف مثلج بجوز الهند",
+            "desc": "Iced raf coffee with a tropical coconut finish.",
+            "desc_ar": "قهوة راف مثلجة بلمسة جوز الهند الاستوائية.",
+            "price": "23",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0021": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-iced-latte.jpg",
+            "name": "Iced Latte",
+            "name_ar": "آيس لاتيه",
+            "desc": "Espresso and chilled milk over ice.",
+            "desc_ar": "إسبريسو وحليب بارد مع الثلج.",
+            "price": "21",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0025": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-iced-matcha-latte.jpg",
+            "name": "Iced Matcha Latte",
+            "name_ar": "آيس ماتشا لاتيه",
+            "desc": "Whisked matcha poured over cold milk and ice.",
+            "desc_ar": "ماتشا مخفوقة تسكب على حليب بارد وثلج.",
+            "price": "25",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0070": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-iced-raf.jpg",
+            "name": "Iced Raf",
+            "name_ar": "راف مثلج",
+            "desc": "Espresso, milk and cream, lightly sweetened over ice.",
+            "desc_ar": "إسبريسو وحليب وقشدة بحلاوة خفيفة مع الثلج.",
+            "price": "21",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0096": {
+          "type": "item",
+          "settings": {
+            "name": "Iced V-60",
+            "name_ar": "قهوة مقطرة باردة",
+            "desc": "Ethiopian V60 over ice, light, clean and vibrant.",
+            "desc_ar": "في ٦٠ إثيوبية على الثلج، خفيفة ونقية ونابضة.",
+            "price": "26",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "black",
+            "hide": false
+          }
+        },
+        "sk_0024": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-iced-white-mocha.jpg",
+            "name": "Iced White Mocha",
+            "name_ar": "آيس وايت موكا",
+            "desc": "Iced espresso and milk with white chocolate.",
+            "desc_ar": "إسبريسو مثلج وحليب مع الشوكولاتة البيضاء.",
+            "price": "25",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0026": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-khokhah.jpg",
+            "name": "Khokhah",
+            "name_ar": "خوخة",
+            "desc": "Nitro tea with delicate peach and ripe pear notes.",
+            "desc_ar": "شاي بالنيتروجين بنفحات الخوخ الرقيق والإجاص الناضج.",
+            "price": "25",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0099": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-matcha-rose.jpg",
+            "name": "Matcha Rose",
+            "name_ar": "ماتشا ورد",
+            "desc": "Iced matcha with rose and creamy vanilla ice cream.",
+            "desc_ar": "ماتشا مثلجة بالورد مع آيس كريم الفانيليا الكريمي.",
+            "price": "25",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0092": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-rose-milk-shake.jpg",
+            "name": "Rose Milk Shake",
+            "name_ar": "ميلك شيك الورد",
+            "desc": "Two scoops of ice cream blended with rose and coconut milk.",
+            "desc_ar": "مغرفتان من الآيس كريم مخفوقتان بالورد وحليب جوز الهند.",
+            "price": "25",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0027": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-toott.jpg",
+            "name": "Toott",
+            "name_ar": "توت",
+            "desc": "Nitro berry tea, velvety with a lightly sweet finish.",
+            "desc_ar": "شاي التوت بالنيتروجين، مخملي بنهاية حلوة خفيفة.",
+            "price": "25",
+            "calories": "",
             "allergens": false,
             "allergen_note": "",
             "tag": "none",
@@ -266,11 +736,27 @@
         }
       },
       "block_order": [
-        "t1",
-        "t2"
+        "sk_0023",
+        "sk_0081",
+        "sk_0028",
+        "sk_0046",
+        "sk_0045",
+        "sk_0020",
+        "sk_0022",
+        "sk_0086",
+        "sk_0088",
+        "sk_0021",
+        "sk_0025",
+        "sk_0070",
+        "sk_0096",
+        "sk_0024",
+        "sk_0026",
+        "sk_0099",
+        "sk_0092",
+        "sk_0027"
       ],
       "settings": {
-        "heading": "Hot teas",
+        "heading": "Cold Beverages",
         "tab_label": "",
         "text": "",
         "columns": "2",
@@ -284,7 +770,156 @@
         "accent": "#f0d58e",
         "line_color": "#d9d2c3",
         "pad_top": 40,
-        "pad_bottom": 40
+        "pad_bottom": 40,
+        "heading_ar": "المشروبات الباردة",
+        "tab_label_ar": "",
+        "text_ar": ""
+      }
+    },
+    "menu_tea": {
+      "type": "cafe-menu",
+      "blocks": {
+        "sk_0018": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-berry-tea.jpg",
+            "name": "Berry Tea",
+            "name_ar": "شاي التوت",
+            "desc": "Warming tea with vibrant mixed berry notes.",
+            "desc_ar": "شاي دافئ بنكهات التوت المتنوعة الزاهية.",
+            "price": "15",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0015": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-majestic-earl-grey.jpg",
+            "name": "Majestic Earl Grey",
+            "name_ar": "شاي إيرل جراي",
+            "desc": "Black tea infused with bright bergamot and citrus.",
+            "desc_ar": "شاي أسود منقوع بالبرغموت الزاهي والحمضيات.",
+            "price": "15",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0012": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-organic-chamomile.jpg",
+            "name": "Organic Chamomile",
+            "name_ar": "شاي البابونج العضوي",
+            "desc": "Soothing organic chamomile, calming and floral.",
+            "desc_ar": "بابونج عضوي مهدئ بنكهة زهرية لطيفة.",
+            "price": "15",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0013": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-organic-english-breakfast.jpg",
+            "name": "Organic English Breakfast",
+            "name_ar": "شاي الفطور الإنجليزي العضوي",
+            "desc": "Full bodied organic black tea, malty and brisk.",
+            "desc_ar": "شاي أسود عضوي كامل القوام بنكهة الشعير المنعشة.",
+            "price": "15",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0014": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-organic-ginger-breeze.jpg",
+            "name": "Organic Ginger Breeze",
+            "name_ar": "شاي الزنجبيل العضوي",
+            "desc": "Organic ginger root, naturally spicy and zesty.",
+            "desc_ar": "جذر الزنجبيل العضوي، حار ومنعش بطبيعته.",
+            "price": "15",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0016": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-spring-mao-feng.jpg",
+            "name": "Spring Mao Feng",
+            "name_ar": "شاي ماو فينغ الربيعي",
+            "desc": "Early spring green tea, smooth with gentle sweetness.",
+            "desc_ar": "شاي أخضر من أوائل الربيع، ناعم بحلاوة لطيفة.",
+            "price": "15",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0017": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-white-rose.jpg",
+            "name": "White Rose",
+            "name_ar": "شاي الورد الأبيض",
+            "desc": "Delicate white tea with soft rose notes.",
+            "desc_ar": "شاي أبيض رقيق بنفحات وردية ناعمة.",
+            "price": "15",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        }
+      },
+      "block_order": [
+        "sk_0018",
+        "sk_0015",
+        "sk_0012",
+        "sk_0013",
+        "sk_0014",
+        "sk_0016",
+        "sk_0017"
+      ],
+      "settings": {
+        "heading": "Tea",
+        "tab_label": "",
+        "text": "<p>Loose leaf, brewed to order</p>",
+        "columns": "2",
+        "lightbox": true,
+        "photo": "84",
+        "photo_shape": "1-1",
+        "bg": "",
+        "overlay_color": "#182c29",
+        "overlay_opacity": 60,
+        "text_color": "#182c29",
+        "accent": "#f0d58e",
+        "line_color": "#d9d2c3",
+        "pad_top": 40,
+        "pad_bottom": 40,
+        "heading_ar": "الشاي",
+        "tab_label_ar": "",
+        "text_ar": "<p>أوراق شاي تحضر عند الطلب</p>"
       }
     },
     "banner": {
@@ -307,64 +942,233 @@
         "pad_bottom": 24
       }
     },
-    "nitro": {
+    "menu_sandwiches": {
       "type": "cafe-menu",
       "blocks": {
-        "n1": {
+        "sk_0075": {
           "type": "item",
           "settings": {
-            "name": "Toott",
-            "name_ar": "توت",
-            "desc": "Nitro berry tea on tap.",
-            "desc_ar": "",
+            "image": "shopify://shop_images/sb-chicken-katsu-sando-with-fries.jpg",
+            "name": "Chicken Katsu Sando with Fries",
+            "name_ar": "ساندويتش كاتسو الدجاج",
+            "desc": "Crispy breaded chicken, coleslaw and sweet chilli mayo.",
+            "desc_ar": "دجاج مقرمش مع الكرنب المخلل ومايونيز الفلفل الحلو.",
+            "price": "35",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "best",
+            "hide": false
+          }
+        },
+        "sk_0093": {
+          "type": "item",
+          "settings": {
+            "name": "Parmesan Fries",
+            "name_ar": "بطاطس بالبارميزان",
+            "desc": "Crispy fries with parmesan, rosemary and sea salt.",
+            "desc_ar": "بطاطس مقرمشة مع البارميزان وإكليل الجبل وملح البحر.",
             "price": "26",
-            "calories": "40",
+            "calories": "",
             "allergens": false,
             "allergen_note": "",
             "tag": "none",
             "hide": false
           }
         },
-        "n2": {
+        "sk_0077": {
           "type": "item",
           "settings": {
-            "name": "Iced V-60",
-            "name_ar": "قهوة مقطرة باردة",
-            "desc": "Single origin, slow poured.",
-            "desc_ar": "",
+            "image": "shopify://shop_images/sb-botanical-ciabatta-with-potato-salad.jpg",
+            "name": "Botanical Ciabatta with Potato Salad",
+            "name_ar": "شياباتا بوتانيكال",
+            "desc": "Roasted eggplant, mushrooms, caramelised onion and pesto.",
+            "desc_ar": "باذنجان مشوي وفطر وبصل مكرمل وبيستو الطماطم المجففة.",
+            "price": "32",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "vegetarian",
+            "hide": false
+          }
+        },
+        "sk_0114": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-chicken-wrap-with-fries.jpg",
+            "name": "Chicken Wrap with Fries",
+            "name_ar": "راب الدجاج",
+            "desc": "Tempura chicken, lettuce and ranch in a soft tortilla.",
+            "desc_ar": "دجاج تمبورا مع الخس وصلصة الرانش في خبز التورتيلا.",
+            "price": "34",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0080": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-egg-cheese-sando-with-potato-salad.jpg",
+            "name": "Egg & Cheese Sando with Potato Salad",
+            "name_ar": "ساندويتش البيض والجبن",
+            "desc": "Eggs, mozzarella and cheddar with smoky BBQ chilli mayo.",
+            "desc_ar": "بيض وموزاريلا وشيدر مع مايونيز الباربكيو الحار.",
+            "price": "29",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "vegetarian",
+            "hide": false
+          }
+        },
+        "sk_0076": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-egg-sando.jpg",
+            "name": "Egg Sando",
+            "name_ar": "ساندويتش البيض",
+            "desc": "Fluffy egg and cream cheese on Japanese milk bread.",
+            "desc_ar": "بيض هش وجبنة كريمية على خبز الحليب الياباني.",
+            "price": "42",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "vegetarian",
+            "hide": true
+          }
+        },
+        "sk_0079": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-grilled-chicken-sando-with-fries.jpg",
+            "name": "Grilled Chicken Sando with Fries",
+            "name_ar": "ساندويتش دجاج مشوي",
+            "desc": "Grilled chicken in oregano ciabatta with smoky habanero.",
+            "desc_ar": "دجاج مشوي في خبز شياباتا بالأوريغانو مع صلصة الهابانيرو.",
+            "price": "32",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0094": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-halloumi-sandwich-with-potato-salad.jpg",
+            "name": "Halloumi Sandwich with Potato Salad",
+            "name_ar": "ساندويتش جبنة الحلوم",
+            "desc": "Grilled halloumi, labneh, arugula and sundried tomato.",
+            "desc_ar": "حلوم مشوي مع اللبنة والجرجير والطماطم المجففة.",
             "price": "24",
-            "calories": "5",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "vegetarian",
+            "hide": false
+          }
+        },
+        "sk_0125": {
+          "type": "item",
+          "settings": {
+            "name": "Premier League Combo",
+            "name_ar": "كومبو الدوري الإنجليزي",
+            "desc": "Match day combo. Ask our team for today's pairing.",
+            "desc_ar": "كومبو يوم المباراة. اسأل فريقنا عن اختيار اليوم.",
+            "price": "59",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "signature",
+            "hide": false
+          }
+        },
+        "sk_0078": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-quattro-formaggi-sando-with-potato-salad.jpg",
+            "name": "Quattro Formaggi Sando with Potato Salad",
+            "name_ar": "ساندويتش الأجبان الأربعة",
+            "desc": "Four cheeses melted between crisp toasted milk bread.",
+            "desc_ar": "أربعة أنواع جبن ذائبة بين شرائح خبز الحليب المحمص.",
+            "price": "27",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "vegetarian",
+            "hide": false
+          }
+        },
+        "sk_0029": {
+          "type": "item",
+          "settings": {
+            "name": "Soup",
+            "name_ar": "شوربة",
+            "desc": "Ask our team for today's soup.",
+            "desc_ar": "اسأل فريقنا عن شوربة اليوم.",
+            "price": "45",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0074": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-turkey-cheese-ciabatta-with-fries.jpg",
+            "name": "Turkey & Cheese Ciabatta with Fries",
+            "name_ar": "شياباتا الرومي والجبن",
+            "desc": "Turkey ham, Emmental, arugula and BBQ chilli mayo.",
+            "desc_ar": "لحم رومي وجبن إيمنتال وجرجير ومايونيز الباربكيو الحار.",
+            "price": "39",
+            "calories": "",
             "allergens": false,
             "allergen_note": "",
             "tag": "none",
             "hide": false
           }
         },
-        "n3": {
+        "sk_0031": {
           "type": "item",
           "settings": {
-            "name": "Iced botanical latte",
-            "name_ar": "بوتانيكال لاتيه بارد",
-            "desc": "Espresso, milk, botanical syrup.",
-            "desc_ar": "",
-            "price": "26",
-            "calories": "180",
+            "name": "edamme",
+            "name_ar": "إدامامي",
+            "desc": "Steamed edamame with sea salt.",
+            "desc_ar": "إدامامي مطهو على البخار مع ملح البحر.",
+            "price": "40",
+            "calories": "",
             "allergens": false,
             "allergen_note": "",
-            "tag": "none",
-            "hide": false
+            "tag": "vegan",
+            "hide": true
           }
         }
       },
       "block_order": [
-        "n1",
-        "n2",
-        "n3"
+        "sk_0075",
+        "sk_0093",
+        "sk_0077",
+        "sk_0114",
+        "sk_0080",
+        "sk_0076",
+        "sk_0079",
+        "sk_0094",
+        "sk_0125",
+        "sk_0078",
+        "sk_0029",
+        "sk_0074",
+        "sk_0031"
       ],
       "settings": {
-        "heading": "Nitro drinks",
+        "heading": "Sandwiches",
         "tab_label": "",
-        "text": "",
+        "text": "<p>Served with fries or potato salad</p>",
         "columns": "2",
         "lightbox": true,
         "photo": "84",
@@ -376,30 +1180,582 @@
         "accent": "#f0d58e",
         "line_color": "#d9d2c3",
         "pad_top": 40,
-        "pad_bottom": 40
+        "pad_bottom": 40,
+        "heading_ar": "السندويشات",
+        "tab_label_ar": "",
+        "text_ar": "<p>تقدم مع البطاطس المقلية أو سلطة البطاطس</p>"
       }
     },
-    "desserts": {
+    "menu_bakery": {
       "type": "cafe-menu",
       "blocks": {
-        "d1": {
+        "sk_0043": {
           "type": "item",
           "settings": {
-            "name": "Raspberry cake",
-            "name_ar": "كعكة التوت",
-            "desc": "Layered vanilla sponge, raspberry jam, vanilla cream.",
-            "desc_ar": "",
-            "price": "32",
-            "calories": "410",
-            "allergens": true,
+            "image": "shopify://shop_images/sb-almond-croissant.jpg",
+            "name": "Almond Croissant",
+            "name_ar": "كرواسون باللوز",
+            "desc": "Buttery croissant filled and topped with almond cream.",
+            "desc_ar": "كرواسون بالزبدة محشو ومغطى بكريمة اللوز.",
+            "price": "20",
+            "calories": "",
+            "allergens": false,
             "allergen_note": "",
             "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0033": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-banana-nuts-muffin.jpg",
+            "name": "Banana Nuts Muffin",
+            "name_ar": "مافن الموز والجوز",
+            "desc": "Moist banana muffin with a creamy pastry centre.",
+            "desc_ar": "مافن موز طري بحشوة كريمة الباتيسيري.",
+            "price": "18",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0037": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-butter-pecan-cookies.jpg",
+            "name": "Butter Pecan Cookies",
+            "name_ar": "كوكيز البقان بالزبدة",
+            "desc": "Buttery bite sized cookies studded with crunchy pecans.",
+            "desc_ar": "كوكيز صغيرة بالزبدة مرصعة بالبقان المقرمش.",
+            "price": "15",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0041": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-cheese-croissant.jpg",
+            "name": "Cheese Croissant",
+            "name_ar": "كرواسون بالجبن",
+            "desc": "Flaky croissant filled with creamy, tangy goat cheese.",
+            "desc_ar": "كرواسون هش محشو بجبن الماعز الكريمي.",
+            "price": "18",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "vegetarian",
+            "hide": false
+          }
+        },
+        "sk_0095": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-classic-cinnamon-roll.jpg",
+            "name": "Classic Cinnamon Roll",
+            "name_ar": "سينامون رول كلاسيك",
+            "desc": "Cinnamon roll with cream cheese glaze and lemon zest.",
+            "desc_ar": "سينامون رول مع صوص الجبن الكريمي وقشر الليمون.",
+            "price": "30",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0083": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-honey-butter-toast.jpg",
+            "name": "Honey Butter Toast",
+            "name_ar": "توست بالعسل والزبدة",
+            "desc": "Crunchy toast with honey butter and fresh orange zest.",
+            "desc_ar": "توست مقرمش بزبدة العسل وقشر البرتقال الطازج.",
+            "price": "18",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "vegetarian",
+            "hide": false
+          }
+        },
+        "sk_0106": {
+          "type": "item",
+          "settings": {
+            "name": "Mini Almond Croissant",
+            "name_ar": "ميني كرواسون باللوز",
+            "desc": "Bite sized almond croissant.",
+            "desc_ar": "كرواسون لوز بحجم صغير.",
+            "price": "",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0108": {
+          "type": "item",
+          "settings": {
+            "name": "Mini Cheese Croissant",
+            "name_ar": "ميني كرواسون بالجبن",
+            "desc": "Bite sized cheese croissant.",
+            "desc_ar": "كرواسون جبن بحجم صغير.",
+            "price": "",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0107": {
+          "type": "item",
+          "settings": {
+            "name": "Mini Chocolate Croissant",
+            "name_ar": "ميني كرواسون بالشوكولاتة",
+            "desc": "Bite sized chocolate croissant.",
+            "desc_ar": "كرواسون شوكولاتة بحجم صغير.",
+            "price": "",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0112": {
+          "type": "item",
+          "settings": {
+            "name": "Mini Plain Croissant",
+            "name_ar": "ميني كرواسون سادة",
+            "desc": "Bite sized plain croissant.",
+            "desc_ar": "كرواسون سادة بحجم صغير.",
+            "price": "",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0109": {
+          "type": "item",
+          "settings": {
+            "name": "Mini Zattar Croissant",
+            "name_ar": "ميني كرواسون بالزعتر",
+            "desc": "Bite sized za'atar croissant.",
+            "desc_ar": "كرواسون زعتر بحجم صغير.",
+            "price": "",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0034": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-new-york-cookies.jpg",
+            "name": "New York Cookies",
+            "name_ar": "كوكيز نيويورك",
+            "desc": "Crisp edges, soft centre, rich chocolate chips throughout.",
+            "desc_ar": "حواف مقرمشة وقلب طري مع رقائق الشوكولاتة الغنية.",
+            "price": "18",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "best",
+            "hide": false
+          }
+        },
+        "sk_0044": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-pain-au-chocolat.jpg",
+            "name": "Pain AU Chocolat",
+            "name_ar": "بان أو شوكولا",
+            "desc": "Flaky pastry wrapped around dark chocolate batons.",
+            "desc_ar": "عجينة هشة ملفوفة حول أصابع الشوكولاتة الداكنة.",
+            "price": "18",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0040": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-plain-croissant.jpg",
+            "name": "Plain Croissant",
+            "name_ar": "كرواسون سادة",
+            "desc": "Light, flaky layers of buttery golden pastry.",
+            "desc_ar": "طبقات هشة وخفيفة من العجين الذهبي بالزبدة.",
+            "price": "16",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0038": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-sb-coffee-cake.jpg",
+            "name": "SB Coffee Cake",
+            "name_ar": "مافن القهوة",
+            "desc": "Soft coffee muffin with a delicate crumb topping.",
+            "desc_ar": "مافن قهوة طري مع طبقة فتات رقيقة.",
+            "price": "18",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0089": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-walnut-cinnamon-roll.jpg",
+            "name": "Walnut Cinnamon Roll",
+            "name_ar": "سينامون رول بالجوز",
+            "desc": "Cinnamon roll swirled with crunchy walnuts and buttery glaze.",
+            "desc_ar": "سينامون رول بالجوز المقرمش وصوص الزبدة.",
+            "price": "28",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0042": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-zaatar-croissant.jpg",
+            "name": "Zaatar Croissant",
+            "name_ar": "كرواسون بالزعتر",
+            "desc": "Golden croissant with aromatic za'atar, savoury and herby.",
+            "desc_ar": "كرواسون ذهبي بالزعتر العطري، مالح وعشبي.",
+            "price": "18",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "vegetarian",
             "hide": false
           }
         }
       },
       "block_order": [
-        "d1"
+        "sk_0043",
+        "sk_0033",
+        "sk_0037",
+        "sk_0041",
+        "sk_0095",
+        "sk_0083",
+        "sk_0106",
+        "sk_0108",
+        "sk_0107",
+        "sk_0112",
+        "sk_0109",
+        "sk_0034",
+        "sk_0044",
+        "sk_0040",
+        "sk_0038",
+        "sk_0089",
+        "sk_0042"
+      ],
+      "settings": {
+        "heading": "Bakery",
+        "tab_label": "",
+        "text": "<p>Baked fresh every morning</p>",
+        "columns": "2",
+        "lightbox": true,
+        "photo": "84",
+        "photo_shape": "1-1",
+        "bg": "",
+        "overlay_color": "#182c29",
+        "overlay_opacity": 60,
+        "text_color": "#182c29",
+        "accent": "#f0d58e",
+        "line_color": "#d9d2c3",
+        "pad_top": 40,
+        "pad_bottom": 40,
+        "heading_ar": "المخبوزات",
+        "tab_label_ar": "",
+        "text_ar": "<p>تخبز طازجة كل صباح</p>"
+      }
+    },
+    "menu_desserts": {
+      "type": "cafe-menu",
+      "blocks": {
+        "sk_0002": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-brownie.jpg",
+            "name": "Brownie",
+            "name_ar": "براوني",
+            "desc": "Fudgy centre, crisp top, deep chocolate flavour.",
+            "desc_ar": "قلب طري وسطح مقرمش بنكهة شوكولاتة عميقة.",
+            "price": "20",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0035": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-classic-cookies.jpg",
+            "name": "Classic Cookies",
+            "name_ar": "كوكيز كلاسيك",
+            "desc": "Thin chocolate cookie with a light, crunchy bite.",
+            "desc_ar": "كوكيز شوكولاتة رفيعة بقضمة خفيفة ومقرمشة.",
+            "price": "15",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0036": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-white-cookies.jpg",
+            "name": "White Cookies",
+            "name_ar": "كوكيز الشوكولاتة البيضاء",
+            "desc": "Buttery cookie made with premium white chocolate.",
+            "desc_ar": "كوكيز بالزبدة مصنوعة من الشوكولاتة البيضاء الفاخرة.",
+            "price": "15",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0082": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-chocolamo.jpg",
+            "name": "ChocoLamo",
+            "name_ar": "شوكولامو",
+            "desc": "Velvety chocolate layers finished with a chocolate drizzle.",
+            "desc_ar": "طبقات شوكولاتة مخملية مع رشة شوكولاتة.",
+            "price": "45",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0104": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-chocolate-hazelnut-tart.jpg",
+            "name": "Chocolate Hazelnut Tart",
+            "name_ar": "تارت الشوكولاتة والبندق",
+            "desc": "Hazelnut praline and chocolate ganache on a butter shell.",
+            "desc_ar": "برالين البندق وغاناش الشوكولاتة على قاعدة الزبدة.",
+            "price": "34",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0102": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-chocolate-matcha-cake.jpg",
+            "name": "Chocolate Matcha Cake",
+            "name_ar": "كيكة الماتشا والشوكولاتة البيضاء",
+            "desc": "Matcha sponge layered with white chocolate cream.",
+            "desc_ar": "كيكة ماتشا بطبقات كريمة الشوكولاتة البيضاء.",
+            "price": "42",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0101": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-coconut-mousse.jpg",
+            "name": "Coconut Mousse",
+            "name_ar": "موس جوز الهند",
+            "desc": "Light coconut mousse with a smooth, velvety texture.",
+            "desc_ar": "موس جوز الهند الخفيف بقوام ناعم ومخملي.",
+            "price": "38",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0103": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-lemon-orange-tart.jpg",
+            "name": "Lemon Orange Tart",
+            "name_ar": "تارت الليمون والبرتقال",
+            "desc": "Citrus cream tart with a bright, balanced finish.",
+            "desc_ar": "تارت كريمة الحمضيات بنهاية متوازنة ومنعشة.",
+            "price": "34",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0072": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-panna-cotta.jpg",
+            "name": "Panna Cotta",
+            "name_ar": "بانا كوتا",
+            "desc": "Silky Italian cream dessert, lightly sweetened.",
+            "desc_ar": "حلى الكريمة الإيطالي الناعم بحلاوة خفيفة.",
+            "price": "40",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0090": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-profiterole.jpg",
+            "name": "Profiterole",
+            "name_ar": "بروفيترول",
+            "desc": "Choux pastry filled with vanilla cream, chocolate sauce.",
+            "desc_ar": "عجينة الشو محشوة بكريمة الفانيليا مع صوص الشوكولاتة.",
+            "price": "18",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0071": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-raspberry-cake.jpg",
+            "name": "Raspberry Cake",
+            "name_ar": "كيكة التوت",
+            "desc": "Tender cake layered and topped with fresh raspberries.",
+            "desc_ar": "كيكة طرية بطبقات التوت الطازج.",
+            "price": "38",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": false
+          }
+        },
+        "sk_0100": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-raspberry-tart.jpg",
+            "name": "Raspberry Tart",
+            "name_ar": "تارت التوت",
+            "desc": "Buttery tart with smooth cream and fresh raspberries.",
+            "desc_ar": "تارت بالزبدة مع كريمة ناعمة وتوت طازج.",
+            "price": "45",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0091": {
+          "type": "item",
+          "settings": {
+            "name": "Rose Eclair",
+            "name_ar": "إكلير الورد",
+            "desc": "Choux pastry filled with delicate rose cream.",
+            "desc_ar": "عجينة الشو محشوة بكريمة الورد الرقيقة.",
+            "price": "18",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0039": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-sb-white-cake.jpg",
+            "name": "SB White Cake",
+            "name_ar": "كيكة سوبر بوتانيكال البيضاء",
+            "desc": "Light white chocolate cake, soft and delicate.",
+            "desc_ar": "كيكة الشوكولاتة البيضاء الخفيفة، طرية ورقيقة.",
+            "price": "32",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        },
+        "sk_0073": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/sb-tiramisu.jpg",
+            "name": "Tiramisu",
+            "name_ar": "تيراميسو",
+            "desc": "Espresso soaked ladyfingers, mascarpone and cocoa.",
+            "desc_ar": "أصابع منقوعة بالإسبريسو مع المسكربوني والكاكاو.",
+            "price": "45",
+            "calories": "",
+            "allergens": false,
+            "allergen_note": "",
+            "tag": "none",
+            "hide": true
+          }
+        }
+      },
+      "block_order": [
+        "sk_0002",
+        "sk_0035",
+        "sk_0036",
+        "sk_0082",
+        "sk_0104",
+        "sk_0102",
+        "sk_0101",
+        "sk_0103",
+        "sk_0072",
+        "sk_0090",
+        "sk_0071",
+        "sk_0100",
+        "sk_0091",
+        "sk_0039",
+        "sk_0073"
       ],
       "settings": {
         "heading": "Desserts",
@@ -416,7 +1772,10 @@
         "accent": "#f0d58e",
         "line_color": "#d9d2c3",
         "pad_top": 40,
-        "pad_bottom": 40
+        "pad_bottom": 40,
+        "heading_ar": "الحلويات",
+        "tab_label_ar": "",
+        "text_ar": ""
       }
     },
     "row": {
@@ -523,11 +1882,13 @@
     "intro",
     "tabs",
     "seasonal",
-    "sandwiches",
-    "hotteas",
+    "menu_hot",
+    "menu_cold",
+    "menu_tea",
     "banner",
-    "nitro",
-    "desserts",
+    "menu_sandwiches",
+    "menu_bakery",
+    "menu_desserts",
     "row",
     "reserve"
   ]

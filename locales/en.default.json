@@ -502,7 +502,11 @@
     "tags": {
       "new": "New",
       "signature": "Signature",
-      "seasonal": "Seasonal"
+      "seasonal": "Seasonal",
+      "best": "Best seller",
+      "vegetarian": "Vegetarian",
+      "vegan": "Vegan",
+      "black": "Black coffee"
     }
   },
   "reels": {

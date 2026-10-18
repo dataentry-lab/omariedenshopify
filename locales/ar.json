@@ -514,7 +514,11 @@
     "tags": {
       "new": "جديد",
       "signature": "توقيع",
-      "seasonal": "موسمي"
+      "seasonal": "موسمي",
+      "best": "الأكثر مبيعاً",
+      "vegetarian": "نباتي",
+      "vegan": "نباتي صرف",
+      "black": "قهوة سوداء"
     }
   },
   "reels": {
