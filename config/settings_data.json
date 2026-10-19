@@ -19,6 +19,9 @@
     "style_code_metafield": "custom.style_code",
     "material_metafield": "custom.material",
     "care_metafield": "custom.care",
+    "badge_1_match": "new, new-in",
+    "badge_1_label": "New",
+    "badge_2_type": "new",
     "products_per_page": 24,
     "circle_text": "A new way to belong is on its way. The OMARIEDEN Circle, arriving soon.",
     "sections": {
