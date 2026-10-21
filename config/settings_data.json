@@ -9,7 +9,7 @@
  */
 {
   "current": {
-    "main_menu": "main-menu",
+    "main_menu": "main-menu-departments",
     "color_option_name": "Color",
     "size_option_name": "Size",
     "color_swatch_map": "BLACK:#313131\nWHITE:#ffffff\nBROWN:#a37146\nRAISIN:#a37146\nHAZEBLUE:#679ad1\nBLUESTRIPE:#679ad1\nBARK:#a37146\nOATMEAL:#f0e8d6\nPIERRE:#f0e8d6\nCHALK:#ffffff\nGREIGE:#bbbbbb\nNAVY:#1f2a44\nRED:#e74a5d\nGREEN:#71c286\nBEIGE:#e5d9c7\nPINK:#db83b7\nYELLOW:#faec72\nGREY:#bbbbbb\nGRAY:#bbbbbb\nBLUE:#679ad1\nORANGE:#fbb44c\nGOLD:#ffd70b\nSILVER:#bfc0bf\nPURPLE:#b19cd9",
