@@ -39,7 +39,7 @@
     assign login_url = return_to
   endif
 -%}
-<section class="od-blk od-rtn od-rtn--img-{{ st.image_side }}" id="od-returns-{{ section.id }}" style="--od-blk-bg: {{ st.bg | default: 'transparent' }}; --od-blk-text: {{ st.text_color }}; --od-accent: {{ st.button_color }}; --od-btn-text: {{ st.button_text_color }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+<section class="od-blk od-rtn od-rtn--img-{{ st.image_side }}" id="od-returns-{{ section.id }}" style="--od-blk-bg: {{ st.bg | default: 'transparent' }}; --od-blk-text: {{ st.text_color }}; --od-btn: {{ st.button_color }}; --od-btn-text: {{ st.button_text_color }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
   <div class="_container_1kxnl_30 od-rtn__inner">
     <div class="od-rtn__panel">
       {%- render 'od-block-head', eyebrow: eyebrow, heading: heading, text: text, align: 'start', size: 's' -%}
