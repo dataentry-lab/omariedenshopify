@@ -21,6 +21,12 @@
     {%- if template.name == 'collection' and collection.handle == 'all' and collection.sort_by == blank -%}
     <script>(function(){var u=new URL(location.href);if(!u.searchParams.get('sort_by')){u.searchParams.set('sort_by','created-descending');location.replace(u.toString());}})();</script>
     {%- endif -%}
+    {%- comment -%} /collections (Shopify's all-collections list) is not used: send visitors to the full catalogue and keep it out of search engines (client, 22 Oct 2026). {%- endcomment -%}
+    {%- if template.name == 'list-collections' -%}
+    <meta name="robots" content="noindex, nofollow">
+    <meta http-equiv="refresh" content="0; url={{ routes.all_products_collection_url }}?sort_by=created-descending">
+    <script>location.replace({{ routes.all_products_collection_url | append: '?sort_by=created-descending' | json }});</script>
+    {%- endif -%}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="icon" type="image/svg+xml" href="{{ 'icons_omariden.svg' | asset_url }}">
