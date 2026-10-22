@@ -1,114 +1,15 @@
 {
   "sections": {
-    "hero": {
-      "type": "od-big-banner",
+    "banner": {
+      "type": "od-page-banner",
       "settings": {
-        "height": "m",
-        "overlay_color": "#2a0d12",
-        "overlay_opacity": 45,
-        "text_position": "center",
-        "eyebrow": "Self serve returns",
-        "title": "Changed your mind? We make it simple.",
-        "text": "<p>14 days from delivery, free pickup across Saudi Arabia, refund to your original payment.</p>",
-        "text_color": "#fcf8f2",
-        "button_label": "",
-        "pad_top": 0,
-        "pad_bottom": 0
+        "title": "Self Serve Returns",
+        "title_ar": "الإرجاع الذاتي",
+        "height": 340
       }
     },
     "lookup": {
       "type": "od-returns-lookup",
-      "settings": {
-        "note_link_url": "https://maps.google.com/?q=Omarieden+Al+Khobar"
-      }
-    },
-    "steps": {
-      "type": "od-returns-steps",
-      "blocks": {
-        "s1": {
-          "type": "step",
-          "settings": {
-            "icon": "list",
-            "label": "Request",
-            "label_ar": "الطلب",
-            "text": "<p>Pick the items and a reason. You hear back within one working day.</p>",
-            "text_ar": "<p>اختر القطع وسبب الإرجاع. نرد عليك خلال يوم عمل واحد.</p>"
-          }
-        },
-        "s2": {
-          "type": "step",
-          "settings": {
-            "icon": "box",
-            "label": "Pack",
-            "label_ar": "التغليف",
-            "text": "<p>Tags on, dust bag in, any sturdy box. No label to print, the courier brings it.</p>",
-            "text_ar": "<p>البطاقات في مكانها، كيس الحفظ بالداخل، وأي صندوق متين. لا حاجة لطباعة ملصق، المندوب يحضره.</p>"
-          }
-        },
-        "s3": {
-          "type": "step",
-          "settings": {
-            "icon": "parcel-return",
-            "label": "Pickup and refund",
-            "label_ar": "الاستلام والاسترداد",
-            "text": "<p>Choose a pickup slot. Your refund lands 5 to 7 working days after we receive it.</p>",
-            "text_ar": "<p>اختر موعد الاستلام. يصلك المبلغ خلال 5 إلى 7 أيام عمل من استلامنا للطرد.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "s1",
-        "s2",
-        "s3"
-      ],
-      "settings": {}
-    },
-    "facts": {
-      "type": "od-returns-facts",
-      "blocks": {
-        "f1": {
-          "type": "fact",
-          "settings": {
-            "value": "14",
-            "value_ar": "14",
-            "label": "days to return",
-            "label_ar": "يوماً للإرجاع"
-          }
-        },
-        "f2": {
-          "type": "fact",
-          "settings": {
-            "value": "Free",
-            "value_ar": "مجاناً",
-            "label": "pickup in KSA",
-            "label_ar": "الاستلام داخل المملكة"
-          }
-        },
-        "f3": {
-          "type": "fact",
-          "settings": {
-            "value": "5 to 7",
-            "value_ar": "5 إلى 7",
-            "label": "working days refund",
-            "label_ar": "أيام عمل للاسترداد"
-          }
-        },
-        "f4": {
-          "type": "fact",
-          "settings": {
-            "value": "In store",
-            "value_ar": "في المتجر",
-            "label": "exchanges welcome",
-            "label_ar": "الاستبدال متاح"
-          }
-        }
-      },
-      "block_order": [
-        "f1",
-        "f2",
-        "f3",
-        "f4"
-      ],
       "settings": {}
     },
     "faq": {
@@ -149,17 +50,37 @@
             "answer": "<p>Sale items can be returned within the same 14 days. Privé pre-orders and made-to-order pieces are final sale unless faulty.</p>",
             "answer_ar": "<p>يمكن إرجاع قطع التخفيضات خلال 14 يوماً. الطلبات المسبقة وقطع بريفيه المصنوعة حسب الطلب نهائية ما لم يكن بها عيب.</p>"
           }
+        },
+        "q5": {
+          "type": "item",
+          "settings": {
+            "question": "Can I bring it to the boutique?",
+            "question_ar": "هل يمكنني إحضارها إلى المتجر؟",
+            "answer": "<p>Yes. Bring the item with the order confirmation to Omarieden in Al Khobar, daily 10am to 11pm, and we process the return or exchange on the spot.</p>",
+            "answer_ar": "<p>نعم. أحضر القطعة مع تأكيد الطلب إلى أوماريدن في الخبر، يومياً من 10 صباحاً إلى 11 مساءً، ونعالج الإرجاع أو الاستبدال فوراً.</p>"
+          }
+        },
+        "q6": {
+          "type": "item",
+          "settings": {
+            "question": "How long does the refund take?",
+            "question_ar": "كم يستغرق الاسترداد؟",
+            "answer": "<p>5 to 7 working days after the item reaches us, back to the payment method you used.</p>",
+            "answer_ar": "<p>من 5 إلى 7 أيام عمل بعد وصول القطعة إلينا، إلى وسيلة الدفع التي استخدمتها.</p>"
+          }
         }
       },
       "block_order": [
         "q1",
+        "q6",
         "q2",
         "q3",
+        "q5",
         "q4"
       ],
       "settings": {
         "heading": "Good to know",
-        "pad_top": 56,
+        "pad_top": 16,
         "pad_bottom": 16,
         "eyebrow": ""
       }
@@ -178,10 +99,8 @@
     }
   },
   "order": [
-    "hero",
+    "banner",
     "lookup",
-    "steps",
-    "facts",
     "faq",
     "links"
   ]

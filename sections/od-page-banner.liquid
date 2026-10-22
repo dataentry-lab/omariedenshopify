@@ -1,0 +1,43 @@
+{%- comment -%}
+  Slim page banner, same look as the policy pages (Orders and Delivery): the original banner classes, maroon photo strip
+  (default asset images_page-banner.jpg, or an uploaded image), centred Moonlight title. Title EN with an Arabic twin. 22 Oct 2026.
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign title = st.title | default: page.title
+  if rtl and st.title_ar != blank
+    assign title = st.title_ar
+  endif
+  if st.image != blank
+    assign hero_url = st.image | image_url: width: 2560
+  else
+    assign hero_url = 'images_page-banner.jpg' | asset_url
+  endif
+-%}
+<div class="_ordersAndDelivery_1dpfq_30 od-pbanner" data-section-id="{{ section.id }}">
+  <section class="_bgBack_xwnoc_133 _bgAddCls_1dpfq_70" style="background-image: url(&quot;{{ hero_url }}&quot;); height: {{ st.height }}px;">
+    <div class="_container_1kxnl_30 _banner_xwnoc_30 undefined">
+      <div class="_banner__content_xwnoc_61 ">
+        <h1 class="{% if rtl %}_titleRtl_xwnoc_39{% else %}undefined{% endif %} _banner__content__title_xwnoc_67 _titleClass_1dpfq_30">{{ title }}</h1>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Page banner",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title (empty = page title)" },
+    { "type": "text", "id": "title_ar", "label": "Title (Arabic)" },
+    { "type": "image_picker", "id": "image", "label": "Image (empty = the policy pages banner)" },
+    { "type": "range", "id": "height", "label": "Height", "min": 200, "max": 600, "step": 20, "unit": "px", "default": 340 }
+  ],
+  "presets": [ { "name": "Page banner" } ]
+}
+{% endschema %}

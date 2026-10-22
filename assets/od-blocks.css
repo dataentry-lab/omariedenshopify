@@ -719,3 +719,13 @@ a.od-imgrow__media:hover .od-ratio img { transform: scale(1.03); }
   .od-rsteps__num { font-size: 32px; margin-top: 18px; }
   .od-rfacts__value { font-size: 26px; }
 }
+
+/* Self serve returns v3: centred form (22 Oct 2026) */
+.od-rtn--centred .od-rtn__col { max-width: 520px; margin: 0 auto; }
+.od-rtn__heading { text-align: center; margin: 0 0 10px; }
+.od-rtn__intro { text-align: center; font-size: 14px; line-height: 1.7; margin: 0 0 26px; color: rgba(85, 28, 37, .85); }
+.od-rtn__intro p { margin: 0; }
+.od-rtn--centred .od-rtn__form { display: flex; flex-direction: column; gap: 16px; }
+.od-rtn--centred .od-rtn__field input { background: #fff; }
+.od-rtn--centred .od-rtn__note { text-align: center; margin-top: 14px; }
+.od-pbanner ._bgAddCls_1dpfq_70 { background-size: cover; background-position: center; }
