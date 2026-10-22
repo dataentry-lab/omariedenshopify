@@ -22,6 +22,11 @@
     <script>(function(){var u=new URL(location.href);if(!u.searchParams.get('sort_by')){u.searchParams.set('sort_by','created-descending');location.replace(u.toString());}})();</script>
     {%- endif -%}
     {%- comment -%} /collections (Shopify's all-collections list) is not used: send visitors to the full catalogue and keep it out of search engines (client, 22 Oct 2026). {%- endcomment -%}
+    {%- if template.suffix == 'my-account' -%}
+    {%- comment -%} themed My Account retired 22 Oct 2026, Shopify's hosted account pages are the only account UI {%- endcomment -%}
+    <meta name="robots" content="noindex, nofollow">
+    <script>location.replace({{ routes.account_url | json }});</script>
+    {%- endif -%}
     {%- if template.name == 'list-collections' -%}
     <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="refresh" content="0; url={{ routes.all_products_collection_url }}?sort_by=created-descending">

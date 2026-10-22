@@ -1,7 +1,7 @@
 {%- comment -%}
   Top-right login popover (18 Oct 2026): one Sign in button to Shopify's hosted sign-in (email + one-time code), a
   "Create an account" link, the Circle card. The email field and the Google button of the old site are gone
-  (Google is not connected on this store). return_to brings the customer back to /pages/my-account.
+  (Google is not connected on this store). Sign in goes to Shopify's hosted account pages (client, 22 Oct 2026: themed /pages/my-account retired).
 {%- endcomment -%}
 {%- liquid
   assign rtl = false
@@ -20,7 +20,7 @@
         <p class="od-login__hello">{{ 'customer.login.welcome' | t }}</p>
         <p class="od-login__text">{{ 'customer.login.intro' | t }}</p>
         {%- comment -%} one link to Shopify's hosted sign-in (email + one-time code); return_to lands the customer on our My Account page {%- endcomment -%}
-        <a href="{{ routes.account_login_url }}{% if routes.account_login_url contains '?' %}&{% else %}?{% endif %}return_to=/pages/my-account" class="_btn_lnddl_30 _modalLogin__button_111bg_191 od-login__btn" data-login-go>{{ 'customer.login.submit' | t }}</a>
+        <a href="{{ routes.account_login_url }}" class="_btn_lnddl_30 _modalLogin__button_111bg_191 od-login__btn" data-login-go>{{ 'customer.login.submit' | t }}</a>
         <p class="od-login__new">{{ 'customer.login.new_here' | t }} <a href="{{ routes.account_register_url }}" class="od-login__link">{{ 'customer.login.create' | t }}</a></p>
       </div>
       {%- render 'od-circle' -%}

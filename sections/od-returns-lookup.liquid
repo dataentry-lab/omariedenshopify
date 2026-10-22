@@ -1,7 +1,7 @@
 {%- comment -%}
   Self serve returns, "Find your order" panel (22 Oct 2026): text + order number / email fields + Start a return button on the left,
-  image on the right. Submitting sends the customer to sign in (one-time code) and back to /pages/my-account#orders where every
-  order opens the Shopify order page with its Request return button. The order number is kept in sessionStorage only (never in the URL).
+  image on the right. Submitting sends the customer to sign in (one-time code) and to the Shopify account page (hosted) where every
+  order has its Request return button. The order number is kept in sessionStorage only (never in the URL).
   EN settings with *_ar twins picked when the locale is Arabic.
 {%- endcomment -%}
 {%- liquid
@@ -28,7 +28,7 @@
     assign note = st.note_ar | default: st.note
     assign note_link = st.note_link_label_ar | default: st.note_link_label
   endif
-  assign return_to = st.return_to | default: '/pages/my-account#orders'
+  assign return_to = st.return_to | default: routes.account_url
   assign login_url = routes.account_login_url
   if login_url contains '?'
     assign login_url = login_url | append: '&return_to=' | append: return_to
@@ -96,7 +96,7 @@
     { "type": "text", "id": "placeholder_email", "label": "Email placeholder", "default": "you@example.com" },
     { "type": "text", "id": "button_label", "label": "Button", "default": "Start a return" },
     { "type": "text", "id": "button_label_ar", "label": "Button (Arabic)", "default": "ابدأ الإرجاع" },
-    { "type": "text", "id": "return_to", "label": "After sign-in, open", "default": "/pages/my-account#orders", "info": "Where the customer lands after the one-time code." },
+    { "type": "text", "id": "return_to", "label": "After sign-in, open", "info": "Where the customer lands after the one-time code. Empty = the Shopify account page with the orders and their Request return button." },
     { "type": "header", "content": "Note under the button" },
     { "type": "text", "id": "note", "label": "Note", "default": "Prefer to bring it to the boutique? Al Khobar, daily 10am to 11pm." },
     { "type": "text", "id": "note_ar", "label": "Note (Arabic)", "default": "تفضّل إحضارها إلى المتجر؟ الخبر، يومياً من 10 صباحاً إلى 11 مساءً." },
