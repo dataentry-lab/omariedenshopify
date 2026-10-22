@@ -89,6 +89,9 @@
         {%- if can_cancel -%}
           <a class="_btn_lnddl_30 _returnProduct_3mwtq_54" href="{{ order.customer_url }}">{{ 'account.cancel_order' | t }}</a>
         {%- endif -%}
+        {%- if order.fulfillment_status == 'fulfilled' or order.fulfillment_status == 'partial' -%}
+          <a class="_btn_lnddl_30 _returnProduct_3mwtq_54 od-acct-return" href="{{ order.customer_url }}">{{ 'account.request_return' | t }}</a>
+        {%- endif -%}
 
         {%- for line_item in order.line_items -%}
           <div class="_container__pCard_3mwtq_92">

@@ -1,0 +1,188 @@
+{
+  "sections": {
+    "hero": {
+      "type": "od-big-banner",
+      "settings": {
+        "height": "m",
+        "overlay_color": "#2a0d12",
+        "overlay_opacity": 45,
+        "text_position": "center",
+        "eyebrow": "Self serve returns",
+        "title": "Changed your mind? We make it simple.",
+        "text": "<p>14 days from delivery, free pickup across Saudi Arabia, refund to your original payment.</p>",
+        "text_color": "#fcf8f2",
+        "button_label": "",
+        "pad_top": 0,
+        "pad_bottom": 0
+      }
+    },
+    "lookup": {
+      "type": "od-returns-lookup",
+      "settings": {
+        "note_link_url": "https://maps.google.com/?q=Omarieden+Al+Khobar"
+      }
+    },
+    "steps": {
+      "type": "od-returns-steps",
+      "blocks": {
+        "s1": {
+          "type": "step",
+          "settings": {
+            "icon": "list",
+            "label": "Request",
+            "label_ar": "الطلب",
+            "text": "<p>Pick the items and a reason. You hear back within one working day.</p>",
+            "text_ar": "<p>اختر القطع وسبب الإرجاع. نرد عليك خلال يوم عمل واحد.</p>"
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "icon": "box",
+            "label": "Pack",
+            "label_ar": "التغليف",
+            "text": "<p>Tags on, dust bag in, any sturdy box. No label to print, the courier brings it.</p>",
+            "text_ar": "<p>البطاقات في مكانها، كيس الحفظ بالداخل، وأي صندوق متين. لا حاجة لطباعة ملصق، المندوب يحضره.</p>"
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "icon": "parcel-return",
+            "label": "Pickup and refund",
+            "label_ar": "الاستلام والاسترداد",
+            "text": "<p>Choose a pickup slot. Your refund lands 5 to 7 working days after we receive it.</p>",
+            "text_ar": "<p>اختر موعد الاستلام. يصلك المبلغ خلال 5 إلى 7 أيام عمل من استلامنا للطرد.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {}
+    },
+    "facts": {
+      "type": "od-returns-facts",
+      "blocks": {
+        "f1": {
+          "type": "fact",
+          "settings": {
+            "value": "14",
+            "value_ar": "14",
+            "label": "days to return",
+            "label_ar": "يوماً للإرجاع"
+          }
+        },
+        "f2": {
+          "type": "fact",
+          "settings": {
+            "value": "Free",
+            "value_ar": "مجاناً",
+            "label": "pickup in KSA",
+            "label_ar": "الاستلام داخل المملكة"
+          }
+        },
+        "f3": {
+          "type": "fact",
+          "settings": {
+            "value": "5 to 7",
+            "value_ar": "5 إلى 7",
+            "label": "working days refund",
+            "label_ar": "أيام عمل للاسترداد"
+          }
+        },
+        "f4": {
+          "type": "fact",
+          "settings": {
+            "value": "In store",
+            "value_ar": "في المتجر",
+            "label": "exchanges welcome",
+            "label_ar": "الاستبدال متاح"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4"
+      ],
+      "settings": {}
+    },
+    "faq": {
+      "type": "od-faq",
+      "blocks": {
+        "q1": {
+          "type": "item",
+          "settings": {
+            "question": "Which items cannot be returned?",
+            "question_ar": "ما القطع التي لا يمكن إرجاعها؟",
+            "answer": "<p>Swimwear, lingerie, earrings, perfume and personalised pieces, for hygiene reasons. Everything else is fine as long as it is unworn, with tags and in its original packaging.</p>",
+            "answer_ar": "<p>ملابس السباحة والملابس الداخلية والأقراط والعطور والقطع المخصصة، لأسباب صحية. ما عدا ذلك يمكن إرجاعه ما دام غير مستخدم ومع البطاقات والتغليف الأصلي.</p>"
+          }
+        },
+        "q2": {
+          "type": "item",
+          "settings": {
+            "question": "Can I exchange for another size or colour?",
+            "question_ar": "هل يمكنني الاستبدال بمقاس أو لون آخر؟",
+            "answer": "<p>Yes. Request a return for the item and place a new order for the size you need, or visit the boutique and we exchange it on the spot.</p>",
+            "answer_ar": "<p>نعم. اطلب إرجاع القطعة واطلب المقاس الجديد، أو زر المتجر ونستبدلها لك فوراً.</p>"
+          }
+        },
+        "q3": {
+          "type": "item",
+          "settings": {
+            "question": "I ordered as a guest, how do I sign in?",
+            "question_ar": "طلبت كزائر، كيف أسجل الدخول؟",
+            "answer": "<p>Use the same email you ordered with. We send a one-time code, there is no password to remember, and your orders are already there.</p>",
+            "answer_ar": "<p>استخدم البريد الإلكتروني نفسه الذي طلبت به. نرسل لك رمزاً لمرة واحدة بدون كلمة مرور، وستجد طلباتك جاهزة.</p>"
+          }
+        },
+        "q4": {
+          "type": "item",
+          "settings": {
+            "question": "What about sale and Privé items?",
+            "question_ar": "ماذا عن قطع التخفيضات وبريفيه؟",
+            "answer": "<p>Sale items can be returned within the same 14 days. Privé pre-orders and made-to-order pieces are final sale unless faulty.</p>",
+            "answer_ar": "<p>يمكن إرجاع قطع التخفيضات خلال 14 يوماً. الطلبات المسبقة وقطع بريفيه المصنوعة حسب الطلب نهائية ما لم يكن بها عيب.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "settings": {
+        "heading": "Good to know",
+        "pad_top": 56,
+        "pad_bottom": 16,
+        "eyebrow": ""
+      }
+    },
+    "links": {
+      "type": "od-text",
+      "settings": {
+        "text": "<p><a href=\"/pages/returns-and-refunds\">Returns and refunds policy</a> · <a href=\"/pages/contact-us\">Contact us</a></p>",
+        "align": "center",
+        "size": "s",
+        "pad_top": 0,
+        "pad_bottom": 64,
+        "heading": "",
+        "eyebrow": ""
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "lookup",
+    "steps",
+    "facts",
+    "faq",
+    "links"
+  ]
+}

@@ -1,0 +1,119 @@
+{%- comment -%}
+  Self serve returns, "Find your order" panel (22 Oct 2026): text + order number / email fields + Start a return button on the left,
+  image on the right. Submitting sends the customer to sign in (one-time code) and back to /pages/my-account#orders where every
+  order opens the Shopify order page with its Request return button. The order number is kept in sessionStorage only (never in the URL).
+  EN settings with *_ar twins picked when the locale is Arabic.
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign eyebrow = st.eyebrow
+  assign heading = st.heading
+  assign text = st.text
+  assign l_order = st.label_order
+  assign l_email = st.label_email
+  assign l_btn = st.button_label
+  assign note = st.note
+  assign note_link = st.note_link_label
+  if rtl
+    assign eyebrow = st.eyebrow_ar | default: st.eyebrow
+    assign heading = st.heading_ar | default: st.heading
+    assign text = st.text_ar | default: st.text
+    assign l_order = st.label_order_ar | default: st.label_order
+    assign l_email = st.label_email_ar | default: st.label_email
+    assign l_btn = st.button_label_ar | default: st.button_label
+    assign note = st.note_ar | default: st.note
+    assign note_link = st.note_link_label_ar | default: st.note_link_label
+  endif
+  assign return_to = st.return_to | default: '/pages/my-account#orders'
+  assign login_url = routes.account_login_url
+  if login_url contains '?'
+    assign login_url = login_url | append: '&return_to=' | append: return_to
+  else
+    assign login_url = login_url | append: '?return_to=' | append: return_to
+  endif
+  if customer
+    assign login_url = return_to
+  endif
+-%}
+<section class="od-blk od-rtn od-rtn--img-{{ st.image_side }}" id="od-returns-{{ section.id }}" style="--od-blk-bg: {{ st.bg | default: 'transparent' }}; --od-blk-text: {{ st.text_color }}; --od-accent: {{ st.button_color }}; --od-btn-text: {{ st.button_text_color }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+  <div class="_container_1kxnl_30 od-rtn__inner">
+    <div class="od-rtn__panel">
+      {%- render 'od-block-head', eyebrow: eyebrow, heading: heading, text: text, align: 'start', size: 's' -%}
+      <form class="od-rtn__form" action="{{ login_url }}" method="get" data-returns-form data-go="{{ login_url | escape }}">
+        <div class="od-rtn__fields">
+          <label class="od-rtn__field"><span>{{ l_order }}</span><input type="text" name="order" inputmode="numeric" autocomplete="off" placeholder="{{ st.placeholder_order | escape }}" data-returns-order></label>
+          <label class="od-rtn__field"><span>{{ l_email }}</span><input type="email" name="email" autocomplete="email" placeholder="{{ st.placeholder_email | escape }}"></label>
+        </div>
+        <button type="submit" class="od-blk__btn od-blk__btn--solid od-rtn__btn">{{ l_btn }}</button>
+      </form>
+      {%- if note != blank -%}
+        <p class="od-rtn__note">{{ note }}{% if note_link != blank and st.note_link_url != blank %} <a href="{{ st.note_link_url }}">{{ note_link }}</a>{% endif %}</p>
+      {%- endif -%}
+    </div>
+    <div class="od-rtn__media">
+      {%- if st.image != blank -%}
+        <img src="{{ st.image | image_url: width: 1200 }}" alt="{{ st.image.alt | escape }}" width="{{ st.image.width }}" height="{{ st.image.height }}" loading="lazy">
+      {%- else -%}
+        <div class="od-rtn__media-empty" aria-hidden="true"></div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+<script>
+  (function () {
+    var f = document.querySelector('#od-returns-{{ section.id }} [data-returns-form]');
+    if (!f) return;
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var n = f.querySelector('[data-returns-order]');
+      try { if (n && n.value) sessionStorage.setItem('od_return_order', n.value.trim()); } catch (err) {}
+      location.href = f.getAttribute('data-go');
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Returns: find order",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Start here" },
+    { "type": "text", "id": "eyebrow_ar", "label": "Eyebrow (Arabic)", "default": "ابدأ من هنا" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Find your order" },
+    { "type": "text", "id": "heading_ar", "label": "Heading (Arabic)", "default": "ابحث عن طلبك" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Enter the order number from your confirmation email and the email you used. We will send you a one-time code and open your orders with the items ready to select.</p>" },
+    { "type": "richtext", "id": "text_ar", "label": "Text (Arabic)", "default": "<p>أدخل رقم الطلب من رسالة التأكيد والبريد الإلكتروني الذي استخدمته. سنرسل لك رمزاً لمرة واحدة ونفتح طلباتك لاختيار القطع.</p>" },
+    { "type": "header", "content": "Form" },
+    { "type": "text", "id": "label_order", "label": "Order number label", "default": "Order number" },
+    { "type": "text", "id": "label_order_ar", "label": "Order number label (Arabic)", "default": "رقم الطلب" },
+    { "type": "text", "id": "placeholder_order", "label": "Order number placeholder", "default": "e.g. #1042" },
+    { "type": "text", "id": "label_email", "label": "Email label", "default": "Email address" },
+    { "type": "text", "id": "label_email_ar", "label": "Email label (Arabic)", "default": "البريد الإلكتروني" },
+    { "type": "text", "id": "placeholder_email", "label": "Email placeholder", "default": "you@example.com" },
+    { "type": "text", "id": "button_label", "label": "Button", "default": "Start a return" },
+    { "type": "text", "id": "button_label_ar", "label": "Button (Arabic)", "default": "ابدأ الإرجاع" },
+    { "type": "text", "id": "return_to", "label": "After sign-in, open", "default": "/pages/my-account#orders", "info": "Where the customer lands after the one-time code." },
+    { "type": "header", "content": "Note under the button" },
+    { "type": "text", "id": "note", "label": "Note", "default": "Prefer to bring it to the boutique? Al Khobar, daily 10am to 11pm." },
+    { "type": "text", "id": "note_ar", "label": "Note (Arabic)", "default": "تفضّل إحضارها إلى المتجر؟ الخبر، يومياً من 10 صباحاً إلى 11 مساءً." },
+    { "type": "text", "id": "note_link_label", "label": "Note link label", "default": "Get directions" },
+    { "type": "text", "id": "note_link_label_ar", "label": "Note link label (Arabic)", "default": "الاتجاهات" },
+    { "type": "url", "id": "note_link_url", "label": "Note link" },
+    { "type": "header", "content": "Image" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "select", "id": "image_side", "label": "Image side", "default": "end", "options": [ { "value": "end", "label": "Right (left in Arabic)" }, { "value": "start", "label": "Left (right in Arabic)" } ] },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg", "label": "Background" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#551c25" },
+    { "type": "color", "id": "button_color", "label": "Button", "default": "#595b33" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 }
+  ],
+  "presets": [ { "name": "Returns: find order" } ]
+}
+{% endschema %}

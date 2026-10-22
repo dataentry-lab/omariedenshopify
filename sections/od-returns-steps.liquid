@@ -1,0 +1,97 @@
+{%- comment -%}
+  Self serve returns, "How it works" steps (22 Oct 2026): per block a sand tile with a thin line icon (or an uploaded image),
+  big olive numeral, uppercase label and text. 2 to 4 per row desktop, stacked on mobile. EN with *_ar twins.
+  Icons drawn inline (approved 22 Oct): list, box, parcel-return, hand, card, scooter, truck.
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign eyebrow = st.eyebrow
+  assign heading = st.heading
+  if rtl
+    assign eyebrow = st.eyebrow_ar | default: st.eyebrow
+    assign heading = st.heading_ar | default: st.heading
+  endif
+-%}
+<section class="od-blk od-rsteps" id="od-rsteps-{{ section.id }}" style="--od-blk-bg: {{ st.bg | default: 'transparent' }}; --od-blk-text: {{ st.text_color }}; --od-tile: {{ st.tile_color }}; --od-num: {{ st.number_color }}; --od-cols: {{ st.per_row }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+  <div class="_container_1kxnl_30">
+    {%- render 'od-block-head', eyebrow: eyebrow, heading: heading, align: 'center', size: 'm' -%}
+    <div class="od-rsteps__grid">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        {%- liquid
+          assign label = b.label
+          assign text = b.text
+          if rtl
+            assign label = b.label_ar | default: b.label
+            assign text = b.text_ar | default: b.text
+          endif
+        -%}
+        <div class="od-rsteps__step" {{ block.shopify_attributes }}>
+          <div class="od-rsteps__tile">
+            {%- if b.image != blank -%}
+              <img src="{{ b.image | image_url: width: 400 }}" alt="" width="{{ b.image.width }}" height="{{ b.image.height }}" loading="lazy">
+            {%- else -%}
+              <svg class="od-rsteps__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                {%- case b.icon -%}
+                  {%- when 'list' -%}<rect x="14" y="8" width="36" height="48" rx="1"/><path d="M24 8v-3h16v3"/><path d="M22 22h20M22 31h20M22 40h12"/><path d="M38 42l3 3 6-7"/>
+                  {%- when 'box' -%}<path d="M10 22l22-10 22 10v22L32 54 10 44z"/><path d="M10 22l22 10 22-10M32 32v22"/><path d="M21 17l22 10"/><path d="M44 30v9l-4-2-4 2v-9"/>
+                  {%- when 'parcel-return' -%}<path d="M14 24l18-8 18 8v18l-18 8-18-8z"/><path d="M14 24l18 8 18-8M32 32v18"/><path d="M44 8h-16a8 8 0 0 0-8 8v2"/><path d="M24 14l-4 4-4-4"/>
+                  {%- when 'hand' -%}<path d="M22 20l12-5 12 5v12l-12 5-12-5z"/><path d="M22 20l12 5 12-5M34 25v12"/><path d="M8 40c6-4 12-4 18 0l8 0c3 0 3 5 0 5h-8"/><path d="M26 45l14 0c6-3 10-6 14-8 3-1 5 2 3 4-5 4-11 8-17 10-6 2-12 2-18-1l-12-5"/>
+                  {%- when 'card' -%}<rect x="8" y="18" width="48" height="30" rx="2"/><path d="M8 27h48M14 40h10"/><path d="M44 8v10l-6-6M44 18l6-6"/>
+                  {%- when 'scooter' -%}<circle cx="16" cy="44" r="6"/><circle cx="48" cy="44" r="6"/><path d="M16 44h12l6-14h8l4 14"/><path d="M22 44l-2-12h10"/><path d="M30 30l6-10h6"/><rect x="40" y="20" width="12" height="10"/>
+                  {%- else -%}<path d="M6 20h32v22H6zM38 28h10l8 8v6H38z"/><circle cx="15" cy="46" r="4"/><circle cx="46" cy="46" r="4"/><path d="M19 46h23M6 46h5M50 46h6"/>
+                {%- endcase -%}
+              </svg>
+            {%- endif -%}
+          </div>
+          {%- if st.show_numbers -%}<p class="od-rsteps__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</p>{%- endif -%}
+          {%- if label != blank -%}<h3 class="od-rsteps__label">{{ label }}</h3>{%- endif -%}
+          {%- if text != blank -%}<div class="od-rsteps__text">{{ text }}</div>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Returns: steps",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "How it works" },
+    { "type": "text", "id": "eyebrow_ar", "label": "Eyebrow (Arabic)", "default": "كيف يتم الإرجاع" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Three steps, no printing" },
+    { "type": "text", "id": "heading_ar", "label": "Heading (Arabic)", "default": "ثلاث خطوات، بدون طباعة" },
+    { "type": "range", "id": "per_row", "label": "Steps per row (desktop)", "min": 2, "max": 4, "step": 1, "default": 3 },
+    { "type": "checkbox", "id": "show_numbers", "label": "Show the numbers", "default": true },
+    { "type": "color", "id": "bg", "label": "Background" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#551c25" },
+    { "type": "color", "id": "tile_color", "label": "Icon tile", "default": "#f1eeea" },
+    { "type": "color", "id": "number_color", "label": "Numbers", "default": "#595b33" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "list", "options": [
+          { "value": "list", "label": "Checklist" }, { "value": "box", "label": "Box with tag" }, { "value": "parcel-return", "label": "Parcel with return arrow" },
+          { "value": "hand", "label": "Parcel on a hand" }, { "value": "card", "label": "Card, refund" }, { "value": "scooter", "label": "Courier scooter" }, { "value": "truck", "label": "Van" } ] },
+        { "type": "image_picker", "id": "image", "label": "Image instead of the icon" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Request" },
+        { "type": "text", "id": "label_ar", "label": "Label (Arabic)" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Pick the items and a reason. You hear back within one working day.</p>" },
+        { "type": "richtext", "id": "text_ar", "label": "Text (Arabic)" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Returns: steps", "blocks": [ { "type": "step" }, { "type": "step", "settings": { "icon": "box", "label": "Pack" } }, { "type": "step", "settings": { "icon": "parcel-return", "label": "Pickup and refund" } } ] } ]
+}
+{% endschema %}

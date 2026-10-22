@@ -610,7 +610,8 @@
       "cancelled": "ملغي",
       "refunded": "مسترد",
       "online": "إلكتروني"
-    }
+    },
+    "request_return": "طلب إرجاع"
   },
   "catalogue": {
     "pages": "الصفحات",

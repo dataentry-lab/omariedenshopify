@@ -674,3 +674,48 @@ a.od-imgrow__media:hover .od-ratio img { transform: scale(1.03); }
 .od-formblk--has-bg .od-formblk__box { background: color-mix(in srgb, var(--od-blk-bg, #2a0d12) 45%, transparent); background: rgba(42, 13, 18, .45); }
 @supports (color-mix(in srgb, red 50%, transparent)) { .od-formblk--has-bg .od-formblk__box { background: color-mix(in srgb, var(--od-blk-bg, #2a0d12) 45%, transparent); } }
 .od-formblk > ._container_1kxnl_30 { position: relative; z-index: 1; }
+
+/* Self serve returns page (22 Oct 2026) */
+.od-rtn__inner { display: grid; grid-template-columns: 1.05fr 1fr; align-items: stretch; }
+.od-rtn--img-start .od-rtn__panel { order: 2; }
+.od-rtn__panel { padding: 56px 48px 56px 0; }
+.od-rtn--img-start .od-rtn__panel { padding: 56px 0 56px 48px; }
+.od-rtn .od-blk__head--start { margin-bottom: 22px; }
+.od-rtn__fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.od-rtn__field { display: flex; flex-direction: column; gap: 8px; font-size: 12px; letter-spacing: .04em; }
+.od-rtn__field input { height: 44px; border: 1px solid rgba(85, 28, 37, .3); background: rgba(252, 248, 242, .6); padding: 0 14px; font: inherit; font-size: 14px; color: var(--od-blk-text, #551c25); border-radius: 0; width: 100%; }
+.od-rtn__field input:focus { outline: none; box-shadow: 0 0 6px rgba(85, 28, 37, .25); }
+.od-rtn__btn { width: 100%; height: 44px; display: flex; align-items: center; justify-content: center; border: 0; cursor: pointer; }
+.od-rtn__note { margin: 14px 0 0; font-size: 12px; line-height: 1.6; color: rgba(85, 28, 37, .65); }
+.od-rtn__note a { color: var(--od-blk-text, #551c25); text-decoration: underline; text-underline-offset: 3px; }
+.od-rtn__media { min-height: 360px; background: #f1eeea; }
+.od-rtn__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.od-rtn__media-empty { width: 100%; height: 100%; min-height: 360px; }
+.od-rsteps__grid { display: grid; grid-template-columns: repeat(var(--od-cols, 3), 1fr); gap: 28px; }
+.od-rsteps__tile { height: 150px; background: var(--od-tile, #f1eeea); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.od-rsteps__tile img { width: 100%; height: 100%; object-fit: cover; }
+.od-rsteps__icon { width: 76px; height: 76px; fill: none; stroke: var(--od-blk-text, #551c25); stroke-width: 1.1; stroke-linecap: round; stroke-linejoin: round; }
+.od-rsteps__num { font-family: "Basteleur Moonlight", Basteleur, serif; font-weight: 300; font-size: 40px; line-height: 1; margin: 26px 0 0; color: var(--od-num, #595b33); }
+.od-rsteps__label { margin: 16px 0 0; font-family: Bricolage, sans-serif; font-weight: 400; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; }
+:dir(rtl) .od-rsteps__label { font-family: Arabic-Regular, serif; letter-spacing: 0; text-transform: none; }
+.od-rsteps__text { margin: 12px 0 0; font-size: 13px; line-height: 1.75; max-width: 300px; color: rgba(85, 28, 37, .8); }
+.od-rsteps__text p { margin: 0; }
+.od-rfacts__grid { display: grid; grid-template-columns: repeat(var(--od-cols, 4), 1fr); gap: 20px; text-align: center; }
+.od-rfacts__value { font-family: "Basteleur Moonlight", Basteleur, serif; font-weight: 300; font-size: 34px; line-height: 1.1; margin: 0; }
+.od-rfacts__label { margin: 6px 0 0; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; opacity: .8; }
+:dir(rtl) .od-rfacts__label { font-family: Arabic-Regular, serif; letter-spacing: 0; text-transform: none; }
+.od-acct-return { margin-inline-start: 10px; }
+@media (max-width: 991px) {
+  .od-rtn__inner { grid-template-columns: 1fr; }
+  .od-rtn__panel, .od-rtn--img-start .od-rtn__panel { padding: 36px 0 32px; order: 0; }
+  .od-rtn__media { min-height: 220px; order: 1; }
+  .od-rsteps__grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .od-rfacts__grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .od-rtn__fields { grid-template-columns: 1fr; }
+  .od-rsteps__grid { grid-template-columns: 1fr; gap: 26px; }
+  .od-rsteps__tile { height: 130px; }
+  .od-rsteps__num { font-size: 32px; margin-top: 18px; }
+  .od-rfacts__value { font-size: 26px; }
+}

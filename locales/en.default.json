@@ -598,7 +598,8 @@
       "cancelled": "Cancelled",
       "refunded": "Refunded",
       "online": "Online"
-    }
+    },
+    "request_return": "Request a return"
   },
   "catalogue": {
     "pages": "Pages",
