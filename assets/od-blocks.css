@@ -727,5 +727,6 @@ a.od-imgrow__media:hover .od-ratio img { transform: scale(1.03); }
 .od-rtn__intro p { margin: 0; }
 .od-rtn--centred .od-rtn__form { display: flex; flex-direction: column; gap: 16px; }
 .od-rtn--centred .od-rtn__field input { background: #fff; }
+.od-rtn .od-rtn__btn { --od-btn: var(--od-rtn-btn, #595b33); --od-btn-text: var(--od-rtn-btn-text, #fff); }
 .od-rtn--centred .od-rtn__note { text-align: center; margin-top: 14px; }
 .od-pbanner ._bgAddCls_1dpfq_70 { background-size: cover; background-position: center; }

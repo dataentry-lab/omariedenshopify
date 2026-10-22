@@ -35,7 +35,7 @@
     assign login_url = return_to
   endif
 -%}
-<section class="od-blk od-rtn od-rtn--centred" id="od-returns-{{ section.id }}" style="--od-blk-bg: {{ st.bg | default: 'transparent' }}; --od-blk-text: {{ st.text_color }}; --od-btn: {{ st.button_color }}; --od-btn-text: {{ st.button_text_color }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+<section class="od-blk od-rtn od-rtn--centred" id="od-returns-{{ section.id }}" style="--od-blk-bg: {{ st.bg | default: 'transparent' }}; --od-blk-text: {{ st.text_color }}; --od-rtn-btn: {{ st.button_color }}; --od-rtn-btn-text: {{ st.button_text_color }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
   <div class="_container_1kxnl_30">
     <div class="od-rtn__col">
       {%- if heading != blank -%}<h2 class="od-blk__heading od-rtn__heading">{{ heading }}</h2>{%- endif -%}
