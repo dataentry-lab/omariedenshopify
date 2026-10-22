@@ -14,7 +14,7 @@
       <h1 class="{% if rtl %}_titleRtl_xwnoc_39{% else %}undefined{% endif %} _banner__content__title_xwnoc_67 _titleAddStyle_o1irq_30">{{ section.settings.title }} </h1>
       {%- if section.settings.subtitle != blank -%}<div class="_banner__content__subtitle_xwnoc_118 _subtitleCls_o1irq_60">{{ section.settings.subtitle }}</div>{%- endif -%}
       {%- if section.settings.button_label != blank -%}
-        <button type="button" class="_btn_lnddl_30 _bannerBtn_xwnoc_30" data-href="{{ section.settings.button_url | default: routes.all_products_collection_url }}">{{ section.settings.button_label }}</button>
+        <button type="button" class="_btn_lnddl_30 _b" data-href="{{ section.settings.button_url | default: routes.all_products_collection_url }}">{{ section.settings.button_label }}</button>
       {%- endif -%}
     </div>
   </div>
