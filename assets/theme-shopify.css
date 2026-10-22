@@ -253,7 +253,7 @@ button._login_with_social_button_111bg_296 { width: 100%; font-family: inherit; 
 .od-stl__look:hover .od-stl__cta, .od-stl__look:focus-visible .od-stl__cta { opacity: 1; }
 .od-stl__look .od-stl__cta:hover { background: var(--sandstone, #e5d9c7); border-color: var(--sandstone, #e5d9c7); color: var(--maroon); }
 @media (hover: hover) and (pointer: fine) { .od-stl__cta { pointer-events: auto; } }
-@media (hover: none), (max-width: 768px) { .od-stl__cta { opacity: 1; background: #e5d9c7; border-color: #e5d9c7; color: var(--maroon); } }
+@media (hover: none), (max-width: 1024px) { .od-stl__cta { opacity: 1; background: rgba(255, 255, 255, .18); border-color: #fff; color: #fff; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); } }
 .od-stl__caption { display: flex; align-items: baseline; gap: 12px; margin-top: 12px; color: var(--maroon); }
 .od-stl__label { font-family: Bricolage, sans-serif; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
 .od-stl__name { font-family: "Basteleur Moonlight", serif; font-size: 18px; }
