@@ -29,6 +29,11 @@
       if (on) { found = true; p.style.animation = 'none'; void p.offsetWidth; p.style.animation = ''; }
     });
     if (!found) { var root = $('[data-ft-panel="root"]', tree); if (root) root.hidden = false; }
+    var fpT = tree.closest('[data-fp]');
+    if (fpT) {
+      var shown = $('[data-ft-panel]:not([hidden])', tree), tt = $('[data-fp-title]', fpT);
+      if (shown && tt && shown.getAttribute('data-ft-label')) tt.textContent = shown.getAttribute('data-ft-label');
+    }
     var acc = tree.closest('[data-accordion-content]');
     if (acc && acc.hasAttribute('data-accordion-open')) acc.style.height = 'auto';
   }
@@ -376,7 +381,10 @@
     if (root) root.classList.toggle('is-left', !isRoot);
     fp.classList.toggle('is-level', !isRoot);
     var title = $('[data-fp-title]', fp);
-    if (title) title.textContent = isRoot ? (title.getAttribute('data-t-root') || 'Filter') : (target.getAttribute('data-fp-label') || '');
+    if (title) {
+      var shownP = $('[data-ft-panel]:not([hidden])', target);
+      title.textContent = isRoot ? (title.getAttribute('data-t-root') || 'Filter') : ((shownP && shownP.getAttribute('data-ft-label')) || target.getAttribute('data-fp-label') || '');
+    }
     var left = $('[data-fp-left]', fp), ll = $('[data-fp-left-label]', fp);
     if (left && ll) {
       ll.textContent = isRoot ? left.getAttribute('data-t-clear') : left.getAttribute('data-t-back');
