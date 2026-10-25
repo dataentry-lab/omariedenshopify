@@ -33,7 +33,7 @@
     if (acc && acc.hasAttribute('data-accordion-open')) acc.style.height = 'auto';
   }
   function initTrees(root) {
-    $$('[data-ft]', root || document).forEach(function (tree) { showPanel(tree, tree.getAttribute('data-ft-start') || 'root'); });
+    $$('[data-ft]', root || document).forEach(function (tree) { if (tree.closest('[data-fp]')) return; showPanel(tree, tree.getAttribute('data-ft-start') || 'root'); });
   }
   initTrees();
 
