@@ -169,7 +169,7 @@
       {%- render 'wishlist-drawer' -%}
       {%- section 'welcome-popup' -%}
       {%- if request.page_type == 'collection' or request.page_type == 'search' -%}
-        {%- if settings.filter_popup -%}{%- render 'modal-filter' -%}{%- else -%}{%- render 'modal-filter-legacy' -%}{%- endif -%}
+        {%- section 'od-filter' -%}
       {%- endif -%}
     </div>
     <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>

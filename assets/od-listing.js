@@ -221,27 +221,62 @@
     // keep the toolbar in view while results change
     var t = toolbar();
     if (t && !fpOpen()) { var top = t.getBoundingClientRect().top; if (top < headerH || top > window.innerHeight * 0.6) window.scrollTo({ top: window.scrollY + top - headerH - 8, behavior: 'smooth' }); }
-    fetch(url, { headers: { Accept: 'text/html' }, credentials: 'same-origin' })
-      .then(function (r) { return r.text(); })
-      .then(function (html) {
-        if (token !== loading) return;
-        var doc = new DOMParser().parseFromString(html, 'text/html');
-        var fresh = $('[data-listing]', doc);
-        if (!fresh) { window.location.href = url; return; }
-        listing.innerHTML = fresh.innerHTML;
-        // the filter drawer lives outside the listing: refresh it too (active states / counts)
-        var fm = $('[data-modal="filter"]'), fmNew = $('[data-modal="filter"]', doc);
-        if (fm && fmNew) { fm.innerHTML = fmNew.innerHTML; fpRestore(fm); }
-        var bc = $('[data-breadcrumbs]'), bcNew = $('[data-breadcrumbs]', doc);
+    var pathBefore = window.location.pathname;
+    function finish(listingDoc, filterDoc, fullDoc) {
+      var fresh = $('[data-listing]', listingDoc);
+      if (!fresh) { window.location.href = url; return; }
+      listing.innerHTML = fresh.innerHTML;
+      // the filter popup / drawer lives outside the listing: refresh it too (active states / counts / summaries)
+      var fm = $('[data-modal="filter"]'), fmNew = filterDoc && $('[data-modal="filter"]', filterDoc);
+      if (fm && fmNew) { fm.innerHTML = fmNew.innerHTML; fpRestore(fm); }
+      if (fullDoc) {
+        var bc = $('[data-breadcrumbs]'), bcNew = $('[data-breadcrumbs]', fullDoc);
         if (bc && bcNew && !listing.contains(bc)) bc.innerHTML = bcNew.innerHTML;
-        if (doc.title) document.title = doc.title;
-        if (push) history.pushState({ odListing: true }, '', url);
-        reinit(listing);
-        setUpdating(false);
-        loading = null;
-        document.dispatchEvent(new CustomEvent('od:listing:load', { detail: { url: url } }));
+        if (fullDoc.title) document.title = fullDoc.title;
+      }
+      if (push) history.pushState({ odListing: true }, '', url);
+      reinit(listing);
+      setUpdating(false);
+      loading = null;
+      document.dispatchEvent(new CustomEvent('od:listing:load', { detail: { url: url } }));
+    }
+    function full() {
+      return fetch(url, { headers: { Accept: 'text/html' }, credentials: 'same-origin' })
+        .then(function (r) { return r.text(); })
+        .then(function (html) {
+          if (token !== loading) return;
+          var doc = new DOMParser().parseFromString(html, 'text/html');
+          finish(doc, doc, doc);
+        });
+    }
+    // Section Rendering API (round 14b): only the listing section + the filter section, a fraction of the page
+    var secEl = listing.closest('.shopify-section');
+    var sid = secEl && secEl.id ? secEl.id.replace(/^shopify-section-/, '') : '';
+    var hasFilterSec = !!$('#shopify-section-od-filter');
+    var u;
+    try { u = new URL(url, window.location.href); } catch (e) { u = null; }
+    if (!sid || !u) { full().catch(function () { window.location.href = url; }); return; }
+    var secUrl = new URL(u.toString());
+    secUrl.searchParams.set('sections', sid + (hasFilterSec ? ',od-filter' : ''));
+    fetch(secUrl.toString(), { headers: { Accept: 'application/json' }, credentials: 'same-origin' })
+      .then(function (r) { if (!r.ok) throw new Error('sections ' + r.status); return r.json(); })
+      .then(function (json) {
+        if (token !== loading) return;
+        if (!json || !json[sid]) throw new Error('no section');
+        var ldoc = new DOMParser().parseFromString(json[sid], 'text/html');
+        var fdoc = json['od-filter'] ? new DOMParser().parseFromString(json['od-filter'], 'text/html') : null;
+        finish(ldoc, fdoc, null);
+        // a different collection (category link): breadcrumbs + title come from the full page, in the background
+        if (u.pathname !== pathBefore) {
+          fetch(url, { headers: { Accept: 'text/html' }, credentials: 'same-origin' }).then(function (r) { return r.text(); }).then(function (html) {
+            var doc = new DOMParser().parseFromString(html, 'text/html');
+            var bc = $('[data-breadcrumbs]'), bcNew = $('[data-breadcrumbs]', doc);
+            if (bc && bcNew && !listing.contains(bc)) bc.innerHTML = bcNew.innerHTML;
+            if (doc.title) document.title = doc.title;
+          }).catch(function () {});
+        }
       })
-      .catch(function () { window.location.href = url; });
+      .catch(function () { full().catch(function () { window.location.href = url; }); });
   }
   OD.listingLoad = load;
 
@@ -263,7 +298,10 @@
     e.preventDefault();
     if (a.closest('[data-fp]')) {
       // popup: category links reload the listing behind and reopen the tree on the new category (types level when it has one)
+      var fpA = a.closest('[data-fp]');
       fpKeep = { pane: 'cat', ft: a.hasAttribute('data-fp-cat') ? 'types' : null, scroll: 0 };
+      fpBusyRow(a);
+      if (a.hasAttribute('data-fp-cat')) fpSkeletonLevel(fpA, a.textContent.trim());
       fpLoading(true);
       load(a.href, true);
       return;
@@ -306,6 +344,28 @@
   function fpEl() { return $('[data-fp]'); }
   function fpOpen() { return !!(OD.openModals && OD.openModals.has('filter') && fpEl()); }
   function fpLoading(on) { var fp = fpEl(); if (fp) fp.classList.toggle('is-loading', !!on); }
+  function fpBusyRow(el) {
+    var row = el.closest('.od-ft__row, ._CheckboxButton_8c7of_30');
+    if (!row || row.classList.contains('is-busy')) return;
+    row.classList.add('is-busy');
+    var sp = document.createElement('span'); sp.className = 'od-fp__rowspin'; sp.setAttribute('aria-hidden', 'true');
+    var slot = row.querySelector('.od-fp__vc') || row.querySelector('svg');
+    if (slot) slot.replaceWith(sp); else row.appendChild(sp);
+  }
+  function fpSkeletonLevel(fp, label) {
+    // slide to a temporary tree panel with shimmer rows while the new category is fetched
+    var tree = $('[data-ft]', fp);
+    if (!tree) return;
+    var old = $('[data-ft-panel="loading"]', tree);
+    if (old) old.remove();
+    var p = document.createElement('div');
+    p.className = 'od-ft__panel'; p.setAttribute('data-ft-panel', 'loading'); p.setAttribute('aria-busy', 'true');
+    var rows = '';
+    for (var i = 0; i < 6; i++) rows += '<div class="od-fp__skel"><i></i><b style="width:' + (38 + ((i * 17) % 40)) + '%"></b></div>';
+    p.innerHTML = '<p class="od-fp__eye">' + label.replace(/</g, '&lt;') + '</p>' + rows;
+    tree.appendChild(p);
+    setTimeout(function () { showPanel(tree, 'loading'); }, 120);
+  }
   function fpShow(fp, id, instant) {
     if (!fp) return;
     if (instant) fp.classList.add('od-fp--instant');
@@ -351,6 +411,8 @@
     var fp = fm.hasAttribute('data-fp') ? fm : $('[data-fp]', fm);
     if (!fp) return;
     fp.classList.remove('is-loading');
+    fp.classList.add('is-done');
+    setTimeout(function () { fp.classList.remove('is-done'); }, 600);
     if (!fpKeep) { fpShow(fp, 'root', true); return; }
     var keep = fpKeep; fpKeep = null;
     var tree = $('[data-ft]', fp);
@@ -387,6 +449,7 @@
   document.addEventListener('change', function (e) {
     var fp = e.target.closest('[data-fp]');
     if (!fp || e.target.type !== 'checkbox') return;
+    fpBusyRow(e.target);
     if (e.target.hasAttribute('data-fp-all-types')) {
       // "All <category>": clear every type box and reload
       var panel = e.target.closest('[data-ft-panel]');

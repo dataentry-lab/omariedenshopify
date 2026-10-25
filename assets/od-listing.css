@@ -478,3 +478,25 @@
   .od-fp__group-sum { max-width: 60vw; }
 }
 @media (prefers-reduced-motion: reduce) { .od-fp, .od-fp__backdrop, .od-fp__pane { transition: none; } }
+
+/* round 14b: loading feedback inside the popup (progress line under the header, "Updating" on the button, busy row with a spinner,
+   skeleton rows for the level that is being fetched, counts dimmed) */
+.od-fp__bar { position: relative; height: 2px; margin-bottom: -2px; pointer-events: none; z-index: 2; }
+.od-fp__bar:after { content: ""; position: absolute; left: 0; top: 0; height: 2px; width: 0; background: var(--od-listing-olive, #595b33); opacity: 0; transition: width .5s cubic-bezier(.22, 1, .36, 1), opacity .25s; }
+[dir=rtl] .od-fp__bar:after { left: auto; right: 0; }
+.od-fp.is-loading .od-fp__bar:after { opacity: 1; width: 72%; }
+.od-fp.is-done .od-fp__bar:after { width: 100%; opacity: 0; transition: width .2s ease, opacity .3s ease .2s; }
+.od-fp__upd { display: none; }
+.od-fp.is-loading .od-fp__upd { display: inline; }
+.od-fp.is-loading .od-fp__apply-t { display: none; }
+.od-fp.is-loading .od-fp__vc { opacity: .45; transition: opacity .2s; }
+.od-fp .od-ft__row.is-busy, .od-fp ._CheckboxButton_8c7of_30.is-busy { background: #efe6d6; margin: 0 -10px; padding-left: 10px; padding-right: 10px; color: var(--od-listing-olive, #595b33); }
+.od-fp ._CheckboxButton_8c7of_30.is-busy label { padding-left: 0; }
+.od-fp__rowspin { display: inline-block; width: 14px; height: 14px; border: 1.5px solid var(--od-listing-olive, #595b33); border-right-color: transparent; border-radius: 50%; animation: od-fp-spin .7s linear infinite; flex: none; }
+.od-fp__skel { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f1eeea; }
+.od-fp__skel i, .od-fp__skel b { display: block; position: relative; overflow: hidden; background: #eadfcf; }
+.od-fp__skel i { width: 20px; height: 20px; flex: none; }
+.od-fp__skel b { height: 12px; border-radius: 2px; }
+.od-fp__skel i:after, .od-fp__skel b:after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, #fcf8f2 50%, transparent); transform: translateX(-100%); animation: od-fp-sh 1.6s ease-in-out infinite; }
+@keyframes od-fp-sh { to { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) { .od-fp__skel i:after, .od-fp__skel b:after, .od-fp__rowspin { animation: none; } }

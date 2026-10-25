@@ -1,0 +1,10 @@
+{%- comment -%}
+  Filter popup as a static section (round 14b, 25 Oct 2026) so od-listing.js can refresh it through the Section Rendering API
+  (`?sections=<listing section id>,od-filter`) instead of downloading the whole page after every change.
+  Rendered once from layout/theme.liquid on collection + search pages. Theme settings > Collections > "Filter popup" picks the popup
+  or the legacy side drawer.
+{%- endcomment -%}
+{%- if settings.filter_popup -%}{%- render 'modal-filter' -%}{%- else -%}{%- render 'modal-filter-legacy' -%}{%- endif -%}
+{% schema %}
+{ "name": "Filter popup", "settings": [] }
+{% endschema %}
