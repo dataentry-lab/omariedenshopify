@@ -85,7 +85,12 @@
       "reset": "إعادة ضبط",
       "apply": "تطبيق",
       "all_departments": "كل الأقسام",
-      "all_in": "كل {{ name }}"
+      "all_in": "كل {{ name }}",
+      "all": "الكل",
+      "size": "المقاس",
+      "show_results": "عرض {{ count }} نتيجة",
+      "show_results_plain": "عرض النتائج",
+      "price_hint": "الأسعار بالريال السعودي، تُطبّق أثناء الكتابة"
     },
     "sort": {
       "label": "ترتيب",

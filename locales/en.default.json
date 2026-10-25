@@ -85,7 +85,12 @@
       "reset": "Reset",
       "apply": "Apply",
       "all_departments": "All departments",
-      "all_in": "All {{ name }}"
+      "all_in": "All {{ name }}",
+      "all": "All",
+      "size": "Size",
+      "show_results": "Show {{ count }} results",
+      "show_results_plain": "Show results",
+      "price_hint": "Prices in SAR, applied as you type"
     },
     "sort": {
       "label": "SORT",

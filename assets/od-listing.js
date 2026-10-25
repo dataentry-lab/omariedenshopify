@@ -4,7 +4,8 @@
    - infinite scroll with skeleton placeholder cards
    - desktop grid toggle 4 / 5 per row (remembered for the session)
    - sticky toolbar: measures the header into --od-header-h, toggles `is-stuck`
-   - filter drawer category tree drill-in / back */
+   - filter drawer category tree drill-in / back
+   - round 14: filter popup (.od-fp): panes root <-> group, every change applies at once (ajax, popup stays open), Reset, live count */
 (function () {
   'use strict';
   var OD = window.OD || {};
@@ -219,7 +220,7 @@
     var lm = $('[data-load-more]', listing); if (lm) lm.innerHTML = '';
     // keep the toolbar in view while results change
     var t = toolbar();
-    if (t) { var top = t.getBoundingClientRect().top; if (top < headerH || top > window.innerHeight * 0.6) window.scrollTo({ top: window.scrollY + top - headerH - 8, behavior: 'smooth' }); }
+    if (t && !fpOpen()) { var top = t.getBoundingClientRect().top; if (top < headerH || top > window.innerHeight * 0.6) window.scrollTo({ top: window.scrollY + top - headerH - 8, behavior: 'smooth' }); }
     fetch(url, { headers: { Accept: 'text/html' }, credentials: 'same-origin' })
       .then(function (r) { return r.text(); })
       .then(function (html) {
@@ -230,7 +231,7 @@
         listing.innerHTML = fresh.innerHTML;
         // the filter drawer lives outside the listing: refresh it too (active states / counts)
         var fm = $('[data-modal="filter"]'), fmNew = $('[data-modal="filter"]', doc);
-        if (fm && fmNew) fm.innerHTML = fmNew.innerHTML;
+        if (fm && fmNew) { fm.innerHTML = fmNew.innerHTML; fpRestore(fm); }
         var bc = $('[data-breadcrumbs]'), bcNew = $('[data-breadcrumbs]', doc);
         if (bc && bcNew && !listing.contains(bc)) bc.innerHTML = bcNew.innerHTML;
         if (doc.title) document.title = doc.title;
@@ -260,6 +261,13 @@
     var a = e.target.closest('[data-listing-cats] a, [data-filter-form] a.od-ft__row, [data-filter-form] a._resetBtn_rmug7_149, [data-listing-ajax] a');
     if (!a || !sameListing(a.href)) return;
     e.preventDefault();
+    if (a.closest('[data-fp]')) {
+      // popup: category links reload the listing behind and reopen the tree on the new category (types level when it has one)
+      fpKeep = { pane: 'cat', ft: a.hasAttribute('data-fp-cat') ? 'types' : null, scroll: 0 };
+      fpLoading(true);
+      load(a.href, true);
+      return;
+    }
     if (OD.openModals && OD.openModals.has('filter') && OD.closeModal) OD.closeModal('filter');
     load(a.href, true);
   });
@@ -267,6 +275,7 @@
   document.addEventListener('submit', function (e) {
     var form = e.target.closest('[data-filter-form]');
     if (!form) return;
+    if (form.closest('[data-fp]')) { e.preventDefault(); if (OD.closeModal) OD.closeModal('filter'); return; }
     var action = form.getAttribute('action') || window.location.pathname;
     if (!sameListing(action)) return;
     e.preventDefault();
@@ -285,6 +294,126 @@
     load(url.toString(), true);
   });
   window.addEventListener('popstate', function () { if (grid()) load(window.location.href, false); });
+
+
+  /* ===================== filter popup (round 14) =====================
+     Markup: snippets/modal-filter.liquid. One form, panes [data-fp-pane]; root pane lists the groups, the others hold the values.
+     Any change (checkbox, price, category link, Reset) rebuilds the URL from the form and loads the listing behind (load()),
+     the popup stays open; load() swaps the modal innerHTML with the fresh one (counts, summaries, chips) and fpRestore() puts the
+     same pane / tree panel / scroll back without animation. "Show n results" (submit) only closes. */
+  var fpKeep = null;
+  var fpPriceTimer = null;
+  function fpEl() { return $('[data-fp]'); }
+  function fpOpen() { return !!(OD.openModals && OD.openModals.has('filter') && fpEl()); }
+  function fpLoading(on) { var fp = fpEl(); if (fp) fp.classList.toggle('is-loading', !!on); }
+  function fpShow(fp, id, instant) {
+    if (!fp) return;
+    if (instant) fp.classList.add('od-fp--instant');
+    var root = $('[data-fp-pane="root"]', fp);
+    var target = $('[data-fp-pane="' + id + '"]', fp) || root;
+    var isRoot = target === root;
+    $$('[data-fp-pane]', fp).forEach(function (p) { p.classList.toggle('is-on', p === target); });
+    if (root) root.classList.toggle('is-left', !isRoot);
+    fp.classList.toggle('is-level', !isRoot);
+    var title = $('[data-fp-title]', fp);
+    if (title) title.textContent = isRoot ? (title.getAttribute('data-t-root') || 'Filter') : (target.getAttribute('data-fp-label') || '');
+    var left = $('[data-fp-left]', fp), ll = $('[data-fp-left-label]', fp);
+    if (left && ll) {
+      ll.textContent = isRoot ? left.getAttribute('data-t-clear') : left.getAttribute('data-t-back');
+      left.classList.toggle('is-act', !isRoot || !!$('[data-fp-reset]:not([hidden])', fp));
+    }
+    fp.setAttribute('data-fp-current', isRoot ? 'root' : id);
+    if (instant) { void fp.offsetWidth; fp.classList.remove('od-fp--instant'); }
+  }
+  function fpApply(fp) {
+    var form = $('[data-filter-form]', fp);
+    if (!form) return;
+    var action = form.getAttribute('action') || window.location.pathname;
+    if (!sameListing(action)) { form.submit(); return; }
+    var params = new URLSearchParams();
+    Array.prototype.forEach.call(form.elements, function (el) {
+      if (!el.name || el.disabled) return;
+      if (el.type === 'checkbox' && !el.checked) return;
+      if (el.value === '') return;
+      params.append(el.name, el.value);
+    });
+    var url = action + (params.toString() ? '?' + params.toString() : '');
+    var pane = fp.getAttribute('data-fp-current') || 'root';
+    var paneEl = $('[data-fp-pane="' + pane + '"]', fp);
+    var tree = $('[data-ft]', fp);
+    var ftNow = null;
+    if (tree) $$('[data-ft-panel]', tree).forEach(function (p) { if (!p.hidden) ftNow = p.getAttribute('data-ft-panel'); });
+    fpKeep = { pane: pane, ft: pane === 'cat' ? ftNow : null, scroll: paneEl ? paneEl.scrollTop : 0 };
+    fpLoading(true);
+    load(url, true);
+  }
+  function fpRestore(fm) {
+    var fp = fm.hasAttribute('data-fp') ? fm : $('[data-fp]', fm);
+    if (!fp) return;
+    fp.classList.remove('is-loading');
+    if (!fpKeep) { fpShow(fp, 'root', true); return; }
+    var keep = fpKeep; fpKeep = null;
+    var tree = $('[data-ft]', fp);
+    if (tree && keep.pane === 'cat') {
+      var want = keep.ft && $('[data-ft-panel="' + keep.ft + '"]', tree) ? keep.ft : (tree.getAttribute('data-ft-start') || 'root');
+      showPanel(tree, want);
+    }
+    fpShow(fp, keep.pane, true);
+    var paneEl = $('[data-fp-pane="' + keep.pane + '"]', fp);
+    if (paneEl) paneEl.scrollTop = keep.scroll || 0;
+  }
+  document.addEventListener('click', function (e) {
+    var fp = e.target.closest('[data-fp]');
+    if (!fp) return;
+    var go = e.target.closest('[data-fp-go]');
+    if (go) { e.preventDefault(); fpShow(fp, go.getAttribute('data-fp-go')); return; }
+    var left = e.target.closest('[data-fp-left]');
+    if (left) {
+      e.preventDefault();
+      if ((fp.getAttribute('data-fp-current') || 'root') !== 'root') { fpShow(fp, 'root'); return; }
+      var clear = fp.getAttribute('data-fp-clear');
+      if (clear && $('[data-fp-reset]:not([hidden])', fp)) { fpKeep = { pane: 'root', ft: null, scroll: 0 }; fpLoading(true); load(clear, true); }
+      return;
+    }
+    var reset = e.target.closest('[data-fp-reset]');
+    if (reset) {
+      e.preventDefault();
+      var pane = fp.getAttribute('data-fp-current') || 'root';
+      fpKeep = { pane: pane, ft: null, scroll: 0 };
+      fpLoading(true);
+      load(reset.getAttribute('href'), true);
+    }
+  });
+  document.addEventListener('change', function (e) {
+    var fp = e.target.closest('[data-fp]');
+    if (!fp || e.target.type !== 'checkbox') return;
+    if (e.target.hasAttribute('data-fp-all-types')) {
+      // "All <category>": clear every type box and reload
+      var panel = e.target.closest('[data-ft-panel]');
+      if (panel) $$('input[type="checkbox"][name]', panel).forEach(function (i) { i.checked = false; });
+      e.target.checked = true;
+    }
+    fpApply(fp);
+  });
+  document.addEventListener('input', function (e) {
+    var fp = e.target.closest('[data-fp]');
+    if (!fp || !e.target.hasAttribute('data-fp-price')) return;
+    clearTimeout(fpPriceTimer);
+    fpPriceTimer = setTimeout(function () { fpApply(fp); }, 650);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter') return;
+    var fp = e.target.closest && e.target.closest('[data-fp]');
+    if (fp && e.target.hasAttribute('data-fp-price')) { e.preventDefault(); clearTimeout(fpPriceTimer); fpApply(fp); }
+  });
+  document.addEventListener('od:modal:open', function (e) {
+    if (!e.detail || e.detail.name !== 'filter') return;
+    var fp = fpEl();
+    if (!fp) return;
+    fpShow(fp, 'root', true);
+    var tree = $('[data-ft]', fp);
+    if (tree) showPanel(tree, tree.getAttribute('data-ft-start') || 'root');
+  });
 
   /* ===================== infinite scroll with skeleton cards ===================== */
   var lmIo = null;

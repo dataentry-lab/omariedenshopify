@@ -1,6 +1,13 @@
 {%- comment -%}
-  Floating filter drawer (collection + search pages), driven by Shopify storefront filters.
-  The "Category" tree comes from the main navigation menu, exactly like the original department > sub-department > category tree.
+  Filter popup (collection + search pages), round 14 (25 Oct 2026). Revert: Theme settings > Collections > "Filter popup" off
+  renders snippets/modal-filter-legacy.liquid (the previous side drawer) instead; layout/theme.liquid switches.
+  Desktop + tablet: centred popup; mobile (<768px): full-screen sheet. Markup = one <form> (same URLs as before) with panes:
+    root   = one row per group with the current pick under the name: Category (menu tree), Size (all *_size filters merged),
+             then every other storefront filter. The "Type" (product type) filter is NOT a root row when a category is active:
+             it lives inside the Category tree as the last level (Category > Dresses > Maxi / Midi / ...).
+    panes  = the group's values (checkboxes with counts, swatch dot for colours, min / max for price).
+  Every change applies at once (od-listing.js: ajax load of the listing behind, popup stays open, counts refresh from the new HTML);
+  "Show n results" only closes. Outlined Reset shows once something is applied. CSS: assets/od-listing.css (.od-fp).
 {%- endcomment -%}
 {%- liquid
   assign rtl = false
@@ -10,166 +17,326 @@
   if request.page_type == 'search'
     assign results = search
     assign action_url = routes.search_url
+    assign result_count = search.results_count
   else
     assign results = collection
     assign action_url = collection.url
+    assign result_count = collection.products_count
   endif
   assign menu_handle = settings.main_menu | default: 'main-menu'
   assign sort_by = results.sort_by | default: results.default_sort_by
+  assign t_all = 'collections.filter.all' | t
+  assign has_menu = false
+  if linklists[menu_handle].links.size > 0
+    assign has_menu = true
+  endif
+
+  comment
+    Which menu item is active (department / sub-department / category) and which tree panel to open first
+  endcomment
+  assign cat_now = ''
+  assign cat_active_url = ''
+  assign start_panel = 'root'
+  assign di = 0
+  for dept in linklists[menu_handle].links
+    assign di = di | plus: 1
+    if dept.active
+      assign cat_now = dept.title
+      assign cat_active_url = dept.url
+    endif
+    if dept.active or dept.child_active
+      assign start_panel = 'd' | append: di
+    endif
+    assign si = 0
+    for sub in dept.links
+      assign si = si | plus: 1
+      if sub.active
+        assign cat_now = sub.title
+        assign cat_active_url = sub.url
+      endif
+      if sub.links.size > 0
+        if sub.active or sub.child_active
+          assign start_panel = 'd' | append: di | append: 's' | append: si
+        endif
+        for cat in sub.links
+          if cat.active
+            assign cat_now = cat.title
+            assign cat_active_url = cat.url
+          endif
+        endfor
+      endif
+    endfor
+  endfor
+
+  comment
+    Product type filter = the last level of the Category tree while a category is active
+  endcomment
+  assign type_filter = nil
+  for filter in results.filters
+    if filter.param_name == 'filter.p.product_type'
+      assign type_filter = filter
+    endif
+  endfor
+  assign types_in_tree = false
+  if type_filter and cat_now != '' and type_filter.values.size > 1
+    assign types_in_tree = true
+  endif
+  assign cat_sum = cat_now | default: t_all
+  if types_in_tree and type_filter.active_values.size > 0
+    assign tsum = type_filter.active_values | map: 'label' | join: ', '
+    assign cat_sum = cat_now | append: ': ' | append: tsum
+  endif
+
+  comment
+    Size = every filter whose label ends with "size" (Top Size, Dress Size, Shoe Size ...) merged into one group
+  endcomment
+  assign size_n = 0
+  assign size_sum = ''
+  for filter in results.filters
+    assign fl = filter.label | downcase
+    if fl contains 'size' or fl contains 'مقاس'
+      assign size_n = size_n | plus: 1
+      if filter.active_values.size > 0
+        assign part = filter.active_values | map: 'label' | join: ', '
+        if size_sum == ''
+          assign size_sum = part
+        else
+          assign size_sum = size_sum | append: ', ' | append: part
+        endif
+      endif
+    endif
+  endfor
+  assign t_size = 'collections.filter.size' | t
+
+  comment
+    Clear-all URL (keeps the sort)
+  endcomment
+  if request.page_type == 'search'
+    assign clear_url = search.terms | url_encode | prepend: '?q=' | prepend: routes.search_url
+    if sort_by
+      assign clear_url = clear_url | append: '&sort_by=' | append: sort_by
+    endif
+  else
+    assign clear_url = collection.url
+    if sort_by
+      assign clear_url = clear_url | append: '?sort_by=' | append: sort_by
+    endif
+  endif
+  assign active_n = 0
+  for f in results.filters
+    if f.type == 'price_range'
+      if f.min_value.value != nil or f.max_value.value != nil
+        assign active_n = active_n | plus: 1
+      endif
+    else
+      assign active_n = active_n | plus: f.active_values.size
+    endif
+  endfor
 -%}
-<div class="_backdrop_9316i_30 undefined" data-modal-backdrop="filter" data-show-class="_backdropShow_rmug7_216"></div>
-<div class="_modal_9316i_132 _modalAddCls_rmug7_176" data-modal="filter" data-show-class="_show_rmug7_210">
-  <div class="_mHeader_9316i_67">
-    <div class="_mHeader__imgContainer_9316i_89"><h2{% if rtl %} class="_h2Rtl_9316i_50"{% endif %}>{{ 'collections.filter.title' | t }} <span></span></h2></div>
-    <div class="_globalImg_1tf1q_38 _close_9316i_125" data-close-modal="filter"><img fetchpriority="auto" alt="{{ 'general.accessibility.close' | t }}" src="{{ 'icons_cross.svg' | asset_url }}"></div>
-  </div>
-  <form action="{{ action_url }}" method="get" data-filter-form style="display:contents;">
+<div class="od-fp__backdrop" data-modal-backdrop="filter" data-show-class="is-open"></div>
+<div class="od-fp" data-modal="filter" data-show-class="is-open" data-fp data-fp-clear="{{ clear_url | escape }}" role="dialog" aria-modal="true" aria-label="{{ 'collections.filter.title' | t }}">
+  <form action="{{ action_url }}" method="get" data-filter-form class="od-fp__form">
     {%- if request.page_type == 'search' -%}
       <input type="hidden" name="q" value="{{ search.terms | escape }}">
       <input type="hidden" name="options[prefix]" value="last">
     {%- endif -%}
     {%- if sort_by -%}<input type="hidden" name="sort_by" value="{{ sort_by }}">{%- endif -%}
-    <div class="_content_9316i_45">
-      <div class="_filterContainer_rmug7_30">
 
-        {%- comment -%} Category tree: scoped to the current department / sub-department, drill-in + back (client request) {%- endcomment -%}
-        {%- if linklists[menu_handle].links.size > 0 -%}
+    <div class="od-fp__head">
+      <button type="button" class="od-fp__left{% if active_n > 0 %} is-act{% endif %}" data-fp-left data-t-clear="{{ 'listing.clear_all' | t }}" data-t-back="{{ 'collections.filter.title' | t }}">
+        <svg class="od-fp__chev od-fp__chev--back" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span data-fp-left-label>{{ 'listing.clear_all' | t }}</span>
+      </button>
+      <h2 class="od-fp__title" data-fp-title data-t-root="{{ 'collections.filter.title' | t | escape }}">{{ 'collections.filter.title' | t }}</h2>
+      <button type="button" class="od-fp__x" data-close-modal="filter" aria-label="{{ 'general.accessibility.close' | t }}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+    </div>
+
+    <div class="od-fp__body">
+      {%- comment -%} ---------- root: one row per group ---------- {%- endcomment -%}
+      <div class="od-fp__pane od-fp__pane--root is-on" data-fp-pane="root">
+        {%- if has_menu -%}
+          <button type="button" class="od-fp__group" data-fp-go="cat">
+            <span class="od-fp__group-l"><span class="od-fp__group-name">{{ 'collections.filter.category' | t }}</span><span class="od-fp__group-sum{% if cat_now != '' %} is-set{% endif %}">{{ cat_sum }}</span></span>
+            <svg class="od-fp__chev od-fp__chev--fwd" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        {%- endif -%}
+        {%- if size_n > 0 -%}
+          <button type="button" class="od-fp__group" data-fp-go="size">
+            <span class="od-fp__group-l"><span class="od-fp__group-name">{{ t_size }}</span><span class="od-fp__group-sum{% if size_sum != '' %} is-set{% endif %}">{{ size_sum | default: t_all }}</span></span>
+            <svg class="od-fp__chev od-fp__chev--fwd" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        {%- endif -%}
+        {%- for filter in results.filters -%}
           {%- liquid
-            assign start_panel = 'root'
-            assign di = 0
-            for dept in linklists[menu_handle].links
-              assign di = di | plus: 1
-              if dept.active or dept.child_active
-                assign start_panel = 'd' | append: di
-                assign si = 0
-                for sub in dept.links
-                  assign si = si | plus: 1
-                  if sub.links.size > 0
-                    if sub.active or sub.child_active
-                      assign start_panel = 'd' | append: di | append: 's' | append: si
-                    endif
-                  endif
-                endfor
-              endif
-            endfor
+            assign fl = filter.label | downcase
+            assign skip = false
+            if fl contains 'size' or fl contains 'مقاس'
+              assign skip = true
+            endif
+            if filter.param_name == 'filter.p.product_type' and types_in_tree
+              assign skip = true
+            endif
+            if filter.type == 'list' and filter.values.size == 0
+              assign skip = true
+            endif
           -%}
-          <div class="_accordion_container_ve0fr_30 undefined" data-accordion>
-            <div>
-              <button type="button" class="_menu_button_ve0fr_36 _title_rmug7_108 " data-accordion-toggle><span>{{ 'collections.filter.category' | t }}</span></button>
-              <div class="_content_ve0fr_84 undefined" style="height: auto; overflow: hidden; transition: height 0.3s; margin-bottom: 0px;" data-accordion-content data-accordion-open>
-                <div class="od-ft" data-ft data-ft-start="{{ start_panel }}">
-                  {%- comment -%} root: departments {%- endcomment -%}
-                  <div class="od-ft__panel" data-ft-panel="root" hidden>
-                    {%- assign di = 0 -%}
-                    {%- for dept in linklists[menu_handle].links -%}
-                      {%- assign di = di | plus: 1 -%}
-                      {%- if dept.links.size > 0 -%}
-                        <button type="button" class="od-ft__row od-ft__row--drill" data-ft-go="d{{ di }}"><span>{{ dept.title }}</span><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                      {%- else -%}
-                        <a class="od-ft__row" href="{{ dept.url }}"><span>{{ dept.title }}</span></a>
-                      {%- endif -%}
-                    {%- endfor -%}
-                  </div>
-                  {%- assign di = 0 -%}
-                  {%- for dept in linklists[menu_handle].links -%}
-                    {%- assign di = di | plus: 1 -%}
-                    {%- if dept.links.size > 0 -%}
-                      <div class="od-ft__panel" data-ft-panel="d{{ di }}" hidden>
-                        <button type="button" class="od-ft__back" data-ft-go="root"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{{ 'collections.filter.all_departments' | t }}</span></button>
-                        <a class="od-ft__row od-ft__row--all{% if dept.active %} is-current{% endif %}" href="{{ dept.url }}"><span>{{ 'collections.filter.all_in' | t: name: dept.title }}</span></a>
-                        {%- assign si = 0 -%}
-                        {%- for sub in dept.links -%}
-                          {%- assign si = si | plus: 1 -%}
-                          {%- if sub.links.size > 0 -%}
-                            <button type="button" class="od-ft__row od-ft__row--drill{% if sub.active or sub.child_active %} is-current{% endif %}" data-ft-go="d{{ di }}s{{ si }}"><span>{{ sub.title }}</span><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                          {%- else -%}
-                            <a class="od-ft__row{% if sub.active %} is-current{% endif %}" href="{{ sub.url }}"><span>{{ sub.title }}</span></a>
-                          {%- endif -%}
-                        {%- endfor -%}
-                      </div>
-                      {%- assign si = 0 -%}
-                      {%- for sub in dept.links -%}
-                        {%- assign si = si | plus: 1 -%}
-                        {%- if sub.links.size > 0 -%}
-                          <div class="od-ft__panel" data-ft-panel="d{{ di }}s{{ si }}" hidden>
-                            <button type="button" class="od-ft__back" data-ft-go="d{{ di }}"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{{ dept.title }}</span></button>
-                            <a class="od-ft__row od-ft__row--all{% if sub.active %} is-current{% endif %}" href="{{ sub.url }}"><span>{{ 'collections.filter.all_in' | t: name: sub.title }}</span></a>
-                            {%- for cat in sub.links -%}
-                              <a class="od-ft__row{% if cat.active %} is-current{% endif %}" href="{{ cat.url }}"><span>{{ cat.title }}</span></a>
-                            {%- endfor -%}
-                          </div>
-                        {%- endif -%}
-                      {%- endfor -%}
+          {%- unless skip -%}
+            {%- liquid
+              assign sum = t_all
+              if filter.type == 'price_range'
+                if filter.min_value.value != nil or filter.max_value.value != nil
+                  assign pmin = filter.min_value.value | default: 0
+                  assign pmax = filter.max_value.value | default: filter.range_max
+                  assign sum = pmin | money_without_currency | append: ' – ' | append: pmax | money_without_currency
+                endif
+              elsif filter.active_values.size > 0
+                assign sum = filter.active_values | map: 'label' | join: ', '
+              endif
+            -%}
+            <button type="button" class="od-fp__group" data-fp-go="f{{ forloop.index }}">
+              <span class="od-fp__group-l"><span class="od-fp__group-name">{{ filter.label }}</span><span class="od-fp__group-sum{% if sum != t_all %} is-set{% endif %}">{{ sum }}</span></span>
+              <svg class="od-fp__chev od-fp__chev--fwd" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} ---------- Category: department > sub-department > category (> type) tree ---------- {%- endcomment -%}
+      {%- if has_menu -%}
+        <div class="od-fp__pane" data-fp-pane="cat" data-fp-label="{{ 'collections.filter.category' | t | escape }}">
+          <div class="od-ft" data-ft data-ft-start="{{ start_panel }}">
+            <div class="od-ft__panel" data-ft-panel="root" hidden>
+              {%- assign di = 0 -%}
+              {%- for dept in linklists[menu_handle].links -%}
+                {%- assign di = di | plus: 1 -%}
+                {%- if dept.links.size > 0 -%}
+                  <button type="button" class="od-ft__row od-ft__row--drill" data-ft-go="d{{ di }}"><span>{{ dept.title }}</span><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                {%- else -%}
+                  <a class="od-ft__row" href="{{ dept.url }}"><span>{{ dept.title }}</span></a>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+            {%- assign di = 0 -%}
+            {%- for dept in linklists[menu_handle].links -%}
+              {%- assign di = di | plus: 1 -%}
+              {%- if dept.links.size > 0 -%}
+                <div class="od-ft__panel" data-ft-panel="d{{ di }}" hidden>
+                  <button type="button" class="od-ft__back" data-ft-go="root"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{{ 'collections.filter.all_departments' | t }}</span></button>
+                  <p class="od-fp__eye">{{ dept.title }}</p>
+                  <a class="od-ft__row od-ft__row--all{% if dept.active %} is-current{% endif %}" href="{{ dept.url }}"><span>{{ 'collections.filter.all_in' | t: name: dept.title }}</span></a>
+                  {%- assign si = 0 -%}
+                  {%- for sub in dept.links -%}
+                    {%- assign si = si | plus: 1 -%}
+                    {%- if sub.links.size > 0 -%}
+                      <button type="button" class="od-ft__row od-ft__row--drill{% if sub.active or sub.child_active %} is-current{% endif %}" data-ft-go="d{{ di }}s{{ si }}"><span>{{ sub.title }}</span><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    {%- else -%}
+                      <a class="od-ft__row{% if sub.active %} is-current{% endif %}" href="{{ sub.url }}"><span>{{ sub.title }}</span></a>
                     {%- endif -%}
                   {%- endfor -%}
                 </div>
-              </div>
-            </div>
-          </div>
-        {%- endif -%}
-
-        {%- comment -%} Storefront filters {%- endcomment -%}
-        {%- for filter in results.filters -%}
-          {%- liquid
-            assign is_last = false
-            if forloop.last
-              assign is_last = true
-            endif
-            assign is_color = false
-            assign flabel = filter.label | downcase
-            if flabel contains 'color' or flabel contains 'colour' or flabel contains 'لون'
-              assign is_color = true
-            endif
-            assign open = false
-            if filter.active_values.size > 0 or filter.min_value.value != nil or filter.max_value.value != nil
-              assign open = true
-            endif
-          -%}
-          <div class="_accordion_container_ve0fr_30 {% if is_last %}_lastChild_rmug7_50{% else %}undefined{% endif %}" data-accordion>
-            <div>
-              <button type="button" class="_menu_button_ve0fr_36 _title_rmug7_108 {% if open %}_open_ve0fr_80{% endif %}" data-accordion-toggle>
-                <span>{{ filter.label }}</span>
-                <span class="_icon_ve0fr_59 "><div class="_globalImg_1tf1q_38 _icon__img_ve0fr_59"><img fetchpriority="auto" alt="" src="{% if open %}{{ 'icons_light_minus.svg' | asset_url }}{% else %}{{ 'icons_light_plus.svg' | asset_url }}{% endif %}" data-icon-plus="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-minus="{{ 'icons_light_minus.svg' | asset_url }}"></div></span>
-              </button>
-              <div class="_content_ve0fr_84 undefined" style="height: {% if open %}auto{% else %}0px{% endif %}; overflow: hidden; transition: height 0.3s; margin-bottom: {% if open %}16px{% else %}0px{% endif %};" data-accordion-content {% if open %}data-accordion-open{% endif %}>
-                {%- case filter.type -%}
-                  {%- when 'list' -%}
-                    {%- comment -%} round 9: every value is a square checkbox (multi-select); colour values also show a swatch dot {%- endcomment -%}
-                    {%- for value in filter.values -%}
-                      <div class="_CheckboxButton_8c7of_30">
-                        <label><div><input id="{{ filter.param_name }}-{{ forloop.index }}" type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}><span class="_CustomCheck_8c7of_52"></span></div>{% if is_color %}<span class="od-ft__swatch" aria-hidden="true" style="background: {% render 'swatch-color', value: value.label, swatch: value.swatch %};"></span>{% endif %}<p>{{ value.label }} <span>({{ value.count }})</span></p></label>
-                      </div>
-                    {%- endfor -%}
-                  {%- when 'boolean' -%}
-                    {%- for value in filter.values -%}
-                      <div class="_CheckboxButton_8c7of_30">
-                        <label><div><input type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %}><span class="_CustomCheck_8c7of_52"></span></div><p>{{ value.label }}</p></label>
-                      </div>
-                    {%- endfor -%}
-                  {%- when 'price_range' -%}
-                    <div class="_priceWrapper_rmug7_54">
-                      <div class="_inputWithLabel_1s8yh_30 undefined">
-                        <label class="_label_1g1i8_30">{{ 'collections.filter.min' | t }} </label>
-                        <input min="0" class="_input_1vioh_49 " type="number" name="{{ filter.min_value.param_name }}" value="{% if filter.min_value.value %}{{ filter.min_value.value | money_without_currency | remove: ',' }}{% endif %}" placeholder="0">
-                      </div>
-                      <div class="_inputWithLabel_1s8yh_30 undefined">
-                        <label class="_label_1g1i8_30">{{ 'collections.filter.max' | t }} </label>
-                        <input min="1" class="_input_1vioh_49 " type="number" name="{{ filter.max_value.param_name }}" value="{% if filter.max_value.value %}{{ filter.max_value.value | money_without_currency | remove: ',' }}{% endif %}" placeholder="{{ filter.range_max | money_without_currency | remove: ',' }}">
-                      </div>
-                      <p></p>
+                {%- assign si = 0 -%}
+                {%- for sub in dept.links -%}
+                  {%- assign si = si | plus: 1 -%}
+                  {%- if sub.links.size > 0 -%}
+                    <div class="od-ft__panel" data-ft-panel="d{{ di }}s{{ si }}" hidden>
+                      <button type="button" class="od-ft__back" data-ft-go="d{{ di }}"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{{ dept.title }}</span></button>
+                      <p class="od-fp__eye">{{ dept.title }} &rsaquo; {{ sub.title }}</p>
+                      <a class="od-ft__row od-ft__row--all{% if sub.active %} is-current{% endif %}" href="{{ sub.url }}"><span>{{ 'collections.filter.all_in' | t: name: sub.title }}</span></a>
+                      {%- for cat in sub.links -%}
+                        {%- if cat.active and types_in_tree -%}
+                          <button type="button" class="od-ft__row od-ft__row--drill is-current" data-ft-go="types"><span>{{ cat.title }}</span><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                        {%- else -%}
+                          <a class="od-ft__row{% if cat.active %} is-current{% endif %}" href="{{ cat.url }}" data-fp-cat><span>{{ cat.title }}</span></a>
+                        {%- endif -%}
+                      {%- endfor -%}
                     </div>
-                {%- endcase -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if types_in_tree -%}
+              {%- comment -%} last level: the product types inside the active category {%- endcomment -%}
+              <div class="od-ft__panel" data-ft-panel="types" hidden>
+                <button type="button" class="od-ft__back" data-ft-go="{{ start_panel }}"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{{ 'collections.filter.category' | t }}</span></button>
+                <p class="od-fp__eye">{{ cat_now }}</p>
+                <div class="_CheckboxButton_8c7of_30 od-fp__row od-fp__row--all">
+                  <label><div><input type="checkbox" data-fp-all-types {% if type_filter.active_values.size == 0 %}checked{% endif %}><span class="_CustomCheck_8c7of_52"></span></div><p><span class="od-fp__vl">{{ 'collections.filter.all_in' | t: name: cat_now }}</span><span class="od-fp__vc">{{ result_count }}</span></p></label>
+                </div>
+                {%- for value in type_filter.values -%}
+                  <div class="_CheckboxButton_8c7of_30 od-fp__row">
+                    <label><div><input type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}><span class="_CustomCheck_8c7of_52"></span></div><p><span class="od-fp__vl">{{ value.label }}</span><span class="od-fp__vc">{{ value.count }}</span></p></label>
+                  </div>
+                {%- endfor -%}
               </div>
-            </div>
+            {%- endif -%}
           </div>
-        {%- endfor -%}
-      </div>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} ---------- Size: every *_size filter in one pane ---------- {%- endcomment -%}
+      {%- if size_n > 0 -%}
+        <div class="od-fp__pane" data-fp-pane="size" data-fp-label="{{ t_size | escape }}">
+          {%- for filter in results.filters -%}
+            {%- assign fl = filter.label | downcase -%}
+            {%- if fl contains 'size' or fl contains 'مقاس' -%}
+              {%- if size_n > 1 -%}<p class="od-fp__eye">{{ filter.label }}</p>{%- endif -%}
+              {%- for value in filter.values -%}
+                <div class="_CheckboxButton_8c7of_30 od-fp__row">
+                  <label><div><input type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}><span class="_CustomCheck_8c7of_52"></span></div><p><span class="od-fp__vl">{{ value.label }}</span><span class="od-fp__vc">{{ value.count }}</span></p></label>
+                </div>
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} ---------- other storefront filters ---------- {%- endcomment -%}
+      {%- for filter in results.filters -%}
+        {%- liquid
+          assign fl = filter.label | downcase
+          assign skip = false
+          if fl contains 'size' or fl contains 'مقاس'
+            assign skip = true
+          endif
+          if filter.param_name == 'filter.p.product_type' and types_in_tree
+            assign skip = true
+          endif
+          assign is_color = false
+          if fl contains 'color' or fl contains 'colour' or fl contains 'لون'
+            assign is_color = true
+          endif
+        -%}
+        {%- unless skip -%}
+          <div class="od-fp__pane" data-fp-pane="f{{ forloop.index }}" data-fp-label="{{ filter.label | escape }}">
+            {%- case filter.type -%}
+              {%- when 'list' -%}
+                {%- for value in filter.values -%}
+                  <div class="_CheckboxButton_8c7of_30 od-fp__row">
+                    <label><div><input type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}><span class="_CustomCheck_8c7of_52"></span></div>{% if is_color %}<span class="od-ft__swatch" aria-hidden="true" style="background: {% render 'swatch-color', value: value.label, swatch: value.swatch %};"></span>{% endif %}<p><span class="od-fp__vl">{{ value.label }}</span><span class="od-fp__vc">{{ value.count }}</span></p></label>
+                  </div>
+                {%- endfor -%}
+              {%- when 'boolean' -%}
+                {%- for value in filter.values -%}
+                  <div class="_CheckboxButton_8c7of_30 od-fp__row">
+                    <label><div><input type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %}><span class="_CustomCheck_8c7of_52"></span></div><p><span class="od-fp__vl">{{ value.label }}</span>{% if value.count %}<span class="od-fp__vc">{{ value.count }}</span>{% endif %}</p></label>
+                  </div>
+                {%- endfor -%}
+              {%- when 'price_range' -%}
+                <div class="od-fp__price">
+                  <label class="od-fp__field"><span>{{ 'collections.filter.min' | t }}</span><input min="0" class="_input_1vioh_49" type="number" inputmode="numeric" name="{{ filter.min_value.param_name }}" value="{% if filter.min_value.value %}{{ filter.min_value.value | money_without_currency | remove: ',' }}{% endif %}" placeholder="0" data-fp-price></label>
+                  <span class="od-fp__dash" aria-hidden="true">&ndash;</span>
+                  <label class="od-fp__field"><span>{{ 'collections.filter.max' | t }}</span><input min="1" class="_input_1vioh_49" type="number" inputmode="numeric" name="{{ filter.max_value.param_name }}" value="{% if filter.max_value.value %}{{ filter.max_value.value | money_without_currency | remove: ',' }}{% endif %}" placeholder="{{ filter.range_max | money_without_currency | remove: ',' }}" data-fp-price></label>
+                </div>
+                <p class="od-fp__hint">{{ 'collections.filter.price_hint' | t }}</p>
+            {%- endcase -%}
+          </div>
+        {%- endunless -%}
+      {%- endfor -%}
     </div>
-    <div class="_footerClass_rmug7_101 _mFooter_9316i_55">
-      <div class="_buttonContainer_rmug7_85">
-        <a href="{{ action_url }}{% if request.page_type == 'search' %}?q={{ search.terms | url_encode }}{% endif %}" class="_btn_lnddl_30 _resetBtn_rmug7_149" style="text-decoration:none;">{{ 'collections.filter.reset' | t }}</a>
-        <button type="submit" class="_btn_lnddl_30 _applyBtn_rmug7_122">{{ 'collections.filter.apply' | t }}</button>
-      </div>
+
+    <div class="od-fp__foot">
+      <a class="od-fp__reset" href="{{ clear_url }}" data-fp-reset{% if active_n == 0 %} hidden{% endif %}><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v5h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ 'collections.filter.reset' | t }}</a>
+      <button type="submit" class="od-fp__apply" data-fp-apply><span class="od-fp__spin" aria-hidden="true"></span><span>{%- if result_count != blank -%}{{ 'collections.filter.show_results' | t: count: result_count }}{%- else -%}{{ 'collections.filter.show_results_plain' | t }}{%- endif -%}</span></button>
     </div>
   </form>
 </div>
