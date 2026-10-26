@@ -1,12 +1,15 @@
 {%- comment -%}
   Side menu drawer (mobile + desktop). Rendered from sections/header.liquid.
-  Params: blocks (section.blocks, for "menu_banners"), menu (linklist handle), rtl (boolean)
+  Params: blocks (section.blocks, for "menu_banners" / "designers_col" / "designers_promo"), hsettings (section.settings), menu (linklist handle), rtl (boolean),
+          newin_block, has_designers, extras_pos ('first' | 'last') -- the New In + Designers rows (26 Oct 2026)
   Level 1: department list + My account + Language & Region.
   Level 2: one panel per department, slides in over level 1 inside the same drawer.
   Opened through the modal system: OD.openModal('menu') / data-open-modal="menu" (od-menu.js also
   redirects the header hamburger [data-open-mobile-nav] here).
 {%- endcomment -%}
 {%- liquid
+  assign brands_default = routes.root_url | append: '/pages/discover-all-brands' | replace: '//', '/'
+  assign newin_default = routes.root_url | append: '/collections/all?sort_by=created-descending' | replace: '//', '/'
   unless menu
     assign menu = settings.main_menu | default: 'main-menu'
   endunless
@@ -17,6 +20,30 @@
     assign chev = 'icons_light_arrow_right.svg'
     assign chev_back = 'icons_light_arrow_left.svg'
   endif
+  assign chev_url = chev | asset_url
+  assign extras_pos = extras_pos | default: 'first'
+  assign ds_tab = hsettings.designers_label | default: 'Designers'
+  assign ds_all = hsettings.designers_all_label | default: 'All designers'
+  if rtl
+    assign ds_tab = hsettings.designers_label_ar | default: ds_tab
+    assign ds_all = hsettings.designers_all_label_ar | default: ds_all
+  endif
+  assign ds_all_link = hsettings.designers_all_link | default: brands_default
+  if newin_block
+    assign ni_label = newin_block.settings.label | default: 'New In'
+    if rtl
+      assign ni_label = newin_block.settings.label_ar | default: ni_label
+    endif
+    assign ni_link = newin_block.settings.link | default: newin_default
+  endif
+  capture extras_rows
+    if newin_block
+      echo '<li class="od-sm__item od-sm__item--newin"><a class="od-sm__row" href="' | append: ni_link | append: '"><span class="od-sm__rowTitle">' | append: ni_label | append: '</span></a></li>'
+    endif
+    if has_designers
+      echo '<li class="od-sm__item od-sm__item--designers"><button type="button" class="od-sm__row" data-sm-open="designers" aria-expanded="false"><span class="od-sm__rowTitle">' | append: ds_tab | append: '</span><span class="_globalImg_1tf1q_38 od-sm__chev"><img width="16" height="16" fetchpriority="auto" alt="" src="' | append: chev_url | append: '"></span></button></li>'
+    endif
+  endcapture
 -%}
 <div class="_backdrop_9316i_30 undefined" data-modal-backdrop="menu" data-show-class="_backdropShow_pdb61_246"></div>
 <div class="_modal_9316i_132 od-sm{% if rtl %} od-sm--rtl{% endif %}" data-modal="menu" data-show-class="od-sm--show" data-side-menu role="dialog" aria-modal="true" aria-label="{{ 'header.menu' | t }}">
@@ -28,6 +55,7 @@
     </div>
     <div class="_content_9316i_45 od-sm__body">
       <ul class="od-sm__list">
+        {%- if extras_pos == 'first' -%}{{ extras_rows }}{%- endif -%}
         {%- for link in linklists[menu].links -%}
           <li class="od-sm__item">
             {%- if link.links.size > 0 -%}
@@ -40,6 +68,7 @@
             {%- endif -%}
           </li>
         {%- endfor -%}
+        {%- if extras_pos == 'last' -%}{{ extras_rows }}{%- endif -%}
       </ul>
       <div class="_myaccount_1w9c3_195 od-sm__account">
         <h2>{{ 'header.my_account' | t }}</h2>
@@ -149,4 +178,90 @@
       </div>
     {%- endif -%}
   {%- endfor -%}
+  {%- comment -%} Designers panel (26 Oct 2026): promo card + one accordion per column block, "View all designers" link on top {%- endcomment -%}
+  {%- if has_designers -%}
+    {%- liquid
+      assign promo = nil
+      for block in blocks
+        if block.type == 'designers_promo'
+          assign promo = block
+          break
+        endif
+      endfor
+      if promo
+        assign p_title = promo.settings.title
+        assign p_btn = promo.settings.button | default: 'Shop the collection'
+        if rtl
+          assign p_title = promo.settings.title_ar | default: p_title
+          assign p_btn = promo.settings.button_ar | default: p_btn
+        endif
+        assign p_link = promo.settings.link | default: ds_all_link
+        capture promo_html
+          echo '<a class="od-mb__tile od-sm__dsPromo" href="' | append: p_link | append: '"><span class="od-mb__img">'
+          if promo.settings.image != blank
+            echo promo.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(max-width: 480px) 90vw, 360px', widths: '400, 800', alt: p_title
+          else
+            echo 'collection-1' | placeholder_svg_tag: 'od-mb__ph'
+          endif
+          echo '</span>'
+          if p_title != blank
+            echo '<span class="od-mb__caption od-sm__dsTitle">' | append: p_title | append: '</span>'
+          endif
+          if p_btn != blank
+            echo '<span class="od-sm__dsBtn">' | append: p_btn | append: '</span>'
+          endif
+          echo '</a>'
+        endcapture
+      endif
+    -%}
+    <div class="od-sm__panel od-sm__panel--l2 od-sm__panel--designers" data-sm-panel="designers" aria-hidden="true">
+      <div class="_mHeader_9316i_67 od-sm__head od-sm__head--l2">
+        <div class="_mHeader__imgContainer_9316i_89">
+          <div class="_globalImg_1tf1q_38 _arrow_left_9316i_126 od-sm__back" data-sm-back role="button" tabindex="0" aria-label="{{ 'general.accessibility.back' | t }}"><img width="24" height="24" fetchpriority="auto" alt="{{ 'general.accessibility.back' | t }}" src="{{ chev_back | asset_url }}"></div>
+          <h2 class="od-sm__title{% if rtl %} _h2Rtl_9316i_50{% endif %}">{{ ds_tab }}</h2>
+        </div>
+        <div class="_globalImg_1tf1q_38 _close_9316i_125" data-close-modal="menu" role="button" tabindex="0" aria-label="{{ 'general.accessibility.close' | t }}"><img width="24" height="24" fetchpriority="auto" alt="{{ 'general.accessibility.close' | t }}" src="{{ 'icons_cross.svg' | asset_url }}"></div>
+      </div>
+      <div class="_content_9316i_45 od-sm__body od-sm__body--l2">
+        <a class="od-sm__viewAll" href="{{ ds_all_link }}">{{ ds_all }}</a>
+        {%- if promo and promo.settings.mobile_pos == 'top' -%}{{ promo_html }}{%- endif -%}
+        {%- for block in blocks -%}
+          {%- if block.type == 'designers_col' -%}
+            {%- liquid
+              assign heading = block.settings.heading
+              if rtl
+                assign heading = block.settings.heading_ar | default: heading
+              endif
+              assign names = block.settings.brands | strip | newline_to_br | split: '<br />'
+              assign clean = ''
+              for n in names
+                assign v = n | strip
+                if v != ''
+                  assign clean = clean | append: v | append: '|'
+                endif
+              endfor
+              assign list = clean | split: '|'
+              if block.settings.sort_az
+                assign list = list | sort_natural
+              endif
+            -%}
+            <div class="_accordion_container_ve0fr_30 od-sm__acc" data-accordion>
+              <div>
+                <button type="button" class="_menu_button_ve0fr_36 od-sm__accBtn " data-accordion-toggle><span>{{ heading | downcase }}</span><span class="_icon_ve0fr_59 "><div class="_globalImg_1tf1q_38 _icon__img_ve0fr_59"><img width="16" height="16" alt="" src="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-plus="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-minus="{{ 'icons_light_minus.svg' | asset_url }}"></div></span></button>
+                <div class="_content_ve0fr_84 od-sm__accContent" style="height: 0px; overflow: hidden; transition: height 0.3s; margin-bottom: 0px;" data-accordion-content>
+                  <ul class="od-sm__links">
+                    {%- if block.settings.all_link -%}<li class="od-sm__viewAllSub"><a href="{{ ds_all_link }}">{{ ds_all }}</a></li>{%- endif -%}
+                    {%- for v in list -%}
+                      <li><a href="{{ v | url_for_vendor }}">{{ v }}</a></li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if promo and promo.settings.mobile_pos != 'top' -%}{{ promo_html }}{%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
 </div>

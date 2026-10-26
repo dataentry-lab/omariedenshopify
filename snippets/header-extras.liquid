@@ -1,0 +1,115 @@
+{%- comment -%}
+  Extra desktop nav tabs (26 Oct 2026): "New In" (link block) + "Designers" (mega menu from the header's
+  "designers_col" blocks + optional "designers_promo" block). Rendered inside the nav <ul> by sections/header.liquid.
+  Params: blocks (section.blocks), hsettings (section.settings), newin_block, has_designers, dark, rtl
+  Brand lists: one vendor name per line, each links to the brand page (url_for_vendor). Column splits in two on
+  desktop after `split_after` names. CSS: assets/od-menu.css (.od-dm*).
+{%- endcomment -%}
+{%- liquid
+  assign brands_default = routes.root_url | append: '/pages/discover-all-brands' | replace: '//', '/'
+  assign newin_default = routes.root_url | append: '/collections/all?sort_by=created-descending' | replace: '//', '/'
+  assign all_label = hsettings.designers_all_label | default: 'All designers'
+  assign tab_label = hsettings.designers_label | default: 'Designers'
+  if rtl
+    assign all_label = hsettings.designers_all_label_ar | default: all_label
+    assign tab_label = hsettings.designers_label_ar | default: tab_label
+  endif
+  assign all_link = hsettings.designers_all_link | default: brands_default
+  assign promo = nil
+  for block in blocks
+    if block.type == 'designers_promo'
+      assign promo = block
+      break
+    endif
+  endfor
+-%}
+{%- if newin_block -%}
+  {%- liquid
+    assign ni_label = newin_block.settings.label | default: 'New In'
+    if rtl
+      assign ni_label = newin_block.settings.label_ar | default: ni_label
+    endif
+    assign ni_link = newin_block.settings.link | default: newin_default
+  -%}
+  <li class="_ItemList_10uue_67 _item_10uue_77 od-nav--newin {% if dark %}_darkItem_10uue_184{% endif %}" data-nav-item {{ newin_block.shopify_attributes }}>
+    <a class="_navLink_10uue_168" href="{{ ni_link }}">{{ ni_label }}</a>
+  </li>
+{%- endif -%}
+{%- if has_designers -%}
+  <li class="_ItemList_10uue_67 _item_10uue_77 od-nav--designers {% if dark %}_darkItem_10uue_184{% endif %}" data-nav-item>
+    <a class="_navLink_10uue_168" href="{{ all_link }}">{{ tab_label }}<div class="_globalImg_1tf1q_38 _dropdownIcon_10uue_174 " data-dropdown-icon><img fetchpriority="auto" alt="" src="{{ 'icons_light_arrow_down.svg' | asset_url }}"></div></a>
+    <div class="_megaMenu_5jgb7_39">
+      <div class="_container_1kxnl_30 ">
+        <div class="od-dm{% if promo %} od-dm--promo{% endif %}">
+          <div class="od-dm__cols">
+            {%- for block in blocks -%}
+              {%- if block.type == 'designers_col' -%}
+                {%- liquid
+                  assign heading = block.settings.heading
+                  if rtl
+                    assign heading = block.settings.heading_ar | default: heading
+                  endif
+                  assign names = block.settings.brands | strip | newline_to_br | split: '<br />'
+                  assign clean = ''
+                  for n in names
+                    assign v = n | strip
+                    if v != ''
+                      assign clean = clean | append: v | append: '|'
+                    endif
+                  endfor
+                  assign list = clean | split: '|'
+                  if block.settings.sort_az
+                    assign list = list | sort_natural
+                  endif
+                  assign split_after = block.settings.split_after | default: 10
+                  assign total = list.size
+                  if block.settings.all_link
+                    assign total = total | plus: 1
+                  endif
+                  assign two = false
+                  if total > split_after
+                    assign two = true
+                  endif
+                -%}
+                <div class="od-dm__group{% if two %} od-dm__group--two{% endif %}{% if block.settings.divider %} od-dm__group--divider{% endif %}" {{ block.shopify_attributes }}>
+                  {%- if heading != blank -%}<h4 class="od-dm__h">{{ heading }}</h4>{%- endif -%}
+                  <ul class="od-dm__list">
+                    {%- if block.settings.all_link -%}<li class="od-dm__item od-dm__item--all"><a href="{{ all_link }}">{{ all_label }}</a></li>{%- endif -%}
+                    {%- for v in list -%}
+                      <li class="od-dm__item"><a href="{{ v | url_for_vendor }}">{{ v }}</a></li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          {%- if promo -%}
+            {%- liquid
+              assign p_title = promo.settings.title
+              assign p_text = promo.settings.text
+              assign p_btn = promo.settings.button | default: 'Shop the collection'
+              if rtl
+                assign p_title = promo.settings.title_ar | default: p_title
+                assign p_text = promo.settings.text_ar | default: p_text
+                assign p_btn = promo.settings.button_ar | default: p_btn
+              endif
+              assign p_link = promo.settings.link | default: all_link
+            -%}
+            <a class="od-dm__promo" href="{{ p_link }}" {{ promo.shopify_attributes }}>
+              <span class="od-dm__promoImg">
+                {%- if promo.settings.image != blank -%}
+                  <img src="{{ promo.settings.image | image_url: width: 900 }}" srcset="{{ promo.settings.image | image_url: width: 450 }} 450w, {{ promo.settings.image | image_url: width: 900 }} 900w" sizes="360px" width="900" height="1125" alt="{{ promo.settings.image.alt | default: p_title | escape }}" loading="lazy">
+                {%- else -%}
+                  {{ 'collection-1' | placeholder_svg_tag: 'od-mb__ph' }}
+                {%- endif -%}
+              </span>
+              {%- if p_title != blank -%}<span class="od-dm__promoTitle">{{ p_title }}</span>{%- endif -%}
+              {%- if p_text != blank -%}<span class="od-dm__promoText">{{ p_text }}</span>{%- endif -%}
+              {%- if p_btn != blank -%}<span class="od-dm__promoBtn">{{ p_btn }}</span>{%- endif -%}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </li>
+{%- endif -%}

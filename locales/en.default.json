@@ -393,6 +393,7 @@
     "title": "Shop The Look"
   },
   "listing": {
+    "new_in": "New In",
     "sort_by": "Sort by",
     "categories": "Categories",
     "grid": "Products per row",

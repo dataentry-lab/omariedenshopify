@@ -4,6 +4,12 @@
   assign menu_handle = settings.main_menu | default: 'main-menu'
   assign listing_title = section.settings.title | default: collection.title
   comment
+    26 Oct 2026: /collections/all (always newest first, see layout) is the New In page; its system title "Products" becomes "New In"
+  endcomment
+  if section.settings.title == blank and collection.handle == 'all'
+    assign listing_title = 'listing.new_in' | t
+  endif
+  comment
     round 9: active colour filter values -> only those colour cards are rendered (one card per colour)
   endcomment
   assign active_colours = ''

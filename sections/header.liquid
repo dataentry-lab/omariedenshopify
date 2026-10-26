@@ -29,6 +29,21 @@
   if request.page_type == 'cart'
     assign on_cart = true
   endif
+
+  comment
+    Extra tabs (26 Oct 2026): "New In" link block + "Designers" mega menu (column blocks + promo block), see snippets/header-extras
+  endcomment
+  assign newin_block = nil
+  assign has_designers = false
+  for block in section.blocks
+    if block.type == 'nav_newin' and newin_block == nil
+      assign newin_block = block
+    endif
+    if block.type == 'designers_col'
+      assign has_designers = true
+    endif
+  endfor
+  assign extras_pos = section.settings.extras_position | default: 'first'
 -%}
 <section class="_mainheader_kqzl1_1 {% unless dark %}_pChange_kqzl1_10{% endunless %}" data-header data-dark="{{ dark }}">
   <div class="_container_1kxnl_30 ">
@@ -103,6 +118,7 @@
     <div class="_nav__content_10uue_61">
       <div class="_lists_10uue_71">
         <ul>
+          {%- if extras_pos == 'first' -%}{%- render 'header-extras', blocks: section.blocks, hsettings: section.settings, newin_block: newin_block, has_designers: has_designers, dark: dark, rtl: rtl -%}{%- endif -%}
           {%- for link in linklists[menu].links -%}
             <li class="_ItemList_10uue_67 _item_10uue_77 {% if dark %}_darkItem_10uue_184{% endif %}" data-nav-item>
               <a class="_navLink_10uue_168" href="{{ link.url }}">{{ link.title }}{% if link.links.size > 0 %}<div class="_globalImg_1tf1q_38 _dropdownIcon_10uue_174 " data-dropdown-icon><img fetchpriority="auto" alt="" src="{{ 'icons_light_arrow_down.svg' | asset_url }}"></div>{% endif %}</a>
@@ -173,13 +189,14 @@
               {%- endif -%}
             </li>
           {%- endfor -%}
+          {%- if extras_pos == 'last' -%}{%- render 'header-extras', blocks: section.blocks, hsettings: section.settings, newin_block: newin_block, has_designers: has_designers, dark: dark, rtl: rtl -%}{%- endif -%}
         </ul>
       </div>
     </div>
   </header>
 
   {%- comment -%} Side menu drawer (mobile + desktop), replaces the old mobile nav {%- endcomment -%}
-  {%- render 'side-menu', blocks: section.blocks, menu: menu, rtl: rtl -%}
+  {%- render 'side-menu', blocks: section.blocks, hsettings: section.settings, menu: menu, rtl: rtl, newin_block: newin_block, has_designers: has_designers, extras_pos: extras_pos -%}
 </section>
 
 {% schema %}
@@ -189,10 +206,57 @@
   "class": "od-header-section",
   "settings": [
     { "type": "image_picker", "id": "logo", "label": "Logo (optional, replaces built-in Omarieden logo)" },
-    { "type": "paragraph", "content": "The navigation menu is set in Theme settings > Navigation (3 levels: department > sub-department > category)." }
+    { "type": "paragraph", "content": "The navigation menu is set in Theme settings > Navigation (3 levels: department > sub-department > category)." },
+    { "type": "header", "content": "Extra tabs (New In, Designers)" },
+    { "type": "paragraph", "content": "Add a \"New In link\" block for the New In tab and \"Designers column\" blocks (plus an optional \"Designers promo\" block) for the Designers mega menu. The Designers tab only shows when at least one column block exists." },
+    { "type": "select", "id": "extras_position", "label": "Position of the extra tabs", "default": "first", "options": [ { "value": "first", "label": "Before the departments" }, { "value": "last", "label": "After the departments" } ] },
+    { "type": "text", "id": "designers_label", "label": "Designers tab label", "default": "Designers" },
+    { "type": "text", "id": "designers_label_ar", "label": "Designers tab label (Arabic)", "default": "المصممون" },
+    { "type": "text", "id": "designers_all_label", "label": "\"All designers\" link label", "default": "All designers" },
+    { "type": "text", "id": "designers_all_label_ar", "label": "\"All designers\" link label (Arabic)", "default": "كل المصممين" },
+    { "type": "url", "id": "designers_all_link", "label": "\"All designers\" link", "info": "Default: the Brands page /pages/discover-all-brands" }
   ],
-  "max_blocks": 12,
+  "max_blocks": 16,
   "blocks": [
+    {
+      "type": "nav_newin",
+      "name": "New In link",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "New In" },
+        { "type": "text", "id": "label_ar", "label": "Label (Arabic)", "default": "وصل حديثاً" },
+        { "type": "url", "id": "link", "label": "Link", "info": "Default: all products, newest first (/collections/all?sort_by=created-descending). Point it at a New In collection later (e.g. /collections/new-in, filled by the tag new-in)." }
+      ]
+    },
+    {
+      "type": "designers_col",
+      "name": "Designers column",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Featured designers" },
+        { "type": "text", "id": "heading_ar", "label": "Heading (Arabic)", "default": "مصممون مختارون" },
+        { "type": "textarea", "id": "brands", "label": "Brands, one per line", "info": "Use the vendor name exactly as in the store; each name links to that brand's page." },
+        { "type": "checkbox", "id": "all_link", "label": "Show the \"All designers\" link first", "default": false },
+        { "type": "checkbox", "id": "sort_az", "label": "Sort A to Z", "default": true },
+        { "type": "range", "id": "split_after", "label": "Split into a second column after", "min": 5, "max": 30, "step": 1, "default": 10, "info": "Desktop only. Set higher than the number of brands for one column." },
+        { "type": "checkbox", "id": "divider", "label": "Divider line before this column", "default": false }
+      ]
+    },
+    {
+      "type": "designers_promo",
+      "name": "Designers promo",
+      "limit": 1,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Portrait, about 900 x 1200 px" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "text", "id": "title_ar", "label": "Title (Arabic)" },
+        { "type": "text", "id": "text", "label": "Text (optional)" },
+        { "type": "text", "id": "text_ar", "label": "Text (Arabic)" },
+        { "type": "text", "id": "button", "label": "Link label", "default": "Shop the collection" },
+        { "type": "text", "id": "button_ar", "label": "Link label (Arabic)", "default": "تسوّق المجموعة" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "select", "id": "mobile_pos", "label": "Position in the side menu", "default": "top", "options": [ { "value": "top", "label": "Above the lists" }, { "value": "bottom", "label": "Below the lists" } ] }
+      ]
+    },
     {
       "type": "menu_banners",
       "name": "Menu banners",
