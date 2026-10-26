@@ -91,6 +91,16 @@
       endif
     endif
 
+    comment
+      26 Oct 2026: the same label from two rules (tag "new" + automatic New) showed twice; a label already collected is skipped
+    endcomment
+    if hit and label != blank
+      assign dup_needle = '||' | append: label | append: '||'
+      assign dup_hay = '||' | append: labels
+      if dup_hay contains dup_needle
+        assign hit = false
+      endif
+    endif
     if hit and label != blank
       assign labels = labels | append: label | append: '||'
       assign bgs = bgs | append: settings[key_bg] | append: '||'
