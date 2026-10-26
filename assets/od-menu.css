@@ -148,3 +148,10 @@
 .od-dm, .od-dm a, .od-dm span { text-transform: none; }
 .od-dm__group { max-width: 420px; }
 .od-sm__panel--designers .od-sm__links a { text-transform: none; }
+/* 26 Oct: promo card matches the height of the lists (image fills the remaining height, link ends on the last brand row); Our picks stretches to the card so there is no gap */
+.od-dm { align-items: stretch; }
+.od-dm__cols { align-items: stretch; }
+.od-dm__group:last-child { flex: 1 1 auto; max-width: none; }
+.od-dm__promo { display: flex; flex-direction: column; width: 26%; max-width: 320px; padding-bottom: 14px; }
+.od-dm__promoImg { flex: 1 1 0; min-height: 0; aspect-ratio: auto; }
+.od-dm__promoTitle { margin-top: 14px; font-size: 19px; }
