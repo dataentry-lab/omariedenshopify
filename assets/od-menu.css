@@ -147,3 +147,4 @@
 .od-dm .od-dm__item { display: block; }
 .od-dm, .od-dm a, .od-dm span { text-transform: none; }
 .od-dm__group { max-width: 420px; }
+.od-sm__panel--designers .od-sm__links a { text-transform: none; }
