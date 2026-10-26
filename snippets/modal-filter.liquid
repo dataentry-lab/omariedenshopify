@@ -128,6 +128,16 @@
       assign clear_url = clear_url | append: '?sort_by=' | append: sort_by
     endif
   endif
+  comment
+    Header "Clear all" = category AND filters (26 Oct): inside a category it goes back to all products; the Reset button clears filters only
+  endcomment
+  assign clear_all_url = clear_url
+  if request.page_type != 'search' and cat_now != ''
+    assign clear_all_url = routes.all_products_collection_url
+    if sort_by
+      assign clear_all_url = clear_all_url | append: '?sort_by=' | append: sort_by
+    endif
+  endif
   assign active_n = 0
   for f in results.filters
     if f.type == 'price_range'
@@ -140,7 +150,7 @@
   endfor
 -%}
 <div class="od-fp__backdrop" data-modal-backdrop="filter" data-show-class="is-open"></div>
-<div class="od-fp" data-modal="filter" data-show-class="is-open" data-fp data-fp-clear="{{ clear_url | escape }}" role="dialog" aria-modal="true" aria-label="{{ 'collections.filter.title' | t }}">
+<div class="od-fp" data-modal="filter" data-show-class="is-open" data-fp data-fp-clear="{{ clear_all_url | escape }}"{% if cat_now != '' %} data-fp-cat{% endif %} role="dialog" aria-modal="true" aria-label="{{ 'collections.filter.title' | t }}">
   <form action="{{ action_url }}" method="get" data-filter-form class="od-fp__form">
     {%- if request.page_type == 'search' -%}
       <input type="hidden" name="q" value="{{ search.terms | escape }}">
@@ -149,7 +159,7 @@
     {%- if sort_by -%}<input type="hidden" name="sort_by" value="{{ sort_by }}">{%- endif -%}
 
     <div class="od-fp__head">
-      <button type="button" class="od-fp__left{% if active_n > 0 %} is-act{% endif %}" data-fp-left data-t-clear="{{ 'listing.clear_all' | t }}" data-t-back="{{ 'collections.filter.button' | t }}">
+      <button type="button" class="od-fp__left{% if active_n > 0 or cat_now != '' %} is-act{% endif %}" data-fp-left data-t-clear="{{ 'listing.clear_all' | t }}" data-t-back="{{ 'collections.filter.button' | t }}">
         <svg class="od-fp__chev od-fp__chev--back" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span data-fp-left-label>{{ 'listing.clear_all' | t }}</span>
       </button>

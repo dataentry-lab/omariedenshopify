@@ -388,7 +388,7 @@
     var left = $('[data-fp-left]', fp), ll = $('[data-fp-left-label]', fp);
     if (left && ll) {
       ll.textContent = isRoot ? left.getAttribute('data-t-clear') : left.getAttribute('data-t-back');
-      left.classList.toggle('is-act', !isRoot || !!$('[data-fp-reset]:not([hidden])', fp));
+      left.classList.toggle('is-act', !isRoot || fp.hasAttribute('data-fp-cat') || !!$('[data-fp-reset]:not([hidden])', fp));
     }
     fp.setAttribute('data-fp-current', isRoot ? 'root' : id);
     if (instant) { void fp.offsetWidth; fp.classList.remove('od-fp--instant'); }
@@ -442,7 +442,8 @@
       e.preventDefault();
       if ((fp.getAttribute('data-fp-current') || 'root') !== 'root') { fpShow(fp, 'root'); return; }
       var clear = fp.getAttribute('data-fp-clear');
-      if (clear && $('[data-fp-reset]:not([hidden])', fp)) { fpKeep = { pane: 'root', ft: null, scroll: 0 }; fpLoading(true); load(clear, true); }
+      // Clear all = filters AND the active category (26 Oct): the URL already points to all products when a category is active
+      if (clear && (fp.hasAttribute('data-fp-cat') || $('[data-fp-reset]:not([hidden])', fp))) { fpKeep = { pane: 'root', ft: null, scroll: 0 }; fpLoading(true); load(clear, true); }
       return;
     }
     var reset = e.target.closest('[data-fp-reset]');
