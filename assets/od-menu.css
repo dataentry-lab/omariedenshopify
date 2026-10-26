@@ -142,3 +142,8 @@
 .od-sm--rtl .od-sm__dsTitle { font-family: Arabic-Regular; }
 .od-sm__dsBtn { display: inline-block; font-family: Bricolage, sans-serif; font-size: 13px; color: var(--maroon); border-bottom: 1px solid currentColor; }
 .od-sm--rtl .od-sm__dsBtn { font-family: Arabic-Regular; }
+/* the original mega-menu rules lay every ul out as a flex row and capitalise the tab text; reset inside the designers menu */
+.od-dm .od-dm__list { display: block !important; flex-direction: column; gap: 0; }
+.od-dm .od-dm__item { display: block; }
+.od-dm, .od-dm a, .od-dm span { text-transform: none; }
+.od-dm__group { max-width: 420px; }
