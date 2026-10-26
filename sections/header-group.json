@@ -95,9 +95,59 @@
             "caption_2": "SIMPLE PLEASURE",
             "link_2": "/collections/women"
           }
+        },
+        "nav_newin": {
+          "type": "nav_newin",
+          "settings": {
+            "label": "New In",
+            "label_ar": "وصل حديثاً",
+            "link": "/collections/all?sort_by=created-descending"
+          }
+        },
+        "designers_featured": {
+          "type": "designers_col",
+          "settings": {
+            "heading": "Featured designers",
+            "heading_ar": "مصممون مختارون",
+            "brands": "ALEMAIS\nAltuzarra\nCharo Ruiz\nCitizens of Humanity\nDe La Vali\nGANNI\nHunza G\nIRO\nISABEL MARANT\nJil Sander\nMary Katrantzou\nNanushka\nOséree\nPatBO\nRIXO\nROTATE\nSAU LEE\nStaud\nUMA WANG\nViktoria & Woods",
+            "all_link": true,
+            "sort_az": true,
+            "split_after": 10,
+            "divider": false
+          }
+        },
+        "designers_picks": {
+          "type": "designers_col",
+          "settings": {
+            "heading": "Our picks",
+            "heading_ar": "اختياراتنا",
+            "brands": "AG Jeans\nBobo Choses\nFAITHFULL\nLELET NY\nMini Rodini\nMissoma\nOilily\nPaige\nRE/DONE\nThe Upside",
+            "all_link": false,
+            "sort_az": true,
+            "split_after": 12,
+            "divider": true
+          }
+        },
+        "designers_promo": {
+          "type": "designers_promo",
+          "settings": {
+            "image": "shopify://shop_images/ALEMAIS_7668D_MULTICOLOR_5.webp",
+            "title": "ALÉMAIS, wearable art from Sydney",
+            "title_ar": "أليمي، فن يُرتدى من سيدني",
+            "text": "",
+            "text_ar": "",
+            "button": "Shop the collection",
+            "button_ar": "تسوّق المجموعة",
+            "link": "shopify://blogs/curated-edits/a-closer-look-at-alemais-wearable-art-from-sydney",
+            "mobile_pos": "top"
+          }
         }
       },
       "block_order": [
+        "nav_newin",
+        "designers_featured",
+        "designers_picks",
+        "designers_promo",
         "menu_banners_4bCr8R",
         "menu_banners_QwpJbC",
         "menu_banners_hD8ghF",
@@ -106,7 +156,14 @@
         "menu_banners_UmmzHg",
         "women_banners"
       ],
-      "settings": {}
+      "settings": {
+        "extras_position": "first",
+        "designers_label": "Designers",
+        "designers_label_ar": "المصممون",
+        "designers_all_label": "All designers",
+        "designers_all_label_ar": "كل المصممين",
+        "designers_all_link": "shopify://pages/discover-all-brands"
+      }
     }
   },
   "order": [
