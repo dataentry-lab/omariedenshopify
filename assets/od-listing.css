@@ -523,3 +523,10 @@
 [data-modal="filter"].od-fp ._CheckboxButton_8c7of_30 label p span.od-fp__vc { font-size: 12px; }
 .od-fp .od-ft__row.is-current, .od-fp .od-ft__row.is-current span, .od-fp .od-ft__row.is-current small { text-decoration: none; }
 .od-fp .od-ft__row.is-current .od-ft__count { font-weight: 400; }
+
+/* 26 Oct 2026 hotfix: the closed popup still caught the mouse. `.od-fp` is visibility:hidden when closed, but the active pane sets
+   `visibility: visible` (child wins), so an invisible 440x600 box sat over the middle of every collection page and stole hover / clicks
+   from the product cards under it (card hover swap "not working", quick view + hearts unclickable there). Closed = no pointer events, no hit area. */
+.od-fp:not(.is-open) { pointer-events: none !important; }
+.od-fp:not(.is-open) .od-fp__pane, .od-fp:not(.is-open) .od-fp__pane.is-on { visibility: hidden !important; pointer-events: none !important; }
+.od-fp__backdrop:not(.is-open) { pointer-events: none !important; }
