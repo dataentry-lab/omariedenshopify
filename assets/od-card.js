@@ -397,10 +397,10 @@
   }
   on(document, 'mouseover', (e) => {
     if (!canHover()) return;
-    const media = e.target.closest && e.target.closest('.od-card__media');
+    // 26 Oct 2026: the swap starts anywhere on the card (name, price, colours too), not only over the photo (NAP behaviour)
+    const card = e.target.closest && e.target.closest('[data-od-card]');
+    const media = card && $('.od-card__media', card);
     if (!media || media._odHover) return;
-    const card = media.closest('[data-od-card]');
-    if (!card) return;
     media._odHover = true;
     const s = state(card);
     s.pinned = false;
@@ -410,12 +410,11 @@
     }
   });
   on(document, 'mouseout', (e) => {
-    const media = e.target.closest && e.target.closest('.od-card__media');
+    const card = e.target.closest && e.target.closest('[data-od-card]');
+    const media = card && $('.od-card__media', card);
     if (!media || !media._odHover) return;
-    if (e.relatedTarget && media.contains(e.relatedTarget)) return;
+    if (e.relatedTarget && card.contains(e.relatedTarget)) return;
     media._odHover = false;
-    const card = media.closest('[data-od-card]');
-    if (!card) return;
     const s = state(card);
     const h = $('[data-card-image-hover]', card);
     if (h) h.classList.remove('is-on');
