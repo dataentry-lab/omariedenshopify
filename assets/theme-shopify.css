@@ -449,3 +449,11 @@ body[data-dark-header="true"] .od-crumbs-wrap--overlay { top: 150px; }
 .od-login__link { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 [dir=rtl] .od-login__hello { font-family: Arabic-Regular, serif; }
 [dir=rtl] .od-login__btn { letter-spacing: 0; }
+
+/* search modal: brand / category decision (27 Oct 2026). Main button = link to the brand or category page, "View all results" text link under it */
+[data-search-results] .od-search-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+[data-search-results] .od-search-go { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+[data-search-results] .od-search-viewall { background: none; border: 0; padding: 0; cursor: pointer; font-family: Bricolage, sans-serif; font-size: 13px; color: #551c25; text-decoration: underline; text-underline-offset: 3px; }
+[dir=rtl] [data-search-results] .od-search-viewall { font-family: Arabic-Regular, Bricolage, sans-serif; }
+[data-search-results] .od-search-none { margin-bottom: 16px; }
+[data-search-results] .od-search-cats .od-search-brands__link { white-space: nowrap; }

@@ -1,8 +1,53 @@
 {%- comment -%} Full-width olive search overlay with live (predictive) results {%- endcomment -%}
+{%- liquid
+  comment
+    27 Oct 2026: brand / category matcher data for theme.js initSearch (no API call).
+    cats = every collection link of the main menu (3 levels) with its full path label; depts = level-1 links (no-results fallback).
+    colour_param = storefront filter param of the colour option (filter.v.option.<handle>), colours = known colour words EN/AR -> store value.
+  endcomment
+  assign menu_handle = settings.main_menu | default: 'main-menu'
+  assign cname = settings.color_option_name | default: 'Color'
+  assign colour_param = 'filter.v.option.' | append: cname | downcase
+  assign t_search_brand = 'search.search_brand' | t: name: '__NAME__'
+  assign t_shop_cat = 'search.shop_category' | t: name: '__NAME__'
+  assign t_in_colour = 'search.in_colour' | t: colour: '__COLOUR__'
+  assign t_no_match = 'search.no_match_for' | t: terms: '__TERMS__'
+-%}
 <div class="_backdrop_9316i_30 undefined" data-modal-backdrop="search" data-show-class="_backdropShow_j9u6d_48"></div>
-<div class="_modal_9316i_132 _modalAddCls_j9u6d_30" data-modal="search" data-show-class="_show_j9u6d_42" data-t-brands="{{ 'search.brands' | t | escape }}">
+<div class="_modal_9316i_132 _modalAddCls_j9u6d_30" data-modal="search" data-show-class="_show_j9u6d_42"
+  data-t-brands="{{ 'search.brands' | t | escape }}"
+  data-t-categories="{{ 'search.categories' | t | escape }}"
+  data-t-search-brand="{{ t_search_brand | escape }}"
+  data-t-shop-cat="{{ t_shop_cat | escape }}"
+  data-t-view-all="{{ 'search.view_all_results' | t | escape }}"
+  data-t-in-colour="{{ t_in_colour | escape }}"
+  data-t-no-match="{{ t_no_match | escape }}"
+  data-t-try="{{ 'search.try' | t | escape }}"
+  data-colour-param="{{ colour_param | escape }}">
   {%- comment -%} round 9: vendor list for the "Brands" line above the results (no API call, theme.js initSearch) {%- endcomment -%}
   <script type="application/json" data-vendors>{{ shop.vendors | json }}</script>
+  <script type="application/json" data-cats>[
+    {%- assign first = true -%}
+    {%- for dept in linklists[menu_handle].links -%}
+      {%- for sub in dept.links -%}
+        {%- if sub.type == 'collection_link' or sub.url contains '/collections/' -%}
+          {%- unless first %},{% endunless %}{%- assign first = false -%}
+          {"n": {{ sub.title | json }}, "p": {{ dept.title | append: ' › ' | append: sub.title | json }}, "u": {{ sub.url | json }}, "d": {{ dept.title | json }}}
+        {%- endif -%}
+        {%- for cat in sub.links -%}
+          {%- unless first %},{% endunless %}{%- assign first = false -%}
+          {"n": {{ cat.title | json }}, "p": {{ dept.title | append: ' › ' | append: cat.title | json }}, "u": {{ cat.url | json }}, "d": {{ dept.title | json }}}
+        {%- endfor -%}
+      {%- endfor -%}
+    {%- endfor -%}
+  ]</script>
+  <script type="application/json" data-depts>[
+    {%- for dept in linklists[menu_handle].links -%}
+      {%- unless forloop.first %},{% endunless -%}
+      {"n": {{ dept.title | json }}, "u": {{ dept.url | json }}}
+    {%- endfor -%}
+  ]</script>
+  <script type="application/json" data-colours>{"black":"Black","white":"White","red":"Red","blue":"Blue","navy":"Navy","green":"Green","pink":"Pink","beige":"Beige","brown":"Brown","grey":"Grey","gray":"Grey","cream":"Cream","gold":"Gold","silver":"Silver","yellow":"Yellow","orange":"Orange","purple":"Purple","ivory":"Ivory","nude":"Nude","camel":"Camel","khaki":"Khaki","burgundy":"Burgundy","multicolor":"Multicolor","multicolour":"Multicolor","أسود":"Black","أبيض":"White","أحمر":"Red","أزرق":"Blue","كحلي":"Navy","أخضر":"Green","وردي":"Pink","بيج":"Beige","بني":"Brown","رمادي":"Grey","كريمي":"Cream","ذهبي":"Gold","فضي":"Silver","أصفر":"Yellow","برتقالي":"Orange","بنفسجي":"Purple"}</script>
   <div class="_content_9316i_45">
     <form class="_searchWrapper_j9u6d_54" action="{{ routes.search_url }}" method="get" role="search" data-search-form>
       <div class="_searchContainer_j9u6d_98">

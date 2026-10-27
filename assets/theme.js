@@ -406,15 +406,75 @@
     const clear = $('[data-search-clear]', modal);
     const results = $('[data-search-results]', modal);
     const skeleton = '<div class="_resultContainer_j9u6d_82"><div class="_resultContainer__content_j9u6d_86"><div class="od-skel od-skel--line" style="width:120px"></div><div class="od-skel od-skel--line" style="width:60%"></div><div class="od-skel od-skel--line" style="width:45%"></div><div class="_products_j9u6d_246"><div class="_products__grid_j9u6d_281">' + '<div class="od-skel od-skel--card"></div>'.repeat(4) + '</div></div></div></div>';
-    /* brands line (round 9): vendors whose name, or any word of it, starts with the query (2+ chars), max 5 */
-    let vendors = [];
-    try { const vj = $('[data-vendors]', modal); if (vj) vendors = JSON.parse(vj.textContent) || []; } catch (e) { vendors = []; }
+    /* brands / categories matcher (27 Oct 2026): vendor + menu category lists are printed in the modal (data-vendors,
+       data-cats, data-depts, data-colours), the query is matched in the browser with typo tolerance. Brand wins
+       (alone or at the start of the phrase), then an unambiguous category (optionally with a colour word), else plain search. */
+    const jsonOf = (sel, fb) => { try { const n = $(sel, modal); return n ? (JSON.parse(n.textContent) || fb) : fb; } catch (e) { return fb; } };
+    const vendors = jsonOf('[data-vendors]', []);
+    const cats = jsonOf('[data-cats]', []);
+    const depts = jsonOf('[data-depts]', []);
+    const colours = jsonOf('[data-colours]', {});
+    const tt = (k, fb) => modal.getAttribute('data-t-' + k) || fb;
     const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-    const matchVendors = (q) => {
-      const ql = q.toLowerCase();
-      if (ql.length < 2) return [];
-      return vendors.filter((v) => { const vl = String(v).toLowerCase(); return vl.indexOf(ql) === 0 || vl.split(/[\s\-_.,&/]+/).some((w) => w && w.indexOf(ql) === 0); }).slice(0, 5);
+    const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[ً-ْـ]/g, '').replace(/[أإآ]/g, 'ا').replace(/ة/g, 'ه').replace(/[^a-z0-9؀-ۿ]+/g, '');
+    const words = (s) => String(s || '').toLowerCase().split(/[\s\-_.,&/+]+/).filter(Boolean);
+    const lev = (a, b) => {
+      if (a === b) return 0; if (!a.length) return b.length; if (!b.length) return a.length;
+      let prev = new Array(b.length + 1).fill(0).map((_, i) => i), cur = new Array(b.length + 1);
+      for (let i = 1; i <= a.length; i++) { cur[0] = i; for (let j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); const t = prev; prev = cur; cur = t; }
+      return prev[b.length];
     };
+    const allowed = (len) => (len <= 5 ? 1 : len <= 9 ? 2 : Math.floor(len * 0.25));
+    /* score of a name against the query: 0 exact, 0.5 query is a prefix (still typing), 1..n typo distance, null no match.
+       `rest` = query words left after the name (brand + something). */
+    const scoreName = (name, q) => {
+      const nn = norm(name); if (nn.length < 2) return null;
+      const nq = norm(q); if (nq.length < 2) return null;
+      if (nq === nn) return { score: 0, rest: '' };
+      if (nq.length >= 3 && nn.indexOf(nq) === 0) return { score: 0.5, rest: '' };
+      const d = lev(nq, nn);
+      if (d <= allowed(nn.length) && nq.length >= Math.min(3, nn.length)) return { score: d, rest: '' };
+      // name at the start of a longer phrase: compare the first k words
+      const qw = words(q), nw = words(name);
+      if (qw.length > nw.length && nw.length) {
+        const head = norm(qw.slice(0, nw.length).join(' '));
+        const d2 = lev(head, nn);
+        if (head === nn) return { score: 0.1, rest: qw.slice(nw.length).join(' ') };
+        if (d2 <= allowed(nn.length) && head.length >= 4) return { score: 0.1 + d2, rest: qw.slice(nw.length).join(' ') };
+      }
+      return null;
+    };
+    const best = (list, q, getName) => {
+      const hits = [];
+      list.forEach((item) => { const r = scoreName(getName(item), q); if (r && r.score <= 2.5) hits.push({ item, score: r.score, rest: r.rest }); });
+      hits.sort((a, b) => a.score - b.score || getName(a.item).length - getName(b.item).length);
+      const top = hits[0];
+      const ambiguous = hits.length > 1 && hits[1].score === top.score && norm(getName(hits[1].item)) !== norm(getName(top.item));
+      return { hits, top: top && top.score <= 2.5 && !ambiguous ? top : null };
+    };
+    const matchBrands = (q) => best(vendors, q, (v) => v);
+    const matchCats = (q) => {
+      // strip a colour word first ("black dress" -> colour Black, query "dress")
+      let colour = null; const qw = words(q);
+      const kept = qw.filter((w) => { const key = norm(w); if (!colour && colours[key]) { colour = colours[key]; return false; } return true; });
+      const r = best(cats, kept.join(' '), (c) => c.n);
+      // the same category name under several departments = ambiguous for the button, all of them in the line
+      const names = {}; r.hits.forEach((h) => { names[norm(h.item.n)] = (names[norm(h.item.n)] || 0) + 1; });
+      if (r.top && names[norm(r.top.item.n)] > 1) r.top = null;
+      // singular / plural tolerance is covered by the typo distance (dress / dresses = 2)
+      return { hits: r.hits, top: r.top, colour };
+    };
+    const catUrl = (c, colour) => c.u + (colour ? (c.u.indexOf('?') > -1 ? '&' : '?') + encodeURIComponent(modal.getAttribute('data-colour-param') || 'filter.v.option.color') + '=' + encodeURIComponent(colour) : '');
+    const decide = (q) => {
+      const b = matchBrands(q);
+      const c0 = b.top && b.top.score >= 1 ? matchCats(q) : null;
+      // a typo-level brand match loses to an exact / prefix category match ("jeans" is the category, not AG Jeans)
+      if (b.top && !(c0 && c0.hits.length && c0.hits[0].score <= 0.5)) return { kind: 'brand', name: b.top.item, url: OD.vendorUrl(b.top.item), brands: b.hits.slice(0, 5).map((h) => h.item), cats: [] };
+      const c = matchCats(q);
+      if (c.top) return { kind: 'cat', name: c.top.item.n, colour: c.colour, url: catUrl(c.top.item, c.colour), brands: b.hits.slice(0, 5).map((h) => h.item), cats: c.hits.slice(0, 6).map((h) => h.item) };
+      return { kind: 'none', brands: b.hits.slice(0, 5).map((h) => h.item), cats: c.hits.slice(0, 6).map((h) => h.item) };
+    };
+    let lastDecision = null;
     const render = (q, data) => {
       const queries = (data.resources.results.queries || []).slice(0, 10);
       const products = (data.resources.results.products || []).slice(0, 5);
@@ -424,20 +484,32 @@
         html += '<div class="_suggestions_j9u6d_200"><h3 class="_suggestions__title_j9u6d_203">' + OD.t.suggestion + '</h3><div class="_suggestions__list_j9u6d_218">' +
           queries.map((s) => '<div class="_suggestions__item_j9u6d_222" data-suggestion="' + s.text.replace(/"/g, '&quot;') + '">' + hl(s.text) + '</div>').join('') + '</div></div>';
       }
-      const brands = matchVendors(q);
-      if (brands.length) {
-        html += '<div class="od-search-brands" data-search-brands><span class="od-search-brands__label">' + esc(modal.getAttribute('data-t-brands') || 'Brands') + '</span>' +
-          brands.map((v) => '<a class="od-search-brands__link" href="' + esc(OD.vendorUrl(v)) + '">' + esc(v) + '</a>').join('') + '</div>';
+      const dec = decide(q); lastDecision = dec;
+      if (dec.brands.length) {
+        html += '<div class="od-search-brands" data-search-brands><span class="od-search-brands__label">' + esc(tt('brands', 'Brands')) + '</span>' +
+          dec.brands.map((v) => '<a class="od-search-brands__link" href="' + esc(OD.vendorUrl(v)) + '">' + esc(v) + '</a>').join('') + '</div>';
       }
+      if (dec.cats.length) {
+        html += '<div class="od-search-brands od-search-cats" data-search-cats><span class="od-search-brands__label">' + esc(tt('categories', 'Categories')) + '</span>' +
+          dec.cats.map((c) => '<a class="od-search-brands__link" href="' + esc(catUrl(c, dec.kind === 'cat' ? dec.colour : null)) + '">' + esc(c.p) + '</a>').join('') + '</div>';
+      }
+      const label = dec.kind === 'brand' ? tt('search-brand', 'Search __NAME__').replace('__NAME__', dec.name)
+        : dec.kind === 'cat' ? tt('shop-cat', 'Shop __NAME__').replace('__NAME__', (dec.colour ? dec.colour + ' ' : '') + dec.name) : '';
+      const buttons = dec.kind === 'none'
+        ? '<button type="button" class="_btn_lnddl_30 _viewAllBtn_j9u6d_377" data-search-submit>' + OD.t.viewResults + '</button>'
+        : '<a class="_btn_lnddl_30 _viewAllBtn_j9u6d_377 od-search-go" href="' + esc(dec.url) + '" data-search-go>' + esc(label) + '</a>' +
+          '<button type="button" class="od-search-viewall" data-search-submit>' + esc(tt('view-all', 'View all results')) + '</button>';
       if (products.length) {
         const norm = (p) => ({ id: p.id, handle: p.handle, title: p.title, vendor: p.vendor, url: p.url, featured_image: p.featured_image && (p.featured_image.url || p.featured_image.src || p.featured_image), price: p.price, compare_at_price: p.compare_at_price_max || null, tags: p.tags || [], available: p.available !== false,
           variants: p.variants && p.variants.length ? p.variants.map((v) => ({ id: v.id, title: v.title, available: v.available !== false, price: v.price, compare_at_price: v.compare_at_price || null, option1: v.option1, option2: v.option2, option3: v.option3, options: v.options, featured_image: v.featured_image || null, featured_media: v.featured_media || null })) : undefined,
           options: p.options || [], media: p.media || null, images: p.images || null });
         html += '<h3 class="_products__title_j9u6d_265">' + OD.t.products + '</h3><div class="_products_j9u6d_246"><div class="_products__grid_j9u6d_281">' +
           products.map((p) => (OD.cardsHTML ? OD.cardsHTML(norm(p)).join('') : (OD.cardHTML || cardHTML)(norm(p)))).join('') + '</div></div>';
-        html += '<button type="button" class="_btn_lnddl_30 _viewAllBtn_j9u6d_377" data-search-submit>' + OD.t.viewResults + '</button>';
-      } else if (!queries.length) {
-        html += '<p class="_suggestions__title_j9u6d_203">' + OD.t.noResults + '</p>';
+        html += '<div class="od-search-actions">' + buttons + '</div>';
+      } else {
+        html += '<p class="_suggestions__title_j9u6d_203 od-search-none">' + esc(tt('no-match', 'No products match "__TERMS__".').replace('__TERMS__', q)) + '</p>';
+        if (dec.kind !== 'none') html += '<div class="od-search-actions">' + buttons + '</div>';
+        else if (depts.length) html += '<div class="od-search-brands od-search-try"><span class="od-search-brands__label">' + esc(tt('try', 'Try:')) + '</span>' + depts.map((d) => '<a class="od-search-brands__link" href="' + esc(d.u) + '">' + esc(d.n) + '</a>').join('') + '</div>';
       }
       html += '</div></div>';
       results.innerHTML = html;
@@ -456,10 +528,15 @@
     }, 250);
     on(input, 'input', run);
     on(clear, 'click', () => { input.value = ''; run(); input.focus(); });
+    on($('[data-search-form]', modal), 'submit', (e) => {
+      // Enter follows the same rule as the button: brand / unambiguous category page, else the normal results page
+      const dec = decide(input.value.trim());
+      if (dec.kind !== 'none' && dec.url) { e.preventDefault(); window.location.href = dec.url; }
+    });
     on(modal, 'click', (e) => {
       const s = e.target.closest('[data-suggestion]');
       if (s) { input.value = s.getAttribute('data-suggestion'); $('[data-search-form]', modal).submit(); }
-      if (e.target.closest('[data-search-submit]')) $('[data-search-form]', modal).submit();
+      if (e.target.closest('[data-search-submit]')) $('[data-search-form]', modal).submit(); // form.submit() skips the submit handler = always the results page
     });
     on(document, 'od:modal:open', (e) => { if (e.detail.name === 'search' && input.value) run(); });
   }

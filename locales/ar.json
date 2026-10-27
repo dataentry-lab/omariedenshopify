@@ -69,7 +69,14 @@
     "results_for": "نتائج البحث عن",
     "no_results": "لا توجد نتائج",
     "no_results_text": "جرّب كلمة بحث مختلفة.",
-    "brands": "العلامات التجارية"
+    "brands": "العلامات التجارية",
+    "categories": "الفئات",
+    "search_brand": "ابحث في {{ name }}",
+    "shop_category": "تسوّق {{ name }}",
+    "view_all_results": "عرض كل النتائج",
+    "in_colour": "باللون {{ colour }}",
+    "no_match_for": "لا توجد منتجات تطابق \"{{ terms }}\".",
+    "try": "جرّب:"
   },
   "collections": {
     "breadcrumb": {

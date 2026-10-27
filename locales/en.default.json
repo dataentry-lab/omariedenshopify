@@ -69,7 +69,14 @@
     "results_for": "Search results for",
     "no_results": "No results found",
     "no_results_text": "Try a different keyword.",
-    "brands": "Brands"
+    "brands": "Brands",
+    "categories": "Categories",
+    "search_brand": "Search {{ name }}",
+    "shop_category": "Shop {{ name }}",
+    "view_all_results": "View all results",
+    "in_colour": "in {{ colour }}",
+    "no_match_for": "No products match \"{{ terms }}\".",
+    "try": "Try:"
   },
   "collections": {
     "breadcrumb": {
