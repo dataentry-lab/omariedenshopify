@@ -620,11 +620,16 @@
     const galleryMode = colorIdx > -1 && product.options.length ? (OD.galleryColorMode || 'filter') : 'off';
     const colourValues = colorIdx > -1 ? ((typeof product.options[colorIdx] === 'object' && product.options[colorIdx].values) || product.variants.map((pv) => pv.options[colorIdx]).filter((x, k, arr) => arr.indexOf(x) === k)) : [];
     const mediaColour = {};
+    // alt-group rule (27 Oct 2026): photos sharing the alt text of a colour's variant image belong to that colour
+    // (Soft Goat: alt = brand colour OLIVE / MOCHA, option = store colour Green / Beige)
+    const altColour = {};
+    product.variants.forEach((pv) => { const a = pv.featured_media && String(pv.featured_media.alt || '').trim().toLowerCase(); if (a && !(a in altColour)) altColour[a] = pv.options[colorIdx]; });
     (product.media || []).forEach((m) => {
       const byVariant = product.variants.find((pv) => pv.featured_media && pv.featured_media.id === m.id);
       if (byVariant) { mediaColour[m.id] = byVariant.options[colorIdx]; return; }
       const alt = String(m.alt || '').trim().toLowerCase();
       if (!alt) return;
+      if (alt in altColour) { mediaColour[m.id] = altColour[alt]; return; }
       const hit = colourValues.find((c) => { const cl = String(c).trim().toLowerCase(); return alt === cl || /^[\s\-|:,]/.test(alt.slice(cl.length)) && alt.startsWith(cl); });
       if (hit) mediaColour[m.id] = hit;
     });

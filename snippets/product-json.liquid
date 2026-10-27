@@ -29,7 +29,23 @@
   if media_map == blank
     assign media_map = '|'
     if colour_opt and colour_opt.values.size > 0
-      for m in product.media limit: 10
+      comment
+        27 Oct 2026: alt-group rule. Brands like Soft Goat name photos with THEIR colour (OLIVE, MOCHA) while the
+        Color option holds the store colour (Green, Beige); every colour variant's image is the first photo of its
+        group, so any photo whose alt equals a variant image's alt inherits that variant's colour.
+      endcomment
+      assign alt_map = '|'
+      for v in product.variants
+        if v.featured_media and v.featured_media.alt != blank
+          assign va = v.featured_media.alt | downcase | strip | remove: '|' | remove: ':'
+          assign vkey = '|' | append: va | append: ':'
+          unless alt_map contains vkey
+            assign vc = v.options[colour_idx0] | remove: '|' | remove: ':'
+            assign alt_map = alt_map | append: va | append: ':' | append: vc | append: '|'
+          endunless
+        endif
+      endfor
+      for m in product.media limit: 40
         if m.media_type != 'image'
           continue
         endif
@@ -43,6 +59,13 @@
         if mc == ''
           assign alt_d = m.alt | downcase | strip
           if alt_d != ''
+            assign alt_k = alt_d | remove: '|' | remove: ':'
+            assign akey = '|' | append: alt_k | append: ':'
+            if alt_map contains akey
+              assign mc = alt_map | split: akey | last | split: '|' | first | default: ''
+            endif
+          endif
+          if mc == '' and alt_d != ''
             for cv in colour_opt.values
               assign cv_d = cv | downcase | strip
               if cv_d == ''
@@ -96,7 +119,7 @@
     "swatches": {% assign sw_n = 0 %}{% assign sw_lb = '{' %}{% assign sw_rb = '}' %}{{ sw_lb }}{% if colour_opt %}{% for value in colour_opt.values %}{% if sw_n > 0 %},{% endif %}{% assign sw_n = sw_n | plus: 1 %}{{ value | json }}:{% capture sw_css %}{% render 'swatch-color', value: value %}{% endcapture %}{{ sw_css | strip | json }}{% endfor %}{% endif %}{{ sw_rb }},
     "single": {{ product.has_only_default_variant | json }},
     "images": [{% assign n = 0 %}{% for m in product.media %}{% if m.media_type == 'image' and n < 6 %}{% if n > 0 %},{% endif %}{"src":{{ m | image_url: width: 600 | json }},"alt":{{ m.alt | default: product.title | json }}}{% assign n = n | plus: 1 %}{% endif %}{% endfor %}],
-    "media": [{% assign n = 0 %}{% for m in product.media limit: 10 %}{% if m.media_type == 'image' %}{% if n > 0 %},{% endif %}{% assign n = n | plus: 1 %}{% assign mkey = '|' | append: m.id | append: ':' %}{% assign mcol = '' %}{% if media_map contains mkey %}{% assign mcol = media_map | split: mkey | last | split: '|' | first | default: '' %}{% endif %}{"id":{{ m.id | json }},"src":{{ m | image_url: width: 600 | json }},"alt":{{ m.alt | default: '' | json }},"colour":{% if mcol != '' %}{{ mcol | json }}{% else %}null{% endif %}}{% endif %}{% endfor %}],
+    "media": [{% assign n = 0 %}{% for m in product.media limit: 40 %}{% if m.media_type == 'image' %}{% if n > 0 %},{% endif %}{% assign n = n | plus: 1 %}{% assign mkey = '|' | append: m.id | append: ':' %}{% assign mcol = '' %}{% if media_map contains mkey %}{% assign mcol = media_map | split: mkey | last | split: '|' | first | default: '' %}{% endif %}{"id":{{ m.id | json }},"src":{{ m | image_url: width: 600 | json }},"alt":{{ m.alt | default: '' | json }},"colour":{% if mcol != '' %}{{ mcol | json }}{% else %}null{% endif %}}{% endif %}{% endfor %}],
     "variants": [{% for v in product.variants %}{"id":{{ v.id | json }},"title":{{ v.title | json }},"option1":{{ v.option1 | json }},"option2":{{ v.option2 | json }},"option3":{{ v.option3 | json }},"available":{{ v.available | json }},"price":{{ v.price | json }},"compare_at_price":{{ v.compare_at_price | json }},"image":{% if v.featured_image %}{{ v.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},"media_id":{% if v.featured_media %}{{ v.featured_media.id | json }}{% else %}null{% endif %},"qty":{{ v.inventory_quantity | default: 0 | json }},"tracked":{% if v.inventory_management != blank %}true{% else %}false{% endif %}}{% unless forloop.last %},{% endunless %}{% endfor %}],
     "badges": {% render 'product-badges', product: product, limit: 2, format: 'json' %},
     "available": {{ product.available | json }},

@@ -116,7 +116,7 @@
       assign media_count = 1
     endif
     for pass in (1..2)
-      for m in product.media limit: 10
+      for m in product.media limit: 40
         if m.media_type != 'image' or m.id == vmedia.id
           continue
         endif
