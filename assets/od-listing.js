@@ -323,7 +323,7 @@
     if (!sameListing(action)) return;
     e.preventDefault();
     var params = new URLSearchParams(new FormData(form));
-    var url = action + (params.toString() ? '?' + params.toString() : '');
+    var url = action + (params.toString() ? (action.indexOf('?') > -1 ? '&' : '?') + params.toString() : '');
     if (OD.closeModal) OD.closeModal('filter');
     load(url, true);
   });
@@ -405,7 +405,7 @@
       if (el.value === '') return;
       params.append(el.name, el.value);
     });
-    var url = action + (params.toString() ? '?' + params.toString() : '');
+    var url = action + (params.toString() ? (action.indexOf('?') > -1 ? '&' : '?') + params.toString() : '');
     var pane = fp.getAttribute('data-fp-current') || 'root';
     var paneEl = $('[data-fp-pane="' + pane + '"]', fp);
     var tree = $('[data-ft]', fp);

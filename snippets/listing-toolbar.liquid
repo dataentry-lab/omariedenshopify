@@ -84,7 +84,11 @@
   else
     assign clear_url = collection.url
     if sort_by
-      assign clear_url = clear_url | append: '?sort_by=' | append: sort_by
+      if clear_url contains '?'
+        assign clear_url = clear_url | append: '&sort_by=' | append: sort_by
+      else
+        assign clear_url = clear_url | append: '?sort_by=' | append: sort_by
+      endif
     endif
   endif
 -%}

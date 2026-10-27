@@ -20,7 +20,14 @@
     assign result_count = search.results_count
   else
     assign results = collection
-    assign action_url = collection.url
+    comment
+      27 Oct 2026: the vendors collection url is /collections/vendors?q=Brand; a GET form must post to the path and carry q as a field
+    endcomment
+    assign action_url = collection.url | split: '?' | first
+    assign coll_qs = ''
+    if collection.url contains '?'
+      assign coll_qs = collection.url | split: '?' | last
+    endif
     assign result_count = collection.products_count
   endif
   assign menu_handle = settings.main_menu | default: 'main-menu'
@@ -125,7 +132,11 @@
   else
     assign clear_url = collection.url
     if sort_by
-      assign clear_url = clear_url | append: '?sort_by=' | append: sort_by
+      if clear_url contains '?'
+        assign clear_url = clear_url | append: '&sort_by=' | append: sort_by
+      else
+        assign clear_url = clear_url | append: '?sort_by=' | append: sort_by
+      endif
     endif
   endif
   comment
@@ -152,6 +163,7 @@
 <div class="od-fp__backdrop" data-modal-backdrop="filter" data-show-class="is-open"></div>
 <div class="od-fp" data-modal="filter" data-show-class="is-open" data-fp data-fp-clear="{{ clear_all_url | escape }}"{% if cat_now != '' %} data-fp-cat{% endif %} role="dialog" aria-modal="true" aria-label="{{ 'collections.filter.title' | t }}">
   <form action="{{ action_url }}" method="get" data-filter-form class="od-fp__form">
+    {%- if coll_qs contains 'q=' -%}<input type="hidden" name="q" value="{{ coll_qs | split: 'q=' | last | split: '&' | first | replace: '+', ' ' | url_decode | escape }}">{%- endif -%}
     {%- if request.page_type == 'search' -%}
       <input type="hidden" name="q" value="{{ search.terms | escape }}">
       <input type="hidden" name="options[prefix]" value="last">

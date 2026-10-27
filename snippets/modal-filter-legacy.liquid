@@ -12,7 +12,14 @@
     assign action_url = routes.search_url
   else
     assign results = collection
-    assign action_url = collection.url
+    comment
+      27 Oct 2026: the vendors collection url is /collections/vendors?q=Brand; a GET form must post to the path and carry q as a field
+    endcomment
+    assign action_url = collection.url | split: '?' | first
+    assign coll_qs = ''
+    if collection.url contains '?'
+      assign coll_qs = collection.url | split: '?' | last
+    endif
   endif
   assign menu_handle = settings.main_menu | default: 'main-menu'
   assign sort_by = results.sort_by | default: results.default_sort_by
@@ -24,6 +31,7 @@
     <div class="_globalImg_1tf1q_38 _close_9316i_125" data-close-modal="filter"><img fetchpriority="auto" alt="{{ 'general.accessibility.close' | t }}" src="{{ 'icons_cross.svg' | asset_url }}"></div>
   </div>
   <form action="{{ action_url }}" method="get" data-filter-form style="display:contents;">
+    {%- if coll_qs contains 'q=' -%}<input type="hidden" name="q" value="{{ coll_qs | split: 'q=' | last | split: '&' | first | replace: '+', ' ' | url_decode | escape }}">{%- endif -%}
     {%- if request.page_type == 'search' -%}
       <input type="hidden" name="q" value="{{ search.terms | escape }}">
       <input type="hidden" name="options[prefix]" value="last">
