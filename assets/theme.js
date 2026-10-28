@@ -498,7 +498,8 @@
       const buttons = dec.kind === 'none'
         ? '<button type="button" class="_btn_lnddl_30 _viewAllBtn_j9u6d_377" data-search-submit>' + OD.t.viewResults + '</button>'
         : '<a class="_btn_lnddl_30 _viewAllBtn_j9u6d_377 od-search-go" href="' + esc(dec.url) + '" data-search-go>' + esc(label) + '</a>' +
-          '<button type="button" class="od-search-viewall" data-search-submit>' + esc(tt('view-all', 'View all results')) + '</button>';
+          // brand match: the brand button alone (client, 28 Oct); category match keeps the "View all results" text link
+          (dec.kind === 'brand' ? '' : '<button type="button" class="od-search-viewall" data-search-submit>' + esc(tt('view-all', 'View all results')) + '</button>');
       if (products.length) {
         const norm = (p) => ({ id: p.id, handle: p.handle, title: p.title, vendor: p.vendor, url: p.url, featured_image: p.featured_image && (p.featured_image.url || p.featured_image.src || p.featured_image), price: p.price, compare_at_price: p.compare_at_price_max || null, tags: p.tags || [], available: p.available !== false,
           variants: p.variants && p.variants.length ? p.variants.map((v) => ({ id: v.id, title: v.title, available: v.available !== false, price: v.price, compare_at_price: v.compare_at_price || null, option1: v.option1, option2: v.option2, option3: v.option3, options: v.options, featured_image: v.featured_image || null, featured_media: v.featured_media || null })) : undefined,
