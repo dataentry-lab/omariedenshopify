@@ -1,16 +1,23 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "banner": {
       "type": "od-page-banner",
       "settings": {
-        "title": "Self Serve Returns",
-        "title_ar": "الإرجاع الذاتي",
-        "height": 340
+        "title": "Returns & Refunds",
+        "title_ar": "الإرجاع والاسترداد",
+        "height": 340,
+        "subtitle": "30 days to return · Free collection · Refund within 6 working days of receipt",
+        "subtitle_ar": "30 يوماً للإرجاع · استلام مجاني · الاسترداد خلال 6 أيام عمل من الوصول"
       }
-    },
-    "lookup": {
-      "type": "od-returns-lookup",
-      "settings": {}
     },
     "faq": {
       "type": "od-faq",
@@ -79,29 +86,78 @@
         "q4"
       ],
       "settings": {
-        "heading": "Good to know",
-        "pad_top": 16,
+        "heading": "Frequently asked",
+        "pad_top": 40,
         "pad_bottom": 16,
-        "eyebrow": ""
+        "eyebrow": "Questions"
       }
     },
-    "links": {
-      "type": "od-text",
+    "howto": {
+      "type": "od-returns-howto",
+      "blocks": {
+        "s1": {
+          "type": "step",
+          "settings": {
+            "title": "Sign in to your account",
+            "title_ar": "سجّل الدخول إلى حسابك",
+            "text": "Open Orders and choose the order with the item you want to send back.",
+            "text_ar": "افتح الطلبات واختر الطلب الذي يحتوي على القطعة التي تريد إرجاعها."
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "title": "Tap Request return",
+            "title_ar": "اضغط طلب إرجاع",
+            "text": "Select the items and a reason, within 30 days of delivery.",
+            "text_ar": "اختر القطع والسبب، خلال 30 يوماً من التوصيل."
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "title": "We collect it, or bring it in",
+            "title_ar": "نستلمها منك، أو أحضرها إلى المتجر",
+            "text": "Pack it in the original packaging with all tags, boxes and dust bags; the courier collects it, or visit the store with your order number.",
+            "text_ar": "ضعها في التغليف الأصلي مع كل البطاقات والعلب والأكياس؛ يستلمها المندوب، أو زر المتجر مع رقم طلبك."
+          }
+        },
+        "s4": {
+          "type": "step",
+          "settings": {
+            "title": "Refund within 6 working days",
+            "title_ar": "الاسترداد خلال 6 أيام عمل",
+            "text": "Processed once the item reaches us, to the original payment method or store credit.",
+            "text_ar": "يُعالج بعد وصول القطعة إلينا، إلى وسيلة الدفع الأصلية أو كرصيد في المتجر."
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "settings": {}
+    },
+    "policy": {
+      "type": "od-policy-text",
       "settings": {
-        "text": "<p><a href=\"/pages/returns-and-refunds\">Returns and refunds policy</a> · <a href=\"/pages/contact-us\">Contact us</a></p>",
-        "align": "center",
-        "size": "s",
-        "pad_top": 0,
-        "pad_bottom": 64,
-        "heading": "",
-        "eyebrow": ""
+        "page": "returns-and-refunds",
+        "hide": "How to Return\nSteps to Return\nPreparing Your Return\nCustomer Support",
+        "skip_intro": false
       }
+    },
+    "help": {
+      "type": "od-help-band",
+      "settings": {}
     }
   },
   "order": [
     "banner",
-    "lookup",
+    "howto",
+    "policy",
     "faq",
-    "links"
+    "help"
   ]
 }
