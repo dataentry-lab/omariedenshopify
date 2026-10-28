@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "footer",
   "name": "Footer group",
@@ -5,21 +14,58 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "about": { "type": "column", "settings": { "heading": "about", "menu": "footer-about" } },
-        "service": { "type": "column", "settings": { "heading": "at your service", "menu": "footer-service" } },
-        "policies": { "type": "column", "settings": { "heading": "Policies", "menu": "footer-policies" } },
-        "privacy": { "type": "column", "settings": { "heading": "privacy & settings", "menu": "footer-privacy" } },
-        "social": { "type": "social", "settings": {} }
+        "about": {
+          "type": "column",
+          "settings": {
+            "heading": "about",
+            "menu": "footer-about"
+          }
+        },
+        "service": {
+          "type": "column",
+          "settings": {
+            "heading": "at your service",
+            "menu": "footer-service"
+          }
+        },
+        "policies": {
+          "type": "column",
+          "settings": {
+            "heading": "Policies",
+            "menu": "footer-policies"
+          }
+        },
+        "privacy": {
+          "type": "column",
+          "settings": {
+            "heading": "privacy & settings",
+            "menu": "footer-privacy"
+          }
+        },
+        "social": {
+          "type": "social",
+          "settings": {}
+        }
       },
-      "block_order": ["about", "service", "policies", "privacy", "social"],
+      "block_order": [
+        "about",
+        "service",
+        "policies",
+        "privacy",
+        "social"
+      ],
       "settings": {
         "company_name": "Omarieden Company",
         "vat": "312878014500003",
         "cr": "2051263702",
-        "facebook": "https://www.facebook.com/omarieden.ksa",
-        "instagram": "https://www.instagram.com/omarieden.dept"
+        "facebook": "https://www.facebook.com/omarieden.ksa/",
+        "instagram": "https://www.instagram.com/omarieden.dept",
+        "tiktok": "https://www.tiktok.com/@omarieden.dept",
+        "linkedin": "https://www.linkedin.com/company/omarieden/posts/?feedView=all"
       }
     }
   },
-  "order": ["footer"]
+  "order": [
+    "footer"
+  ]
 }
