@@ -775,3 +775,12 @@ a.od-imgrow__media:hover .od-ratio img { transform: scale(1.03); }
 .od-help__btn { display: inline-block; border: 1px solid currentColor; padding: 13px 26px; font-family: Bricolage, sans-serif; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: inherit; text-decoration: none; transition: background .2s ease, color .2s ease; }
 .od-help__btn:hover { background: var(--od-help-text, #fcf8f2); color: var(--od-help-bg, #551c25); }
 [dir=rtl] .od-help__heading, [dir=rtl] .od-help__text, [dir=rtl] .od-help__btn { font-family: Arabic-Regular, sans-serif; letter-spacing: 0; }
+/* returns page: bullets back (global reset strips them), FAQ in the same 640px left-aligned column as the steps and policy */
+.od-pol__body ul { list-style: disc; }
+.od-pol__body ol { list-style: decimal; }
+.od-pol__body ul ul { list-style: circle; margin-top: 6px; }
+.template-page-returns .od-faqblk__inner { max-width: 640px; }
+.template-page-returns .od-faqblk .od-blk__head { text-align: left; margin-bottom: 8px; }
+.template-page-returns .od-faqblk .od-blk__heading { font-size: 30px; padding-bottom: 14px; border-bottom: 1px solid #e5d9c7; margin-bottom: 0; }
+[dir=rtl] .template-page-returns .od-faqblk .od-blk__head { text-align: right; }
+@media (max-width: 640px) { .template-page-returns .od-faqblk .od-blk__heading { font-size: 24px; } }
