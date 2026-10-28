@@ -12,6 +12,10 @@
   if rtl and st.title_ar != blank
     assign title = st.title_ar
   endif
+  assign subtitle = st.subtitle
+  if rtl and st.subtitle_ar != blank
+    assign subtitle = st.subtitle_ar
+  endif
   if st.image != blank
     assign hero_url = st.image | image_url: width: 2560
   else
@@ -23,6 +27,7 @@
     <div class="_container_1kxnl_30 _banner_xwnoc_30 undefined">
       <div class="_banner__content_xwnoc_61 ">
         <h1 class="{% if rtl %}_titleRtl_xwnoc_39{% else %}undefined{% endif %} _banner__content__title_xwnoc_67 _titleClass_1dpfq_30">{{ title }}</h1>
+        {%- if subtitle != blank -%}<p class="od-pbanner__sub">{{ subtitle }}</p>{%- endif -%}
       </div>
     </div>
   </section>
@@ -35,6 +40,8 @@
   "settings": [
     { "type": "text", "id": "title", "label": "Title (empty = page title)" },
     { "type": "text", "id": "title_ar", "label": "Title (Arabic)" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle (optional, under the title)" },
+    { "type": "text", "id": "subtitle_ar", "label": "Subtitle (Arabic)" },
     { "type": "image_picker", "id": "image", "label": "Image (empty = the policy pages banner)" },
     { "type": "range", "id": "height", "label": "Height", "min": 200, "max": 600, "step": 20, "unit": "px", "default": 340 }
   ],

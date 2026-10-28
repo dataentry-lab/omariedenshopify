@@ -1,0 +1,80 @@
+{%- comment -%}
+  Policy text (28 Oct 2026): renders the body of a chosen Shopify page (the policy stays editable in admin) in the
+  block-library column, each <h2> of the body restyled as a light Moonlight sub-heading with a hairline. "Hide parts"
+  lists headings (one per line, case-insensitive "contains") to leave out, e.g. the how-to parts already covered by the
+  steps above. Empty page = the current page's body. CSS: od-blocks.css (.od-pol).
+{%- endcomment -%}
+{%- liquid
+  assign st = section.settings
+  assign rtl = false
+  if request.locale.iso_code contains 'ar'
+    assign rtl = true
+  endif
+  assign eyebrow = st.eyebrow
+  assign heading = st.heading
+  if rtl
+    assign eyebrow = st.eyebrow_ar | default: eyebrow
+    assign heading = st.heading_ar | default: heading
+  endif
+  assign src = st.page
+  if src == blank
+    assign src = page
+  endif
+  assign body = src.content
+  assign hide = st.hide | downcase | strip | newline_to_br | split: '<br />'
+  assign parts = body | split: '<h2'
+-%}
+<section class="od-blk od-pol" id="od-pol-{{ section.id }}" style="--od-blk-bg: {{ st.bg | default: 'transparent' }}; --od-blk-text: {{ st.text_color }}; padding-top: {{ st.pad_top }}px; padding-bottom: {{ st.pad_bottom }}px;">
+  <div class="_container_1kxnl_30">
+    <div class="od-pol__col">
+      {%- if eyebrow != blank -%}<p class="od-blk__eyebrow">{{ eyebrow }}</p>{%- endif -%}
+      {%- if heading != blank -%}<h2 class="od-blk__heading od-pol__heading">{{ heading }}</h2>{%- endif -%}
+      <div class="od-pol__body">
+        {%- for part in parts -%}
+          {%- if forloop.first -%}
+            {%- unless st.skip_intro -%}{{ part }}{%- endunless -%}
+          {%- else -%}
+            {%- liquid
+              assign h = part | split: '</h2>' | first | split: '>' | last | strip
+              assign rest = part | split: '</h2>' | last
+              assign hd = h | downcase | strip_html | strip
+              assign skip = false
+              for term in hide
+                assign t = term | strip
+                if t != '' and hd contains t
+                  assign skip = true
+                endif
+              endfor
+            -%}
+            {%- unless skip -%}
+              <h3 class="od-pol__h">{{ h | strip_html }}</h3>
+              {{ rest }}
+            {%- endunless -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Policy text",
+  "tag": "section",
+  "settings": [
+    { "type": "page", "id": "page", "label": "Page to show (empty = this page)" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Policy" },
+    { "type": "text", "id": "eyebrow_ar", "label": "Eyebrow (Arabic)", "default": "السياسة" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Return & refund policy" },
+    { "type": "text", "id": "heading_ar", "label": "Heading (Arabic)", "default": "سياسة الإرجاع والاسترداد" },
+    { "type": "textarea", "id": "hide", "label": "Hide parts whose heading contains (one per line)", "info": "Case-insensitive. Example: How to Return" },
+    { "type": "checkbox", "id": "skip_intro", "label": "Hide any text before the first heading", "default": false },
+    { "type": "header", "content": "Colours and spacing" },
+    { "type": "color", "id": "bg", "label": "Background" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#551c25" },
+    { "type": "range", "id": "pad_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "pad_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 }
+  ],
+  "presets": [ { "name": "Policy text" } ]
+}
+{% endschema %}
