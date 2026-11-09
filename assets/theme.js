@@ -280,19 +280,31 @@
   const WL_KEY = 'od_wishlist' + (OD.customerId ? '_' + OD.customerId : '');
   function wlGet() { try { return JSON.parse(localStorage.getItem(WL_KEY) || '[]'); } catch (e) { return []; } }
   function wlSet(list) { try { localStorage.setItem(WL_KEY, JSON.stringify(list)); } catch (e) {} document.dispatchEvent(new CustomEvent('od:wishlist', { detail: list })); }
-  function wlHas(handle) { return wlGet().some((i) => i.handle === handle); }
-  function wlToggle(handle, id) {
+  /* 9 Nov 2026: one entry per product + colour (the client: hearting one colour card must not select every colour).
+     Entry = { handle, id, colour, at }. Legacy entries without a colour (saved before this change) match every colour
+     of that product until they are removed once. */
+  const wlMatch = (i, handle, colour) => i.handle === handle && (i.colour == null || !colour || i.colour === colour);
+  function wlHas(handle, colour) { return wlGet().some((i) => wlMatch(i, handle, colour || '')); }
+  function wlToggle(handle, id, colour) {
+    colour = colour || '';
     let list = wlGet();
-    const has = list.some((i) => i.handle === handle);
-    if (has) list = list.filter((i) => i.handle !== handle); else list.push({ handle, id, at: Date.now() });
+    const has = list.some((i) => wlMatch(i, handle, colour));
+    if (has) list = list.filter((i) => !wlMatch(i, handle, colour)); else list.push({ handle, id, colour, at: Date.now() });
     wlSet(list);
     toast(has ? OD.t.removedFromWishlist : OD.t.addedToWishlist);
     return !has;
   }
+  /* colour of a heart: its own data-wishlist-colour, else the colour its card is showing right now */
+  function wlColourOf(el) {
+    const own = el.getAttribute('data-wishlist-colour');
+    if (own != null) return own;
+    const card = el.closest('[data-product-card]');
+    return card ? (card.getAttribute('data-color-value') || '') : '';
+  }
   function wlPaint(root) {
     $$('[data-wishlist-toggle]', root).forEach((el) => {
       const img = $('img', el);
-      const active = wlHas(el.getAttribute('data-wishlist-handle'));
+      const active = wlHas(el.getAttribute('data-wishlist-handle'), wlColourOf(el));
       el.classList.toggle('is-active', active);
       if (img) img.src = active ? OD.assets.wishlistFilled : OD.assets.wishlist;
     });
@@ -301,7 +313,7 @@
     const t = e.target.closest('[data-wishlist-toggle]');
     if (!t) return;
     e.preventDefault(); e.stopPropagation();
-    wlToggle(t.getAttribute('data-wishlist-handle'), t.getAttribute('data-wishlist-id'));
+    wlToggle(t.getAttribute('data-wishlist-handle'), t.getAttribute('data-wishlist-id'), wlColourOf(t));
     wlPaint(document);
   });
   on(document, 'od:wishlist', () => wlPaint(document));
@@ -604,6 +616,7 @@
         if (colorIdx > -1 && window.odGallery && window.odGallery.setColour) window.odGallery.setColour(selected[colorIdx]);
         if (v.featured_media && window.odGallery && !fromGallery) window.odGallery.goToMedia(v.featured_media.id);
       } else if (addBtn) { addBtn.disabled = true; addBtn.textContent = addBtn.getAttribute('data-label-unavailable'); }
+      root.__wlPaint && root.__wlPaint();
     };
     let fromGallery = false;
     on(root, 'click', (e) => {
@@ -701,8 +714,12 @@
     // wishlist button on PDP
     const wb = $('[data-pdp-wishlist]', root);
     if (wb) {
-      const paintWb = () => { const img = $('img', wb); img.src = wlHas(product.handle) ? OD.assets.wishlistFilled : OD.assets.wishlist; };
-      on(wb, 'click', (e) => { e.preventDefault(); wlToggle(product.handle, product.id); paintWb(); });
+      // the heart is per colour (9 Nov 2026): it follows the selected colour swatch
+      const wbColour = () => (colorIdx > -1 ? selected[colorIdx] || '' : '');
+      const paintWb = () => { const img = $('img', wb); img.src = wlHas(product.handle, wbColour()) ? OD.assets.wishlistFilled : OD.assets.wishlist; };
+      on(wb, 'click', (e) => { e.preventDefault(); wlToggle(product.handle, product.id, wbColour()); paintWb(); });
+      root.__wlPaint = paintWb;
+      on(document, 'od:wishlist', paintWb);
       paintWb();
     }
   }
@@ -741,8 +758,8 @@
       }
       const move = e.target.closest('[data-move-to-wishlist]');
       if (move) {
-        const handle = move.getAttribute('data-handle'), id = move.getAttribute('data-product-id'), line = move.getAttribute('data-line');
-        if (!wlHas(handle)) wlToggle(handle, id);
+        const handle = move.getAttribute('data-handle'), id = move.getAttribute('data-product-id'), line = move.getAttribute('data-line'), colour = move.getAttribute('data-colour') || '';
+        if (!wlHas(handle, colour)) wlToggle(handle, id, colour);
         try { await cartRequest(OD.cartChangeUrl + '.js', { line: parseInt(line, 10), quantity: 0 }); await refresh(); } catch (err) { toast(err.message, 'error'); }
         return;
       }
@@ -773,8 +790,15 @@
       empty.hidden = true;
       grid.innerHTML = '<div class="od-skel od-skel--card"></div>'.repeat(Math.min(list.length, 6));
       const products = await Promise.all(list.map((i) => fetch(OD.rootUrl + 'products/' + i.handle + '.js').then((r) => (r.ok ? r.json() : null)).catch(() => null)));
-      grid.innerHTML = products.filter(Boolean).map((p) => cardHTML({ id: p.id, handle: p.handle, title: p.title, vendor: p.vendor, url: OD.rootUrl + 'products/' + p.handle, featured_image: p.featured_image, price: p.price, options: p.options })).join('');
+      // one card per saved entry, in that entry's colour (od-card.js OD.cardHTML when loaded, else the plain card)
+      grid.innerHTML = products.map((p, k) => {
+        if (!p) return '';
+        const colour = list[k].colour || '';
+        if (OD.cardHTML && OD.cardHTML !== cardHTML) return OD.cardHTML(Object.assign({}, p, { url: OD.rootUrl + 'products/' + p.handle }), colour || null);
+        return cardHTML({ id: p.id, handle: p.handle, title: p.title, vendor: p.vendor, url: OD.rootUrl + 'products/' + p.handle, featured_image: p.featured_image, price: p.price, options: p.options });
+      }).join('');
       wlPaint(grid);
+      OD.initCards && OD.initCards(grid);
     };
     on(document, 'od:wishlist', render);
     render();

@@ -118,6 +118,7 @@
     const price = $('[data-card-price]', card), cmp = $('[data-card-compare]', card);
     if (price && lv && lv.price != null) { price.innerHTML = money(lv.price); price.classList.toggle('od-card__price--sale', !!(lv.compare_at_price && lv.compare_at_price > lv.price)); }
     if (cmp && lv) { const onSale = lv.compare_at_price && lv.compare_at_price > lv.price; cmp.hidden = !onSale; if (onSale) cmp.innerHTML = money(lv.compare_at_price); }
+    OD.wlPaint && OD.wlPaint(card); // the heart is per colour (9 Nov 2026)
   }
 
   /* =====================================================================
@@ -623,10 +624,11 @@
     if (count) count.textContent = '(' + list.length + ')';
     if (!list.length) { grid.innerHTML = ''; empty.hidden = false; return; }
     empty.hidden = true;
-    // keep cards that are still wished; only fetch the new ones
+    // keep cards that are still wished; only fetch the new ones. One card per entry = product + colour (9 Nov 2026)
+    const keyOf = (i) => i.handle + '|' + (i.colour || '');
     const have = {};
-    $$('[data-product-card]', grid).forEach((c) => { const h = c.getAttribute('data-handle'); if (list.some((i) => i.handle === h)) have[h] = c; else c.remove(); });
-    const missing = list.filter((i) => !have[i.handle]);
+    $$('[data-product-card]', grid).forEach((c) => { const k = c.getAttribute('data-handle') + '|' + (c.getAttribute('data-wl-colour') || ''); if (list.some((i) => keyOf(i) === k)) have[k] = c; else c.remove(); });
+    const missing = list.filter((i) => !have[keyOf(i)]);
     if (!missing.length) return;
     missing.forEach(() => { const sk = document.createElement('div'); sk.className = 'od-skel od-skel--card'; sk.setAttribute('data-wl-skel', ''); grid.appendChild(sk); });
     const token = wlRendering = {};
@@ -634,7 +636,13 @@
     if (token !== wlRendering) return;
     $$('[data-wl-skel]', grid).forEach((s) => s.remove());
     const frag = document.createElement('div');
-    frag.innerHTML = products.filter(Boolean).map((p) => OD.cardHTML(Object.assign({}, p, { url: (OD.rootUrl || '/') + 'products/' + p.handle }))).join('');
+    products.forEach((p, k) => {
+      if (!p) return;
+      const box = document.createElement('div');
+      box.innerHTML = OD.cardHTML(Object.assign({}, p, { url: (OD.rootUrl || '/') + 'products/' + p.handle }), missing[k].colour || null);
+      const c = box.firstElementChild;
+      if (c) { c.setAttribute('data-wl-colour', missing[k].colour || ''); frag.appendChild(c); }
+    });
     // newest first
     Array.from(frag.children).reverse().forEach((c) => grid.insertBefore(c, grid.firstChild));
     OD.wlPaint && OD.wlPaint(grid);

@@ -44,6 +44,8 @@
   function itemHTML(item) {
     const colorName = attr('data-color-name'), sizeName = attr('data-size-name');
     const opts = !item.product_has_only_default_variant && Array.isArray(item.options_with_values) ? item.options_with_values : [];
+    const colourOpt = opts.find((o) => o.name === colorName || /colou?r|اللون/i.test(o.name || ''));
+    const itemColour = colourOpt ? colourOpt.value : '';
     const optsHTML = opts.length ? '<div class="_checkoutCard__right__details__info__textConfig_1tn6c_156 od-cartd-item__options">' + opts.map((o) => {
       const label = o.name === sizeName ? attr('data-t-size') : (o.name === colorName ? attr('data-t-color') : o.name);
       return '<p><span>' + esc(label) + ':</span><span>' + esc(o.value) + '</span></p>';
@@ -64,7 +66,7 @@
           '<button type="button" class="_globalImg_1tf1q_38 _incDec__icon_58mpv_99 od-cartd-qty__btn" data-cartd-change data-key="' + esc(item.key) + '" data-qty="' + (item.quantity + 1) + '" aria-label="' + esc(attr('data-t-increase')) + '"><img alt="" src="' + esc(attr('data-icon-plus')) + '" width="16" height="16"></button>' +
         '</div>' +
         '<div class="_checkoutCard__right__icons_1tn6c_175 od-cartd-item__actions">' +
-          '<button type="button" class="undefined _border_9vfph_30 _iconWithText_9vfph_36 od-cartd-item__wl" data-cartd-wishlist data-key="' + esc(item.key) + '" data-handle="' + esc(item.handle) + '" data-product-id="' + esc(item.product_id) + '"><div class="_globalImg_1tf1q_38 _iconWithText__icon_9vfph_45"><img alt="" src="' + esc(attr('data-icon-wishlist')) + '" width="16" height="16"></div><p>' + esc(attr('data-t-wishlist')) + '</p></button>' +
+          '<button type="button" class="undefined _border_9vfph_30 _iconWithText_9vfph_36 od-cartd-item__wl" data-cartd-wishlist data-key="' + esc(item.key) + '" data-handle="' + esc(item.handle) + '" data-product-id="' + esc(item.product_id) + '" data-colour="' + esc(itemColour) + '"><div class="_globalImg_1tf1q_38 _iconWithText__icon_9vfph_45"><img alt="" src="' + esc(attr('data-icon-wishlist')) + '" width="16" height="16"></div><p>' + esc(attr('data-t-wishlist')) + '</p></button>' +
           '<button type="button" class="undefined _border_9vfph_30 _iconWithText_9vfph_36 od-cartd-item__trash" data-cartd-change data-key="' + esc(item.key) + '" data-qty="0" aria-label="' + esc(attr('data-t-remove')) + '"><div class="_globalImg_1tf1q_38 _iconWithText__icon_9vfph_45"><img alt="" src="' + esc(attr('data-icon-trash')) + '" width="16" height="16"></div></button>' +
         '</div>' +
       '</div>' +
@@ -266,8 +268,8 @@
     const wl = e.target.closest('[data-cartd-wishlist]');
     if (wl) {
       e.preventDefault();
-      const handle = wl.getAttribute('data-handle'), id = wl.getAttribute('data-product-id');
-      if (handle && OD.wlHas && !OD.wlHas(handle)) OD.wlToggle(handle, id);
+      const handle = wl.getAttribute('data-handle'), id = wl.getAttribute('data-product-id'), colour = wl.getAttribute('data-colour') || '';
+      if (handle && OD.wlHas && !OD.wlHas(handle, colour)) OD.wlToggle(handle, id, colour);
       change(wl.getAttribute('data-key'), 0, wl);
       return;
     }

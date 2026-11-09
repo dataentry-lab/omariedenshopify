@@ -100,7 +100,7 @@
                   </div>
 
                   <div class="_checkoutCard__right__icons_1tn6c_175 od-cartd-item__actions">
-                    <button type="button" class="undefined _border_9vfph_30 _iconWithText_9vfph_36 od-cartd-item__wl" data-cartd-wishlist data-key="{{ item.key }}" data-handle="{{ item.product.handle }}" data-product-id="{{ item.product_id }}">
+                    {%- assign wl_colour = '' -%}{%- for option in item.options_with_values -%}{%- assign on = option.name | downcase -%}{%- if option.name == settings.color_option_name or on contains 'colo' or on contains 'اللون' -%}{%- assign wl_colour = option.value -%}{%- endif -%}{%- endfor -%}<button type="button" class="undefined _border_9vfph_30 _iconWithText_9vfph_36 od-cartd-item__wl" data-cartd-wishlist data-key="{{ item.key }}" data-handle="{{ item.product.handle }}" data-product-id="{{ item.product_id }}" data-colour="{{ wl_colour | escape }}">
                       <div class="_globalImg_1tf1q_38 _iconWithText__icon_9vfph_45"><img fetchpriority="auto" alt="" src="{{ 'icons_light_wishlist.svg' | asset_url }}" width="16" height="16"></div>
                       <p>{{ 'cart.general.move_to_wishlist' | t }}</p>
                     </button>
