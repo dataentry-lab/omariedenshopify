@@ -85,7 +85,21 @@
       if product.compare_at_price > product.price
         assign hit = true
         if settings.badge_sale_style == 'percent'
-          assign pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price
+          comment
+            9 Nov 2026: the sale import tags every product "sale:50" / "sale:40" / "sale:30"; that tag is the
+            exact percentage. Without it, compute from the lowest compare-at vs lowest price (rounded).
+          endcomment
+          assign pct = ''
+          for tag in product.tags
+            assign tl = tag | downcase | strip
+            if tl contains 'sale:'
+              assign pct = tl | split: ':' | last | strip
+              break
+            endif
+          endfor
+          if pct == ''
+            assign pct = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round
+          endif
           assign label = '-' | append: pct | append: '%'
         endif
       endif
