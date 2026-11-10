@@ -270,7 +270,7 @@
     const d = Q.s.data, po = d.preorder;
     const note = $('[data-qa-po]', qa), sub = $('[data-qa-po-sub]', qa);
     const on = !!(po && po.on && OD.preorder);
-    if (note) { note.hidden = !on; const t = $('[data-qa-po-text]', note); if (t && on) t.textContent = OD.preorder.note.replace('__TEXT__', po.text || OD.preorder.ready); }
+    if (note) { note.hidden = !on; const t = $('[data-qa-po-text]', note); if (t && on) t.textContent = po.note || (po.text ? OD.preorder.note.replace('__TEXT__', po.text) : OD.preorder.noteReady); }
     if (sub) { sub.hidden = !on; if (on) sub.textContent = OD.preorder.sub; }
     // JS-rendered cards only know the "pre-order" tag: fetch the dispatch text once
     if (on && !po.text && OD.poLookup) {

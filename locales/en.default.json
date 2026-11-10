@@ -151,6 +151,7 @@
       "dispatch_by": "Dispatches by {{ date }}",
       "when_ready": "Ships as soon as it is ready",
       "note": "Pre-order. {{ text }}",
+      "note_ready": "This item is available for pre-order. Orders will be prepared and shipped within 3 weeks of purchase.",
       "pay_today": "You pay today. We ship as soon as it is ready.",
       "months": "January,February,March,April,May,June,July,August,September,October,November,December"
     }

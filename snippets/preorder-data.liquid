@@ -6,7 +6,7 @@
   custom.preorder_date  (date, optional)   expected dispatch date; a date in the past is ignored
   custom.preorder_limit (integer, optional) soft cap: pieces already pre-ordered = the negative stock of the
                                             variants added up; at the cap the product shows as sold out
-  Params: product (required), format: 'json' (default) | 'flag' ("on" / "closed" / "") | 'text'
+  Params: product (required), format: 'json' (default) | 'flag' ("on" / "closed" / "") | 'text' | 'note' (the sentence in the sandstone note)
   json = {"on":true,"closed":false,"date":"2026-12-15","text":"Dispatches by 15 December 2026"} or null
   Used by: product-badges, product-json, product-card, main-product, sections/od-preorder (lookup for JS adds).
 {%- endcomment -%}
@@ -58,10 +58,16 @@
         assign po_when = d_day | append: ' ' | append: m_name | append: ' ' | append: d_year
       endif
     endif
+    comment
+      po_note = the sentence in the sandstone note. With a date: "Pre-order. Dispatches by ...";
+      without one: the client's own sentence (10 Nov 2026), locale key products.preorder.note_ready
+    endcomment
     if po_when != ''
       assign po_text = 'products.preorder.dispatch_by' | t: date: po_when
+      assign po_note = 'products.preorder.note' | t: text: po_text
     else
       assign po_text = 'products.preorder.when_ready' | t
+      assign po_note = 'products.preorder.note_ready' | t
     endif
   endif
 -%}
@@ -69,6 +75,8 @@
   {%- if po_on -%}{%- if po_closed -%}closed{%- else -%}on{%- endif -%}{%- endif -%}
 {%- elsif format == 'text' -%}
   {%- if po_on -%}{{- po_text -}}{%- endif -%}
+{%- elsif format == 'note' -%}
+  {%- if po_on -%}{{- po_note -}}{%- endif -%}
 {%- else -%}
-  {%- if po_on -%}{"on":true,"closed":{{ po_closed | json }},"date":{{ po_date | json }},"text":{{ po_text | json }}}{%- else -%}null{%- endif -%}
+  {%- if po_on -%}{"on":true,"closed":{{ po_closed | json }},"date":{{ po_date | json }},"text":{{ po_text | json }},"note":{{ po_note | json }}}{%- else -%}null{%- endif -%}
 {%- endif -%}

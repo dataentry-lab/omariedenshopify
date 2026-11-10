@@ -25,6 +25,10 @@
     render 'preorder-data', product: product, format: 'text'
   endcapture
   assign po_text = po_text | strip
+  capture po_note
+    render 'preorder-data', product: product, format: 'note'
+  endcapture
+  assign po_note = po_note | strip
   assign po_on = false
   if po_flag == 'on'
     assign po_on = true
@@ -141,7 +145,7 @@
             <div class="_ProductWeight_1fx6h_172"><p>{{ 'products.product.return_period' | t }} <span>{{ settings.return_days | default: 30 }} {{ 'products.product.days' | t }}</span></p></div>
             {%- if po_on -%}
               <input type="hidden" name="properties[Pre-order]" value="{{ po_text | escape }}">
-              <div class="od-po-note" data-po-note>{% render 'icon-clock' %}<span>{{ 'products.preorder.note' | t: text: po_text }}</span></div>
+              <div class="od-po-note" data-po-note>{% render 'icon-clock' %}<span>{{ po_note }}</span></div>
             {%- endif -%}
             <div class="_CartSection_1fx6h_74{% if po_on %} od-po-cart{% endif %}">
               <div class="_WishlsitAndCart_1fx6h_74">

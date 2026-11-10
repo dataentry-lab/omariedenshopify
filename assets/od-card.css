@@ -335,3 +335,7 @@
 .od-po-note--bag { margin: 0 0 12px; font-size: 12px; }
 .od-po-line { display: flex; align-items: center; gap: 6px; flex: 0 0 100%; width: 100%; color: #551c25; font-size: 12px; line-height: 1.4; margin: 6px 0 0; }
 .od-po-line span { color: inherit; }
+
+/* 10 Nov 2026: the note can run to two lines now (client sentence): icon stays on the first line */
+.od-po-note { align-items: flex-start; }
+.od-po-note .od-po-icon { margin-top: 1px; }
