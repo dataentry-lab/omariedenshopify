@@ -12,6 +12,13 @@
         assign dark = true
       endif
   endcase
+  comment
+    10 Nov 2026: switch "Faded header over banners" (section setting faded_header, default on). Off = the header is
+    always the solid white one (sticky, maroon logo / text / icons) on every page, also at the top of banner pages.
+  endcomment
+  if section.settings.faded_header == false
+    assign dark = false
+  endif
   if dark
     assign icon_set = 'dark'
     assign logo = 'images_dark_logo.svg'
@@ -207,6 +214,8 @@
   "settings": [
     { "type": "image_picker", "id": "logo", "label": "Logo (optional, replaces built-in Omarieden logo)" },
     { "type": "paragraph", "content": "The navigation menu is set in Theme settings > Navigation (3 levels: department > sub-department > category)." },
+    { "type": "header", "content": "Header style" },
+    { "type": "checkbox", "id": "faded_header", "label": "Faded header over banners", "default": true, "info": "On: see-through header with white logo and text at the top of the home, About, Contact and FAQ pages, white once the page scrolls. Off: the header is always solid white with maroon logo and text, on every page." },
     { "type": "header", "content": "Extra tabs (New In, Designers)" },
     { "type": "paragraph", "content": "Add a \"New In link\" block for the New In tab and \"Designers column\" blocks (plus an optional \"Designers promo\" block) for the Designers mega menu. The Designers tab only shows when at least one column block exists." },
     { "type": "select", "id": "extras_position", "label": "Position of the extra tabs", "default": "first", "options": [ { "value": "first", "label": "Before the departments" }, { "value": "last", "label": "After the departments" } ] },
