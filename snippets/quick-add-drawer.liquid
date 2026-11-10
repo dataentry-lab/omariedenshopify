@@ -59,10 +59,12 @@
       <div class="od-qa__sizes" data-qa-sizes role="group" aria-label="{{ 'products.product.size' | t }}"></div>
     </div>
 
+    <div class="od-po-note od-po-note--qa" data-qa-po hidden>{% render 'icon-clock' %}<span data-qa-po-text></span></div>
     <button type="button" class="od-qa__atc" data-qa-atc>
       <span data-qa-atc-label>{{ 'products.product.add_to_cart' | t }}</span>
       <span class="od-qa__atc-price" data-qa-atc-price></span>
     </button>
+    <p class="od-po-sub od-po-sub--qa" data-qa-po-sub hidden></p>
 
     <button type="button" class="od-qa__more" data-qa-more aria-expanded="false">{{ 'products.card.more_details' | t }}</button>
     <div class="od-qa__details" data-qa-details style="height: 0px; overflow: hidden;">

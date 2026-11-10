@@ -540,6 +540,29 @@
     ]
   },
   {
+    "name": "Pre-order",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Pay in full now, ship later. Per product in Shopify admin: tick the Pre-order field (or add the tag pre-order), set the Pre-order dispatch date, and set its variants to Continue selling when out of stock. Optional: Pre-order limit."
+      },
+      {
+        "type": "checkbox",
+        "id": "preorder_enabled",
+        "label": "Enable pre-order",
+        "default": true,
+        "info": "Off: every pre-order product behaves like a normal product again."
+      },
+      {
+        "type": "checkbox",
+        "id": "preorder_mixed_note",
+        "label": "Show the mixed bag note",
+        "default": true,
+        "info": "Shown in the bag when it holds pre-order and in-stock pieces together."
+      }
+    ]
+  },
+  {
     "name": "Collections",
     "settings": [
       {

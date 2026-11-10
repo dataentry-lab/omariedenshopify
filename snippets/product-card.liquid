@@ -76,6 +76,13 @@
   if product.available == false
     assign sold_out = true
   endif
+  capture po_flag
+    render 'preorder-data', product: product, format: 'flag'
+  endcapture
+  assign po_flag = po_flag | strip
+  if po_flag == 'closed'
+    assign sold_out = true
+  endif
   if split
     assign colour = card_colour
     if active_colours_d != blank
@@ -108,7 +115,7 @@
       assign price = link_variant.price
       assign compare = link_variant.compare_at_price
     endif
-    if c_avail == nil
+    if c_avail == nil or po_flag == 'closed'
       assign sold_out = true
     endif
     if vmedia

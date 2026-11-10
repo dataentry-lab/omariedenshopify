@@ -35,6 +35,7 @@
   data-t-increase="{{ 'cart.general.increase' | t | escape }}"
   data-t-wishlist="{{ 'cart.general.move_to_wishlist' | t | escape }}"
   data-t-remove="{{ 'cart.general.remove' | t | escape }}"
+  data-t-po="{{ 'products.preorder.badge' | t | escape }}"
   data-icon-minus="{{ 'icons_light_minus.svg' | asset_url }}"
   data-icon-plus="{{ 'icons_light_plus.svg' | asset_url }}"
   data-icon-wishlist="{{ 'icons_light_wishlist.svg' | asset_url }}"
@@ -84,6 +85,9 @@
                           {%- endfor -%}
                         </div>
                       {%- endunless -%}
+                      {%- if item.properties['Pre-order'] != blank -%}
+                        <p class="od-po-line">{% render 'icon-clock' %}<span>{{ 'products.preorder.badge' | t }}: {{ item.properties['Pre-order'] }}</span></p>
+                      {%- endif -%}
                     </div>
                     <div class="od-cartd-item__prices">
                       <p class="_checkoutCard__right__details__price_1tn6c_95 null">{% render 'sar' %}{{ item.final_line_price | money_without_currency }}</p>
@@ -175,6 +179,11 @@
     </div>
 
       <div class="_mFooter_9316i_55 od-cartd__footer" data-cartd-footer{% if cart.item_count == 0 %} hidden{% endif %}>
+        {%- if settings.preorder_enabled != false and settings.preorder_mixed_note != false -%}
+          {%- assign po_lines = 0 -%}
+          {%- for item in cart.items -%}{%- if item.properties['Pre-order'] != blank -%}{%- assign po_lines = po_lines | plus: 1 -%}{%- endif -%}{%- endfor -%}
+          <div class="od-po-note od-po-note--bag" data-cartd-po-mixed{% unless po_lines > 0 and po_lines < cart.items.size %} hidden{% endunless %}>{% render 'icon-clock' %}<span>{{ 'cart.preorder.mixed' | t }}</span></div>
+        {%- endif -%}
         <div class="_subtotal_1bfe0_165">
           <p>{{ 'cart.summary.subtotal' | t }}</p>
           <p data-cartd-subtotal>{% render 'sar' %}{{ cart.total_price | money_without_currency }}</p>

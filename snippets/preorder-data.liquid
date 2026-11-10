@@ -1,0 +1,74 @@
+{%- comment -%}
+  Pre-order state of one product (10 Nov 2026). Pay in full now, ship later; no app.
+  A product is on pre-order when Theme settings > Pre-order is enabled AND
+    - the product metafield custom.preorder is ticked, or the product carries the tag "pre-order" / "preorder"
+    - AND the product can still be bought (Shopify: variants set to "Continue selling when out of stock")
+  custom.preorder_date  (date, optional)   expected dispatch date; a date in the past is ignored
+  custom.preorder_limit (integer, optional) soft cap: pieces already pre-ordered = the negative stock of the
+                                            variants added up; at the cap the product shows as sold out
+  Params: product (required), format: 'json' (default) | 'flag' ("on" / "closed" / "") | 'text'
+  json = {"on":true,"closed":false,"date":"2026-12-15","text":"Dispatches by 15 December 2026"} or null
+  Used by: product-badges, product-json, product-card, main-product, sections/od-preorder (lookup for JS adds).
+{%- endcomment -%}
+{%- liquid
+  assign po_on = false
+  assign po_closed = false
+  assign po_date = ''
+  assign po_when = ''
+  if product and settings.preorder_enabled != false
+    if product.metafields.custom.preorder.value == true
+      assign po_on = true
+    else
+      for tag in product.tags
+        assign tg = tag | downcase | strip
+        if tg == 'pre-order' or tg == 'preorder'
+          assign po_on = true
+          break
+        endif
+      endfor
+    endif
+  endif
+  if po_on and product.available == false
+    assign po_on = false
+  endif
+  if po_on
+    assign lim = product.metafields.custom.preorder_limit.value | default: 0 | plus: 0
+    if lim > 0
+      assign presold = 0
+      for v in product.variants
+        if v.inventory_management != blank and v.inventory_quantity < 0
+          assign presold = presold | minus: v.inventory_quantity
+        endif
+      endfor
+      if presold >= lim
+        assign po_closed = true
+      endif
+    endif
+    assign raw = product.metafields.custom.preorder_date.value
+    if raw != blank
+      assign d_s = raw | date: '%s' | plus: 0
+      assign today_s = 'now' | date: '%s' | minus: 86400
+      if d_s >= today_s
+        assign po_date = raw | date: '%Y-%m-%d'
+        assign m_i = raw | date: '%-m' | minus: 1
+        assign months = 'products.preorder.months' | t | split: ','
+        assign m_name = months[m_i] | strip
+        assign d_day = raw | date: '%-d'
+        assign d_year = raw | date: '%Y'
+        assign po_when = d_day | append: ' ' | append: m_name | append: ' ' | append: d_year
+      endif
+    endif
+    if po_when != ''
+      assign po_text = 'products.preorder.dispatch_by' | t: date: po_when
+    else
+      assign po_text = 'products.preorder.when_ready' | t
+    endif
+  endif
+-%}
+{%- if format == 'flag' -%}
+  {%- if po_on -%}{%- if po_closed -%}closed{%- else -%}on{%- endif -%}{%- endif -%}
+{%- elsif format == 'text' -%}
+  {%- if po_on -%}{{- po_text -}}{%- endif -%}
+{%- else -%}
+  {%- if po_on -%}{"on":true,"closed":{{ po_closed | json }},"date":{{ po_date | json }},"text":{{ po_text | json }}}{%- else -%}null{%- endif -%}
+{%- endif -%}

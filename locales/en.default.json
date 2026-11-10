@@ -144,6 +144,15 @@
       "select_size": "Please select a size",
       "low_in_stock": "Low in stock",
       "read_more": "Read more"
+    },
+    "preorder": {
+      "badge": "Pre-order",
+      "button": "Pre-order",
+      "dispatch_by": "Dispatches by {{ date }}",
+      "when_ready": "Ships as soon as it is ready",
+      "note": "Pre-order. {{ text }}",
+      "pay_today": "You pay today. We ship as soon as it is ready.",
+      "months": "January,February,March,April,May,June,July,August,September,October,November,December"
     }
   },
   "wishlist": {
@@ -187,6 +196,9 @@
     "drawer": {
       "checkout": "Checkout",
       "view_bag": "View my bag"
+    },
+    "preorder": {
+      "mixed": "Your bag has a pre-order item. In-stock pieces ship now, pre-order pieces ship as soon as they are ready."
     }
   },
   "customer": {

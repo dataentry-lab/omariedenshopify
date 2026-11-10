@@ -102,6 +102,17 @@
   if material == blank
     assign material = product.metafields.custom.material.value | strip_html
   endif
+  comment
+    10 Nov 2026: pre-order (snippets/preorder-data.liquid). At the cap the product is sent as sold out.
+  endcomment
+  capture po_json
+    render 'preorder-data', product: product
+  endcapture
+  assign po_json = po_json | strip
+  assign po_closed = false
+  if po_json contains '"closed":true'
+    assign po_closed = true
+  endif
 -%}
   <script type="application/json" data-card-json>
   {
@@ -120,9 +131,10 @@
     "single": {{ product.has_only_default_variant | json }},
     "images": [{% assign n = 0 %}{% for m in product.media %}{% if m.media_type == 'image' and n < 6 %}{% if n > 0 %},{% endif %}{"src":{{ m | image_url: width: 600 | json }},"alt":{{ m.alt | default: product.title | json }}}{% assign n = n | plus: 1 %}{% endif %}{% endfor %}],
     "media": [{% assign n = 0 %}{% for m in product.media limit: 40 %}{% if m.media_type == 'image' %}{% if n > 0 %},{% endif %}{% assign n = n | plus: 1 %}{% assign mkey = '|' | append: m.id | append: ':' %}{% assign mcol = '' %}{% if media_map contains mkey %}{% assign mcol = media_map | split: mkey | last | split: '|' | first | default: '' %}{% endif %}{"id":{{ m.id | json }},"src":{{ m | image_url: width: 600 | json }},"alt":{{ m.alt | default: '' | json }},"colour":{% if mcol != '' %}{{ mcol | json }}{% else %}null{% endif %}}{% endif %}{% endfor %}],
-    "variants": [{% for v in product.variants %}{"id":{{ v.id | json }},"title":{{ v.title | json }},"option1":{{ v.option1 | json }},"option2":{{ v.option2 | json }},"option3":{{ v.option3 | json }},"available":{{ v.available | json }},"price":{{ v.price | json }},"compare_at_price":{{ v.compare_at_price | json }},"image":{% if v.featured_image %}{{ v.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},"media_id":{% if v.featured_media %}{{ v.featured_media.id | json }}{% else %}null{% endif %},"qty":{{ v.inventory_quantity | default: 0 | json }},"tracked":{% if v.inventory_management != blank %}true{% else %}false{% endif %}}{% unless forloop.last %},{% endunless %}{% endfor %}],
+    "variants": [{% for v in product.variants %}{"id":{{ v.id | json }},"title":{{ v.title | json }},"option1":{{ v.option1 | json }},"option2":{{ v.option2 | json }},"option3":{{ v.option3 | json }},"available":{% if po_closed %}false{% else %}{{ v.available | json }}{% endif %},"price":{{ v.price | json }},"compare_at_price":{{ v.compare_at_price | json }},"image":{% if v.featured_image %}{{ v.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},"media_id":{% if v.featured_media %}{{ v.featured_media.id | json }}{% else %}null{% endif %},"qty":{{ v.inventory_quantity | default: 0 | json }},"tracked":{% if v.inventory_management != blank %}true{% else %}false{% endif %}}{% unless forloop.last %},{% endunless %}{% endfor %}],
     "badges": {% render 'product-badges', product: product, limit: 2, format: 'json' %},
-    "available": {{ product.available | json }},
+    "available": {% if po_closed %}false{% else %}{{ product.available | json }}{% endif %},
+    "preorder": {{ po_json }},
     "description": {{ short_desc | json }},
     "material": {% if material != blank %}{{ material | json }}{% else %}null{% endif %}
   }

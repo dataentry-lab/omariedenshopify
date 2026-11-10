@@ -331,8 +331,41 @@
     $$('[data-cart-count-wrap]').forEach((el) => { el.style.setProperty('display', n > 0 ? 'flex' : 'none', 'important'); });
     OD.cartCount = n;
   }
-  async function addToCart(variantId, quantity) {
-    const data = await cartRequest(OD.cartAddUrl + '.js', { items: [{ id: variantId, quantity: quantity || 1 }] });
+  /* ---------- pre-order (10 Nov 2026): pay now, ship later ----------
+     A pre-order line carries the line item property "Pre-order" = the dispatch text ("Dispatches by 15 December 2026").
+     addToCart(id, qty, po): po = { on, text } from the product data (product page, quick add) adds it at once;
+     po = false means "known, not a pre-order"; po left out = unknown (Shop the Look, cart trending "+", JS cards):
+     the product is looked up through sections/od-preorder.liquid after the add and the line is updated. */
+  const PO_KEY = 'Pre-order';
+  const poCache = {};
+  function poLookup(handle) {
+    if (!handle || !OD.preorder) return Promise.resolve(null);
+    if (!(handle in poCache)) {
+      const root = String(OD.rootUrl || '/').replace(/\/?$/, '/');
+      poCache[handle] = fetch(root + 'products/' + encodeURIComponent(handle) + '?section_id=od-preorder', { headers: { Accept: 'text/html' } })
+        .then((r) => (r.ok ? r.text() : ''))
+        .then((html) => { const m = html.match(/<script[^>]*data-po-json[^>]*>([\s\S]*?)<\/script>/); try { return m ? JSON.parse(m[1]) : null; } catch (e) { return null; } })
+        .catch(() => null);
+    }
+    return poCache[handle];
+  }
+  async function poFix(data) {
+    const items = (data && data.items) || [];
+    for (const it of items) {
+      if (it.properties && it.properties[PO_KEY]) continue;
+      const info = await poLookup(it.handle);
+      if (!info || !info.on || info.closed) continue;
+      const props = Object.assign({}, it.properties || {}, { [PO_KEY]: info.text });
+      await cartRequest(OD.cartChangeUrl + '.js', { id: it.key, quantity: it.quantity, properties: props });
+      it.properties = props;
+    }
+  }
+  OD.poLookup = poLookup; OD.poKey = PO_KEY;
+  async function addToCart(variantId, quantity, po) {
+    const line = { id: variantId, quantity: quantity || 1 };
+    if (po && po.on && po.text) line.properties = { [PO_KEY]: po.text };
+    const data = await cartRequest(OD.cartAddUrl + '.js', { items: [line] });
+    if (po === undefined && OD.preorder) { try { await poFix(data); } catch (e) { /* the line stays without the note */ } }
     toast(OD.t.addedToCart);
     setCartCount((OD.cartCount || 0) + (quantity || 1));
     // open the cart drawer right away; it re-renders itself and corrects the count
@@ -369,8 +402,11 @@
     e.preventDefault();
     const id = b.getAttribute('data-variant-id') || (b.form && b.form.querySelector('[name=id]') && b.form.querySelector('[name=id]').value);
     if (!id) return toast(OD.t.cartError, 'error');
+    // product page button: data-po-text = the dispatch text ("" = not a pre-order); no attribute = unknown
+    const pt = b.getAttribute('data-po-text');
+    const po = pt === null ? undefined : (pt ? { on: true, text: pt } : false);
     setLoading(b, true);
-    try { await addToCart(id, 1); } catch (err) { toast(err.message, 'error'); }
+    try { await addToCart(id, 1, po); } catch (err) { toast(err.message, 'error'); }
     setLoading(b, false);
   });
 
@@ -611,7 +647,8 @@
         addBtn && addBtn.setAttribute('data-variant-id', v.id);
         priceEl && (priceEl.innerHTML = SAR + formatMoney(v.price));
         if (compareEl) { compareEl.style.display = v.compare_at_price > v.price ? '' : 'none'; compareEl.innerHTML = SAR + formatMoney(v.compare_at_price || 0); }
-        if (addBtn) { addBtn.disabled = !v.available; addBtn.textContent = v.available ? addBtn.getAttribute('data-label-add') : addBtn.getAttribute('data-label-sold'); }
+        const canBuy = v.available && root.getAttribute('data-po') !== 'closed'; // pre-order cap reached = sold out
+        if (addBtn) { addBtn.disabled = !canBuy; addBtn.textContent = canBuy ? addBtn.getAttribute('data-label-add') : addBtn.getAttribute('data-label-sold'); }
         if (styleCode && v.sku && !styleCode.getAttribute('data-fixed')) styleCode.textContent = v.sku;
         if (colorIdx > -1 && window.odGallery && window.odGallery.setColour) window.odGallery.setColour(selected[colorIdx]);
         if (v.featured_media && window.odGallery && !fromGallery) window.odGallery.goToMedia(v.featured_media.id);

@@ -58,6 +58,9 @@
                           <p><span>{% if option.name == size_name %}{{ 'products.product.size' | t }}{% elsif option.name == color_name %}{{ 'products.product.color' | t }}{% else %}{{ option.name }}{% endif %}:</span><span>{{ option.value }}</span></p>
                         {%- endfor -%}
                       {%- endunless -%}
+                      {%- if item.properties['Pre-order'] != blank -%}
+                        <p class="od-po-line">{% render 'icon-clock' %}<span>{{ 'products.preorder.badge' | t }}: {{ item.properties['Pre-order'] }}</span></p>
+                      {%- endif -%}
                     </div>
                   </div>
                   <div>
@@ -152,6 +155,13 @@
           </div>
           <button type="button" class="_btn_lnddl_30 _summary__promo__btn_1vg2n_162" disabled data-promo-apply>{{ 'cart.summary.apply' | t }}</button>
         </div>
+        {%- if settings.preorder_enabled != false and settings.preorder_mixed_note != false -%}
+          {%- assign po_lines = 0 -%}
+          {%- for item in cart.items -%}{%- if item.properties['Pre-order'] != blank -%}{%- assign po_lines = po_lines | plus: 1 -%}{%- endif -%}{%- endfor -%}
+          {%- if po_lines > 0 and po_lines < cart.items.size -%}
+            <div class="od-po-note od-po-note--bag">{% render 'icon-clock' %}<span>{{ 'cart.preorder.mixed' | t }}</span></div>
+          {%- endif -%}
+        {%- endif -%}
         <form action="{{ routes.cart_url }}" method="post" style="display:contents">
           <button type="submit" name="checkout" class="_btn_lnddl_30 _summary__checkoutBtn_1vg2n_120">{{ 'cart.summary.checkout' | t }}</button>
         </form>

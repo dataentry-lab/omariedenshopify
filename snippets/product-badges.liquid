@@ -33,7 +33,22 @@
   assign texts = ''
   assign count = 0
 
-  if settings.badge_metafield_enabled
+  comment
+    10 Nov 2026: pre-order badge (snippets/preorder-data.liquid), always first, brand maroon
+  endcomment
+  capture po_flag
+    render 'preorder-data', product: product, format: 'flag'
+  endcapture
+  assign po_flag = po_flag | strip
+  if po_flag == 'on'
+    assign po_label = 'products.preorder.badge' | t
+    assign labels = labels | append: po_label | append: '||'
+    assign bgs = bgs | append: '#551c25' | append: '||'
+    assign texts = texts | append: '#fcf8f2' | append: '||'
+    assign count = count | plus: 1
+  endif
+
+  if settings.badge_metafield_enabled and count < limit
     assign mf = product.metafields.custom.badge.value
     if mf != blank
       assign labels = labels | append: mf | strip | append: '||'

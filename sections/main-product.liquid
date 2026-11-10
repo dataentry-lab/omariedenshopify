@@ -13,8 +13,32 @@
   assign care_parts = settings.care_metafield | split: '.'
   assign care = product.metafields[care_parts[0]][care_parts[1]].value
   assign media_count = product.media.size
+  comment
+    10 Nov 2026: pre-order (snippets/preorder-data.liquid): note above the button, button label, line under it,
+    order line property "Pre-order". po_flag = on / closed (cap reached, shown as sold out) / empty
+  endcomment
+  capture po_flag
+    render 'preorder-data', product: product, format: 'flag'
+  endcapture
+  assign po_flag = po_flag | strip
+  capture po_text
+    render 'preorder-data', product: product, format: 'text'
+  endcapture
+  assign po_text = po_text | strip
+  assign po_on = false
+  if po_flag == 'on'
+    assign po_on = true
+  endif
+  assign can_buy = current.available
+  if po_flag == 'closed'
+    assign can_buy = false
+  endif
+  assign add_label = 'products.product.add_to_cart' | t
+  if po_on
+    assign add_label = 'products.preorder.button' | t
+  endif
 -%}
-<div data-product-root data-color-option="{{ color_name | escape }}" data-size-option="{{ size_name | escape }}" data-selected-variant="{{ current.id }}">
+<div data-product-root data-color-option="{{ color_name | escape }}" data-size-option="{{ size_name | escape }}" data-selected-variant="{{ current.id }}" data-po="{{ po_flag }}">
   <script type="application/json" data-product-json>{{ product | json }}</script>
   <div class="_container_1kxnl_30 _YouMayLike_drley_30">
     <div class="_ProductDetailslArea_drley_46">
@@ -34,7 +58,7 @@
         </div>
         <div class="_ProductGallery_1cnez_184">
           <div class="_Gallery_1cnez_200">
-            <div class="od-pdp__badges" aria-hidden="true">{% if product.available %}{% render 'product-badges', product: product, limit: 2 %}{% elsif settings.badge_soldout_enabled != false %}<span class="od-card__badge od-card__badge--sand">{{ 'products.product.sold_out' | t }}</span>{% endif %}</div>
+            <div class="od-pdp__badges" aria-hidden="true">{% if product.available and po_flag != 'closed' %}{% render 'product-badges', product: product, limit: 2 %}{% elsif settings.badge_soldout_enabled != false %}<span class="od-card__badge od-card__badge--sand">{{ 'products.product.sold_out' | t }}</span>{% endif %}</div>
             <div class="swiper sliderBorder product_carousel {% if rtl %}custom_rtl{% endif %}" dir="{% if rtl %}rtl{% else %}ltr{% endif %}" data-swiper="product">
               <div class="swiper-wrapper">
                 {%- for media in product.media -%}
@@ -115,12 +139,19 @@
             {%- endunless -%}
 
             <div class="_ProductWeight_1fx6h_172"><p>{{ 'products.product.return_period' | t }} <span>{{ settings.return_days | default: 30 }} {{ 'products.product.days' | t }}</span></p></div>
-            <div class="_CartSection_1fx6h_74">
+            {%- if po_on -%}
+              <input type="hidden" name="properties[Pre-order]" value="{{ po_text | escape }}">
+              <div class="od-po-note" data-po-note>{% render 'icon-clock' %}<span>{{ 'products.preorder.note' | t: text: po_text }}</span></div>
+            {%- endif -%}
+            <div class="_CartSection_1fx6h_74{% if po_on %} od-po-cart{% endif %}">
               <div class="_WishlsitAndCart_1fx6h_74">
                 <button type="button" class="_btn_1ltvt_30 _wishlistButton_1fx6h_559" data-pdp-wishlist aria-label="{{ 'wishlist.add' | t }}"><div class="_globalImg_1tf1q_38 undefined"><img fetchpriority="auto" alt="" src="{{ 'icons_light_wishlist.svg' | asset_url }}"></div></button>
-                <button id="addToCart" type="submit" class="_btn_1f12h_30 " data-add-to-cart data-variant-id="{{ current.id }}" data-label-add="{{ 'products.product.add_to_cart' | t }}" data-label-sold="{{ 'products.product.sold_out' | t }}" data-label-unavailable="{{ 'products.product.unavailable' | t }}" {% unless current.available %}disabled{% endunless %}>{% if current.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</button>
+                <button id="addToCart" type="submit" class="_btn_1f12h_30 " data-add-to-cart data-variant-id="{{ current.id }}" data-label-add="{{ add_label | escape }}" data-label-sold="{{ 'products.product.sold_out' | t }}" data-label-unavailable="{{ 'products.product.unavailable' | t }}"{% if po_on %} data-po-text="{{ po_text | escape }}"{% else %} data-po-text=""{% endif %} {% unless can_buy %}disabled{% endunless %}>{% if can_buy %}{{ add_label }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</button>
               </div>
             </div>
+            {%- if po_on -%}
+              <p class="od-po-sub">{{ 'products.preorder.pay_today' | t }}</p>
+            {%- endif -%}
           {%- endform -%}
 
           <div>

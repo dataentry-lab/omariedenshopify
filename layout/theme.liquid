@@ -86,6 +86,7 @@
         swatchMap: {{ settings.color_swatch_map | json }},
         cardPerColour: {% if settings.card_per_colour == false %}false{% else %}true{% endif %},
         multiSwatchImage: {% if settings.multi_swatch_image != blank %}{{ settings.multi_swatch_image | image_url: width: 80 | json }}{% else %}null{% endif %},
+        preorder: {% if settings.preorder_enabled == false %}false{% else %}{ badge: {{ 'products.preorder.badge' | t | json }}, button: {{ 'products.preorder.button' | t | json }}, note: {{ 'products.preorder.note' | t: text: '__TEXT__' | json }}, ready: {{ 'products.preorder.when_ready' | t | json }}, sub: {{ 'products.preorder.pay_today' | t | json }}, label: {{ 'products.preorder.badge' | t | json }}, mixed: {{ settings.preorder_mixed_note | json }} }{% endif %},
         badges: {
           metafield: {{ settings.badge_metafield_enabled | json }},
           newDays: {{ settings.badge_new_days | default: 30 }},

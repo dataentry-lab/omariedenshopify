@@ -1,0 +1,12 @@
+{%- comment -%}
+  Pre-order lookup (10 Nov 2026). Never placed on a page: theme.js fetches
+  /products/<handle>?section_id=od-preorder to learn whether a product is on pre-order when the
+  add to cart comes from a place that has no product data (Shop the Look, cart trending "+", JS cards).
+{%- endcomment -%}
+<script type="application/json" data-po-json>{% render 'preorder-data', product: product %}</script>
+{% schema %}
+{
+  "name": "Pre-order data",
+  "settings": []
+}
+{% endschema %}

@@ -41,6 +41,16 @@
     if (/[?&]width=/.test(src)) return src;
     return src + (src.indexOf('?') > -1 ? '&' : '?') + 'width=' + w;
   }
+  const PO_ICON = '<svg class="od-po-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+  /* mixed bag note: shown when the bag holds pre-order AND in-stock pieces */
+  function paintMixed(box, cart) {
+    const el = $('[data-cartd-po-mixed]', box);
+    if (!el) return;
+    const key = OD.poKey || 'Pre-order';
+    const items = cart.items || [];
+    const po = items.filter((i) => i.properties && i.properties[key]).length;
+    el.hidden = !(po > 0 && po < items.length);
+  }
   function itemHTML(item) {
     const colorName = attr('data-color-name'), sizeName = attr('data-size-name');
     const opts = !item.product_has_only_default_variant && Array.isArray(item.options_with_values) ? item.options_with_values : [];
@@ -50,13 +60,16 @@
       const label = o.name === sizeName ? attr('data-t-size') : (o.name === colorName ? attr('data-t-color') : o.name);
       return '<p><span>' + esc(label) + ':</span><span>' + esc(o.value) + '</span></p>';
     }).join('') + '</div>' : '';
+    // pre-order line (10 Nov 2026): the line item property "Pre-order" holds the dispatch text
+    const poText = item.properties && item.properties[OD.poKey || 'Pre-order'];
+    const poHTML = poText ? '<p class="od-po-line">' + PO_ICON + '<span>' + esc(attr('data-t-po')) + ': ' + esc(poText) + '</span></p>' : '';
     const was = item.original_line_price > item.final_line_price ? '<p class="_checkoutCard__right__details__price_1tn6c_95 _strikeThrough_1tn6c_34 od-cartd-item__was">' + money(item.original_line_price) + '</p>' : '';
     return '<div class="_checkoutCard_1tn6c_70 od-cartd-item" data-cartd-item data-key="' + esc(item.key) + '">' +
       '<a class="_globalImg_1tf1q_38 _checkoutCard__pImg_1tn6c_77 od-cartd-item__img" href="' + esc(item.url) + '"><img alt="' + esc(item.product_title) + '" src="' + esc(sized(item.image, 300)) + '" loading="lazy"></a>' +
       '<div class="_checkoutCard__right_1tn6c_82 od-cartd-item__right">' +
         '<div class="_checkoutCard__right__details_1tn6c_88 od-cartd-item__details">' +
           '<div class="_checkoutCard__right__details__info_1tn6c_115 od-cartd-item__info">' +
-            '<div class="_checkoutCard__right__details__info__text_1tn6c_122 od-cartd-item__text"><p>' + esc(item.vendor) + '</p><p><a href="' + esc(item.url) + '" class="od-cartd-item__link">' + esc(item.product_title) + '</a></p></div>' + optsHTML +
+            '<div class="_checkoutCard__right__details__info__text_1tn6c_122 od-cartd-item__text"><p>' + esc(item.vendor) + '</p><p><a href="' + esc(item.url) + '" class="od-cartd-item__link">' + esc(item.product_title) + '</a></p></div>' + optsHTML + poHTML +
           '</div>' +
           '<div class="od-cartd-item__prices"><p class="_checkoutCard__right__details__price_1tn6c_95 null">' + money(item.final_line_price) + '</p>' + was + '</div>' +
         '</div>' +
@@ -113,6 +126,7 @@
     if (items) items.innerHTML = cart.items.map(itemHTML).join('');
     setState(box, n);
     paintTotals(box, cart);
+    paintMixed(box, cart);
     OD.wlPaint && OD.wlPaint(box);
     return true;
   }

@@ -262,7 +262,24 @@
     const label = $('[data-qa-atc-label]', qa);
     const soldOut = v ? !v.available : false;
     if (atc) atc.classList.toggle('is-soldout', soldOut);
-    if (label) label.textContent = soldOut ? Q.t('sold-out') : Q.t('add');
+    const po = Q.s.data.preorder;
+    if (label) label.textContent = soldOut ? Q.t('sold-out') : (po && po.on && OD.preorder ? OD.preorder.button : Q.t('add'));
+  }
+  /* pre-order note above the button + "You pay today" line under it (10 Nov 2026) */
+  function paintPreorder() {
+    const d = Q.s.data, po = d.preorder;
+    const note = $('[data-qa-po]', qa), sub = $('[data-qa-po-sub]', qa);
+    const on = !!(po && po.on && OD.preorder);
+    if (note) { note.hidden = !on; const t = $('[data-qa-po-text]', note); if (t && on) t.textContent = OD.preorder.note.replace('__TEXT__', po.text || OD.preorder.ready); }
+    if (sub) { sub.hidden = !on; if (on) sub.textContent = OD.preorder.sub; }
+    // JS-rendered cards only know the "pre-order" tag: fetch the dispatch text once
+    if (on && !po.text && OD.poLookup) {
+      OD.poLookup(d.handle).then((info) => {
+        if (!info || Q.s.data !== d) return;
+        d.preorder = info;
+        paintPreorder(); paintPrice();
+      });
+    }
   }
 
   function setDetails(open) {
@@ -313,6 +330,7 @@
     buildGallery();
     buildColours();
     buildSizes();
+    paintPreorder();
   }
 
   function openQuickAdd(card) {
@@ -335,7 +353,10 @@
     if (v && !v.available) return;
     OD.setLoading ? OD.setLoading(btn, true) : (btn.disabled = true);
     try {
-      if (OD.addToCart) await OD.addToCart(id, 1); // the cart drawer opens on od:cart:add and closes this one
+      // pre-order: known text goes with the add; null = not a pre-order; anything else is looked up after the add
+      const po = Q.s.data.preorder;
+      const poArg = po && po.on ? (po.text ? po : undefined) : (po === null ? false : undefined);
+      if (OD.addToCart) await OD.addToCart(id, 1, poArg); // the cart drawer opens on od:cart:add and closes this one
       if (OD.openModals && OD.openModals.has('quick-add')) closeQuickAdd();
     } catch (err) {
       OD.toast && OD.toast(err.message || (OD.t && OD.t.cartError) || 'Error', 'error');
@@ -509,18 +530,25 @@
       description: String(p.description || p.body || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 300),
       material: null,
       badges: OD.badgesFor ? OD.badgesFor(p, 2) : [],
-      available: p.variants.some((v) => v.available)
+      available: p.variants.some((v) => v.available),
+      preorder: poTagged(p) ? { on: true, text: '' } : undefined
     };
     return '<script type="application/json" data-card-json>' + JSON.stringify(data).replace(/<\//g, '<\\/') + '</script>';
   }
 
   /* ---------- badges for JS-rendered cards (same rules as snippets/product-badges.liquid, from /products/{handle}.js) ---------- */
   const BAG_ICON = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+  /* JS cards (search popup, wishlist) come from /products/{handle}.js, which has no metafields: pre-order is read from the tag */
+  function poTagged(p) {
+    if (!OD.preorder || !p || !Array.isArray(p.tags)) return false;
+    return p.tags.some((t) => /^pre-?order$/i.test(String(t).trim())) && (p.available !== false);
+  }
   OD.badgesFor = function (p, limit) {
     const cfg = OD.badges; limit = limit || 2;
     if (!cfg || !p) return [];
     if (Array.isArray(p.badges)) return p.badges.slice(0, limit);
     const out = [];
+    if (poTagged(p)) out.push({ label: OD.preorder.badge, bg: '#551c25', text: '#fcf8f2' });
     const tags = (p.tags || []).map((t) => String(t).toLowerCase().trim());
     const hay = '|' + tags.join('|') + '|';
     const price = typeof p.price === 'number' ? p.price : parseFloat(p.price) || 0;

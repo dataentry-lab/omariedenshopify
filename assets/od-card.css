@@ -321,3 +321,17 @@
 @media (max-width: 767px) {
   .swiper-slide .od-card__body { padding-bottom: 12px; }
 }
+
+/* ---- Pre-order (10 Nov 2026): pay now, ship later ----
+   Sandstone note above the button (product page, quick add), "You pay today" line under it,
+   the dispatch line under a bag item and the mixed bag note. Markup: main-product, quick-add-drawer,
+   cart-drawer, main-cart, od-cart.js. Data: snippets/preorder-data.liquid. */
+.od-po-note { display: flex; align-items: center; gap: 8px; background: #e5d9c7; color: #551c25; font-size: 13px; line-height: 1.4; padding: 10px 12px; margin: 14px 0 10px; text-align: start; }
+.od-po-note .od-po-icon, .od-po-line .od-po-icon { flex: none; }
+.od-po-note[hidden], .od-po-sub[hidden] { display: none !important; }
+.od-po-sub { font-size: 12px; line-height: 1.4; color: #6b6b6b; margin: 8px 0 0; }
+.od-po-note--qa { margin: 4px 0 10px; }
+.od-po-sub--qa { margin: 8px 0 4px; }
+.od-po-note--bag { margin: 0 0 12px; font-size: 12px; }
+.od-po-line { display: flex; align-items: center; gap: 6px; flex: 0 0 100%; width: 100%; color: #551c25; font-size: 12px; line-height: 1.4; margin: 6px 0 0; }
+.od-po-line span { color: inherit; }
