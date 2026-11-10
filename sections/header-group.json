@@ -49,14 +49,14 @@
         "designers_promo": {
           "type": "designers_promo",
           "settings": {
-            "image": "shopify://shop_images/ALEMAIS_7668D_MULTICOLOR_5.webp",
-            "title": "ALÉMAIS, wearable art from Sydney",
-            "title_ar": "أليمي، فن يُرتدى من سيدني",
+            "image": "shopify://shop_images/MONA_ALSHEBIL_FW27001_BLACK_5_Sample.jpg",
+            "title": "MONA AL SHEBIL , wearable art from The Kingdom of Saudi Arabia",
+            "title_ar": "منى الشبل ، فن يُرتدى من المملكة العربية السعودية",
             "text": "",
             "text_ar": "",
             "button": "Shop the collection",
             "button_ar": "تسوّق المجموعة",
-            "link": "shopify://blogs/curated-edits/a-closer-look-at-alemais-wearable-art-from-sydney",
+            "link": "https://omarieden.com/collections/vendors?q=MONA%20AL%20SHEBIL",
             "mobile_pos": "top"
           }
         },
@@ -157,6 +157,7 @@
         "women_banners"
       ],
       "settings": {
+        "faded_header": true,
         "extras_position": "first",
         "designers_label": "Designers",
         "designers_label_ar": "المصممون",
