@@ -3,7 +3,7 @@
   wishlist top-right, thin chevron arrows (desktop on hover, mobile always), dots, hover image swap (image 2 on desktop hover),
   maroon circle quick-view button (opens the shared quick-add drawer / bottom sheet),
   sandstone "Sold out" badge instead of the button when unavailable (image at 60%),
-  brand, name + price, colour dots + "n colour(s)".
+  brand, name + price, colour dots (the "n colour(s)" text was removed 10 Nov 2026).
   One card per colour (round 9, theme setting card_per_colour + param per_colour): every colour value of the product
   becomes its own card; image = the colour's variant image, else the photos whose alt text names the colour, then the
   shared photos (same rule as the product page); its dot is selected; link + quick view preselect the colour (?variant=);
@@ -245,7 +245,6 @@
             <button type="button" title="{{ value | escape }}" aria-label="{{ value | escape }}" aria-pressed="{% if selected %}true{% else %}false{% endif %}" class="_swatch_13l1w_280 od-card__dot {% if selected %}_swatchSelected_13l1w_301{% endif %} " style="background: {% render 'swatch-color', value: value %};" data-card-swatch data-value="{{ value | escape }}" data-image="{{ v_img }}"></button>
           {%- endfor -%}
         </div>
-        <span class="od-card__colours-text">{{ 'products.card.colours' | t: count: colour_count }}</span>
       </div>
     {%- endif -%}
   </div>
