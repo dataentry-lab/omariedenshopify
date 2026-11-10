@@ -310,3 +310,14 @@
 [data-search-results] .od-card__row { min-height: 0; }
 [data-search-results] .od-card__name { min-height: 2.6em; }
 [data-search-results] .od-card__prices { flex-direction: row; flex-wrap: wrap; align-items: baseline; column-gap: 8px; row-gap: 0; }
+
+/* ---- 10 Nov 2026 (b): the dots were clipped at the bottom of product sliders ----
+   With the "n colour(s)" text gone, the dots are the last thing in the card and sat on the slider's clipping edge
+   (.swiper is overflow hidden, the section has no bottom padding on desktop), so the selected dot's ring and the
+   bottom of the dots were cut and the next section touched them. Room for the ring on every card, plus a gap under
+   the cards inside sliders. */
+.od-card__colours { padding: 3px 3px 4px; margin-top: 5px; min-height: 0; }
+.swiper-slide .od-card__body { padding-bottom: 24px; }
+@media (max-width: 767px) {
+  .swiper-slide .od-card__body { padding-bottom: 12px; }
+}
