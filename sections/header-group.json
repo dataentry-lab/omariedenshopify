@@ -157,7 +157,7 @@
         "women_banners"
       ],
       "settings": {
-        "faded_header": true,
+        "faded_header": false,
         "extras_position": "first",
         "designers_label": "Designers",
         "designers_label_ar": "المصممون",
