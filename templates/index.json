@@ -15,7 +15,8 @@
         "slide1": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/banner_2560x720_HD_1.jpg",
+            "image": "shopify://shop_images/a_jpg.jpg",
+            "mobile_image": "shopify://shop_images/b_jpg.jpg",
             "top_subtitle": "",
             "title": "The Icons Reimagined",
             "subtitle": "Explore Mona Al-shebil exclusively at Omarieden.",
