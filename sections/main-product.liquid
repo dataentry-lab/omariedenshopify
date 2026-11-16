@@ -86,7 +86,7 @@
         </div>
         <div class="_ProductGallery_1cnez_184">
           <div class="_Gallery_1cnez_200">
-            <div class="od-pdp__badges" aria-hidden="true">{% if product.available and po_flag != 'closed' %}{% render 'product-badges', product: product, limit: 2 %}{% elsif settings.badge_soldout_enabled != false %}<span class="od-card__badge od-card__badge--sand">{{ sold_label }}</span>{% endif %}</div>
+            <div class="od-pdp__badges" aria-hidden="true">{% if product.available and po_flag != 'closed' %}{% render 'product-badges', product: product, limit: 2 %}{% elsif settings.badge_soldout_enabled != false %}<span class="od-card__badge {% if cs_flag == 'on' %}od-card__badge--soon{% else %}od-card__badge--sand{% endif %}">{{ sold_label }}</span>{% endif %}</div>
             <div class="swiper sliderBorder product_carousel {% if rtl %}custom_rtl{% endif %}" dir="{% if rtl %}rtl{% else %}ltr{% endif %}" data-swiper="product">
               <div class="swiper-wrapper">
                 {%- for media in product.media -%}

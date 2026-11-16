@@ -360,3 +360,16 @@
 .od-qa__size.is-soldout.is-notify:hover, .od-qa__size.is-soldout.is-selected { border-color: var(--od-maroon); }
 .od-qa__size.is-soldout.is-selected { color: #551c25; }
 @media (max-width: 767px) { .od-nm__email { font-size: 16px; } }
+
+/* Coming soon (16 Nov 2026, client: "a green patch, outside also"): olive patch top-left, same look as the New badge,
+   on the cards (replaces the sandstone tag bottom-right) and on the product page photo.
+   The product page badge box sits outside .od-card, so it gets the colour variables here (its Sold out badge had no background before). */
+.od-pdp__badges { --od-maroon: #551c25; --od-olive: #595b33; --od-sand: #e5d9c7; }
+.od-card__badge--soon { background: #595b33; color: #fff; }
+.od-card__soldout--soon {
+  top: 12px; bottom: auto; inset-inline-start: 12px; inset-inline-end: auto;
+  min-height: 22px; padding: 3px 9px;
+  background: #595b33; color: #fff;
+  font-size: 12px; line-height: 1.3; letter-spacing: .02em;
+}
+.od-card.is-sold-out:has(.od-card__soldout--soon:not([hidden])) .od-card__top-start { visibility: hidden; }

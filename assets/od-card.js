@@ -625,7 +625,7 @@
     const swatches = values.map((v) => '<button type="button" title="' + esc(v) + '" aria-label="' + esc(v) + '" aria-pressed="' + (v === selected) + '" class="_swatch_13l1w_280 od-card__dot ' + (v === selected ? SWATCH_SEL : '') + ' " style="background: ' + esc(OD.swatchColor ? OD.swatchColor(v, p.swatches) : String(v).toLowerCase()) + ';" data-card-swatch data-value="' + esc(v) + '"></button>').join('');
     const json = jsonFromProduct(p, colour, lv ? lv.id : null);
     const badges = available ? OD.badgeHTML(OD.badgesFor(p, 2)) : '';
-    const soldOut = OD.badges && OD.badges.soldOut !== false ? '<span class="od-card__soldout" data-card-soldout' + (available ? ' hidden' : '') + '>' + esc((csTagged(p) && OD.badges && OD.badges.comingSoonLabel) || (OD.badges && OD.badges.soldOutLabel) || 'Sold out') + '</span>' : '';
+    const soldOut = OD.badges && OD.badges.soldOut !== false ? '<span class="od-card__soldout' + (csTagged(p) ? ' od-card__soldout--soon' : '') + '" data-card-soldout' + (available ? ' hidden' : '') + '>' + esc((csTagged(p) && OD.badges && OD.badges.comingSoonLabel) || (OD.badges && OD.badges.soldOutLabel) || 'Sold out') + '</span>' : '';
     const many = images.length > 1;
     return '<div class="_new_in_trend_card_13l1w_130 od-card' + (OD.rtl ? ' od-card--rtl' : '') + (available ? '' : ' is-sold-out') + '" data-product-card' + (json ? ' data-od-card' : '') + ' data-handle="' + esc(p.handle) + '" data-product-id="' + esc(p.id) + '" data-color-index="' + (ci + 1) + '" data-color-value="' + esc(selected) + '"' + (colour ? ' data-card-colour="' + esc(colour) + '"' : '') + '>' +
       '<div class="od-card__media">' +

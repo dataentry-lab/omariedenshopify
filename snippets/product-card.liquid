@@ -222,7 +222,7 @@
     </div>
 
     {%- if settings.badge_soldout_enabled != false -%}
-      <span class="od-card__soldout" data-card-soldout{% unless sold_out %} hidden{% endunless %}>{% if coming_soon %}{{ 'products.product.coming_soon' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
+      <span class="od-card__soldout{% if coming_soon %} od-card__soldout--soon{% endif %}" data-card-soldout{% unless sold_out %} hidden{% endunless %}>{% if coming_soon %}{{ 'products.product.coming_soon' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
     {%- endif -%}
     <button type="button" class="od-card__plus" data-card-quickadd aria-label="{{ 'products.card.quick_add' | t }}" aria-haspopup="dialog"{% if sold_out %} hidden{% endif %}>
       {%- render 'icon-bag-plus' -%}
