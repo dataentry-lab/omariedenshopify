@@ -530,3 +530,23 @@
 .od-fp:not(.is-open) { pointer-events: none !important; }
 .od-fp:not(.is-open) .od-fp__pane, .od-fp:not(.is-open) .od-fp__pane.is-on { visibility: hidden !important; pointer-events: none !important; }
 .od-fp__backdrop:not(.is-open) { pointer-events: none !important; }
+
+/* 16 Nov 2026: search field above long value lists in the filter popup (snippets/filter-list-search.liquid, od-listing.js "list search").
+   Sticks to the top of the scrolling pane; live, typo tolerant; close matches carry a small olive tag. */
+.od-fp__searchbar { position: sticky; top: 0; z-index: 3; margin: 0 -22px; padding: 12px 22px 10px; background: var(--od-bg, #fcf8f2); border-bottom: 1px solid #e5d9c7; }
+.od-fp .od-fp__search { display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; border: 1px solid #c9bfae; background: #fff; color: #8a7a74; transition: border-color .2s ease; }
+.od-fp .od-fp__search:focus-within { border-color: var(--maroon, #551c25); }
+.od-fp .od-fp__search svg { flex: none; }
+.od-fp .od-fp__search input { flex: 1; min-width: 0; width: auto; height: 40px; margin: 0; padding: 0; border: 0; border-radius: 0; outline: 0; box-shadow: none; background: transparent; -webkit-appearance: none; appearance: none; font-family: inherit; font-size: 16px; line-height: 1.2; color: var(--maroon, #551c25); }
+.od-fp .od-fp__search input::placeholder { color: #a8998f; opacity: 1; }
+.od-fp .od-fp__qx { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin-inline-end: -6px; padding: 0; border: 0; background: none; color: #8a7a74; cursor: pointer; }
+.od-fp .od-fp__qx:hover { color: var(--maroon, #551c25); }
+.od-fp .od-fp__qx[hidden] { display: none; }
+.od-fp__qhint { margin: 6px 0 0; min-height: 16px; font-size: 12px; line-height: 16px; color: #8a7a74; }
+.od-fp__qnone { margin: 0; padding: 28px 0; text-align: center; font-size: 14px; line-height: 1.5; color: #8a7a74; }
+.od-fp__qnone[hidden] { display: none; }
+.od-fp .od-fp__row[hidden] { display: none !important; }
+.od-fp .od-fp__vl mark { background: #e5d9c7; color: inherit; padding: 0; }
+[data-modal="filter"].od-fp ._CheckboxButton_8c7of_30 label p span.od-fp__close { display: inline-block; margin-inline-start: 8px; padding: 1px 6px; border: 1px solid #c9caa9; color: var(--od-listing-olive, #595b33); font-size: 11px !important; line-height: 1.4; white-space: nowrap; vertical-align: middle; }
+.od-fp .od-ft__panel .od-fp__searchbar { margin-top: 8px; }
+@media (max-width: 767px) { .od-fp__searchbar { margin: 0 -18px; padding: 12px 18px 10px; } }

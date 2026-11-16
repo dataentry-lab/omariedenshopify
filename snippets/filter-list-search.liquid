@@ -1,0 +1,23 @@
+{%- comment -%}
+  Search field for a long value list inside the filter popup (16 Nov 2026).
+  Rendered by snippets/modal-filter.liquid when a list has more than 12 values (Brand, Colour, Type ...).
+  Params: label (filter label), count (number of values).
+  Behaviour lives in assets/od-listing.js, block "list search": live on every key, typo tolerant, best match first.
+  The input has NO name on purpose, so it is never sent with the filter form.
+{%- endcomment -%}
+{%- assign fq_name = label | downcase -%}
+<div class="od-fp__searchbar" data-fp-search
+  data-t-all="{{ 'collections.filter.search_all' | t: n: '__n__' | escape }}"
+  data-t-one="{{ 'collections.filter.search_match_one' | t | escape }}"
+  data-t-many="{{ 'collections.filter.search_match_many' | t: n: '__n__' | escape }}"
+  data-t-closest="{{ 'collections.filter.search_closest' | t | escape }}"
+  data-t-none="{{ 'collections.filter.search_none' | t: terms: '__q__' | escape }}"
+  data-t-close="{{ 'collections.filter.search_close' | t | escape }}">
+  <div class="od-fp__search">
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <input type="text" inputmode="search" enterkeyhint="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-fp-q placeholder="{{ 'collections.filter.search_placeholder' | t: name: fq_name | escape }}" aria-label="{{ 'collections.filter.search_placeholder' | t: name: fq_name | escape }}">
+    <button type="button" class="od-fp__qx" data-fp-q-clear hidden aria-label="{{ 'collections.filter.search_clear' | t | escape }}"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+  </div>
+  <p class="od-fp__qhint" data-fp-q-hint aria-live="polite">{{ 'collections.filter.search_all' | t: n: count }}</p>
+</div>
+<p class="od-fp__qnone" data-fp-q-none hidden></p>

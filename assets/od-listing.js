@@ -391,6 +391,8 @@
       left.classList.toggle('is-act', !isRoot || fp.hasAttribute('data-fp-cat') || !!$('[data-fp-reset]:not([hidden])', fp));
     }
     fp.setAttribute('data-fp-current', isRoot ? 'root' : id);
+    // list search: opening a list by hand starts with an empty box and the ticked rows first
+    if (!instant && !isRoot) $$('[data-fp-search]', target).forEach(function (b) { var qi = $('[data-fp-q]', b); if (qi) qi.value = ''; fqRun(b, true); });
     if (instant) { void fp.offsetWidth; fp.classList.remove('od-fp--instant'); }
   }
   function fpApply(fp) {
@@ -411,7 +413,7 @@
     var tree = $('[data-ft]', fp);
     var ftNow = null;
     if (tree) $$('[data-ft-panel]', tree).forEach(function (p) { if (!p.hidden) ftNow = p.getAttribute('data-ft-panel'); });
-    fpKeep = { pane: pane, ft: pane === 'cat' ? ftNow : null, scroll: paneEl ? paneEl.scrollTop : 0 };
+    fpKeep = { pane: pane, ft: pane === 'cat' ? ftNow : null, scroll: paneEl ? paneEl.scrollTop : 0, qs: fqSnapshot(fp) };
     fpLoading(true);
     load(url, true);
   }
@@ -421,7 +423,7 @@
     fp.classList.remove('is-loading');
     fp.classList.add('is-done');
     setTimeout(function () { fp.classList.remove('is-done'); }, 600);
-    if (!fpKeep) { fpShow(fp, 'root', true); return; }
+    if (!fpKeep) { fpShow(fp, 'root', true); fqRestore(fp, null); return; }
     var keep = fpKeep; fpKeep = null;
     var tree = $('[data-ft]', fp);
     if (tree && keep.pane === 'cat') {
@@ -429,6 +431,7 @@
       showPanel(tree, want);
     }
     fpShow(fp, keep.pane, true);
+    fqRestore(fp, keep.qs || null);
     var paneEl = $('[data-fp-pane="' + keep.pane + '"]', fp);
     if (paneEl) paneEl.scrollTop = keep.scroll || 0;
   }
@@ -485,6 +488,166 @@
     fpShow(fp, 'root', true);
     var tree = $('[data-ft]', fp);
     if (tree) showPanel(tree, tree.getAttribute('data-ft-start') || 'root');
+    fpPins = {};
+    $$('[data-fp-q]', fp).forEach(function (qi) { qi.value = ''; });
+    fqAll(fp, true);
+  });
+
+  /* ===================== list search inside the filter popup (16 Nov 2026) =====================
+     Markup: snippets/filter-list-search.liquid, printed above any value list longer than 12 (Brand, Colour, Type ...).
+     Live on every key. Order: starts with > a word starts with > contains > close match (typos); ties go to the bigger product count.
+     Spaces, dots, apostrophes, "&", "+" and accents are ignored ("saulee" = SAU LEE, "pe nation" = P.E Nation, "alemais" = ALEMAIS with accent).
+     Typos allowed: none up to 2 letters, 1 up to 5, 2 up to 9, then 25% of the length.
+     Empty box: the rows that were ticked when the list was opened come first (fpPins), the rest keep Shopify's order.
+     The typed text survives the re-render that follows a tick (fpKeep.qs). The input has no name, so fpApply never sends it. */
+  var fpPins = {};
+  function fqEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function fqFlat(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+  function fqFold(s) { return fqFlat(s).replace(/[\u064b-\u0655\u0670\u0640]/g, '').replace(/[\u0623\u0625\u0622]/g, '\u0627').replace(/\u0629/g, '\u0647'); }
+  function fqNorm(s) { return fqFold(s).replace(/[^a-z0-9\u0600-\u06ff]+/g, ''); }
+  function fqLev(a, b) {
+    if (a === b) return 0;
+    if (!a.length) return b.length;
+    if (!b.length) return a.length;
+    var prev = [], cur = [], i, j, t;
+    for (j = 0; j <= b.length; j++) prev[j] = j;
+    for (i = 1; i <= a.length; i++) {
+      cur[0] = i;
+      for (j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1));
+      t = prev; prev = cur; cur = t;
+    }
+    return prev[b.length];
+  }
+  function fqAllow(len) { return len <= 2 ? 0 : len <= 5 ? 1 : len <= 9 ? 2 : Math.floor(len * 0.25); }
+  /* 0 starts with, 1 a word starts with, 2 contains, 3 + typos = close match, null = no match */
+  function fqScore(name, q) {
+    var nb = fqNorm(name);
+    if (!nb) return null;
+    var ws = fqFold(name).split(/[^a-z0-9\u0600-\u06ff]+/).filter(Boolean), i, L;
+    if (nb.indexOf(q) === 0) return 0;
+    for (i = 0; i < ws.length; i++) if (ws[i].indexOf(q) === 0) return 1;
+    if (nb.indexOf(q) > -1) return 2;
+    var a = fqAllow(q.length);
+    if (!a) return null;
+    var d = 99;
+    for (L = Math.max(1, q.length - 1); L <= q.length + 1; L++) {
+      d = Math.min(d, fqLev(q, nb.slice(0, L)));
+      for (i = 0; i < ws.length; i++) d = Math.min(d, fqLev(q, ws[i].slice(0, L)));
+    }
+    return d <= a ? 3 + d : null;
+  }
+  function fqScope(bar) { return bar.closest('[data-ft-panel]') || bar.closest('[data-fp-pane]'); }
+  function fqKey(scope) { return scope.hasAttribute('data-ft-panel') ? 'ft:' + scope.getAttribute('data-ft-panel') : 'p:' + scope.getAttribute('data-fp-pane'); }
+  function fqRows(scope) { return $$('.od-fp__row', scope).filter(function (r) { return !r.classList.contains('od-fp__row--all'); }); }
+  function fqBox(r) { return $('input[type="checkbox"]', r); }
+  function fqVal(r) { var i = fqBox(r); return i ? i.name + '=' + i.value : ''; }
+  function fqRun(bar, repin) {
+    var scope = fqScope(bar);
+    if (!scope) return;
+    var rows = fqRows(scope);
+    if (!rows.length) return;
+    rows.forEach(function (r, i) {
+      if (r.hasAttribute('data-fq-i')) return;
+      var vl = $('.od-fp__vl', r), vc = $('.od-fp__vc', r);
+      r.setAttribute('data-fq-i', i);
+      r.setAttribute('data-fq-l', vl ? vl.textContent.replace(/\s+/g, ' ').trim() : '');
+      r.setAttribute('data-fq-c', vc ? (parseInt(vc.textContent, 10) || 0) : 0);
+    });
+    var key = fqKey(scope);
+    if (repin || !fpPins[key]) fpPins[key] = rows.filter(function (r) { var b = fqBox(r); return b && b.checked; }).map(fqVal);
+    var pins = fpPins[key];
+    var input = $('[data-fp-q]', bar);
+    var raw = input ? input.value.replace(/\s+/g, ' ').trim() : '';
+    var q = fqNorm(raw);
+    var list = rows.map(function (r) {
+      var l = r.getAttribute('data-fq-l');
+      return { r: r, l: l, i: +r.getAttribute('data-fq-i'), c: +r.getAttribute('data-fq-c'), s: q ? fqScore(l, q) : 0, pin: pins.indexOf(fqVal(r)) > -1 };
+    });
+    // close matches (typos) only show when nothing matches properly, otherwise "the" would also list CHE
+    if (q && list.some(function (x) { return x.s !== null && x.s < 3; })) list.forEach(function (x) { if (x.s !== null && x.s >= 3) x.s = null; });
+    var shown = list.filter(function (x) { return x.s !== null; });
+    if (q) shown.sort(function (a, b) { return a.s - b.s || b.c - a.c || a.i - b.i; });
+    else shown.sort(function (a, b) { return (b.pin ? 1 : 0) - (a.pin ? 1 : 0) || a.i - b.i; });
+    var parent = rows[0].parentNode, exact = 0, tClose = bar.getAttribute('data-t-close') || '', fr = fqFlat(raw);
+    list.forEach(function (x) { x.r.hidden = x.s === null; });
+    shown.forEach(function (x) {
+      parent.appendChild(x.r);
+      var vl = $('.od-fp__vl', x.r);
+      if (!vl) return;
+      var html = fqEsc(x.l);
+      if (q && x.s < 3) {
+        exact++;
+        var f = fqFlat(x.l), at = (fr && f.length === x.l.length) ? f.indexOf(fr) : -1;
+        if (at > -1) html = fqEsc(x.l.slice(0, at)) + '<mark>' + fqEsc(x.l.slice(at, at + fr.length)) + '</mark>' + fqEsc(x.l.slice(at + fr.length));
+      } else if (q) {
+        html += '<span class="od-fp__close">' + fqEsc(tClose) + '</span>';
+      }
+      if (vl.getAttribute('data-fq-h') !== html) { vl.innerHTML = html; vl.setAttribute('data-fq-h', html); }
+    });
+    var all = $('.od-fp__row--all', scope);
+    if (all) all.hidden = !!q;
+    var hint = $('[data-fp-q-hint]', bar), none = bar.nextElementSibling && bar.nextElementSibling.hasAttribute('data-fp-q-none') ? bar.nextElementSibling : null;
+    var msg = '';
+    if (!q) msg = (bar.getAttribute('data-t-all') || '').replace('__n__', rows.length);
+    else if (exact === 1) msg = bar.getAttribute('data-t-one') || '';
+    else if (exact > 1) msg = (bar.getAttribute('data-t-many') || '').replace('__n__', exact);
+    else if (shown.length) msg = bar.getAttribute('data-t-closest') || '';
+    if (hint) hint.textContent = msg;
+    if (none) {
+      none.hidden = !(q && !shown.length);
+      if (!none.hidden) none.textContent = (bar.getAttribute('data-t-none') || '').replace('__q__', raw);
+    }
+    var x = $('[data-fp-q-clear]', bar);
+    if (x) x.hidden = !(input && input.value);
+  }
+  function fqAll(fp, repin) { $$('[data-fp-search]', fp).forEach(function (b) { fqRun(b, repin); }); }
+  function fqSnapshot(fp) {
+    // typed text per list + which one has the cursor, kept across the re-render after a tick
+    var out = { v: {}, focus: null };
+    $$('[data-fp-search]', fp).forEach(function (b) {
+      var scope = fqScope(b), i = $('[data-fp-q]', b);
+      if (!scope || !i) return;
+      if (i.value) out.v[fqKey(scope)] = i.value;
+      if (document.activeElement === i) out.focus = fqKey(scope);
+    });
+    return out;
+  }
+  function fqRestore(fp, snap) {
+    $$('[data-fp-search]', fp).forEach(function (b) {
+      var scope = fqScope(b), i = $('[data-fp-q]', b);
+      if (!scope || !i) return;
+      var k = fqKey(scope);
+      if (snap && snap.v[k]) i.value = snap.v[k];
+      fqRun(b, false);
+      if (snap && snap.focus === k) { try { i.focus({ preventScroll: true }); var n = i.value.length; i.setSelectionRange(n, n); } catch (err) {} }
+    });
+  }
+  document.addEventListener('input', function (e) {
+    if (!e.target.hasAttribute || !e.target.hasAttribute('data-fp-q')) return;
+    var bar = e.target.closest('[data-fp-search]');
+    if (!bar) return;
+    fqRun(bar, false);
+    var pane = bar.closest('[data-fp-pane]');
+    if (pane) pane.scrollTop = 0;
+  });
+  document.addEventListener('click', function (e) {
+    var x = e.target.closest && e.target.closest('[data-fp-q-clear]');
+    if (!x) return;
+    e.preventDefault();
+    var bar = x.closest('[data-fp-search]'), i = bar && $('[data-fp-q]', bar);
+    if (!i) return;
+    i.value = '';
+    fqRun(bar, false);
+    i.focus();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' || !e.target.hasAttribute || !e.target.hasAttribute('data-fp-q')) return;
+    // Enter must not submit the form (submit = close the popup): it ticks the first result
+    e.preventDefault();
+    var bar = e.target.closest('[data-fp-search]'), scope = bar && fqScope(bar);
+    if (!scope || !e.target.value.trim()) return;
+    var first = fqRows(scope).filter(function (r) { var b = fqBox(r); return !r.hidden && b && !b.disabled; })[0];
+    if (first) fqBox(first).click();
   });
 
   /* ===================== infinite scroll with skeleton cards ===================== */

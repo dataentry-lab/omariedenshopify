@@ -97,7 +97,15 @@
       "size": "المقاس",
       "show_results": "عرض {{ count }} نتيجة",
       "show_results_plain": "عرض النتائج",
-      "price_hint": "الأسعار بالريال السعودي، تُطبّق أثناء الكتابة"
+      "price_hint": "الأسعار بالريال السعودي، تُطبّق أثناء الكتابة",
+      "search_placeholder": "ابحث في {{ name }}",
+      "search_clear": "مسح البحث",
+      "search_all": "{{ n }} خيار",
+      "search_match_one": "نتيجة واحدة مطابقة",
+      "search_match_many": "{{ n }} نتيجة مطابقة",
+      "search_closest": "لا يوجد تطابق تام. الأقرب:",
+      "search_none": "لا توجد نتائج لـ «{{ terms }}». تحقق من الإملاء أو امسح البحث.",
+      "search_close": "تطابق قريب"
     },
     "sort": {
       "label": "ترتيب",

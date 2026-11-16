@@ -288,6 +288,7 @@
               <div class="od-ft__panel" data-ft-panel="types" data-ft-label="{{ cat_now | escape }}" hidden>
                 <button type="button" class="od-ft__back" data-ft-go="{{ start_panel }}"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{{ sub_now | default: dept_now | default: t_cat }}</span></button>
                 <p class="od-fp__eye">{% if dept_now != '' %}{{ dept_now }} &rsaquo; {% endif %}{% if sub_now != '' %}{{ sub_now }} &rsaquo; {% endif %}{{ cat_now }}</p>
+                {%- if type_filter.values.size > 12 -%}{%- render 'filter-list-search', label: type_filter.label, count: type_filter.values.size -%}{%- endif -%}
                 <div class="_CheckboxButton_8c7of_30 od-fp__row od-fp__row--all">
                   <label><div><input type="checkbox" data-fp-all-types {% if type_filter.active_values.size == 0 %}checked{% endif %}><span class="_CustomCheck_8c7of_52"></span></div><p><span class="od-fp__vl">{{ 'collections.filter.all_in' | t: name: cat_now }}</span><span class="od-fp__vc">{{ all_count }}</span></p></label>
                 </div>
@@ -339,6 +340,8 @@
           <div class="od-fp__pane" data-fp-pane="f{{ forloop.index }}" data-fp-label="{{ filter.label | escape }}">
             {%- case filter.type -%}
               {%- when 'list' -%}
+                {%- comment -%} 16 Nov 2026: long lists (Brand, Colour ...) get a live, typo tolerant search field {%- endcomment -%}
+                {%- if filter.values.size > 12 -%}{%- render 'filter-list-search', label: filter.label, count: filter.values.size -%}{%- endif -%}
                 {%- for value in filter.values -%}
                   <div class="_CheckboxButton_8c7of_30 od-fp__row">
                     <label><div><input type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}><span class="_CustomCheck_8c7of_52"></span></div>{% if is_color %}<span class="od-ft__swatch" aria-hidden="true" style="background: {% render 'swatch-color', value: value.label, swatch: value.swatch %};"></span>{% endif %}<p><span class="od-fp__vl">{{ value.label }}</span><span class="od-fp__vc">{{ value.count }}</span></p></label>

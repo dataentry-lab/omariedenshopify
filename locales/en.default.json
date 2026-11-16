@@ -97,7 +97,15 @@
       "size": "Size",
       "show_results": "Show {{ count }} results",
       "show_results_plain": "Show results",
-      "price_hint": "Prices in SAR, applied as you type"
+      "price_hint": "Prices in SAR, applied as you type",
+      "search_placeholder": "Search {{ name }}",
+      "search_clear": "Clear search",
+      "search_all": "{{ n }} options",
+      "search_match_one": "1 match",
+      "search_match_many": "{{ n }} matches",
+      "search_closest": "No exact match. Closest:",
+      "search_none": "No match for “{{ terms }}”. Check the spelling or clear the search.",
+      "search_close": "Close match"
     },
     "sort": {
       "label": "SORT",
