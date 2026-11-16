@@ -143,6 +143,7 @@
     "available": {% if po_closed %}false{% else %}{{ product.available | json }}{% endif %},
     "preorder": {{ po_json }},
     "notify": {% if nm_flag == 'on' %}true{% else %}false{% endif %},
+    "coming": {% if product.metafields.custom.coming_soon.value == true or product.tags contains 'coming-soon' %}true{% else %}false{% endif %},
     "description": {{ short_desc | json }},
     "material": {% if material != blank %}{{ material | json }}{% else %}null{% endif %}
   }

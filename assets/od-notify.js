@@ -34,7 +34,8 @@
     var id = String(ctx.variantId);
     var done = saved()[id];
     var email = cfg.email || '';
-    var text = (ctx.size ? put(T.soldSize, '__SIZE__', ctx.size) : T.soldPiece) + ' ' + (email ? put(T.askSigned, '__EMAIL__', email) : T.askGuest);
+    var soon = !!ctx.soon && T.soonSize && T.soonPiece; // product ticked Coming Soon: "is coming soon" instead of "is sold out"
+    var text = (ctx.size ? put(soon ? T.soonSize : T.soldSize, '__SIZE__', ctx.size) : (soon ? T.soonPiece : T.soldPiece)) + ' ' + (email ? put(T.askSigned, '__EMAIL__', email) : T.askGuest);
     var tEl = q(box, '[data-nm-text]');
     if (tEl) tEl.textContent = text;
     var err = q(box, '[data-nm-err]');

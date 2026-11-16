@@ -83,6 +83,14 @@
   if po_flag == 'closed'
     assign sold_out = true
   endif
+  comment
+    16 Nov 2026: products ticked Coming Soon (metafield custom.coming_soon, or tag coming-soon) show "Coming soon"
+    instead of "Sold out" while they are out of stock. In stock = normal card.
+  endcomment
+  assign coming_soon = false
+  if product.metafields.custom.coming_soon.value == true or product.tags contains 'coming-soon'
+    assign coming_soon = true
+  endif
   if split
     assign colour = card_colour
     if active_colours_d != blank
@@ -214,7 +222,7 @@
     </div>
 
     {%- if settings.badge_soldout_enabled != false -%}
-      <span class="od-card__soldout" data-card-soldout{% unless sold_out %} hidden{% endunless %}>{{ 'products.product.sold_out' | t }}</span>
+      <span class="od-card__soldout" data-card-soldout{% unless sold_out %} hidden{% endunless %}>{% if coming_soon %}{{ 'products.product.coming_soon' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
     {%- endif -%}
     <button type="button" class="od-card__plus" data-card-quickadd aria-label="{{ 'products.card.quick_add' | t }}" aria-haspopup="dialog"{% if sold_out %} hidden{% endif %}>
       {%- render 'icon-bag-plus' -%}

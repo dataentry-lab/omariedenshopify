@@ -650,7 +650,7 @@
         const canBuy = v.available && root.getAttribute('data-po') !== 'closed'; // pre-order cap reached = sold out
         if (addBtn) { addBtn.disabled = !canBuy; addBtn.textContent = canBuy ? addBtn.getAttribute('data-label-add') : addBtn.getAttribute('data-label-sold'); }
         // 16 Nov 2026: Notify me on a sold-out size (assets/od-notify.js); data-nm = on when the product offers it
-        OD.nmPaint && OD.nmPaint(root, !v.available && root.getAttribute('data-nm') === 'on', { variantId: v.id, handle: product.handle, size: sizeIdx > -1 ? v.options[sizeIdx] : '' });
+        OD.nmPaint && OD.nmPaint(root, !v.available && root.getAttribute('data-nm') === 'on', { variantId: v.id, handle: product.handle, size: sizeIdx > -1 ? v.options[sizeIdx] : '', soon: root.getAttribute('data-cs') === 'on' });
         if (styleCode && v.sku && !styleCode.getAttribute('data-fixed')) styleCode.textContent = v.sku;
         if (colorIdx > -1 && window.odGallery && window.odGallery.setColour) window.odGallery.setColour(selected[colorIdx]);
         if (v.featured_media && window.odGallery && !fromGallery) window.odGallery.goToMedia(v.featured_media.id);

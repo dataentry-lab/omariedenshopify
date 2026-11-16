@@ -273,7 +273,7 @@
     if (!OD.nmPaint || !qa || !Q.s) return;
     const v = currentVariant();
     const on = nmOn() && !!v && !v.available;
-    OD.nmPaint(qa, on, on ? { variantId: v.id, handle: Q.s.data.handle, size: Q.s.data.single ? '' : sizeLabel(v) } : null);
+    OD.nmPaint(qa, on, on ? { variantId: v.id, handle: Q.s.data.handle, size: Q.s.data.single ? '' : sizeLabel(v), soon: !!Q.s.data.coming } : null);
   }
   /* pre-order note above the button + "You pay today" line under it (10 Nov 2026) */
   function paintPreorder() {
@@ -542,7 +542,8 @@
       badges: OD.badgesFor ? OD.badgesFor(p, 2) : [],
       available: p.variants.some((v) => v.available),
       preorder: poTagged(p) ? { on: true, text: '' } : undefined,
-      notify: nmTagged(p)
+      notify: nmTagged(p),
+      coming: csTagged(p)
     };
     return '<script type="application/json" data-card-json>' + JSON.stringify(data).replace(/<\//g, '<\\/') + '</script>';
   }
@@ -554,6 +555,10 @@
   function nmTagged(p) {
     if (!OD.notify || !p) return false;
     return !!OD.notify.all || (Array.isArray(p.tags) && p.tags.some((t) => /^notify-me$/i.test(String(t).trim())));
+  }
+  /* Coming Soon (16 Nov 2026): JS cards read the tag coming-soon; the out-of-stock label then reads "Coming soon" */
+  function csTagged(p) {
+    return !!(p && Array.isArray(p.tags) && p.tags.some((t) => /^coming-soon$/i.test(String(t).trim())));
   }
   function poTagged(p) {
     if (!OD.preorder || !p || !Array.isArray(p.tags)) return false;
@@ -620,7 +625,7 @@
     const swatches = values.map((v) => '<button type="button" title="' + esc(v) + '" aria-label="' + esc(v) + '" aria-pressed="' + (v === selected) + '" class="_swatch_13l1w_280 od-card__dot ' + (v === selected ? SWATCH_SEL : '') + ' " style="background: ' + esc(OD.swatchColor ? OD.swatchColor(v, p.swatches) : String(v).toLowerCase()) + ';" data-card-swatch data-value="' + esc(v) + '"></button>').join('');
     const json = jsonFromProduct(p, colour, lv ? lv.id : null);
     const badges = available ? OD.badgeHTML(OD.badgesFor(p, 2)) : '';
-    const soldOut = OD.badges && OD.badges.soldOut !== false ? '<span class="od-card__soldout" data-card-soldout' + (available ? ' hidden' : '') + '>' + esc((OD.badges && OD.badges.soldOutLabel) || 'Sold out') + '</span>' : '';
+    const soldOut = OD.badges && OD.badges.soldOut !== false ? '<span class="od-card__soldout" data-card-soldout' + (available ? ' hidden' : '') + '>' + esc((csTagged(p) && OD.badges && OD.badges.comingSoonLabel) || (OD.badges && OD.badges.soldOutLabel) || 'Sold out') + '</span>' : '';
     const many = images.length > 1;
     return '<div class="_new_in_trend_card_13l1w_130 od-card' + (OD.rtl ? ' od-card--rtl' : '') + (available ? '' : ' is-sold-out') + '" data-product-card' + (json ? ' data-od-card' : '') + ' data-handle="' + esc(p.handle) + '" data-product-id="' + esc(p.id) + '" data-color-index="' + (ci + 1) + '" data-color-value="' + esc(selected) + '"' + (colour ? ' data-card-colour="' + esc(colour) + '"' : '') + '>' +
       '<div class="od-card__media">' +
