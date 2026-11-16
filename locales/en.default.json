@@ -162,6 +162,21 @@
       "note_ready": "This item is available for pre-order. Orders will be prepared and shipped within 4 to 5 weeks of purchase.",
       "pay_today": "You pay today. We ship as soon as it is ready.",
       "months": "January,February,March,April,May,June,July,August,September,October,November,December"
+    },
+    "notify": {
+      "button": "Notify me",
+      "sold_size": "Size {{ size }} is sold out.",
+      "sold_piece": "This piece is sold out.",
+      "ask_guest": "Leave your email and we will tell you when it is back.",
+      "ask_signed": "We will email you at {{ email }} when it is back.",
+      "email_placeholder": "Your email address",
+      "email_error": "Enter a valid email address",
+      "done_title": "You are on the list.",
+      "done_text": "We will email {{ email }} when it is back.",
+      "signin": "Have an account? Sign in",
+      "error": "Something went wrong. Try again.",
+      "available": "Good news, it is back in stock. Refresh the page.",
+      "rate": "Too many requests. Try again later."
     }
   },
   "wishlist": {

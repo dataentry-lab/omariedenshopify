@@ -1,0 +1,20 @@
+{%- comment -%}
+  Notify me (16 Nov 2026): prints "on" when this product offers Notify me on its sold-out sizes, nothing otherwise.
+  The one place with the rule. Theme settings > Notify me: Off / Selected products only / All products.
+  Selected = the product's Notify me field (metafield custom.notify_me) is ticked, or it carries the tag notify-me.
+  Params: product.
+{%- endcomment -%}
+{%- liquid
+  assign nm = ''
+  assign nm_mode = settings.notify_mode | default: 'selected'
+  if settings.notify_endpoint != blank
+    if nm_mode == 'all'
+      assign nm = 'on'
+    elsif nm_mode == 'selected'
+      if product.metafields.custom.notify_me.value == true or product.tags contains 'notify-me'
+        assign nm = 'on'
+      endif
+    endif
+  endif
+  echo nm
+-%}

@@ -563,6 +563,33 @@
     ]
   },
   {
+    "name": "Notify me",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Sold-out sizes get a Notify me button. Guests leave an email, signed-in customers tap once. They get one email when the size is back. Per product in Shopify admin: tick the Notify me field (or add the tag notify-me)."
+      },
+      {
+        "type": "select",
+        "id": "notify_mode",
+        "label": "Show Notify me on",
+        "options": [
+          { "value": "off", "label": "Off" },
+          { "value": "selected", "label": "Selected products only" },
+          { "value": "all", "label": "All products" }
+        ],
+        "default": "selected"
+      },
+      {
+        "type": "text",
+        "id": "notify_endpoint",
+        "label": "Notify me service address",
+        "default": "https://omarieden-notify.talhashakeel891.workers.dev",
+        "info": "The program in Cloudflare that saves the requests and sends the emails. Leave as it is."
+      }
+    ]
+  },
+  {
     "name": "Collections",
     "settings": [
       {

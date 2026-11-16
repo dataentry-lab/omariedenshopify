@@ -339,3 +339,24 @@
 /* 10 Nov 2026: the note can run to two lines now (client sentence): icon stays on the first line */
 .od-po-note { align-items: flex-start; }
 .od-po-note .od-po-icon { margin-top: 1px; }
+
+/* Notify me on a sold-out size (16 Nov 2026): snippets/notify-box.liquid, assets/od-notify.js */
+.od-nm[hidden], .od-nm [hidden], [data-nm-go][hidden], [data-nm-buy][hidden], [data-nm-signin][hidden] { display: none !important; }
+.od-nm { position: relative; margin: 0 0 -10px; }
+.od-nm .od-nm__note { margin: 0 0 10px; align-items: flex-start; }
+.od-nm .od-nm__done { margin-bottom: 0; }
+.od-nm__done b { font-weight: 500; }
+.od-nm__email { display: block; width: 100%; height: 48px; padding: 0 14px; border: 1px solid #d9c9b8; border-radius: 0; background: #fff; color: #551c25; font: inherit; font-size: 14px; outline: none; -webkit-appearance: none; appearance: none; box-sizing: border-box; }
+.od-nm__email:focus { border-color: #551c25; }
+.od-nm__email::placeholder { color: rgba(85, 28, 37, .45); }
+.od-nm__hp { position: absolute; width: 1px; height: 1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); opacity: 0; pointer-events: none; }
+.od-nm__err { margin: 6px 0 0; font-size: 12px; line-height: 1.4; color: #a32d2d; }
+.od-nm__signin { margin: -12px 0 0; font-size: 12px; line-height: 1.4; color: #6b6b6b; text-align: center; }
+.od-nm__signin a { color: inherit; text-decoration: underline; }
+.od-nm--qa { margin: 4px 0 0; }
+.od-qa .od-nm__go { justify-content: center; }
+.od-qa .od-nm__signin { margin: 8px 0 0; }
+.od-qa__size.is-soldout.is-notify { cursor: pointer; }
+.od-qa__size.is-soldout.is-notify:hover, .od-qa__size.is-soldout.is-selected { border-color: var(--od-maroon); }
+.od-qa__size.is-soldout.is-selected { color: #551c25; }
+@media (max-width: 767px) { .od-nm__email { font-size: 16px; } }

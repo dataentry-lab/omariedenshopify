@@ -87,6 +87,7 @@
         cardPerColour: {% if settings.card_per_colour == false %}false{% else %}true{% endif %},
         multiSwatchImage: {% if settings.multi_swatch_image != blank %}{{ settings.multi_swatch_image | image_url: width: 80 | json }}{% else %}null{% endif %},
         preorder: {% if settings.preorder_enabled == false %}false{% else %}{ badge: {{ 'products.preorder.badge' | t | json }}, button: {{ 'products.preorder.button' | t | json }}, note: {{ 'products.preorder.note' | t: text: '__TEXT__' | json }}, ready: {{ 'products.preorder.when_ready' | t | json }}, noteReady: {{ 'products.preorder.note_ready' | t | json }}, sub: {{ 'products.preorder.pay_today' | t | json }}, label: {{ 'products.preorder.badge' | t | json }}, mixed: {{ settings.preorder_mixed_note | json }} }{% endif %},
+        notify: {% if settings.notify_mode == 'off' or settings.notify_endpoint == blank %}false{% else %}{ url: {{ settings.notify_endpoint | json }}, all: {% if settings.notify_mode == 'all' %}true{% else %}false{% endif %}, email: {{ customer.email | json }}, t: { soldSize: {{ 'products.notify.sold_size' | t: size: '__SIZE__' | json }}, soldPiece: {{ 'products.notify.sold_piece' | t | json }}, askGuest: {{ 'products.notify.ask_guest' | t | json }}, askSigned: {{ 'products.notify.ask_signed' | t: email: '__EMAIL__' | json }}, doneText: {{ 'products.notify.done_text' | t: email: '__EMAIL__' | json }}, emailError: {{ 'products.notify.email_error' | t | json }}, error: {{ 'products.notify.error' | t | json }}, available: {{ 'products.notify.available' | t | json }}, rate: {{ 'products.notify.rate' | t | json }} } }{% endif %},
         badges: {
           metafield: {{ settings.badge_metafield_enabled | json }},
           newDays: {{ settings.badge_new_days | default: 30 }},
@@ -174,6 +175,7 @@
       {%- endif -%}
     </div>
     <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
+    {%- if settings.notify_mode != 'off' and settings.notify_endpoint != blank -%}<script src="{{ 'od-notify.js' | asset_url }}" defer></script>{%- endif %}
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
     <script src="{{ 'od-card.js' | asset_url }}" defer></script>
     <script src="{{ 'od-cart.js' | asset_url }}" defer></script>

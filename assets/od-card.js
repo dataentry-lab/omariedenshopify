@@ -229,16 +229,17 @@
     }
     wrap.hidden = false;
     const list = variantsForColor();
+    const nm = nmOn(); // Notify me: sold-out sizes can be picked
     grid.innerHTML = list.map((v) => {
       const label = sizeLabel(v);
-      return '<button type="button" class="od-qa__size' + (v.available ? '' : ' is-soldout') + (label.length > 4 ? ' is-wide' : '') + '" data-qa-size data-variant-id="' + v.id + '" aria-pressed="false"' + (v.available ? '' : ' aria-disabled="true"') + ' title="' + esc(v.title) + (v.available ? '' : ' - ' + esc(Q.t('sold-out'))) + '">' + esc(label) + '</button>';
+      return '<button type="button" class="od-qa__size' + (v.available ? '' : ' is-soldout' + (nm ? ' is-notify' : '')) + (label.length > 4 ? ' is-wide' : '') + '" data-qa-size data-variant-id="' + v.id + '" aria-pressed="false"' + (v.available || nm ? '' : ' aria-disabled="true"') + ' title="' + esc(v.title) + (v.available ? '' : ' - ' + esc(Q.t('sold-out'))) + '">' + esc(label) + '</button>';
     }).join('');
     const first = list.find((v) => v.available);
     if (first) selectSize($('[data-qa-size][data-variant-id="' + first.id + '"]', grid));
     else paintPrice();
   }
   function selectSize(btn) {
-    if (!btn || btn.classList.contains('is-soldout')) return;
+    if (!btn || (btn.classList.contains('is-soldout') && !btn.classList.contains('is-notify'))) return;
     $$('[data-qa-size]', qa).forEach((b) => { b.classList.remove('is-selected'); b.setAttribute('aria-pressed', 'false'); });
     btn.classList.add('is-selected'); btn.setAttribute('aria-pressed', 'true');
     Q.variantId = btn.getAttribute('data-variant-id');
@@ -264,6 +265,15 @@
     if (atc) atc.classList.toggle('is-soldout', soldOut);
     const po = Q.s.data.preorder;
     if (label) label.textContent = soldOut ? Q.t('sold-out') : (po && po.on && OD.preorder ? OD.preorder.button : Q.t('add'));
+    paintNotify();
+  }
+  /* Notify me (16 Nov 2026, assets/od-notify.js): a sold-out size of a product that offers it shows the notify box instead of the buy button */
+  function nmOn() { const d = Q.s && Q.s.data; return !!(OD.notify && OD.nmPaint && d && d.notify && !(d.preorder && d.preorder.on)); }
+  function paintNotify() {
+    if (!OD.nmPaint || !qa || !Q.s) return;
+    const v = currentVariant();
+    const on = nmOn() && !!v && !v.available;
+    OD.nmPaint(qa, on, on ? { variantId: v.id, handle: Q.s.data.handle, size: Q.s.data.single ? '' : sizeLabel(v) } : null);
   }
   /* pre-order note above the button + "You pay today" line under it (10 Nov 2026) */
   function paintPreorder() {
@@ -531,7 +541,8 @@
       material: null,
       badges: OD.badgesFor ? OD.badgesFor(p, 2) : [],
       available: p.variants.some((v) => v.available),
-      preorder: poTagged(p) ? { on: true, text: '' } : undefined
+      preorder: poTagged(p) ? { on: true, text: '' } : undefined,
+      notify: nmTagged(p)
     };
     return '<script type="application/json" data-card-json>' + JSON.stringify(data).replace(/<\//g, '<\\/') + '</script>';
   }
@@ -539,6 +550,11 @@
   /* ---------- badges for JS-rendered cards (same rules as snippets/product-badges.liquid, from /products/{handle}.js) ---------- */
   const BAG_ICON = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
   /* JS cards (search popup, wishlist) come from /products/{handle}.js, which has no metafields: pre-order is read from the tag */
+  /* Notify me (16 Nov 2026): JS cards only see tags, so "selected products" = the tag notify-me (or the All products setting) */
+  function nmTagged(p) {
+    if (!OD.notify || !p) return false;
+    return !!OD.notify.all || (Array.isArray(p.tags) && p.tags.some((t) => /^notify-me$/i.test(String(t).trim())));
+  }
   function poTagged(p) {
     if (!OD.preorder || !p || !Array.isArray(p.tags)) return false;
     return p.tags.some((t) => /^pre-?order$/i.test(String(t).trim())) && (p.available !== false);

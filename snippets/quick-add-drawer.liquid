@@ -10,7 +10,7 @@
   endif
 -%}
 <div class="_backdrop_9316i_30 undefined" data-modal-backdrop="quick-add" data-show-class="od-show"></div>
-<div class="_modal_9316i_132 undefined od-qa{% if rtl %} od-qa--rtl{% endif %}" data-modal="quick-add" data-show-class="od-show" data-quick-add role="dialog" aria-modal="true" aria-label="{{ 'products.card.quick_add' | t }}"
+<div class="_modal_9316i_132 undefined od-qa{% if rtl %} od-qa--rtl{% endif %}" data-modal="quick-add" data-show-class="od-show" data-quick-add data-nm-scope role="dialog" aria-modal="true" aria-label="{{ 'products.card.quick_add' | t }}"
   data-t-add="{{ 'products.product.add_to_cart' | t | escape }}"
   data-t-sold-out="{{ 'products.product.sold_out' | t | escape }}"
   data-t-size="{{ 'products.product.size' | t | escape }}"
@@ -60,10 +60,15 @@
     </div>
 
     <div class="od-po-note od-po-note--qa" data-qa-po hidden>{% render 'icon-clock' %}<span data-qa-po-text></span></div>
-    <button type="button" class="od-qa__atc" data-qa-atc>
+    {%- if settings.notify_mode != 'off' and settings.notify_endpoint != blank -%}{%- render 'notify-box', qa: true -%}{%- endif -%}
+    <button type="button" class="od-qa__atc" data-qa-atc data-nm-buy>
       <span data-qa-atc-label>{{ 'products.product.add_to_cart' | t }}</span>
       <span class="od-qa__atc-price" data-qa-atc-price></span>
     </button>
+    {%- if settings.notify_mode != 'off' and settings.notify_endpoint != blank -%}
+      <button type="button" class="od-qa__atc od-nm__go" data-nm-go hidden>{{ 'products.notify.button' | t }}</button>
+      {%- unless customer -%}<p class="od-nm__signin" data-nm-signin hidden><a href="{{ routes.account_login_url }}">{{ 'products.notify.signin' | t }}</a></p>{%- endunless -%}
+    {%- endif -%}
     <p class="od-po-sub od-po-sub--qa" data-qa-po-sub hidden></p>
 
     <button type="button" class="od-qa__more" data-qa-more aria-expanded="false">{{ 'products.card.more_details' | t }}</button>

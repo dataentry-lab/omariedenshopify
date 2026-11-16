@@ -41,8 +41,23 @@
   if po_on
     assign add_label = 'products.preorder.button' | t
   endif
+  comment
+    16 Nov 2026: Notify me on sold-out sizes (snippets/notify-flag.liquid + notify-box.liquid, assets/od-notify.js).
+    nm_any = the feature is on in Theme settings (markup is printed), nm_flag = on for this product.
+  endcomment
+  assign nm_any = false
+  if settings.notify_mode != 'off' and settings.notify_endpoint != blank
+    assign nm_any = true
+  endif
+  capture nm_flag
+    render 'notify-flag', product: product
+  endcapture
+  assign nm_flag = nm_flag | strip
+  if po_on
+    assign nm_flag = ''
+  endif
 -%}
-<div data-product-root data-color-option="{{ color_name | escape }}" data-size-option="{{ size_name | escape }}" data-selected-variant="{{ current.id }}" data-po="{{ po_flag }}">
+<div data-product-root data-color-option="{{ color_name | escape }}" data-size-option="{{ size_name | escape }}" data-selected-variant="{{ current.id }}" data-po="{{ po_flag }}" data-nm="{{ nm_flag }}" data-nm-scope>
   <script type="application/json" data-product-json>{{ product | json }}</script>
   <div class="_container_1kxnl_30 _YouMayLike_drley_30">
     <div class="_ProductDetailslArea_drley_46">
@@ -147,15 +162,18 @@
               <input type="hidden" name="properties[Pre-order]" value="{{ po_text | escape }}">
               <div class="od-po-note" data-po-note>{% render 'icon-clock' %}<span>{{ po_note }}</span></div>
             {%- endif -%}
+            {%- if nm_any -%}{%- render 'notify-box' -%}{%- endif -%}
             <div class="_CartSection_1fx6h_74{% if po_on %} od-po-cart{% endif %}">
               <div class="_WishlsitAndCart_1fx6h_74">
                 <button type="button" class="_btn_1ltvt_30 _wishlistButton_1fx6h_559" data-pdp-wishlist aria-label="{{ 'wishlist.add' | t }}"><div class="_globalImg_1tf1q_38 undefined"><img fetchpriority="auto" alt="" src="{{ 'icons_light_wishlist.svg' | asset_url }}"></div></button>
-                <button id="addToCart" type="submit" class="_btn_1f12h_30 " data-add-to-cart data-variant-id="{{ current.id }}" data-label-add="{{ add_label | escape }}" data-label-sold="{{ 'products.product.sold_out' | t }}" data-label-unavailable="{{ 'products.product.unavailable' | t }}"{% if po_on %} data-po-text="{{ po_text | escape }}"{% else %} data-po-text=""{% endif %} {% unless can_buy %}disabled{% endunless %}>{% if can_buy %}{{ add_label }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</button>
+                <button id="addToCart" type="submit" class="_btn_1f12h_30 " data-add-to-cart data-nm-buy data-variant-id="{{ current.id }}" data-label-add="{{ add_label | escape }}" data-label-sold="{{ 'products.product.sold_out' | t }}" data-label-unavailable="{{ 'products.product.unavailable' | t }}"{% if po_on %} data-po-text="{{ po_text | escape }}"{% else %} data-po-text=""{% endif %} {% unless can_buy %}disabled{% endunless %}>{% if can_buy %}{{ add_label }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</button>
+                {%- if nm_any -%}<button type="button" class="_btn_1f12h_30 od-nm__go" data-nm-go hidden>{{ 'products.notify.button' | t }}</button>{%- endif -%}
               </div>
             </div>
             {%- if po_on -%}
               <p class="od-po-sub">{{ 'products.preorder.pay_today' | t }}</p>
             {%- endif -%}
+            {%- if nm_any -%}{%- unless customer -%}<p class="od-nm__signin" data-nm-signin hidden><a href="{{ routes.account_login_url }}">{{ 'products.notify.signin' | t }}</a></p>{%- endunless -%}{%- endif -%}
           {%- endform -%}
 
           <div>
