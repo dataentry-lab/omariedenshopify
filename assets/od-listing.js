@@ -30,7 +30,8 @@
     });
     if (!found) { var root = $('[data-ft-panel="root"]', tree); if (root) root.hidden = false; }
     var fpT = tree.closest('[data-fp]');
-    if (fpT) {
+    // 16 Nov 2026: only while the Category pane is the one on screen, otherwise the root title "Filter" was replaced by "Category" on open
+    if (fpT && fpT.getAttribute('data-fp-current') === 'cat') {
       var shown = $('[data-ft-panel]:not([hidden])', tree), tt = $('[data-fp-title]', fpT);
       if (shown && tt && shown.getAttribute('data-ft-label')) tt.textContent = shown.getAttribute('data-ft-label');
     }
