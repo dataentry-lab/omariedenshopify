@@ -95,6 +95,8 @@
       "all_in": "كل {{ name }}",
       "all": "الكل",
       "size": "المقاس",
+      "sale": "التخفيضات",
+      "percent_off": "خصم {{ n }}%",
       "show_results": "عرض {{ count }} نتيجة",
       "show_results_plain": "عرض النتائج",
       "price_hint": "الأسعار بالريال السعودي، تُطبّق أثناء الكتابة",

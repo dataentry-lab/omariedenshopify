@@ -95,6 +95,8 @@
       "all_in": "All {{ name }}",
       "all": "All",
       "size": "Size",
+      "sale": "Sale",
+      "percent_off": "{{ n }}% off",
       "show_results": "Show {{ count }} results",
       "show_results_plain": "Show results",
       "price_hint": "Prices in SAR, applied as you type",

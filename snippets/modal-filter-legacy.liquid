@@ -144,9 +144,24 @@
                   {%- when 'list' -%}
                     {%- comment -%} round 9: every value is a square checkbox (multi-select); colour values also show a swatch dot {%- endcomment -%}
                     {%- for value in filter.values -%}
+                      {%- liquid
+                        assign vlabel = value.label
+                        assign vshow = true
+                        if filter.param_name == 'filter.p.tag'
+                          assign vhead = value.value | downcase | slice: 0, 5
+                          if vhead == 'sale:'
+                            assign pn = value.value | downcase | remove: 'sale:'
+                            assign vlabel = 'collections.filter.percent_off' | t: n: pn
+                          else
+                            assign vshow = false
+                          endif
+                        endif
+                      -%}
+                      {%- if vshow -%}
                       <div class="_CheckboxButton_8c7of_30">
-                        <label><div><input id="{{ filter.param_name }}-{{ forloop.index }}" type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}><span class="_CustomCheck_8c7of_52"></span></div>{% if is_color %}<span class="od-ft__swatch" aria-hidden="true" style="background: {% render 'swatch-color', value: value.label, swatch: value.swatch %};"></span>{% endif %}<p>{{ value.label }} <span>({{ value.count }})</span></p></label>
+                        <label><div><input id="{{ filter.param_name }}-{{ forloop.index }}" type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}><span class="_CustomCheck_8c7of_52"></span></div>{% if is_color %}<span class="od-ft__swatch" aria-hidden="true" style="background: {% render 'swatch-color', value: value.label, swatch: value.swatch %};"></span>{% endif %}<p>{{ vlabel }} <span>({{ value.count }})</span></p></label>
                       </div>
+                      {%- endif -%}
                     {%- endfor -%}
                   {%- when 'boolean' -%}
                     {%- for value in filter.values -%}

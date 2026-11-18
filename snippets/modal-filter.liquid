@@ -122,6 +122,34 @@
   assign t_size = 'collections.filter.size' | t
 
   comment
+    Sale (19 Nov 2026) = the Search and Discovery "Tags" filter (filter.p.tag). Only the sale:NN tags are shown, as "NN% off", highest first.
+  endcomment
+  assign sale_filter = nil
+  assign sale_n = 0
+  assign sale_sum = ''
+  for filter in results.filters
+    if filter.param_name == 'filter.p.tag'
+      assign sale_filter = filter
+      for value in filter.values reversed
+        assign vhead = value.value | downcase | slice: 0, 5
+        if vhead == 'sale:'
+          assign sale_n = sale_n | plus: 1
+          if value.active
+            assign pn = value.value | downcase | remove: 'sale:'
+            assign part = 'collections.filter.percent_off' | t: n: pn
+            if sale_sum == ''
+              assign sale_sum = part
+            else
+              assign sale_sum = sale_sum | append: ', ' | append: part
+            endif
+          endif
+        endif
+      endfor
+    endif
+  endfor
+  assign t_sale = 'collections.filter.sale' | t
+
+  comment
     Clear-all URL (keeps the sort)
   endcomment
   if request.page_type == 'search'
@@ -189,6 +217,12 @@
             <svg class="od-fp__chev od-fp__chev--fwd" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         {%- endif -%}
+        {%- if sale_n > 0 -%}
+          <button type="button" class="od-fp__group" data-fp-go="sale">
+            <span class="od-fp__group-l"><span class="od-fp__group-name">{{ t_sale }}</span><span class="od-fp__group-sum{% if sale_sum != '' %} is-set{% endif %}">{{ sale_sum | default: t_all }}</span></span>
+            <svg class="od-fp__chev od-fp__chev--fwd" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        {%- endif -%}
         {%- if size_n > 0 -%}
           <button type="button" class="od-fp__group" data-fp-go="size">
             <span class="od-fp__group-l"><span class="od-fp__group-name">{{ t_size }}</span><span class="od-fp__group-sum{% if size_sum != '' %} is-set{% endif %}">{{ size_sum | default: t_all }}</span></span>
@@ -203,6 +237,9 @@
               assign skip = true
             endif
             if filter.param_name == 'filter.p.product_type' and types_in_tree
+              assign skip = true
+            endif
+            if filter.param_name == 'filter.p.tag'
               assign skip = true
             endif
             if filter.type == 'list' and filter.values.size == 0
@@ -320,6 +357,21 @@
         </div>
       {%- endif -%}
 
+      {%- comment -%} ---------- Sale: the sale:NN tags as "NN% off", highest first ---------- {%- endcomment -%}
+      {%- if sale_n > 0 -%}
+        <div class="od-fp__pane" data-fp-pane="sale" data-fp-label="{{ t_sale | escape }}">
+          {%- for value in sale_filter.values reversed -%}
+            {%- assign vhead = value.value | downcase | slice: 0, 5 -%}
+            {%- if vhead == 'sale:' -%}
+              {%- assign pn = value.value | downcase | remove: 'sale:' -%}
+              <div class="_CheckboxButton_8c7of_30 od-fp__row">
+                <label><div><input type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}><span class="_CustomCheck_8c7of_52"></span></div><p><span class="od-fp__vl">{{ 'collections.filter.percent_off' | t: n: pn }}</span><span class="od-fp__vc">{{ value.count }}</span></p></label>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
       {%- comment -%} ---------- other storefront filters ---------- {%- endcomment -%}
       {%- for filter in results.filters -%}
         {%- liquid
@@ -329,6 +381,9 @@
             assign skip = true
           endif
           if filter.param_name == 'filter.p.product_type' and types_in_tree
+            assign skip = true
+          endif
+          if filter.param_name == 'filter.p.tag'
             assign skip = true
           endif
           assign is_color = false
