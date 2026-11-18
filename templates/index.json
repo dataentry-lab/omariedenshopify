@@ -16,10 +16,10 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/White_friday_2560_x_720_with_text.png",
-            "mobile_image": "shopify://shop_images/White_friday_2560_x_720_with_text.png",
+            "mobile_image": "shopify://shop_images/White_friday_590_x_890.png",
             "top_subtitle": "",
-            "title": "The Icons Reimagined",
-            "subtitle": "Explore Mona Al-shebil exclusively at Omarieden.",
+            "title": "",
+            "subtitle": "",
             "button_label": "Explore",
             "button_url": "https://omarieden.com/collections/vendors?q=MONA%20AL%20SHEBIL"
           }
