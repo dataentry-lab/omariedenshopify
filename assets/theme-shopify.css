@@ -457,3 +457,23 @@ body[data-dark-header="true"] .od-crumbs-wrap--overlay { top: 150px; }
 [dir=rtl] [data-search-results] .od-search-viewall { font-family: Arabic-Regular, Bricolage, sans-serif; }
 [data-search-results] .od-search-none { margin-bottom: 16px; }
 [data-search-results] .od-search-cats .od-search-brands__link { white-space: nowrap; }
+
+/* currency display (18 Nov 2026): guide prices in the shopper's currency, charged in SAR. Logic in assets/od-currency.js */
+html.od-cur-wait :has(> ._sar_1ef42_1) { opacity: 0; }
+[data-cur-only][hidden] { display: none !important; }
+.od-cur-charged { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: -2px 0 8px; font-family: Bricolage, sans-serif; font-size: 12px; line-height: 1.5; color: #551c25; }
+.od-cur-charged > p { margin: 0; font-size: 12px; }
+.od-cur-charged > p:first-child { opacity: .75; }
+.od-cur-charged > p:last-child { font-weight: 500; white-space: nowrap; }
+.od-cur-note { margin: 0 0 12px; }
+.od-cur-btn { white-space: nowrap; }
+.od-cur-btn, .od-cur-btn span { font-size: inherit !important; font-family: inherit !important; }
+.od-cur-pdp { margin: 6px 0 0; font-family: Bricolage, sans-serif; font-size: 12px; line-height: 1.5; color: #551c25; opacity: .75; }
+.od-cur .od-cur__item p { display: flex; align-items: baseline; gap: 10px; margin: 0; }
+.od-cur .od-cur__code { font-weight: 500; font-size: 14px; letter-spacing: .04em; min-width: 40px; }
+.od-cur .od-cur__item p span { margin: 0 !important; text-transform: none; }
+.od-cur__hint { margin: 8px 16px 16px; font-family: Bricolage, sans-serif; font-size: 12px; line-height: 1.5; color: #551c25; opacity: .75; }
+.od-cur__save { display: flex; align-items: center; justify-content: center; width: calc(100% - 32px); margin: 0 16px 24px; background: #595b33 !important; border-color: #595b33 !important; color: #fff !important; }
+.od-cur__save:hover { background: #4a4c2a !important; }
+[dir=rtl] .od-cur-charged, [dir=rtl] .od-cur-pdp, [dir=rtl] .od-cur__hint { font-family: Arabic-Regular, Bricolage, sans-serif; }
+[dir=rtl] .od-cur .od-cur__code { font-family: Bricolage, sans-serif; }

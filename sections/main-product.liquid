@@ -117,11 +117,14 @@
           <div>
             <div class="_ProductBrand_1fx6h_141"><h2>{% if product.vendor != blank %}<a class="od-brand-link" href="{{ product.vendor | url_for_vendor }}" title="{{ product.vendor | escape }}">{{ product.vendor }}</a>{% endif %}</h2></div>
             <div class="_ProductTitle_1fx6h_156"><h1>{{ product.title }}</h1></div>
-            <div class="_ProductPrice_1fx6h_203">
+            <div class="_ProductPrice_1fx6h_203" data-cur-scope>
               <p>
                 <span data-product-price>{% render 'sar' %}{{ current.price | money_without_currency }}</span>
                 <span data-product-compare class="_strikeThrough_1tn6c_30" style="text-decoration:line-through;opacity:.6;margin-inline-start:8px;{% unless current.compare_at_price > current.price %}display:none;{% endunless %}">{% render 'sar' %}{{ current.compare_at_price | money_without_currency }}</span>
               </p>
+              {%- unless settings.cur_enabled == false -%}
+                <p class="od-cur-pdp" data-cur-only hidden>{{ 'currency.pdp' | t: amount: '[[amt]]' | replace: '[[amt]]', '<span data-cur-sar-of="[data-product-price]"></span>' }}</p>
+              {%- endunless -%}
             </div>
           </div>
 

@@ -598,7 +598,7 @@
       const l = e.target.closest('[data-locale-option]');
       const c = e.target.closest('[data-country-option]');
       if (l) { $('[data-locale-input]', form).value = l.getAttribute('data-locale-option'); form.submit(); }
-      if (c) { $('[data-country-input]', form).value = c.getAttribute('data-country-option'); form.submit(); }
+      if (c && !(window.OD && window.OD.currency)) { $('[data-country-input]', form).value = c.getAttribute('data-country-option'); form.submit(); }
     });
   }
 

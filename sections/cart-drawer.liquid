@@ -178,7 +178,7 @@
       {%- endif -%}
     </div>
 
-      <div class="_mFooter_9316i_55 od-cartd__footer" data-cartd-footer{% if cart.item_count == 0 %} hidden{% endif %}>
+      <div class="_mFooter_9316i_55 od-cartd__footer" data-cartd-footer data-cur-scope{% if cart.item_count == 0 %} hidden{% endif %}>
         {%- if settings.preorder_enabled != false and settings.preorder_mixed_note != false -%}
           {%- assign po_lines = 0 -%}
           {%- for item in cart.items -%}{%- if item.properties['Pre-order'] != blank -%}{%- assign po_lines = po_lines | plus: 1 -%}{%- endif -%}{%- endfor -%}
@@ -186,11 +186,17 @@
         {%- endif -%}
         <div class="_subtotal_1bfe0_165">
           <p>{{ 'cart.summary.subtotal' | t }}</p>
-          <p data-cartd-subtotal>{% render 'sar' %}{{ cart.total_price | money_without_currency }}</p>
+          <p data-cartd-subtotal data-cur-total>{% render 'sar' %}{{ cart.total_price | money_without_currency }}</p>
         </div>
+        {%- unless settings.cur_enabled == false -%}
+          <div class="od-cur-charged" data-cur-only hidden><p>{{ 'currency.charged' | t }}</p><p data-cur-sar-of="[data-cur-total]"></p></div>
+        {%- endunless -%}
         <p class="_subtotalinfo_1bfe0_235">{{ 'cart.summary.taxes_note' | t }}</p>
+        {%- if settings.cur_enabled != false and settings.cur_bag_note != false -%}
+          <div class="od-po-note od-po-note--bag od-cur-note" data-cur-only hidden>{% render 'icon-info' %}<span>{{ 'currency.note' | t: currency: '[[cur]]' | replace: '[[cur]]', '<span data-cur-code></span>' }}</span></div>
+        {%- endif -%}
         <form action="{{ routes.cart_url }}" method="post" class="od-cartd__checkout-form">
-          <button type="submit" name="checkout" class="_btn_lnddl_30 _checkout_1bfe0_199 od-cartd__checkout">{{ 'cart.drawer.checkout' | t }}</button>
+          <button type="submit" name="checkout" class="_btn_lnddl_30 _checkout_1bfe0_199 od-cartd__checkout">{{ 'cart.drawer.checkout' | t }}{% unless settings.cur_enabled == false %}<span class="od-cur-btn" data-cur-only hidden> · <span data-cur-sar-of="[data-cur-total]"></span></span>{% endunless %}</button>
         </form>
         <p class="_viewBag_1bfe0_227 od-cartd__viewbag"><a href="{{ routes.cart_url }}">{{ 'cart.drawer.view_bag' | t }}</a></p>
       </div>

@@ -574,9 +574,18 @@
         "id": "notify_mode",
         "label": "Show Notify me on",
         "options": [
-          { "value": "off", "label": "Off" },
-          { "value": "selected", "label": "Selected products only" },
-          { "value": "all", "label": "All products" }
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "selected",
+            "label": "Selected products only"
+          },
+          {
+            "value": "all",
+            "label": "All products"
+          }
         ],
         "default": "selected"
       },
@@ -586,6 +595,49 @@
         "label": "Notify me service address",
         "default": "https://omarieden-notify.talhashakeel891.workers.dev",
         "info": "The program in Cloudflare that saves the requests and sends the emails. Leave as it is."
+      }
+    ]
+  },
+  {
+    "name": "Currency display",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "The store charges in Saudi riyals (SAR). This shows guide prices in the shopper's own currency, with a note in the bag that the order is charged in SAR. The shopper picks the country and the currency in the Language and Region popup."
+      },
+      {
+        "type": "checkbox",
+        "id": "cur_enabled",
+        "label": "Show guide prices in the shopper's currency",
+        "default": true
+      },
+      {
+        "type": "textarea",
+        "id": "cur_rates",
+        "label": "Rates, one per line",
+        "default": "AED = 0.9793\nBHD = 0.1003\nKWD = 0.0822\nOMR = 0.1025\nQAR = 0.9707",
+        "info": "How much 1 SAR is worth in each currency. Add a line to add a currency (for example USD = 0.2667), remove a line to remove it."
+      },
+      {
+        "type": "checkbox",
+        "id": "cur_auto",
+        "label": "Detect the visitor's country on the first visit",
+        "default": true,
+        "info": "On the first visit only, the store switches to the visitor's country (if the store ships there) and its currency. A choice made in the popup always wins."
+      },
+      {
+        "type": "checkbox",
+        "id": "cur_bag_note",
+        "label": "Show the note in the bag",
+        "default": true,
+        "info": "Prices are a guide, the order is charged in SAR."
+      },
+      {
+        "type": "checkbox",
+        "id": "cur_about_cards",
+        "label": "Write the word about on product cards too",
+        "default": false,
+        "info": "The bag and the product page always say about before a guide price."
       }
     ]
   },

@@ -57,7 +57,7 @@
                       <img fetchpriority="auto" alt="{{ country.name | escape }}" src="{{ country | image_url: width: 40 }}" style="width:20px;height:20px;object-fit:cover;border-radius:50%;">
                     {%- endif -%}
                   </div>
-                  <p><span>{{ country.name }} ({{ country.currency.iso_code }})</span></p>
+                  <p><span>{{ country.name }}{% if settings.cur_enabled == false %} ({{ country.currency.iso_code }}){% endif %}</span></p>
                 </div>
                 <div class="_globalImg_1tf1q_38 {% if rtl %}_tickRtl_pdb61_187{% else %}_tickLtr_pdb61_186{% endif %}" {% unless country.iso_code == localization.country.iso_code %}style="display: none !important;"{% endunless %}><img fetchpriority="auto" alt="" src="{{ 'icons_tick.svg' | asset_url }}"></div>
               </li>
@@ -65,6 +65,48 @@
           </ul>
           <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}" data-country-input>
         </div>
+        {%- unless settings.cur_enabled == false -%}
+          {%- comment -%} Currency list (display only, the store charges in SAR). Ticks, Save and the first-visit detection live in assets/od-currency.js {%- endcomment -%}
+          <div class="_flagLists_pdb61_82 od-cur">
+            <h4>{{ 'currency.title' | t }}</h4>
+            <ul>
+              {%- assign cur_lines = settings.cur_rates | newline_to_br | split: '<br />' -%}
+              {%- assign cur_codes = 'SAR' -%}
+              {%- for cur_line in cur_lines -%}
+                {%- assign cur_code = cur_line | split: '=' | first | strip | upcase -%}
+                {%- if cur_code.size == 3 and cur_code != 'SAR' -%}{%- assign cur_codes = cur_codes | append: ',' | append: cur_code -%}{%- endif -%}
+              {%- endfor -%}
+              {%- assign cur_codes = cur_codes | split: ',' | uniq -%}
+              {%- for cur_code in cur_codes -%}
+                {%- liquid
+                  assign cur_name = ''
+                  case cur_code
+                    when 'SAR'
+                      assign cur_name = 'currency.names.sar' | t
+                    when 'AED'
+                      assign cur_name = 'currency.names.aed' | t
+                    when 'BHD'
+                      assign cur_name = 'currency.names.bhd' | t
+                    when 'KWD'
+                      assign cur_name = 'currency.names.kwd' | t
+                    when 'OMR'
+                      assign cur_name = 'currency.names.omr' | t
+                    when 'QAR'
+                      assign cur_name = 'currency.names.qar' | t
+                    when 'USD'
+                      assign cur_name = 'currency.names.usd' | t
+                  endcase
+                -%}
+                <li class="_item_pdb61_166 od-cur__item" style="cursor: pointer;" data-currency-option="{{ cur_code }}">
+                  <div class="_iconContainer_16tu5_35"><p><b class="od-cur__code">{{ cur_code }}</b><span>{{ cur_name }}</span></p></div>
+                  <div class="_globalImg_1tf1q_38 {% if rtl %}_tickRtl_pdb61_187{% else %}_tickLtr_pdb61_186{% endif %}" style="display: none !important;"><img fetchpriority="auto" alt="" src="{{ 'icons_tick.svg' | asset_url }}"></div>
+                </li>
+              {%- endfor -%}
+            </ul>
+            <p class="od-cur__hint">{{ 'currency.hint' | t }}</p>
+            <button type="button" class="_btn_lnddl_30 od-cur__save" data-cur-save>{{ 'currency.save' | t }}</button>
+          </div>
+        {%- endunless -%}
       </div>
     {%- endform -%}
   </div>

@@ -130,12 +130,15 @@
     </div>
 
     <div class="_right_1vg2n_30">
-      <div class="_summary_1vg2n_70" {% if cart.item_count == 0 %}style="display: none !important;"{% endif %}>
+      <div class="_summary_1vg2n_70" data-cur-scope {% if cart.item_count == 0 %}style="display: none !important;"{% endif %}>
         <h3>{{ 'cart.summary.title' | t }}</h3>
         <div class="_summary__subtotal_1vg2n_178">
           <p>{{ 'cart.summary.subtotal' | t }}</p>
-          <p>{% render 'sar' %}{{ cart.total_price | money_without_currency }}</p>
+          <p data-cur-total>{% render 'sar' %}{{ cart.total_price | money_without_currency }}</p>
         </div>
+        {%- unless settings.cur_enabled == false -%}
+          <div class="od-cur-charged" data-cur-only hidden><p>{{ 'currency.charged' | t }}</p><p data-cur-sar-of="[data-cur-total]"></p></div>
+        {%- endunless -%}
         <p>{{ 'cart.summary.taxes_note' | t }}</p>
         {%- if cart.cart_level_discount_applications.size > 0 -%}
           {%- for d in cart.cart_level_discount_applications -%}
@@ -162,8 +165,11 @@
             <div class="od-po-note od-po-note--bag">{% render 'icon-clock' %}<span>{{ 'cart.preorder.mixed' | t }}</span></div>
           {%- endif -%}
         {%- endif -%}
+        {%- if settings.cur_enabled != false and settings.cur_bag_note != false -%}
+          <div class="od-po-note od-po-note--bag od-cur-note" data-cur-only hidden>{% render 'icon-info' %}<span>{{ 'currency.note' | t: currency: '[[cur]]' | replace: '[[cur]]', '<span data-cur-code></span>' }}</span></div>
+        {%- endif -%}
         <form action="{{ routes.cart_url }}" method="post" style="display:contents">
-          <button type="submit" name="checkout" class="_btn_lnddl_30 _summary__checkoutBtn_1vg2n_120">{{ 'cart.summary.checkout' | t }}</button>
+          <button type="submit" name="checkout" class="_btn_lnddl_30 _summary__checkoutBtn_1vg2n_120">{{ 'cart.summary.checkout' | t }}{% unless settings.cur_enabled == false %}<span class="od-cur-btn" data-cur-only hidden> · <span data-cur-sar-of="[data-cur-total]"></span></span>{% endunless %}</button>
         </form>
       </div>
       {%- render 'od-circle' -%}

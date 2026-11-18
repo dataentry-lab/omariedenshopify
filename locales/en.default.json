@@ -671,5 +671,24 @@
     "password": "Password",
     "enter": "Enter",
     "wrong": "That password is not right, please try again."
+  },
+  "currency": {
+    "title": "Currency",
+    "save": "Save",
+    "hint": "Prices show in the currency you pick. Your order is charged in Saudi riyals (SAR).",
+    "about": "about",
+    "charged": "Charged at checkout",
+    "sar_amount": "SAR {{ amount }}",
+    "note": "Prices in {{ currency }} are a guide. Your order is charged in Saudi riyals (SAR), and your bank converts it.",
+    "pdp": "Guide price. You pay {{ amount }} at checkout.",
+    "names": {
+      "sar": "Saudi riyal",
+      "aed": "UAE dirham",
+      "bhd": "Bahraini dinar",
+      "kwd": "Kuwaiti dinar",
+      "omr": "Omani rial",
+      "qar": "Qatari riyal",
+      "usd": "US dollar"
+    }
   }
 }
