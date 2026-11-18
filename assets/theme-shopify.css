@@ -495,22 +495,49 @@ html.od-cur-wait :has(> ._sar_1ef42_1) { opacity: 0; }
 .od-szg { left: auto !important; right: 24px !important; }
 [dir=rtl] .od-szg { right: auto !important; left: 24px !important; }
 @media only screen and (max-width: 768px) { .od-szg { right: 0 !important; } [dir=rtl] .od-szg { left: 0 !important; } }
-.od-szg__body { padding: 8px 24px 32px; color: #551c25; font-family: Bricolage, sans-serif; }
-.od-szg__top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 0 0 14px; }
-.od-szg__sub { margin: 0; font-size: 13px; opacity: .8; }
-.od-szg__units { display: flex; align-items: baseline; gap: 6px; font-size: 13px; }
-.od-szg__units[hidden] { display: none !important; }
-.od-szg__units button { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; color: #551c25; opacity: .55; }
-.od-szg__units button.is-on { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
+/* look v2 (18 Nov, approved mockup): narrow panel, serif title, "Your size" card, cm | in switch, compact table */
+.od-szg { width: 520px !important; max-width: calc(100vw - 48px); color: #551c25; }
+.od-szg__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 28px 28px 4px; }
+.od-szg .od-szg__eyebrow { margin: 0; font-family: Bricolage, sans-serif; font-size: 11px; font-weight: 400; line-height: 1.4; letter-spacing: .12em; text-transform: uppercase; color: #8a6168; }
+.od-szg h2.od-szg__title { margin: 4px 0 0; font-family: "Basteleur Moonlight", serif; font-weight: 300; font-size: 28px; line-height: 1.2; color: #551c25; text-transform: none; }
+.od-szg__close { background: none; border: 0; padding: 0; margin: 4px 0 0; width: 24px; height: 24px; flex: none; cursor: pointer; }
+.od-szg__close img { display: block; width: 100%; height: 100%; }
+.od-szg__body { padding: 16px 28px 32px; color: #551c25; font-family: Bricolage, sans-serif; }
+.od-szg__card { background: #efe6d8; padding: 16px 18px; }
+.od-szg__facts { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px 28px; }
+.od-szg__fact { display: flex; flex-direction: column; gap: 2px; }
+.od-szg__big { font-family: "Basteleur Moonlight", serif; font-weight: 300; font-size: 34px; line-height: 1.1; }
+.od-szg__fv { font-size: 15px; font-weight: 500; line-height: 1.3; }
+.od-szg .od-szg__card-hint { margin: 14px 0 0; padding-top: 10px; border-top: 1px solid #dccdb6; font-size: 12px; line-height: 1.5; color: #8a6168; }
+.od-szg__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 28px; margin: 22px 0 6px; }
+.od-szg__units { display: flex; }
+.od-szg__units button { background: transparent; border: 1px solid #551c25; border-radius: 0; padding: 5px 14px; font-family: inherit; font-size: 12px; line-height: 1.3; color: #551c25; cursor: pointer; }
+.od-szg__units button + button { border-inline-start: 0; }
+.od-szg__units button.is-on { background: #551c25; color: #fcf8f2; }
 .od-szg__scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .od-szg__table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.od-szg__table th, .od-szg__table td { padding: 10px 8px; text-align: center; border-bottom: 1px solid #e5d9c7; font-weight: 400; white-space: nowrap; }
-.od-szg__table th { font-size: 11px; letter-spacing: .05em; text-transform: uppercase; }
-.od-szg__table tr.is-on td { background: #e5d9c7; font-weight: 500; }
-.od-szg__pick { background: #efe6d8; padding: 10px 12px; margin: 16px 0 0; font-size: 13px; line-height: 1.5; }
-.od-szg__pick b { font-weight: 500; }
-.od-szg__note { margin: 14px 0 0; font-size: 13px; line-height: 1.6; white-space: pre-line; }
-.od-szg__scope { margin: 12px 0 0; font-size: 12px; line-height: 1.5; opacity: .7; }
-.od-szg__pick[hidden], .od-szg__note[hidden], .od-szg__scope[hidden] { display: none !important; }
-[dir=rtl] .od-sz-link, [dir=rtl] .od-sz-line, [dir=rtl] .od-szg__body { font-family: Arabic-Regular, Bricolage, sans-serif; }
-@media (max-width: 767px) { .od-szg__body { padding: 4px 16px 28px; } .od-szg__table th, .od-szg__table td { padding: 9px 6px; font-size: 12px; } }
+.od-szg__table th { padding: 10px 6px; text-align: center; font-size: 11px; font-weight: 400; line-height: 1.35; letter-spacing: .06em; text-transform: uppercase; color: #8a6168; border-bottom: 1px solid #551c25; vertical-align: bottom; }
+.od-szg__table td { padding: 9px 6px; text-align: center; font-weight: 400; white-space: nowrap; border-bottom: 1px solid #eadfce; }
+.od-szg__table tr[data-szg-row] { cursor: pointer; }
+.od-szg__table tr[data-szg-row]:hover td { background: #f5eee3; }
+.od-szg__table tr.is-on td, .od-szg__table tr.is-on:hover td { background: #e5d9c7; font-weight: 500; }
+.od-szg__table tr.is-on td:first-child { box-shadow: inset 3px 0 0 #551c25; }
+[dir=rtl] .od-szg__table tr.is-on td:first-child { box-shadow: inset -3px 0 0 #551c25; }
+.od-szg__notes { margin: 22px 0 0; }
+.od-szg .od-szg__notes-h { display: flex; align-items: center; gap: 6px; }
+.od-szg__notes-h svg { width: 16px; height: 16px; flex: none; }
+.od-szg .od-szg__note { margin: 6px 0 0; font-size: 13px; line-height: 1.6; white-space: pre-line; color: #551c25; }
+.od-szg .od-szg__scope { margin: 14px 0 0; font-size: 12px; line-height: 1.5; color: #8a6168; }
+.od-szg__card[hidden], .od-szg__units[hidden], .od-szg__notes[hidden], .od-szg__scope[hidden] { display: none !important; }
+[dir=rtl] .od-sz-link, [dir=rtl] .od-sz-line, [dir=rtl] .od-szg__body, [dir=rtl] .od-szg .od-szg__eyebrow { font-family: Arabic-Regular, Bricolage, sans-serif; }
+[dir=rtl] .od-szg .od-szg__eyebrow, [dir=rtl] .od-szg__table th { letter-spacing: 0; }
+[dir=rtl] .od-szg h2.od-szg__title { font-family: Arabic-Regular, "Basteleur Moonlight", serif; }
+@media only screen and (max-width: 768px) {
+  .od-szg { width: 100% !important; max-width: none; }
+  .od-szg__head { padding: 20px 16px 4px; }
+  .od-szg h2.od-szg__title { font-size: 24px; }
+  .od-szg__body { padding: 14px 16px 28px; }
+  .od-szg__facts { gap: 12px 18px; }
+  .od-szg__table th, .od-szg__table td { padding: 9px 4px; }
+  .od-szg__table td { font-size: 12px; }
+}

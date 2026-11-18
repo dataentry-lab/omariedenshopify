@@ -7,7 +7,8 @@
    The variant's Size value is the brand label ("UK 10"); this file finds its row and
      - writes the EU size on the size boxes (product page + quick view),
      - shows "On the label: UK 10" for the picked size,
-     - opens the Size guide drawer with that brand's chart and the picked row highlighted.
+     - opens the Size guide drawer with that brand's chart, the picked row highlighted and its details in the
+       "Your size" card at the top (tapping another row shows that row in the card, the product is not changed).
    Loaded BEFORE theme.js (OD.sizePaint must exist at the first paint). Strings: OD.sizeT (layout/theme.liquid).
    Quick view reads the chart lazily from /products/<handle>?section_id=od-size-chart. */
 (function () {
@@ -136,7 +137,7 @@
   };
 
   /* ---------- the drawer ---------- */
-  var cur = { chart: null, sel: null, unit: null };
+  var cur = { chart: null, sel: null, own: null, unit: null };
   function conv(txt, from, to) {
     if (from === to) return txt;
     return String(txt).replace(/\d+(?:\.\d+)?/g, function (n) {
@@ -145,6 +146,24 @@
       var s = v.toFixed(1);
       return s.slice(-2) === '.0' ? s.slice(0, -2) : s;
     });
+  }
+  function unitLabel() { return cur.unit === 'in' ? (T.unit_in || 'in') : (T.unit_cm || 'cm'); }
+  function fact(title, value, main) {
+    return '<div class="od-szg__fact"><span class="od-szg__eyebrow">' + esc(title) + '</span><span class="' + (main ? 'od-szg__big' : 'od-szg__fv') + '">' + esc(value) + '</span></div>';
+  }
+  /* "Your size" card: the picked row in large type, with every other column of that row as a small fact */
+  function card(ch, r) {
+    var same = norm(r.eu) === norm(r.label);
+    var h = '<div class="od-szg__facts">' + fact(cur.sel === cur.own ? (T.your_size || '') : (T.size_one || ''), (ch.cols[0] ? ch.cols[0] + ' ' : '') + r.eu, true);
+    for (var i = 1; i < ch.cols.length; i++) {
+      var v = r.cells[i];
+      if (v == null || v === '' || (i === 1 && same)) continue;
+      if (ch.units[i]) h += fact(ch.cols[i].replace(UNIT, '').trim(), conv(v, ch.units[i], cur.unit) + ' ' + unitLabel());
+      else h += fact(i === 1 ? (T.label_col || ch.cols[i]) : ch.cols[i], v);
+    }
+    h += '</div>';
+    if (!same && T.card_hint) h += '<p class="od-szg__card-hint">' + esc(T.card_hint) + '</p>';
+    return h;
   }
   function render() {
     var box = doc.querySelector('[data-modal="size-guide"]');
@@ -161,14 +180,14 @@
     }
     var h = '<thead><tr>' + ch.cols.map(function (c, i) {
       var t = i === 1 ? (T.label_col || c) : c;
-      if (ch.units[i]) t = c.replace(UNIT, '').trim() + ' (' + (cur.unit === 'in' ? (T.unit_in || 'in') : (T.unit_cm || 'cm')) + ')';
+      if (ch.units[i]) t = c.replace(UNIT, '').trim() + ' (' + unitLabel() + ')';
       return '<th scope="col">' + esc(t) + '</th>';
     }).join('') + '</tr></thead><tbody>';
     var picked = null;
     ch.rows.forEach(function (r) {
-      var on = cur.sel && norm(r.label) === cur.sel;
+      var key = norm(r.label), on = cur.sel && key === cur.sel;
       if (on) picked = r;
-      h += '<tr' + (on ? ' class="is-on"' : '') + '>' + ch.cols.map(function (c, i) {
+      h += '<tr data-szg-row="' + esc(key) + '"' + (on ? ' class="is-on"' : '') + '>' + ch.cols.map(function (c, i) {
         var v = r.cells[i] == null ? '' : r.cells[i];
         if (ch.units[i] && v) v = conv(v, ch.units[i], cur.unit);
         return '<td>' + esc(v) + '</td>';
@@ -176,18 +195,15 @@
     });
     var tb = box.querySelector('[data-szg-table]');
     if (tb) tb.innerHTML = h + '</tbody>';
-    var pick = box.querySelector('[data-szg-pick]');
-    if (pick) {
-      if (picked && norm(picked.eu) !== norm(picked.label)) {
-        /* same wording as the line under the size boxes: "On the label: US 7 · the size printed inside this piece" */
-        if (T.label_col && T.label_hint) pick.innerHTML = esc(T.label_col) + ': <b>' + esc(picked.label) + '</b><span class="od-sz-line__hint">' + esc(T.label_hint) + '</span>';
-        else pick.textContent = fill(T.picked, { eu: picked.eu, label: picked.label });
-        pick.hidden = false;
-      }
-      else pick.hidden = true;
+    var cd = box.querySelector('[data-szg-card]');
+    if (cd) {
+      if (picked) { cd.innerHTML = card(ch, picked); cd.hidden = false; }
+      else { cd.innerHTML = ''; cd.hidden = true; }
     }
-    var note = box.querySelector('[data-szg-note]');
-    if (note) { note.textContent = ch.note || ''; note.hidden = !ch.note; }
+    var notes = box.querySelector('[data-szg-notes]'), note = box.querySelector('[data-szg-note]'), nh = box.querySelector('[data-szg-note-h]');
+    if (note) note.textContent = ch.note || '';
+    if (nh) nh.textContent = (hasUnits ? T.how_to_measure : T.good_to_know) || '';
+    if (notes) notes.hidden = !ch.note;
     var scope = box.querySelector('[data-szg-scope]');
     if (scope) { scope.textContent = fill(T.scope, { brand: ch.brand, kind: ch.kind }); scope.hidden = !(ch.brand || ch.kind); }
   }
@@ -195,7 +211,7 @@
     if (!chart) return;
     var first = null;
     for (var i = 0; i < chart.units.length; i++) if (chart.units[i]) { first = chart.units[i]; break; }
-    cur = { chart: chart, sel: sel || null, unit: first };
+    cur = { chart: chart, sel: sel || null, own: sel || null, unit: first };
     render();
     if (OD.openModal) OD.openModal('size-guide');
   };
@@ -203,6 +219,8 @@
   doc.addEventListener('click', function (e) {
     var u = e.target.closest && e.target.closest('[data-szg-unit]');
     if (u) { cur.unit = u.getAttribute('data-szg-unit'); render(); return; }
+    var rw = e.target.closest && e.target.closest('[data-szg-row]');
+    if (rw) { cur.sel = rw.getAttribute('data-szg-row'); render(); return; }
     var o = e.target.closest && e.target.closest('[data-sz-open]');
     if (!o) return;
     e.preventDefault();

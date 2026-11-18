@@ -1,24 +1,24 @@
-{%- comment -%} Size guide drawer (18 Nov 2026). Filled by assets/od-size.js from the product's size chart. {%- endcomment -%}
-{%- liquid
-  assign rtl = false
-  if request.locale.iso_code contains 'ar'
-    assign rtl = true
-  endif
--%}
+{%- comment -%} Size guide drawer (18 Nov 2026, look v2). Filled by assets/od-size.js from the product's size chart. {%- endcomment -%}
 <div class="_backdrop_9316i_30 undefined od-szg-backdrop" data-modal-backdrop="size-guide" data-show-class="_backdropShow_pdb61_246"></div>
-<div class="_modal_9316i_132 undefined {% if rtl %}_modalAddClsRtl_pdb61_201{% endif %} _modalAddCls_pdb61_201 od-szg" data-modal="size-guide" data-show-class="_show_pdb61_240">
-  <div class="_mHeader_9316i_67">
-    <div class="_mHeader__imgContainer_9316i_89"><h2{% if rtl %} class="_h2Rtl_9316i_50"{% endif %}>{{ 'products.size_guide.title' | t }} <span></span></h2></div>
-    <div class="_globalImg_1tf1q_38 _close_9316i_125" data-close-modal="size-guide"><img fetchpriority="auto" alt="{{ 'general.accessibility.close' | t }}" src="{{ 'icons_cross.svg' | asset_url }}"></div>
+<div class="_modal_9316i_132 undefined _modalAddCls_pdb61_201 od-szg" data-modal="size-guide" data-show-class="_show_pdb61_240">
+  <div class="od-szg__head">
+    <div>
+      <p class="od-szg__eyebrow" data-szg-sub></p>
+      <h2 class="od-szg__title">{{ 'products.size_guide.title' | t }}</h2>
+    </div>
+    <button type="button" class="od-szg__close" data-close-modal="size-guide" aria-label="{{ 'general.accessibility.close' | t }}"><img fetchpriority="auto" alt="" src="{{ 'icons_cross.svg' | asset_url }}"></button>
   </div>
   <div class="_content_9316i_45 od-szg__body">
-    <div class="od-szg__top">
-      <p class="od-szg__sub" data-szg-sub></p>
-      <div class="od-szg__units" data-szg-units hidden><button type="button" data-szg-unit="cm">{{ 'products.size_guide.unit_cm' | t }}</button><span>/</span><button type="button" data-szg-unit="in">{{ 'products.size_guide.unit_in' | t }}</button></div>
+    <div class="od-szg__card" data-szg-card hidden></div>
+    <div class="od-szg__bar">
+      <p class="od-szg__eyebrow">{{ 'products.size_guide.all_sizes' | t }}</p>
+      <div class="od-szg__units" data-szg-units hidden><button type="button" data-szg-unit="cm">{{ 'products.size_guide.unit_cm' | t }}</button><button type="button" data-szg-unit="in">{{ 'products.size_guide.unit_in' | t }}</button></div>
     </div>
     <div class="od-szg__scroll"><table class="od-szg__table" data-szg-table></table></div>
-    <p class="od-szg__pick" data-szg-pick hidden></p>
-    <p class="od-szg__note" data-szg-note hidden></p>
+    <div class="od-szg__notes" data-szg-notes hidden>
+      <p class="od-szg__eyebrow od-szg__notes-h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="8" width="19" height="8" rx="1"/><path d="M6.5 8v3M10 8v4M13.5 8v3M17 8v4"/></svg><span data-szg-note-h></span></p>
+      <p class="od-szg__note" data-szg-note></p>
+    </div>
     <p class="od-szg__scope" data-szg-scope hidden></p>
   </div>
 </div>
