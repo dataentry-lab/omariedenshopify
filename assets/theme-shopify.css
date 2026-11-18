@@ -504,7 +504,7 @@ html.od-cur-wait :has(> ._sar_1ef42_1) { opacity: 0; }
 .od-szg__close img { display: block; width: 100%; height: 100%; }
 .od-szg__body { padding: 16px 28px 32px; color: #551c25; font-family: Bricolage, sans-serif; }
 .od-szg__card { background: #efe6d8; padding: 16px 18px; }
-.od-szg__facts { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px 28px; }
+.od-szg__facts { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px 22px; }
 .od-szg__fact { display: flex; flex-direction: column; gap: 2px; }
 .od-szg__big { font-family: "Basteleur Moonlight", serif; font-weight: 300; font-size: 34px; line-height: 1.1; }
 .od-szg__fv { font-size: 15px; font-weight: 500; line-height: 1.3; }
