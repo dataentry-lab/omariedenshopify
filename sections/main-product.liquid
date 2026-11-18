@@ -1,3 +1,4 @@
+{%- comment -%} 18 Nov 2026: color_name / size_name are resolved to the option names this product really has. On /ar the two theme settings arrive translated while products without Arabic option names still say Color / Size, so the colour option was not recognised and showed as a plain box. Same aliases as product-card / product-json. {%- endcomment -%}
 {%- liquid
   assign rtl = false
   if request.locale.iso_code contains 'ar'
@@ -5,6 +6,16 @@
   endif
   assign color_name = settings.color_option_name | default: 'Color'
   assign size_name = settings.size_option_name | default: 'Size'
+  assign color_name_d = color_name | downcase | strip
+  assign size_name_d = size_name | downcase | strip
+  for opt_name in product.options
+    assign on_d = opt_name | downcase | strip
+    if on_d == color_name_d or on_d == 'color' or on_d == 'colour' or on_d == 'اللون' or on_d == 'لون'
+      assign color_name = opt_name
+    elsif on_d == size_name_d or on_d == 'size' or on_d == 'المقاس' or on_d == 'مقاس' or on_d == 'القياس'
+      assign size_name = opt_name
+    endif
+  endfor
   assign current = product.selected_or_first_available_variant
   assign sc_parts = settings.style_code_metafield | split: '.'
   assign style_code = product.metafields[sc_parts[0]][sc_parts[1]].value
