@@ -508,6 +508,7 @@ html.od-cur-wait :has(> ._sar_1ef42_1) { opacity: 0; }
 .od-szg__table th { font-size: 11px; letter-spacing: .05em; text-transform: uppercase; }
 .od-szg__table tr.is-on td { background: #e5d9c7; font-weight: 500; }
 .od-szg__pick { background: #efe6d8; padding: 10px 12px; margin: 16px 0 0; font-size: 13px; line-height: 1.5; }
+.od-szg__pick b { font-weight: 500; }
 .od-szg__note { margin: 14px 0 0; font-size: 13px; line-height: 1.6; white-space: pre-line; }
 .od-szg__scope { margin: 12px 0 0; font-size: 12px; line-height: 1.5; opacity: .7; }
 .od-szg__pick[hidden], .od-szg__note[hidden], .od-szg__scope[hidden] { display: none !important; }

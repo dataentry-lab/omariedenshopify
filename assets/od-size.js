@@ -178,7 +178,12 @@
     if (tb) tb.innerHTML = h + '</tbody>';
     var pick = box.querySelector('[data-szg-pick]');
     if (pick) {
-      if (picked && norm(picked.eu) !== norm(picked.label)) { pick.textContent = fill(T.picked, { eu: picked.eu, label: picked.label }); pick.hidden = false; }
+      if (picked && norm(picked.eu) !== norm(picked.label)) {
+        /* same wording as the line under the size boxes: "On the label: US 7 · the size printed inside this piece" */
+        if (T.label_col && T.label_hint) pick.innerHTML = esc(T.label_col) + ': <b>' + esc(picked.label) + '</b><span class="od-sz-line__hint">' + esc(T.label_hint) + '</span>';
+        else pick.textContent = fill(T.picked, { eu: picked.eu, label: picked.label });
+        pick.hidden = false;
+      }
       else pick.hidden = true;
     }
     var note = box.querySelector('[data-szg-note]');
