@@ -4,7 +4,9 @@
     1. custom.badge metafield text (always first when enabled)
     2. rules 1..6: tag / collection match, automatic New (published within N days), automatic Sale
   Sold out is handled by the caller (it replaces every other badge).
-  Params: product (required), limit (default 2), format: 'html' (default) or 'json'
+  Params: product (required), limit (default 2), format: 'html' (default) or 'json',
+          price + compare (optional, in cents): the price pair of the card / selected size. 18 Nov 2026: the Sale
+          badge follows THIS pair (a product can hold sizes at -50%, -60% and full price at once), not the product tag.
   Used by: product-card, product-json, quick-add, product page gallery.
 {%- endcomment -%}
 {%- liquid
@@ -27,6 +29,14 @@
   assign now_s = 'now' | date: '%s' | plus: 0
   assign pub_s = product.published_at | date: '%s' | plus: 0
   assign age_days = now_s | minus: pub_s | divided_by: 86400
+
+  assign s_price = product.price
+  assign s_compare = product.compare_at_price | default: 0
+  if price != blank
+    assign s_price = price
+    assign s_compare = compare | default: 0
+  endif
+  assign sale_idx = -1
 
   assign labels = ''
   assign bgs = ''
@@ -73,6 +83,7 @@
     assign key_bg = 'badge_' | append: i | append: '_bg'
     assign key_text = 'badge_' | append: i | append: '_text'
     assign hit = false
+    assign is_sale_rule = false
     assign label = settings[key_label]
     if is_ar and settings[key_label_ar] != blank
       assign label = settings[key_label_ar]
@@ -97,23 +108,23 @@
         assign hit = true
       endif
     elsif rtype == 'sale'
-      if product.compare_at_price > product.price
+      if s_compare > s_price
         assign hit = true
+        assign is_sale_rule = true
         if settings.badge_sale_style == 'percent'
           comment
-            9 Nov 2026: the sale import tags every product "sale:50" / "sale:40" / "sale:30"; that tag is the
-            exact percentage. Without it, compute from the lowest compare-at vs lowest price (rounded).
+            18 Nov 2026: the percentage comes from the price pair itself, the card colour or the selected size.
+            The sale tag is only the fallback when the pair gives nothing. One product can carry two sale tags.
           endcomment
-          assign pct = ''
-          for tag in product.tags
-            assign tl = tag | downcase | strip
-            if tl contains 'sale:'
-              assign pct = tl | split: ':' | last | strip
-              break
-            endif
-          endfor
-          if pct == ''
-            assign pct = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round
+          assign pct = s_compare | minus: s_price | times: 100.0 | divided_by: s_compare | round
+          if pct < 1
+            for tag in product.tags
+              assign tl = tag | downcase | strip
+              if tl contains 'sale:'
+                assign pct = tl | split: ':' | last | strip
+                break
+              endif
+            endfor
           endif
           assign label = '-' | append: pct | append: '%'
         endif
@@ -131,6 +142,9 @@
       endif
     endif
     if hit and label != blank
+      if is_sale_rule
+        assign sale_idx = count
+      endif
       assign labels = labels | append: label | append: '||'
       assign bgs = bgs | append: settings[key_bg] | append: '||'
       assign texts = texts | append: settings[key_text] | append: '||'
@@ -143,10 +157,10 @@
   assign text_arr = texts | split: '||'
 -%}
 {%- if format == 'json' -%}
-  [{%- for l in label_arr -%}{%- if l == blank -%}{%- continue -%}{%- endif -%}{%- unless forloop.first -%},{%- endunless -%}{"label":{{ l | json }},"bg":{{ bg_arr[forloop.index0] | default: '#551c25' | json }},"text":{{ text_arr[forloop.index0] | default: '#ffffff' | json }}}{%- endfor -%}]
+  [{%- for l in label_arr -%}{%- if l == blank -%}{%- continue -%}{%- endif -%}{%- unless forloop.first -%},{%- endunless -%}{"label":{{ l | json }},{%- if forloop.index0 == sale_idx -%}"sale":true,{%- endif -%}"bg":{{ bg_arr[forloop.index0] | default: '#551c25' | json }},"text":{{ text_arr[forloop.index0] | default: '#ffffff' | json }}}{%- endfor -%}]
 {%- else -%}
   {%- for l in label_arr -%}
     {%- if l == blank -%}{%- continue -%}{%- endif -%}
-    <span class="od-card__badge" style="background-color: {{ bg_arr[forloop.index0] | default: '#551c25' }}; color: {{ text_arr[forloop.index0] | default: '#ffffff' }};">{{ l }}</span>
+    <span class="od-card__badge"{% if forloop.index0 == sale_idx %} data-badge-sale{% endif %} style="background-color: {{ bg_arr[forloop.index0] | default: '#551c25' }}; color: {{ text_arr[forloop.index0] | default: '#ffffff' }};">{{ l }}</span>
   {%- endfor -%}
 {%- endif -%}

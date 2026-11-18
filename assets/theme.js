@@ -647,6 +647,7 @@
         addBtn && addBtn.setAttribute('data-variant-id', v.id);
         priceEl && (priceEl.innerHTML = SAR + formatMoney(v.price));
         if (compareEl) { compareEl.style.display = v.compare_at_price > v.price ? '' : 'none'; compareEl.innerHTML = SAR + formatMoney(v.compare_at_price || 0); }
+        if (OD.saleBadgePaint && v.available) OD.saleBadgePaint(root, v.price, v.compare_at_price); // Sale badge follows the selected size (18 Nov 2026)
         const canBuy = v.available && root.getAttribute('data-po') !== 'closed'; // pre-order cap reached = sold out
         if (addBtn) { addBtn.disabled = !canBuy; addBtn.textContent = canBuy ? addBtn.getAttribute('data-label-add') : addBtn.getAttribute('data-label-sold'); }
         // 16 Nov 2026: Notify me on a sold-out size (assets/od-notify.js); data-nm = on when the product offers it

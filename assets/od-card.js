@@ -118,6 +118,7 @@
     const price = $('[data-card-price]', card), cmp = $('[data-card-compare]', card);
     if (price && lv && lv.price != null) { price.innerHTML = money(lv.price); price.classList.toggle('od-card__price--sale', !!(lv.compare_at_price && lv.compare_at_price > lv.price)); }
     if (cmp && lv) { const onSale = lv.compare_at_price && lv.compare_at_price > lv.price; cmp.hidden = !onSale; if (onSale) cmp.innerHTML = money(lv.compare_at_price); }
+    if (lv && available) OD.saleBadgePaint && OD.saleBadgePaint(card, lv.price, lv.compare_at_price); // the Sale badge follows the colour (18 Nov 2026)
     OD.wlPaint && OD.wlPaint(card); // the heart is per colour (9 Nov 2026)
   }
 
@@ -261,6 +262,7 @@
     const compare = v ? v.compare_at_price : Q.s.data.compare_at_price;
     if (p) p.innerHTML = money(price) + (compare && compare > price ? ' <s>' + money(compare) + '</s>' : '');
     if (ap) ap.innerHTML = money(price);
+    OD.saleBadgePaint && OD.saleBadgePaint(qa, price, compare); // the Sale badge follows the selected size (18 Nov 2026)
     const atc = $('[data-qa-atc]', qa);
     const label = $('[data-qa-atc-label]', qa);
     const soldOut = v ? !v.available : false;
@@ -582,12 +584,41 @@
       if (r.type === 'tags') hit = String(r.match || '').toLowerCase().split(',').map((x) => x.trim()).filter(Boolean).some((x) => hay.indexOf('|' + x + '|') > -1);
       else if (r.type === 'new' && p.published_at) hit = (Date.now() - new Date(p.published_at).getTime()) / 864e5 <= (cfg.newDays || 30);
       else if (r.type === 'sale' && cmp > price) { hit = true; if (cfg.saleStyle === 'percent') label = '-' + Math.round((cmp - price) * 100 / cmp) + '%'; }
-      if (hit && label) out.push({ label, bg: r.bg, text: r.text });
+      if (hit && label) out.push(r.type === 'sale' ? { label, bg: r.bg, text: r.text, sale: true } : { label, bg: r.bg, text: r.text });
     });
     return out;
   };
   OD.badgeHTML = function (list) {
-    return (list || []).map((b) => '<span class="od-card__badge" style="background-color:' + esc(b.bg || '#551c25') + ';color:' + esc(b.text || '#fff') + ';">' + esc(b.label) + '</span>').join('');
+    return (list || []).map((b) => '<span class="od-card__badge"' + (b.sale ? ' data-badge-sale' : '') + (b.hidden ? ' hidden' : '') + ' style="background-color:' + esc(b.bg || '#551c25') + ';color:' + esc(b.text || '#fff') + ';">' + esc(b.label) + '</span>').join('');
+  };
+  /* 18 Nov 2026: the Sale badge follows the price pair on screen (card colour / selected size), not the product.
+     One product can hold sizes at -50%, -60% and full price, so a product-level badge was wrong on some cards. */
+  function saleRule() { const cfg = OD.badges; return cfg && (cfg.rules || []).find((r) => r && r.type === 'sale') || null; }
+  function saleLabel(r, price, compare) { return OD.badges.saleStyle === 'percent' ? '-' + Math.round((compare - price) * 100 / compare) + '%' : r.label; }
+  const num = (x) => (typeof x === 'number' ? x : parseFloat(x) || 0);
+  OD.saleBadgeList = function (list, price, compare) {
+    list = (list || []).slice(); price = num(price); compare = num(compare);
+    const r = saleRule(); if (!r) return list;
+    const on = compare > price && price > 0;
+    const at = list.findIndex((b) => b.sale);
+    if (at > -1) { if (on) list[at] = Object.assign({}, list[at], { label: saleLabel(r, price, compare) }); else list.splice(at, 1); }
+    else if (on && list.length < 2) { const l = saleLabel(r, price, compare); if (l) list.push({ label: l, bg: r.bg, text: r.text, sale: true }); }
+    return list;
+  };
+  OD.saleBadgePaint = function (scope, price, compare) {
+    const r = saleRule(); if (!r || !scope) return;
+    const box = scope.matches && scope.matches('[data-card-badges], [data-qa-badges], .od-pdp__badges') ? scope : $('[data-card-badges], [data-qa-badges], .od-pdp__badges', scope);
+    if (!box || box.querySelector('.od-card__badge--sand, .od-card__badge--soon')) return;
+    price = num(price); compare = num(compare);
+    const on = compare > price && price > 0;
+    let el = box.querySelector('[data-badge-sale]');
+    if (!on) { if (el) el.hidden = true; return; }
+    if (!el) {
+      if (box.querySelectorAll('.od-card__badge:not([hidden])').length >= 2) return;
+      el = document.createElement('span'); el.className = 'od-card__badge'; el.setAttribute('data-badge-sale', '');
+      el.style.backgroundColor = r.bg || '#551c25'; el.style.color = r.text || '#fff'; box.appendChild(el);
+    }
+    el.textContent = saleLabel(r, price, compare) || el.textContent; el.hidden = false;
   };
 
   /* ---------- JS-rendered cards (search overlay, wishlist page + drawer, cart trending) ----------
@@ -626,7 +657,7 @@
     const onSale = typeof compare === 'number' && typeof price === 'number' && compare > price;
     const swatches = values.map((v) => '<button type="button" title="' + esc(v) + '" aria-label="' + esc(v) + '" aria-pressed="' + (v === selected) + '" class="_swatch_13l1w_280 od-card__dot ' + (v === selected ? SWATCH_SEL : '') + ' " style="background: ' + esc(OD.swatchColor ? OD.swatchColor(v, p.swatches) : String(v).toLowerCase()) + ';" data-card-swatch data-value="' + esc(v) + '"></button>').join('');
     const json = jsonFromProduct(p, colour, lv ? lv.id : null);
-    const badges = available ? OD.badgeHTML(OD.badgesFor(p, 2)) : '';
+    const badges = available ? OD.badgeHTML(OD.saleBadgeList(OD.badgesFor(p, 2), price, compare)) : '';
     const soldOut = OD.badges && OD.badges.soldOut !== false ? '<span class="od-card__soldout' + (csTagged(p) ? ' od-card__soldout--soon' : '') + '" data-card-soldout' + (available ? ' hidden' : '') + '>' + esc((csTagged(p) && OD.badges && OD.badges.comingSoonLabel) || (OD.badges && OD.badges.soldOutLabel) || 'Sold out') + '</span>' : '';
     const many = images.length > 1;
     return '<div class="_new_in_trend_card_13l1w_130 od-card' + (OD.rtl ? ' od-card--rtl' : '') + (available ? '' : ' is-sold-out') + '" data-product-card' + (json ? ' data-od-card' : '') + ' data-handle="' + esc(p.handle) + '" data-product-id="' + esc(p.id) + '" data-color-index="' + (ci + 1) + '" data-color-value="' + esc(selected) + '"' + (colour ? ' data-card-colour="' + esc(colour) + '"' : '') + '>' +

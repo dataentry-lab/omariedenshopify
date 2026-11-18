@@ -200,7 +200,7 @@
 
     <div class="od-card__top">
       <div class="od-card__top-start" data-card-badges>
-        {%- unless sold_out -%}{%- render 'product-badges', product: product, limit: 2 -%}{%- endunless -%}
+        {%- unless sold_out -%}{%- render 'product-badges', product: product, limit: 2, price: price, compare: compare -%}{%- endunless -%}
       </div>
       <div class="od-card__top-end">
         {%- if show_wishlist -%}
