@@ -541,3 +541,19 @@ html.od-cur-wait :has(> ._sar_1ef42_1) { opacity: 0; }
   .od-szg__table th, .od-szg__table td { padding: 9px 4px; }
   .od-szg__table td { font-size: 12px; }
 }
+
+/* Home hero banner button: brand maroon by default (19 Nov 2026) */
+.hero_banner ._bannerBtn_xwnoc_30 {
+  background: #551c25;
+  border-color: #551c25;
+  color: #fcf8f2;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  transition: background-color .2s ease, border-color .2s ease;
+}
+.hero_banner ._bannerBtn_xwnoc_30:hover,
+.hero_banner ._bannerBtn_xwnoc_30:focus-visible {
+  background: #3f141b;
+  border-color: #3f141b;
+  color: #fcf8f2;
+}
