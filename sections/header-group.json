@@ -19,7 +19,7 @@
           "settings": {
             "label": "New In",
             "label_ar": "وصل حديثاً",
-            "link": "\/collections\/all?sort_by=created-descending"
+            "link": "\/collections\/new-in"
           }
         },
         "designers_featured": {
