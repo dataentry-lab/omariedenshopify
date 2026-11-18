@@ -241,6 +241,7 @@
         if (fullDoc.title) document.title = fullDoc.title;
       }
       if (push) history.pushState({ odListing: true }, '', url);
+      fpSaleSync(url);
       reinit(listing);
       setUpdating(false);
       loading = null;
@@ -482,6 +483,49 @@
     var fp = e.target.closest && e.target.closest('[data-fp]');
     if (fp && e.target.hasAttribute('data-fp-price')) { e.preventDefault(); clearTimeout(fpPriceTimer); fpApply(fp); }
   });
+  /* Sale group, manual mode (19 Nov 2026). Shopify does not return the tag filter on translated languages (Arabic),
+     so the popup prints plain sale:NN boxes there; ticks, summary, Reset and chips are painted here from the URL. */
+  function fpSaleSync(url) {
+    var fp = fpEl();
+    if (!fp) return;
+    var pane = $('[data-fp-sale-manual]', fp);
+    if (!pane) return;
+    var u;
+    try { u = new URL(url || window.location.href, window.location.href); } catch (e) { return; }
+    var act = u.searchParams.getAll('filter.p.tag');
+    var picked = [];
+    $$('input[name="filter.p.tag"]', pane).forEach(function (i) {
+      i.checked = act.indexOf(i.value) > -1;
+      if (i.checked) picked.push({ value: i.value, label: i.getAttribute('data-sale-label') || i.value });
+    });
+    var sum = $('[data-fp-sale-sum]', fp);
+    if (sum) {
+      sum.textContent = picked.length ? picked.map(function (p) { return p.label; }).join(', ') : (sum.getAttribute('data-t-all') || '');
+      sum.classList.toggle('is-set', !!picked.length);
+    }
+    if (!picked.length) return;
+    var rs = $('[data-fp-reset]', fp); if (rs) rs.hidden = false;
+    var left = $('[data-fp-left]', fp); if (left) left.classList.add('is-act');
+    var box = $('[data-listing-active]', listing);
+    if (!box) return;
+    $$('[data-sale-chip]', box).forEach(function (c) { c.remove(); });
+    picked.forEach(function (p) {
+      var nu = new URL(u.toString());
+      nu.searchParams.delete('filter.p.tag');
+      act.forEach(function (v) { if (v !== p.value) nu.searchParams.append('filter.p.tag', v); });
+      var a = document.createElement('a');
+      a.className = 'od-chipx';
+      a.setAttribute('data-sale-chip', '');
+      a.href = nu.pathname + nu.search;
+      var t = document.createElement('span'); t.className = 'od-chipx__t'; t.textContent = p.label;
+      var x = document.createElement('span'); x.className = 'od-chipx__x'; x.setAttribute('aria-hidden', 'true'); x.textContent = '×';
+      a.appendChild(t); a.appendChild(x);
+      box.insertBefore(a, $('.od-listing__clear', box));
+    });
+    box.hidden = false;
+  }
+  fpSaleSync();
+  document.addEventListener('DOMContentLoaded', function () { fpSaleSync(); });
   document.addEventListener('od:modal:open', function (e) {
     if (!e.detail || e.detail.name !== 'filter') return;
     var fp = fpEl();

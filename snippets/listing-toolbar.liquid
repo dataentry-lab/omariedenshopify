@@ -92,8 +92,9 @@
     endif
   endif
 -%}
-{%- if active_n > 0 -%}
-<div class="od-listing__active" data-listing-active data-listing-ajax aria-label="{{ 'listing.active_filters' | t }}">
+{%- comment -%} 19 Nov 2026: always printed (hidden when empty) so od-listing.js can add the Sale chips on languages where Shopify returns no tag filter {%- endcomment -%}
+{%- if true -%}
+<div class="od-listing__active" data-listing-active data-listing-ajax aria-label="{{ 'listing.active_filters' | t }}"{% if active_n == 0 %} hidden{% endif %}>
   {%- for f in results.filters -%}
     {%- if f.type == 'price_range' -%}
       {%- if f.min_value.value != nil or f.max_value.value != nil -%}

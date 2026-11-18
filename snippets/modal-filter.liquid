@@ -148,6 +148,26 @@
     endif
   endfor
   assign t_sale = 'collections.filter.sale' | t
+  comment
+    Translated languages (Arabic): Shopify returns no tag filter. The boxes are printed from the collection's own sale:NN tags,
+    without counts; od-listing.js (fpSaleSync) ticks them from the URL.
+  endcomment
+  assign sale_manual = false
+  assign sale_tiers = ''
+  if sale_filter == nil and request.page_type == 'collection'
+    for tg in collection.all_tags
+      assign th = tg | downcase | slice: 0, 5
+      if th == 'sale:'
+        assign tn = tg | downcase | remove: 'sale:'
+        assign sale_tiers = sale_tiers | append: tn | append: ','
+      endif
+    endfor
+    if sale_tiers != ''
+      assign sale_manual = true
+      assign sale_n = 1
+    endif
+  endif
+  assign sale_tier_list = sale_tiers | split: ',' | reverse
 
   comment
     Clear-all URL (keeps the sort)
@@ -219,7 +239,7 @@
         {%- endif -%}
         {%- if sale_n > 0 -%}
           <button type="button" class="od-fp__group" data-fp-go="sale">
-            <span class="od-fp__group-l"><span class="od-fp__group-name">{{ t_sale }}</span><span class="od-fp__group-sum{% if sale_sum != '' %} is-set{% endif %}">{{ sale_sum | default: t_all }}</span></span>
+            <span class="od-fp__group-l"><span class="od-fp__group-name">{{ t_sale }}</span><span class="od-fp__group-sum{% if sale_sum != '' %} is-set{% endif %}"{% if sale_manual %} data-fp-sale-sum data-t-all="{{ t_all | escape }}"{% endif %}>{{ sale_sum | default: t_all }}</span></span>
             <svg class="od-fp__chev od-fp__chev--fwd" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         {%- endif -%}
@@ -358,7 +378,16 @@
       {%- endif -%}
 
       {%- comment -%} ---------- Sale: the sale:NN tags as "NN% off", highest first ---------- {%- endcomment -%}
-      {%- if sale_n > 0 -%}
+      {%- if sale_manual -%}
+        <div class="od-fp__pane" data-fp-pane="sale" data-fp-label="{{ t_sale | escape }}" data-fp-sale-manual>
+          {%- for tn in sale_tier_list -%}
+            {%- assign plabel = 'collections.filter.percent_off' | t: n: tn -%}
+            <div class="_CheckboxButton_8c7of_30 od-fp__row">
+              <label><div><input type="checkbox" value="sale:{{ tn | escape }}" name="filter.p.tag" data-sale-label="{{ plabel | escape }}"><span class="_CustomCheck_8c7of_52"></span></div><p><span class="od-fp__vl">{{ plabel }}</span></p></label>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- elsif sale_n > 0 -%}
         <div class="od-fp__pane" data-fp-pane="sale" data-fp-label="{{ t_sale | escape }}">
           {%- for value in sale_filter.values reversed -%}
             {%- assign vhead = value.value | downcase | slice: 0, 5 -%}
