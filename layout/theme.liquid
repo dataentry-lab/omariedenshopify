@@ -89,6 +89,7 @@
         preorder: {% if settings.preorder_enabled == false %}false{% else %}{ badge: {{ 'products.preorder.badge' | t | json }}, button: {{ 'products.preorder.button' | t | json }}, note: {{ 'products.preorder.note' | t: text: '__TEXT__' | json }}, ready: {{ 'products.preorder.when_ready' | t | json }}, noteReady: {{ 'products.preorder.note_ready' | t | json }}, sub: {{ 'products.preorder.pay_today' | t | json }}, label: {{ 'products.preorder.badge' | t | json }}, mixed: {{ settings.preorder_mixed_note | json }} }{% endif %},
         notify: {% if settings.notify_mode == 'off' or settings.notify_endpoint == blank %}false{% else %}{ url: {{ settings.notify_endpoint | json }}, all: {% if settings.notify_mode == 'all' %}true{% else %}false{% endif %}, email: {{ customer.email | json }}, t: { soldSize: {{ 'products.notify.sold_size' | t: size: '__SIZE__' | json }}, soldPiece: {{ 'products.notify.sold_piece' | t | json }}, soonSize: {{ 'products.notify.soon_size' | t: size: '__SIZE__' | json }}, soonPiece: {{ 'products.notify.soon_piece' | t | json }}, askGuest: {{ 'products.notify.ask_guest' | t | json }}, askSigned: {{ 'products.notify.ask_signed' | t: email: '__EMAIL__' | json }}, doneText: {{ 'products.notify.done_text' | t: email: '__EMAIL__' | json }}, emailError: {{ 'products.notify.email_error' | t | json }}, error: {{ 'products.notify.error' | t | json }}, available: {{ 'products.notify.available' | t | json }}, rate: {{ 'products.notify.rate' | t | json }} } }{% endif %},
         currency: {% if settings.cur_enabled == false %}false{% else %}{ rates: {{ settings.cur_rates | json }}, country: {{ localization.country.iso_code | json }}, auto: {% if settings.cur_auto == false %}false{% else %}true{% endif %}, aboutCards: {% if settings.cur_about_cards %}true{% else %}false{% endif %}, t: { about: {{ 'currency.about' | t | json }}, sar: {{ 'currency.sar_amount' | t | json }} } }{% endif %},
+        sizeT: {% if settings.size_guide_enabled == false %}false{% else %}{ picked: {{ 'products.size_guide.picked' | t | json }}, scope: {{ 'products.size_guide.scope' | t | json }}, label_col: {{ 'products.size_guide.on_label' | t | json }}, unit_cm: {{ 'products.size_guide.unit_cm' | t | json }}, unit_in: {{ 'products.size_guide.unit_in' | t | json }} }{% endif %},
         badges: {
           metafield: {{ settings.badge_metafield_enabled | json }},
           newDays: {{ settings.badge_new_days | default: 30 }},
@@ -168,6 +169,7 @@
       {%- render 'modal-search' -%}
       {%- render 'modal-login' -%}
       {%- render 'modal-language' -%}
+      {%- unless settings.size_guide_enabled == false -%}{%- render 'modal-size-guide' -%}{%- endunless -%}
       {%- render 'modal-mobile-submenus' -%}
       {%- section 'cart-drawer' -%}
       {%- render 'quick-add-drawer' -%}
@@ -179,6 +181,7 @@
     </div>
     <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
     {%- if settings.notify_mode != 'off' and settings.notify_endpoint != blank -%}<script src="{{ 'od-notify.js' | asset_url }}" defer></script>{%- endif %}
+    {%- unless settings.size_guide_enabled == false %}<script src="{{ 'od-size.js' | asset_url }}" defer></script>{%- endunless %}
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
     {%- unless settings.cur_enabled == false %}<script src="{{ 'od-currency.js' | asset_url }}" defer></script>{%- endunless %}
     <script src="{{ 'od-card.js' | asset_url }}" defer></script>

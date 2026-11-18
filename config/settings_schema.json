@@ -642,6 +642,21 @@
     ]
   },
   {
+    "name": "Size guide",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Products that have a size chart (product field Size chart, entries under Content > Metaobjects > Size chart) show EU sizes on the size boxes, the size printed on the brand label, and a Size guide link. Products without a chart are not changed."
+      },
+      {
+        "type": "checkbox",
+        "id": "size_guide_enabled",
+        "label": "Show the size guide",
+        "default": true
+      }
+    ]
+  },
+  {
     "name": "Collections",
     "settings": [
       {

@@ -1,0 +1,18 @@
+{%- comment -%}
+  Size chart of a product as JSON, or null (18 Nov 2026). Source: product metafield custom.size_chart ->
+  metaobject size_chart (title, brand, kind, table, note, note_ar). Read by assets/od-size.js.
+  Usage: {% render 'size-chart-data', product: product %}
+{%- endcomment -%}
+{%- liquid
+  assign sc = product.metafields.custom.size_chart.value
+  if settings.size_guide_enabled == false
+    assign sc = nil
+  endif
+  assign sc_note = sc.note.value
+  if request.locale.iso_code contains 'ar' and sc.note_ar.value != blank
+    assign sc_note = sc.note_ar.value
+  endif
+-%}
+{%- if sc and sc.table.value != blank -%}
+{"title": {{ sc.title.value | json }}, "brand": {{ sc.brand.value | json }}, "kind": {{ sc.kind.value | json }}, "table": {{ sc.table.value | json }}, "note": {{ sc_note | default: '' | json }}}
+{%- else -%}null{%- endif -%}

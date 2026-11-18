@@ -55,8 +55,12 @@
       <div class="od-qa__row">
         <span class="od-qa__label">{{ 'products.product.size' | t }}</span>
         <span class="od-qa__note" data-qa-note aria-live="polite"></span>
+        {%- unless settings.size_guide_enabled == false -%}<button type="button" class="od-sz-link od-sz-link--qa" data-sz-open data-qa-sz-open hidden>{{ 'products.size_guide.link' | t }}</button>{%- endunless -%}
       </div>
       <div class="od-qa__sizes" data-qa-sizes role="group" aria-label="{{ 'products.product.size' | t }}"></div>
+      {%- unless settings.size_guide_enabled == false -%}
+        <div class="od-sz-line od-sz-line--qa" data-qa-sz-line hidden>{{ 'products.size_guide.on_label' | t }}: <b data-sz-lab></b></div>
+      {%- endunless -%}
     </div>
 
     <div class="od-po-note od-po-note--qa" data-qa-po hidden>{% render 'icon-clock' %}<span data-qa-po-text></span></div>

@@ -66,7 +66,16 @@
     assign nm_flag = ''
   endif
 -%}
+{%- comment -%} 18 Nov 2026 size guide: rows of the size chart of this product (metaobject size_chart through custom.size_chart), empty text when none {%- endcomment -%}
+{%- liquid
+  assign sc_rows = ''
+  assign sc_obj = product.metafields.custom.size_chart.value
+  if settings.size_guide_enabled != false and sc_obj and sc_obj.table.value != blank
+    assign sc_rows = sc_obj.table.value | newline_to_br | split: '<br />'
+  endif
+-%}
 <div data-product-root data-color-option="{{ color_name | escape }}" data-size-option="{{ size_name | escape }}" data-selected-variant="{{ current.id }}" data-po="{{ po_flag }}" data-nm="{{ nm_flag }}" data-cs="{{ cs_flag }}" data-nm-scope>
+  {%- if sc_rows != '' -%}<script type="application/json" data-size-chart>{% render 'size-chart-data', product: product %}</script>{%- endif -%}
   <script type="application/json" data-product-json>{{ product | json }}</script>
   <div class="_container_1kxnl_30 _YouMayLike_drley_30">
     <div class="_ProductDetailslArea_drley_46">
@@ -151,14 +160,34 @@
               </div>
               {%- for option in product.options_with_values -%}
                 {%- unless option.name == color_name -%}
+                  {%- comment -%} 18 Nov 2026 size guide: when the product has a size chart the boxes show the EU size (the value stays the brand label), see assets/od-size.js {%- endcomment -%}
+                  {%- liquid
+                    assign sz_on = false
+                    if option.name == size_name and sc_rows != ''
+                      assign sz_on = true
+                    endif
+                  -%}
                   <div>
-                    <div class="_SizeSection_1fx6h_113" data-option-index="{{ forloop.index0 }}">
-                      <div class="_Title_1fx6h_88"><h3>{% if option.name == size_name %}{{ 'products.product.size' | t }}{% else %}{{ option.name }}{% endif %}:<span data-option-value-label>{{ option.selected_value }}</span></h3></div>
+                    <div class="_SizeSection_1fx6h_113" data-option-index="{{ forloop.index0 }}"{% if sz_on %} data-sz-option{% endif %}>
+                      <div class="_Title_1fx6h_88{% if sz_on %} od-sz-title{% endif %}"><h3>{% if option.name == size_name %}{{ 'products.product.size' | t }}{% if sz_on %} ({{ 'products.size_guide.eu' | t }}){% endif %}{% else %}{{ option.name }}{% endif %}:<span data-option-value-label>{{ option.selected_value }}</span></h3>{% if sz_on %}<button type="button" class="od-sz-link" data-sz-open hidden>{{ 'products.size_guide.link' | t }}</button>{% endif %}</div>
                       <div class="_SizeList_1fx6h_113">
                         {%- for value in option.values -%}
-                          <label class="_SizeButton_j1gah_30 " data-option-value="{{ value | escape }}"><div class="_wrapper_j1gah_59 {% if value == option.selected_value %}_selected_j1gah_66{% endif %}"><span class="_square_j1gah_39">{{ value }}</span></div></label>
+                          {%- assign box_txt = value -%}
+                          {%- if sz_on -%}
+                            {%- assign v_norm = value | strip | downcase -%}
+                            {%- for sc_row in sc_rows offset: 1 -%}
+                              {%- assign sc_cells = sc_row | split: '|' -%}
+                              {%- assign sc_lab = sc_cells[1] | strip | downcase -%}
+                              {%- assign sc_eu = sc_cells[0] | strip -%}
+                              {%- if sc_lab == v_norm and sc_eu != blank -%}{%- assign box_txt = sc_eu -%}{%- break -%}{%- endif -%}
+                            {%- endfor -%}
+                          {%- endif -%}
+                          <label class="_SizeButton_j1gah_30 " data-option-value="{{ value | escape }}"><div class="_wrapper_j1gah_59 {% if value == option.selected_value %}_selected_j1gah_66{% endif %}"><span class="_square_j1gah_39">{{ box_txt }}</span></div></label>
                         {%- endfor -%}
                       </div>
+                      {%- if sz_on -%}
+                        <div class="od-sz-line" data-sz-line hidden>{{ 'products.size_guide.on_label' | t }}: <b data-sz-lab></b><span class="od-sz-line__hint">{{ 'products.size_guide.label_hint' | t }}</span></div>
+                      {%- endif -%}
                     </div>
                   </div>
                 {%- endunless -%}

@@ -121,6 +121,17 @@
     }
   },
   "products": {
+    "size_guide": {
+      "title": "Size guide",
+      "link": "Size guide",
+      "eu": "EU",
+      "on_label": "On the label",
+      "label_hint": "the size printed inside this piece",
+      "picked": "EU {{ eu }} is {{ label }} on the label.",
+      "scope": "This chart is for {{ brand }} {{ kind }} only.",
+      "unit_cm": "cm",
+      "unit_in": "in"
+    },
     "badges": {
       "trending": "Trending",
       "new": "New"

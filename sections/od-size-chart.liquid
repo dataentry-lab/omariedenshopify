@@ -1,0 +1,11 @@
+{%- comment -%}
+  Size chart lookup (18 Nov 2026). Never placed on a page: assets/od-size.js fetches
+  /products/<handle>?section_id=od-size-chart for the quick view, which has no product metafields.
+{%- endcomment -%}
+<script type="application/json" data-size-chart>{% render 'size-chart-data', product: product %}</script>
+{% schema %}
+{
+  "name": "Size chart data",
+  "settings": []
+}
+{% endschema %}

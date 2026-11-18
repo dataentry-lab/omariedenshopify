@@ -237,6 +237,7 @@
     const first = list.find((v) => v.available);
     if (first) selectSize($('[data-qa-size][data-variant-id="' + first.id + '"]', grid));
     else paintPrice();
+    OD.sizeQA && OD.sizeQA(qa, s.data.handle); // 18 Nov 2026 size guide: EU on the boxes (assets/od-size.js)
   }
   function selectSize(btn) {
     if (!btn || (btn.classList.contains('is-soldout') && !btn.classList.contains('is-notify'))) return;
@@ -250,6 +251,7 @@
       note.textContent = (v && v.tracked && v.qty > 0 && v.qty < 5) ? Q.t('low') : '';
     }
     paintPrice();
+    OD.sizeQA && OD.sizeQA(qa, Q.s.data.handle);
   }
   function paintPrice() {
     const v = currentVariant();
@@ -273,7 +275,7 @@
     if (!OD.nmPaint || !qa || !Q.s) return;
     const v = currentVariant();
     const on = nmOn() && !!v && !v.available;
-    OD.nmPaint(qa, on, on ? { variantId: v.id, handle: Q.s.data.handle, size: Q.s.data.single ? '' : sizeLabel(v), soon: !!Q.s.data.coming } : null);
+    OD.nmPaint(qa, on, on ? { variantId: v.id, handle: Q.s.data.handle, size: Q.s.data.single ? '' : (OD.sizeEU ? OD.sizeEU(qa, sizeLabel(v)) : sizeLabel(v)), soon: !!Q.s.data.coming } : null);
   }
   /* pre-order note above the button + "You pay today" line under it (10 Nov 2026) */
   function paintPreorder() {
