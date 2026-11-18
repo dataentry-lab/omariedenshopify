@@ -19,7 +19,7 @@
           "settings": {
             "label": "New In",
             "label_ar": "وصل حديثاً",
-            "link": "/collections/all?sort_by=created-descending"
+            "link": "\/collections\/all?sort_by=created-descending"
           }
         },
         "designers_featured": {
@@ -27,7 +27,7 @@
           "settings": {
             "heading": "Featured designers",
             "heading_ar": "مصممون مختارون",
-            "brands": "ALEMAIS\nAltuzarra\nCharo Ruiz\nCitizens of Humanity\nDe La Vali\nGANNI\nHunza G\nIRO\nISABEL MARANT\nJil Sander\nMary Katrantzou\nNanushka\nOséree\nPatBO\nRIXO\nROTATE\nSAU LEE\nStaud\nUMA WANG\nViktoria & Woods",
+            "brands": "ALÉMAIS\nAltuzarra\nCharo Ruiz\nCitizens of Humanity\nDe La Vali\nGANNI\nHunza G\nIRO\nISABEL MARANT\nJil Sander\nMary Katrantzou\nNanushka\nOséree\nPatBO\nRIXO\nROTATE\nSAU LEE\nStaud\nUMA WANG\nViktoria & Woods",
             "all_link": true,
             "sort_az": true,
             "split_after": 10,
@@ -39,7 +39,7 @@
           "settings": {
             "heading": "Our picks",
             "heading_ar": "اختياراتنا",
-            "brands": "AG Jeans\nBobo Choses\nFAITHFULL\nLELET NY\nMini Rodini\nMissoma\nOilily\nPaige\nRE/DONE\nThe Upside",
+            "brands": "AG Jeans\nBobo Choses\nFAITHFULL\nLELET NY\nMini Rodini\nMissoma\nOilily\nPaige\nRE\/DONE\nThe Upside",
             "all_link": false,
             "sort_az": true,
             "split_after": 12,
@@ -49,14 +49,14 @@
         "designers_promo": {
           "type": "designers_promo",
           "settings": {
-            "image": "shopify://shop_images/skirt_landscape_big_1200x716_1.jpg",
+            "image": "shopify:\/\/shop_images\/skirt_landscape_big_1200x716_1.jpg",
             "title": "MONA AL SHEBIL , wearable art from The Kingdom of Saudi Arabia",
             "title_ar": "منى الشبل ، فن يُرتدى من المملكة العربية السعودية",
             "text": "\"Presence \" celebrates quiet confidence and effortless strength. Structured silhouettes are softened with fluid fabrics and refined details, creating pieces that are feminine, powerful and timeless.",
             "text_ar": "تحتفي «Presence» بالثقة الهادئة والقوة العفوية. تنسجم القصّات المنظّمة مع الأقمشة المنسابة والتفاصيل الراقية، لتخرج قطعٌ أنثوية وقوية وخالدة لا يغيّرها الزمن.",
             "button": "Shop the collection",
             "button_ar": "تسوّق المجموعة",
-            "link": "https://omarieden.com/collections/vendors?q=MONA%20AL%20SHEBIL",
+            "link": "https:\/\/omarieden.com\/collections\/vendors?q=MONA%20AL%20SHEBIL",
             "mobile_pos": "top"
           }
         },
@@ -64,10 +64,10 @@
           "type": "menu_banners",
           "settings": {
             "department": "Travel",
-            "image_1": "shopify://shop_images/anteler-1_ca04e1fb-a6f0-4cd3-b202-999b4567bcce.webp",
+            "image_1": "shopify:\/\/shop_images\/anteler-1_ca04e1fb-a6f0-4cd3-b202-999b4567bcce.webp",
             "caption_1": "Journey Essentials",
             "link_1": "",
-            "image_2": "shopify://shop_images/antler-2_6efa765f-beee-4edc-91cb-a738c08b2919.webp",
+            "image_2": "shopify:\/\/shop_images\/antler-2_6efa765f-beee-4edc-91cb-a738c08b2919.webp",
             "caption_2": "Travel Essentials",
             "link_2": ""
           }
@@ -76,10 +76,10 @@
           "type": "menu_banners",
           "settings": {
             "department": "Jewellery",
-            "image_1": "shopify://shop_images/missoma-3_3d2b92ed-43f7-45de-9a6f-5ca0fb56c928.webp",
+            "image_1": "shopify:\/\/shop_images\/missoma-3_3d2b92ed-43f7-45de-9a6f-5ca0fb56c928.webp",
             "caption_1": "Precious Details",
             "link_1": "",
-            "image_2": "shopify://shop_images/missoma-2_73b7e78b-6024-4c89-accc-4556d0d948b8.webp",
+            "image_2": "shopify:\/\/shop_images\/missoma-2_73b7e78b-6024-4c89-accc-4556d0d948b8.webp",
             "caption_2": "Timeless Treasures",
             "link_2": ""
           }
@@ -88,10 +88,10 @@
           "type": "menu_banners",
           "settings": {
             "department": "Home",
-            "image_1": "shopify://shop_images/cote_boguie-2_740bbfc5-2ab8-48e9-af7e-d4834eaed9f5.jpg",
+            "image_1": "shopify:\/\/shop_images\/cote_boguie-2_740bbfc5-2ab8-48e9-af7e-d4834eaed9f5.jpg",
             "caption_1": "Quiet Comforts",
             "link_1": "",
-            "image_2": "shopify://shop_images/Archivist_d088d6cf-f22d-4b28-bc79-a1fd5fcbbfbc.jpg",
+            "image_2": "shopify:\/\/shop_images\/Archivist_d088d6cf-f22d-4b28-bc79-a1fd5fcbbfbc.jpg",
             "caption_2": "Little Luxuries",
             "link_2": ""
           }
@@ -100,10 +100,10 @@
           "type": "menu_banners",
           "settings": {
             "department": "Kids",
-            "image_1": "shopify://shop_images/Oilily_YS26BPA502_BROWN_3_a5f3f16b-df13-4358-85ae-da3446bd318c.jpg",
+            "image_1": "shopify:\/\/shop_images\/Oilily_YS26BPA502_BROWN_3_a5f3f16b-df13-4358-85ae-da3446bd318c.jpg",
             "caption_1": "Little Wonders",
             "link_1": "",
-            "image_2": "shopify://shop_images/DSC00410_fb47d8aa-32f4-4309-9f58-ea70aa4d35c2.jpg",
+            "image_2": "shopify:\/\/shop_images\/DSC00410_fb47d8aa-32f4-4309-9f58-ea70aa4d35c2.jpg",
             "caption_2": "Playful Elegance",
             "link_2": ""
           }
@@ -112,10 +112,10 @@
           "type": "menu_banners",
           "settings": {
             "department": "Men",
-            "image_1": "shopify://shop_images/PERCIVAL_MENSWEAR_7_ad8ed3de-4ae6-45cd-b637-3045c7b8b774.jpg",
+            "image_1": "shopify:\/\/shop_images\/PERCIVAL_MENSWEAR_7_ad8ed3de-4ae6-45cd-b637-3045c7b8b774.jpg",
             "caption_1": "Modern Classics",
             "link_1": "",
-            "image_2": "shopify://shop_images/Copy_of_25_ae915cca-661b-4927-b911-58d9a6b54f3d.jpg",
+            "image_2": "shopify:\/\/shop_images\/Copy_of_25_ae915cca-661b-4927-b911-58d9a6b54f3d.jpg",
             "caption_2": "Refined Ease",
             "link_2": ""
           }
@@ -124,10 +124,10 @@
           "type": "menu_banners",
           "settings": {
             "department": "Women",
-            "image_1": "shopify://shop_images/221628_1_19d24429-f65e-4d6c-9db8-1f40ee77e505.webp",
+            "image_1": "shopify:\/\/shop_images\/221628_1_19d24429-f65e-4d6c-9db8-1f40ee77e505.webp",
             "caption_1": "Effortless Elegance",
             "link_1": "",
-            "image_2": "shopify://shop_images/WhatsApp_Image_2026-08-10_at_2.56.48_PM_1_4bbd891a-b07e-460e-ba4d-1a141eb7fb66.webp",
+            "image_2": "shopify:\/\/shop_images\/WhatsApp_Image_2026-08-10_at_2.56.48_PM_1_4bbd891a-b07e-460e-ba4d-1a141eb7fb66.webp",
             "caption_2": "Polished Ease",
             "link_2": ""
           }
@@ -137,9 +137,9 @@
           "settings": {
             "department": "Women",
             "caption_1": "ELEVATED ESSENTIALS",
-            "link_1": "/collections/women",
+            "link_1": "\/collections\/women",
             "caption_2": "SIMPLE PLEASURE",
-            "link_2": "/collections/women"
+            "link_2": "\/collections\/women"
           }
         }
       },
@@ -163,7 +163,7 @@
         "designers_label_ar": "المصممون",
         "designers_all_label": "All designers",
         "designers_all_label_ar": "كل المصممين",
-        "designers_all_link": "shopify://pages/discover-all-brands"
+        "designers_all_link": "shopify:\/\/pages\/discover-all-brands"
       }
     }
   },
