@@ -466,7 +466,7 @@ html.od-cur-wait :has(> ._sar_1ef42_1) { opacity: 0; }
 .od-cur-charged > p:first-child { opacity: .75; }
 .od-cur-charged > p:last-child { font-weight: 500; white-space: nowrap; }
 .od-cur-note { margin: 0 0 12px; }
-.od-cur-btn { white-space: nowrap; }
+.od-cur-btn { white-space: nowrap; margin-inline-start: -10px; }
 .od-cur-btn, .od-cur-btn span { font-size: inherit !important; font-family: inherit !important; }
 .od-cur-pdp { margin: 6px 0 0; font-family: Bricolage, sans-serif; font-size: 12px; line-height: 1.5; color: #551c25; opacity: .75; }
 .od-cur .od-cur__item p { display: flex; align-items: baseline; gap: 10px; margin: 0; }

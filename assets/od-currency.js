@@ -54,7 +54,7 @@
     if (p.closest('s, del, [data-product-compare], [data-card-compare], .od-cartd-item__was')) return true;
     return /strikeThrough|--compare/.test(String(p.className || ''));
   }
-  function isCompact(span) { return !!span.closest('.od-card, .od-live__card, .od-stl-item, .od-rl, [data-cur-compact]'); }
+  function isCompact(span) { return !!span.closest('.od-card, .od-live__card, .od-stl-item, .od-rl, ._priceRow_102j2_123, [data-cur-compact]'); }
   function isSkipped(span) { return !!span.closest('[data-cur-skip], .od-stamp__price, .od-citem__price'); }
 
   function one(span, code) {
