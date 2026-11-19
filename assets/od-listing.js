@@ -464,11 +464,12 @@
     fp.classList.remove('is-loading');
     fp.classList.add('is-done');
     setTimeout(function () { fp.classList.remove('is-done'); }, 600);
-    if (!fpKeep) { fpShow(fp, 'root', true); fqRestore(fp, null); return; }
-    var keep = fpKeep; fpKeep = null;
     var tree = $('[data-ft]', fp);
-    if (tree && keep.pane === 'cat') {
-      var want = keep.ft && $('[data-ft-panel="' + keep.ft + '"]', tree) ? keep.ft : (tree.getAttribute('data-ft-start') || 'root');
+    // 19 Nov 2026: the Category tree is always put on a panel after a re-render (it used to stay empty when the change came from another pane, e.g. a Sale or Brand tick)
+    if (!fpKeep) { if (tree) showPanel(tree, tree.getAttribute('data-ft-start') || 'root'); fpShow(fp, 'root', true); fqRestore(fp, null); return; }
+    var keep = fpKeep; fpKeep = null;
+    if (tree) {
+      var want = keep.pane === 'cat' && keep.ft && $('[data-ft-panel="' + keep.ft + '"]', tree) ? keep.ft : (tree.getAttribute('data-ft-start') || 'root');
       showPanel(tree, want);
     }
     fpShow(fp, keep.pane, true);
