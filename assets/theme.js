@@ -523,7 +523,17 @@
       return { kind: 'none', brands: b.hits.slice(0, 5).map((h) => h.item), cats: c.hits.slice(0, 6).map((h) => h.item) };
     };
     let lastDecision = null;
-    const render = (q, data) => {
+    /* 19 Nov 2026: the predictive search gives no sizes, only the lowest price and the highest before price of the
+       product. On products whose price depends on the size these belong to two different sizes, so the card read
+       -64% on a -60% piece. Every result is now read in full (the same data the product page uses) before its card
+       is drawn; the card then shows the price pair of the first size that can be bought, exactly like the page. */
+    const fullCache = {};
+    const fullOf = (p) => {
+      const h = p && p.handle; if (!h) return Promise.resolve(null);
+      if (!fullCache[h]) fullCache[h] = fetch(OD.rootUrl + 'products/' + h + '.js', { headers: { Accept: 'application/json' } }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+      return fullCache[h];
+    };
+    const render = (q, data, full) => {
       const queries = (data.resources.results.queries || []).slice(0, 10);
       const products = (data.resources.results.products || []).slice(0, 5);
       const hl = (s) => s.replace(new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'), '<strong>$1</strong>');
@@ -549,11 +559,16 @@
           // brand match: the brand button alone (client, 28 Oct); category match keeps the "View all results" text link
           (dec.kind === 'brand' ? '' : '<button type="button" class="od-search-viewall" data-search-submit>' + esc(tt('view-all', 'View all results')) + '</button>');
       if (products.length) {
-        const norm = (p) => ({ id: p.id, handle: p.handle, title: p.title, vendor: p.vendor, url: p.url, featured_image: p.featured_image && (p.featured_image.url || p.featured_image.src || p.featured_image), price: p.price, compare_at_price: p.compare_at_price_max || null, tags: p.tags || [], available: p.available !== false,
+        // fallback only (the full read failed): lowest price with the LOWEST before price, never the highest
+        const norm = (p) => ({ id: p.id, handle: p.handle, title: p.title, vendor: p.vendor, url: p.url, featured_image: p.featured_image && (p.featured_image.url || p.featured_image.src || p.featured_image), price: p.price_min || p.price, compare_at_price: p.compare_at_price_min || p.compare_at_price_max || null, tags: p.tags || [], available: p.available !== false,
           variants: p.variants && p.variants.length ? p.variants.map((v) => ({ id: v.id, title: v.title, available: v.available !== false, price: v.price, compare_at_price: v.compare_at_price || null, option1: v.option1, option2: v.option2, option3: v.option3, options: v.options, featured_image: v.featured_image || null, featured_media: v.featured_media || null })) : undefined,
           options: p.options || [], media: p.media || null, images: p.images || null });
         html += '<h3 class="_products__title_j9u6d_265">' + OD.t.products + '</h3><div class="_products_j9u6d_246"><div class="_products__grid_j9u6d_281">' +
-          products.map((p) => (OD.cardsHTML ? OD.cardsHTML(norm(p)).join('') : (OD.cardHTML || cardHTML)(norm(p)))).join('') + '</div></div>';
+          products.map((p, i) => {
+            const f = full && full[i];
+            if (f && f.variants && f.variants.length && OD.cardHTML && OD.cardHTML !== cardHTML) return OD.cardHTML(Object.assign({}, f, { url: (p.url || (OD.rootUrl + 'products/' + f.handle)).split('?')[0] }), null);
+            return OD.cardsHTML ? OD.cardsHTML(norm(p)).join('') : (OD.cardHTML || cardHTML)(norm(p));
+          }).join('') + '</div></div>';
         html += '<div class="od-search-actions">' + buttons + '</div>';
       } else {
         html += '<p class="_suggestions__title_j9u6d_203 od-search-none">' + esc(tt('no-match', 'No products match "__TERMS__".').replace('__TERMS__', q)) + '</p>';
@@ -562,6 +577,7 @@
       }
       html += '</div></div>';
       results.innerHTML = html;
+      OD.initCards && OD.initCards(results); // full cards (photos, dots) since 19 Nov 2026
       $$('[data-wishlist-toggle]', results).length && wlPaint(results);
     };
     const run = debounce(async () => {
@@ -572,7 +588,9 @@
       try {
         const url = OD.predictiveSearchUrl + '?q=' + encodeURIComponent(q) + '&resources[type]=product,query&resources[limit]=5&resources[limit_scope]=each&resources[options][unavailable_products]=last&resources[options][fields]=title,product_type,variants.title,vendor,tag';
         const data = await fetch(url, { headers: { Accept: 'application/json' } }).then((r) => r.json());
-        render(q, data);
+        const full = await Promise.all(((data.resources.results.products || []).slice(0, 5)).map(fullOf));
+        if (input.value.trim() !== q) return; // a newer search is already on its way
+        render(q, data, full);
       } catch (err) { results.innerHTML = ''; }
     }, 250);
     on(input, 'input', run);
