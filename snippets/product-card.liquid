@@ -72,6 +72,11 @@
   assign card_url = product.url
   assign price = product.price
   assign compare = product.compare_at_price
+  assign base_variant = product.selected_or_first_available_variant
+  if base_variant
+    assign price = base_variant.price
+    assign compare = base_variant.compare_at_price
+  endif
   assign sold_out = false
   if product.available == false
     assign sold_out = true

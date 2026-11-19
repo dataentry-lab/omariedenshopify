@@ -32,6 +32,11 @@
 
   assign s_price = product.price
   assign s_compare = product.compare_at_price | default: 0
+  assign s_base = product.selected_or_first_available_variant
+  if s_base
+    assign s_price = s_base.price
+    assign s_compare = s_base.compare_at_price | default: 0
+  endif
   if price != blank
     assign s_price = price
     assign s_compare = compare | default: 0

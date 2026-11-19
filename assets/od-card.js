@@ -648,6 +648,8 @@
     if (img && typeof img === 'object') img = img.src || img.url || '';
     let available = variants.length ? variants.some((v) => v.available) : !!p.available;
     let price = cents(p.price), compare = cents(p.compare_at_price), images = [], lv = null;
+    // 19 Nov 2026: price and before price come from ONE size (the first that can be bought), never the lowest of each
+    if (!colour && variants.length) { const fv = variants.find((v) => v.available) || variants[0]; if (fv && fv.price != null && fv.compare_at_price !== undefined) { price = cents(fv.price); compare = cents(fv.compare_at_price); } }
     if (colour) {
       const mine = variants.filter((v) => vColour(v) === colour);
       lv = mine.find((v) => v.available) || mine[0] || null;
