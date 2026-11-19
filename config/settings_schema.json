@@ -674,6 +674,24 @@
         "label": "Filter popup (new, round 14)",
         "info": "On: centred filter popup with levels, every change applies at once. Off: the previous side drawer. Switch off to revert instantly.",
         "default": true
+      },
+      {
+        "type": "header",
+        "content": "Stay inside a collection (sale pages)"
+      },
+      {
+        "type": "checkbox",
+        "id": "stay_enabled",
+        "label": "Keep categories inside these collections",
+        "info": "On: on the collections listed below, the category boxes and the Category level of the filter open inside the same collection (only its products, same order and filters). Categories with no product there are hidden. Off: categories open the full category page, as everywhere else.",
+        "default": true
+      },
+      {
+        "type": "textarea",
+        "id": "stay_collections",
+        "label": "Collections (one handle per line)",
+        "info": "The handle is the last part of the collection address, for example white-friday for /collections/white-friday.",
+        "default": "white-friday"
       }
     ]
   },

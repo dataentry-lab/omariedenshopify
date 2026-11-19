@@ -81,6 +81,43 @@
   assign all_count = collection.all_products_count | default: result_count
   assign t_cat = 'collections.filter.category' | t
 
+  assign stay = ''
+  assign types_ok = true
+  if request.page_type == 'collection'
+    capture stay
+      render 'stay-nav'
+    endcapture
+    assign stay = stay | strip
+  endif
+  if stay != ''
+    assign snv = stay | split: '@@'
+    assign sn0 = snv[0] | split: '~~'
+    assign sbk = snv[2] | split: '~~'
+    assign sal = snv[3] | split: '~~'
+    assign srows = snv[4] | split: ';;'
+    assign seye = snv[5] | split: '~~'
+    assign action_url = sn0[2]
+    assign coll_qs = ''
+    assign start_panel = 'stay'
+    assign cat_now = ''
+    assign cat_active_url = ''
+    assign dept_now = ''
+    assign sub_now = ''
+    assign all_count = ''
+    if sn0[4] != blank and sn0[4] != '-'
+      assign cat_now = sn0[4]
+    endif
+    if seye[0] != blank and seye[0] != '-'
+      assign dept_now = seye[0]
+      if seye.size > 1
+        assign sub_now = seye[1]
+      endif
+    endif
+    if sn0[6] != 'cat'
+      assign types_ok = false
+    endif
+  endif
+
   comment
     Product type filter = the last level of the Category tree while a category is active
   endcomment
@@ -91,7 +128,7 @@
     endif
   endfor
   assign types_in_tree = false
-  if type_filter and cat_now != '' and type_filter.values.size > 1
+  if type_filter and cat_now != '' and type_filter.values.size > 1 and types_ok
     assign types_in_tree = true
   endif
   assign cat_sum = cat_now | default: t_all
@@ -179,6 +216,9 @@
     endif
   else
     assign clear_url = collection.url
+    if stay != ''
+      assign clear_url = sn0[2]
+    endif
     if sort_by
       if clear_url contains '?'
         assign clear_url = clear_url | append: '&sort_by=' | append: sort_by
@@ -193,6 +233,9 @@
   assign clear_all_url = clear_url
   if request.page_type != 'search' and cat_now != ''
     assign clear_all_url = routes.all_products_collection_url
+    if stay != ''
+      assign clear_all_url = sn0[1]
+    endif
     if sort_by
       assign clear_all_url = clear_all_url | append: '?sort_by=' | append: sort_by
     endif
@@ -291,6 +334,26 @@
       {%- if has_menu -%}
         <div class="od-fp__pane" data-fp-pane="cat" data-fp-label="{{ 'collections.filter.category' | t | escape }}">
           <div class="od-ft" data-ft data-ft-start="{{ start_panel }}">
+            {%- if stay != '' -%}
+            {%- comment -%} 19 Nov 2026: stay inside the collection (snippets/stay-nav). One panel = the level on screen; every row is a link
+                to a tag path of this same collection, so the listing behind and this panel reload together and nothing leaves the collection. {%- endcomment -%}
+            <div class="od-ft__panel" data-ft-panel="stay" data-ft-label="{% if sn0[5] == 'root' %}{{ 'collections.filter.category' | t | escape }}{% else %}{{ snv[6] | escape }}{% endif %}" hidden>
+              {%- if sbk.size > 1 -%}
+                <a class="od-ft__back" href="{{ sbk[1] }}" data-fp-drill><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{% if sn0[5] == 'dept' %}{{ 'collections.filter.all_in' | t: name: sbk[0] }}{% else %}{{ sbk[0] }}{% endif %}</span></a>
+              {%- endif -%}
+              {%- if dept_now != '' -%}<p class="od-fp__eye">{{ dept_now }}{% if sub_now != '' %} &rsaquo; {{ sub_now }}{% endif %}</p>{%- endif -%}
+              <a class="od-ft__row od-ft__row--all{% if sal[2] == '1' %} is-current{% endif %}" href="{{ sal[1] }}"><span>{{ 'collections.filter.all_in' | t: name: sal[0] }}</span></a>
+              {%- for r in srows -%}
+                {%- assign rf = r | split: '~~' -%}
+                {%- if rf.size < 5 -%}{%- continue -%}{%- endif -%}
+                {%- if rf[3] == '1' and rf[4] == 'cat' and types_in_tree -%}
+                  <button type="button" class="od-ft__row od-ft__row--drill is-current" data-ft-go="types"><span>{{ rf[0] }}</span><small class="od-ft__count">{{ result_count }}</small><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                {%- else -%}
+                  <a class="od-ft__row{% if rf[4] == 'drill' %} od-ft__row--drill{% endif %}{% if rf[3] == '1' %} is-current{% endif %}" href="{{ rf[1] }}"{% if rf[4] == 'cat' %} data-fp-cat{% else %} data-fp-drill{% endif %}><span>{{ rf[0] }}</span>{% if rf[2] != '-' %}<small class="od-ft__count">{{ rf[2] }}</small>{% endif %}{% if rf[4] == 'drill' %}<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>{% endif %}</a>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+            {%- else -%}
             <div class="od-ft__panel" data-ft-panel="root" data-ft-label="{{ 'collections.filter.category' | t | escape }}" hidden>
               {%- assign di = 0 -%}
               {%- for dept in linklists[menu_handle].links -%}
@@ -340,6 +403,7 @@
                 {%- endfor -%}
               {%- endif -%}
             {%- endfor -%}
+            {%- endif -%}
             {%- if types_in_tree -%}
               {%- comment -%} last level: the product types inside the active category {%- endcomment -%}
               <div class="od-ft__panel" data-ft-panel="types" data-ft-label="{{ cat_now | escape }}" hidden>

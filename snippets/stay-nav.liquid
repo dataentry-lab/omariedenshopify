@@ -1,0 +1,321 @@
+{%- comment -%}
+  Stay inside a collection (19 Nov 2026, built for the Cyber Sale, temporary).
+  Theme settings > Collections > "Stay inside these collections": on the listed collections the category boxes and the Category
+  tree of the filter popup do not leave the collection. A category opens as a tag path of the SAME collection
+  (/collections/<handle>/<tag>+<tag>), so only that collection's products show and its order and filters stay.
+  The tags of each menu collection come from snippets/stay-map.liquid (collection handle = its rule tags).
+  Output: empty when the switch is off or the collection is not listed, otherwise one line of data, parts split by @@ :
+    0  1 ~~ base url ~~ current url ~~ level (0 to 3) ~~ current title ~~ panel (root / dept / sub) ~~ cat when the current row is a category
+    1  breadcrumb parents     title ~~ url ;; ...
+    2  back link              title ~~ url
+    3  "All ..." row          title ~~ url ~~ 1 when current
+    4  rows of the panel      title ~~ url ~~ count ~~ 1 when current ~~ drill / leaf / cat ;; ...
+    5  path names             department ~~ group
+    6  panel name
+  Empty parts are written as "-". Rows with no product in the collection are left out. Counts only where Shopify gives them
+  (default language, rows that are direct children of the page on screen).
+  Used by: sections/main-collection, snippets/listing-toolbar + listing-categories, snippets/modal-filter, snippets/breadcrumbs.
+{%- endcomment -%}
+{%- liquid
+  assign on = false
+  if request.page_type == 'collection' and settings.stay_enabled and collection.handle != blank
+    assign hs = settings.stay_collections | newline_to_br | split: '<br />'
+    for h in hs
+      assign hh = h | strip | downcase
+      if hh != '' and hh == collection.handle
+        assign on = true
+      endif
+    endfor
+  endif
+-%}
+{%- if on -%}
+{%- capture map -%}{%- render 'stay-map' -%}{%- endcapture -%}
+{%- liquid
+  assign map = map | strip
+  assign menu_handle = settings.main_menu | default: 'main-menu'
+  assign base = collection.url | split: '?' | first
+  assign here = base
+  assign cur_n = 0
+  assign cur_key = ''
+  if current_tags
+    assign cur_n = current_tags.size
+    assign cur_key = current_tags | sort | join: '+'
+    assign here = request.path
+  endif
+  assign cur_wrap = '+' | append: cur_key | append: '+'
+
+  assign m_handle = ''
+  if cur_n > 0
+    assign needle2 = '=' | append: cur_key | append: '|'
+    if map contains needle2
+      assign m_handle = map | split: needle2 | first | split: '|' | last
+    endif
+  endif
+
+  assign m_level = 0
+  assign m_di = 0
+  assign m_si = 0
+  assign m_kids = 0
+  assign m_flat = false
+  assign pc = ''
+  if m_handle != ''
+    assign di = 0
+    for dept in linklists[menu_handle].links
+      assign di = di | plus: 1
+      assign dh = ''
+      if dept.type == 'collection_link'
+        assign dh = dept.url | split: '/collections/' | last | split: '?' | first | split: '/' | first
+      endif
+      if m_level == 0 and dh == m_handle
+        assign m_level = 1
+        assign m_di = di
+        assign pc = dept.title | append: '~~' | append: dh
+      endif
+      assign si = 0
+      for sub in dept.links
+        assign si = si | plus: 1
+        assign sh = ''
+        if sub.type == 'collection_link'
+          assign sh = sub.url | split: '/collections/' | last | split: '?' | first | split: '/' | first
+        endif
+        if m_level == 0 and sh != '' and sh == m_handle
+          assign m_level = 2
+          assign m_di = di
+          assign m_si = si
+          assign m_kids = sub.links.size
+          assign pc = dept.title | append: '~~' | append: dh | append: ';;' | append: sub.title | append: '~~' | append: sh
+        endif
+        for cat in sub.links
+          assign ch = ''
+          if cat.type == 'collection_link'
+            assign ch = cat.url | split: '/collections/' | last | split: '?' | first | split: '/' | first
+          endif
+          if m_level == 0 and ch != '' and ch == m_handle
+            assign m_level = 3
+            assign m_di = di
+            assign m_si = si
+            assign pc = dept.title | append: '~~' | append: dh
+            if sh == ''
+              assign m_flat = true
+            else
+              assign pc = pc | append: ';;' | append: sub.title | append: '~~' | append: sh
+            endif
+            assign pc = pc | append: ';;' | append: cat.title | append: '~~' | append: ch
+          endif
+        endfor
+      endfor
+    endfor
+  endif
+
+  assign panel = 'root'
+  assign exact = false
+  if cur_n == 0
+    assign exact = true
+  endif
+  if m_level == 1
+    assign panel = 'dept'
+    assign exact = true
+  elsif m_level == 2
+    if m_kids > 0
+      assign panel = 'sub'
+      assign exact = true
+    else
+      assign panel = 'dept'
+    endif
+  elsif m_level == 3
+    if m_flat
+      assign panel = 'dept'
+    else
+      assign panel = 'sub'
+    endif
+  endif
+
+  assign cand = ''
+  assign di = 0
+  for dept in linklists[menu_handle].links
+    assign di = di | plus: 1
+    if panel == 'root'
+      if dept.type == 'collection_link'
+        assign dh = dept.url | split: '/collections/' | last | split: '?' | first | split: '/' | first
+        assign kind = 'leaf'
+        if dept.links.size > 0
+          assign kind = 'drill'
+        endif
+        assign cand = cand | append: dept.title | append: '~~' | append: dh | append: '~~' | append: kind | append: ';;'
+      endif
+    elsif di == m_di
+      assign si = 0
+      for sub in dept.links
+        assign si = si | plus: 1
+        if panel == 'dept'
+          if sub.type == 'collection_link'
+            assign sh = sub.url | split: '/collections/' | last | split: '?' | first | split: '/' | first
+            assign kind = 'leaf'
+            if sub.links.size > 0
+              assign kind = 'drill'
+            endif
+            assign cand = cand | append: sub.title | append: '~~' | append: sh | append: '~~' | append: kind | append: ';;'
+          else
+            for cat in sub.links
+              if cat.type == 'collection_link'
+                assign ch = cat.url | split: '/collections/' | last | split: '?' | first | split: '/' | first
+                assign cand = cand | append: cat.title | append: '~~' | append: ch | append: '~~leaf;;'
+              endif
+            endfor
+          endif
+        elsif si == m_si
+          for cat in sub.links
+            if cat.type == 'collection_link'
+              assign ch = cat.url | split: '/collections/' | last | split: '?' | first | split: '/' | first
+              assign cand = cand | append: cat.title | append: '~~' | append: ch | append: '~~cat;;'
+            endif
+          endfor
+        endif
+      endfor
+    endif
+  endfor
+
+  assign tfmap = '|'
+  if exact
+    for f in collection.filters
+      if f.param_name == 'filter.p.tag'
+        for v in f.values
+          assign tfmap = tfmap | append: v.value | append: '=' | append: v.count | append: '|'
+        endfor
+      endif
+    endfor
+  endif
+
+  assign rows = ''
+  assign cands = cand | split: ';;'
+  for c in cands
+    assign cf = c | split: '~~'
+    if cf.size < 3
+      continue
+    endif
+    assign needle = '|' | append: cf[1] | append: '='
+    unless map contains needle
+      continue
+    endunless
+    assign key = map | split: needle | last | split: '|' | first
+    assign ktags = key | split: '+'
+    assign ok = true
+    assign new_n = 0
+    assign newtag = ''
+    assign up = ''
+    for t in ktags
+      if exact
+        unless collection.tags contains t
+          assign ok = false
+        endunless
+      else
+        unless collection.all_tags contains t
+          assign ok = false
+        endunless
+      endif
+      assign tw = '+' | append: t | append: '+'
+      unless cur_wrap contains tw
+        assign new_n = new_n | plus: 1
+        assign newtag = t
+      endunless
+      assign th = t | handleize
+      assign up = up | append: th
+      unless forloop.last
+        assign up = up | append: '+'
+      endunless
+    endfor
+    assign is_cur = 0
+    if cf[1] == m_handle
+      assign is_cur = 1
+    endif
+    if ok == false and is_cur == 0
+      continue
+    endif
+    assign cnt = '-'
+    if exact and new_n == 1
+      assign cn = '|' | append: newtag | append: '='
+      if tfmap contains cn
+        assign cnt = tfmap | split: cn | last | split: '|' | first
+      endif
+    endif
+    assign rows = rows | append: cf[0] | append: '~~' | append: base | append: '/' | append: up | append: '~~' | append: cnt | append: '~~' | append: is_cur | append: '~~' | append: cf[2] | append: ';;'
+  endfor
+  if rows == ''
+    assign rows = '-'
+  endif
+
+  assign p1t = ''
+  assign p1u = ''
+  assign p2t = ''
+  assign p2u = ''
+  assign cur_title = '-'
+  assign crumbs = ''
+  assign pcs = pc | split: ';;'
+  for c in pcs
+    assign cf = c | split: '~~'
+    assign needle = '|' | append: cf[1] | append: '='
+    assign pu = base
+    if map contains needle
+      assign key = map | split: needle | last | split: '|' | first
+      assign ktags = key | split: '+'
+      assign up = ''
+      for t in ktags
+        assign th = t | handleize
+        assign up = up | append: th
+        unless forloop.last
+          assign up = up | append: '+'
+        endunless
+      endfor
+      assign pu = base | append: '/' | append: up
+    endif
+    if forloop.index == 1
+      assign p1t = cf[0]
+      assign p1u = pu
+    elsif forloop.index == 2
+      assign p2t = cf[0]
+      assign p2u = pu
+    endif
+    assign cur_title = cf[0]
+    unless forloop.last
+      assign crumbs = crumbs | append: cf[0] | append: '~~' | append: pu | append: ';;'
+    endunless
+  endfor
+  if m_level > 0
+    assign crumbs = collection.title | append: '~~' | append: base | append: ';;' | append: crumbs
+  else
+    assign crumbs = '-'
+  endif
+
+  assign back = '-'
+  assign all_cur = 0
+  assign eye = '-'
+  assign label = '-'
+  if panel == 'root'
+    if cur_n == 0
+      assign all_cur = 1
+    endif
+    assign allrow = collection.title | append: '~~' | append: base | append: '~~' | append: all_cur
+  elsif panel == 'dept'
+    if m_level == 1
+      assign all_cur = 1
+    endif
+    assign back = collection.title | append: '~~' | append: base
+    assign allrow = p1t | append: '~~' | append: p1u | append: '~~' | append: all_cur
+    assign eye = p1t
+    assign label = p1t
+  else
+    if m_level == 2
+      assign all_cur = 1
+    endif
+    assign back = p1t | append: '~~' | append: p1u
+    assign allrow = p2t | append: '~~' | append: p2u | append: '~~' | append: all_cur
+    assign eye = p1t | append: '~~' | append: p2t
+    assign label = p2t
+  endif
+  assign cur_kind = '-'
+  if m_level == 3 and m_flat == false
+    assign cur_kind = 'cat'
+  endif
+-%}
+1~~{{ base }}~~{{ here }}~~{{ m_level }}~~{{ cur_title }}~~{{ panel }}~~{{ cur_kind }}@@{{ crumbs }}@@{{ back }}@@{{ allrow }}@@{{ rows }}@@{{ eye }}@@{{ label }}
+{%- endif -%}

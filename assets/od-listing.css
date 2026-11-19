@@ -553,3 +553,11 @@
 
 /* Chips row is always printed since 19 Nov 2026 (Sale chips on Arabic are added by od-listing.js): keep it hidden when empty */
 .od-listing__active[hidden] { display: none; }
+
+/* ---------- 19 Nov 2026: stay inside a collection (snippets/stay-nav): back box + counts on the category boxes, link rows in the popup tree ---------- */
+.od-cat__n { margin-inline-start: 7px; font-size: 11px; letter-spacing: .02em; opacity: .62; }
+.od-cat--back { gap: 7px; border-style: dashed; }
+.od-cat--back:hover, .od-cat--back:focus-visible { border-style: solid; }
+.od-cat__chev { font-size: 15px; line-height: 1; margin-top: -2px; }
+a.od-ft__back { width: fit-content; }
+.od-fp a.od-ft__row--drill svg { flex: 0 0 auto; }

@@ -1,3 +1,4 @@
+{%- comment -%} 19 Nov 2026: `stay` = snippets/stay-nav (categories that do not leave the collection, Theme settings > Collections); empty when off {%- endcomment -%}
 {%- liquid
   assign per_page = settings.products_per_page | default: 24
   assign sort_by = collection.sort_by
@@ -8,6 +9,16 @@
   endcomment
   if section.settings.title == blank and collection.handle == 'all'
     assign listing_title = 'listing.new_in' | t
+  endif
+  capture stay
+    render 'stay-nav'
+  endcapture
+  assign stay = stay | strip
+  if stay != ''
+    assign stay0 = stay | split: '@@' | first | split: '~~'
+    if stay0[4] != blank and stay0[4] != '-'
+      assign listing_title = listing_title | append: ': ' | append: stay0[4]
+    endif
   endif
   comment
     round 9: active colour filter values -> only those colour cards are rendered (one card per colour)
@@ -30,7 +41,7 @@
 
 <div class="_container_1kxnl_30 _pc_1ajxu_31 od-listing" data-listing>
   {%- render 'listing-title', title: listing_title, count: collection.products_count -%}
-  {%- render 'listing-toolbar', sort_by: sort_by -%}
+  {%- render 'listing-toolbar', sort_by: sort_by, stay: stay -%}
 
   {%- paginate collection.products by per_page -%}
     <div class="_ProductCollection_1ajxu_41 od-listing__grid" data-product-grid data-cols="4">

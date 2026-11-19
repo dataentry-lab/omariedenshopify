@@ -300,7 +300,7 @@
   // category buttons, filter drawer links, reset link
   document.addEventListener('click', function (e) {
     if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
-    var a = e.target.closest('[data-listing-cats] a, [data-filter-form] a.od-ft__row, [data-filter-form] a._resetBtn_rmug7_149, [data-listing-ajax] a');
+    var a = e.target.closest('[data-listing-cats] a, [data-filter-form] a.od-ft__row, [data-filter-form] a.od-ft__back, [data-filter-form] a._resetBtn_rmug7_149, [data-listing-ajax] a');
     if (!a || !sameListing(a.href)) return;
     e.preventDefault();
     if (a.closest('[data-fp]')) {
@@ -308,7 +308,8 @@
       var fpA = a.closest('[data-fp]');
       fpKeep = { pane: 'cat', ft: a.hasAttribute('data-fp-cat') ? 'types' : null, scroll: 0 };
       fpBusyRow(a);
-      if (a.hasAttribute('data-fp-cat')) fpSkeletonLevel(fpA, a.textContent.trim());
+      // 19 Nov 2026: rows that open another level of the same collection (stay inside, data-fp-drill) get the loading panel too
+      if (a.hasAttribute('data-fp-cat') || a.hasAttribute('data-fp-drill')) fpSkeletonLevel(fpA, ((a.querySelector('span') || a).textContent || '').trim());
       fpLoading(true);
       load(a.href, true);
       return;

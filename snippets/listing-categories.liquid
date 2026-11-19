@@ -7,7 +7,34 @@
     - nothing matches, or search page                        -> level-1 departments
   Params:
     is_search – true on the search results page (always level-1 departments)
+    stay – data line of snippets/stay-nav (collections that keep their categories inside); empty = the normal buttons
 {%- endcomment -%}
+{%- if stay != blank -%}
+  {%- comment -%} 19 Nov 2026: stay inside the collection (snippets/stay-nav). Boxes = the next level inside this collection, a back box one level up;
+      the active box links back to its parent (tap again to leave the category). {%- endcomment -%}
+  {%- liquid
+    assign snv = stay | split: '@@'
+    assign sn0 = snv[0] | split: '~~'
+    assign sbk = snv[2] | split: '~~'
+    assign sal = snv[3] | split: '~~'
+    assign srows = snv[4] | split: ';;'
+    assign rtl = false
+    if request.locale.iso_code contains 'ar'
+      assign rtl = true
+    endif
+  -%}
+  <nav class="od-listing__cats od-listing__cats--stay" aria-label="{{ 'listing.categories' | t }}" data-listing-cats data-t-more="{{ 'listing.more' | t: count: '__N__' | escape }}" data-t-less="{{ 'listing.less' | t | escape }}">
+    {%- if sbk.size > 1 -%}
+      <a class="od-cat od-cat--back" href="{{ sbk[1] }}" data-cat><span class="od-cat__chev" aria-hidden="true">{% if rtl %}&rsaquo;{% else %}&lsaquo;{% endif %}</span>{% if sn0[5] == 'dept' %}{{ 'collections.filter.all_in' | t: name: sbk[0] }}{% else %}{{ sbk[0] }}{% endif %}</a>
+    {%- endif -%}
+    {%- for r in srows -%}
+      {%- assign rf = r | split: '~~' -%}
+      {%- if rf.size < 5 -%}{%- continue -%}{%- endif -%}
+      <a class="od-cat{% if rf[3] == '1' %} is-active{% endif %}" href="{% if rf[3] == '1' %}{{ sal[1] }}{% else %}{{ rf[1] }}{% endif %}"{% if rf[3] == '1' %} aria-current="page"{% endif %} data-cat>{{ rf[0] }}{% if rf[2] != '-' %}<span class="od-cat__n">{{ rf[2] }}</span>{% endif %}</a>
+    {%- endfor -%}
+    <button type="button" class="od-cat od-cat--more" data-cats-more aria-expanded="false" hidden></button>
+  </nav>
+{%- else -%}
 {%- liquid
   assign menu_handle = settings.main_menu | default: 'main-menu'
   assign items = blank
@@ -43,4 +70,5 @@
     {%- endfor -%}
     <button type="button" class="od-cat od-cat--more" data-cats-more aria-expanded="false" hidden></button>
   </nav>
+{%- endif -%}
 {%- endif -%}

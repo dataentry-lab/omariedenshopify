@@ -2,7 +2,7 @@
   Listing toolbar (collection and search pages).
   Desktop: [Filter] [Sort by] ............ [category buttons]
   Mobile:  category buttons (scrollable row), then a sticky Filter / Sort by row.
-  Params: sort_by, is_search
+  Params: sort_by, is_search, stay (19 Nov 2026: data line of snippets/stay-nav on collections that keep their categories inside, else empty)
   Desktop grid toggle 4 / 5 per row (remembered for the session, assets/od-listing.js); mobile is always 2.
   Sort / filter / categories load results without a page reload; the "Updating" spinner shows meanwhile.
 {%- endcomment -%}
@@ -26,7 +26,7 @@
   endcase
 -%}
 <div class="od-listing__toolbar{% if is_search %} od-listing__toolbar--search{% endif %}" data-listing-toolbar>
-  {%- render 'listing-categories', is_search: is_search -%}
+  {%- render 'listing-categories', is_search: is_search, stay: stay -%}
   <div class="od-listing__sentinel" data-listing-sentinel aria-hidden="true"></div>
   <div class="od-listing__controls" data-listing-controls>
     <div class="od-listing__control">
@@ -83,6 +83,10 @@
     endif
   else
     assign clear_url = collection.url
+    if stay != blank
+      assign stay0 = stay | split: '@@' | first | split: '~~'
+      assign clear_url = stay0[2]
+    endif
     if sort_by
       if clear_url contains '?'
         assign clear_url = clear_url | append: '&sort_by=' | append: sort_by

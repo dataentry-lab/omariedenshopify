@@ -2,6 +2,7 @@
   Plain text breadcrumb trail (client, 6 Sep): muted parent links, chevron separators, current page in maroon.
   Rendered from layout/theme.liquid on every page except the home page. Path from the main menu nesting
   (collection pages); products show the collection they were opened from; mobile shows only "< parent".
+  19 Nov 2026: on collections that keep their categories inside (snippets/stay-nav) the trail is Home > collection > department > group > category.
 {%- endcomment -%}
 {%- liquid
   assign menu_handle = settings.main_menu | default: 'main-menu'
@@ -35,6 +36,25 @@
         assign crumbs = crumbs | append: c2.title | append: '::' | append: c2.url | append: sep
       endif
       assign current = collection.title
+      capture stay
+        render 'stay-nav'
+      endcapture
+      assign stay = stay | strip
+      if stay != ''
+        assign snv = stay | split: '@@'
+        assign sn0 = snv[0] | split: '~~'
+        if sn0[3] != '0'
+          assign crumbs = ''
+          assign scr = snv[1] | split: ';;'
+          for c in scr
+            assign cf = c | split: '~~'
+            if cf.size > 1
+              assign crumbs = crumbs | append: cf[0] | append: '::' | append: cf[1] | append: sep
+            endif
+          endfor
+          assign current = sn0[4]
+        endif
+      endif
     when 'product'
       assign coll = collection
       if coll == blank
