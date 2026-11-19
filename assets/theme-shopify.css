@@ -557,3 +557,13 @@ html.od-cur-wait :has(> ._sar_1ef42_1) { opacity: 0; }
   border-color: #3f141b;
   color: #fcf8f2;
 }
+
+/* Product page size boxes (19 Nov 2026): on desktop five equal columns that fill the column,
+   so the boxes end on the same edge as the Size guide link and the Add to cart button.
+   Equal space above and below the return period line. Quick view and mobile are not touched. */
+@media (min-width: 992px) {
+  ._ProductDetails_1fx6h_36 ._SizeSection_1fx6h_113 ._SizeList_1fx6h_113 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; align-items: stretch; }
+  ._ProductDetails_1fx6h_36 ._SizeSection_1fx6h_113 ._SizeList_1fx6h_113 ._SizeButton_j1gah_30 { min-width: 0; width: 100%; margin: 0; }
+  ._ProductDetails_1fx6h_36 ._SizeSection_1fx6h_113 ._SizeList_1fx6h_113 ._square_j1gah_39 { min-width: 0; width: 100%; }
+  ._ProductDetails_1fx6h_36 ._ProductWeight_1fx6h_172 { margin-top: 0; }
+}
