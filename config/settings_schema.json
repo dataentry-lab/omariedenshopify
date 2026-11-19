@@ -676,6 +676,13 @@
         "default": true
       },
       {
+        "type": "checkbox",
+        "id": "hide_empty_cats",
+        "label": "Hide empty categories in the menus",
+        "info": "On: a category with no product on the website is left out of the header menu, the side menu, the category boxes and the filter. It comes back by itself when a product is on the website again.",
+        "default": true
+      },
+      {
         "type": "header",
         "content": "Stay inside a collection (sale pages)"
       },

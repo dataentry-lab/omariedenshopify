@@ -57,6 +57,7 @@
       <ul class="od-sm__list">
         {%- if extras_pos == 'first' -%}{{ extras_rows }}{%- endif -%}
         {%- for link in linklists[menu].links -%}
+          {%- if settings.hide_empty_cats and link.type == 'collection_link' and link.object.all_products_count == 0 -%}{%- unless link.active or link.child_active -%}{%- continue -%}{%- endunless -%}{%- endif -%}
           <li class="od-sm__item">
             {%- if link.links.size > 0 -%}
               <button type="button" class="od-sm__row" data-sm-open="{{ forloop.index }}" aria-expanded="false">
@@ -104,6 +105,7 @@
 
   {%- comment -%} Level 2: one panel per department with children {%- endcomment -%}
   {%- for link in linklists[menu].links -%}
+    {%- if settings.hide_empty_cats and link.type == 'collection_link' and link.object.all_products_count == 0 -%}{%- unless link.active or link.child_active -%}{%- continue -%}{%- endunless -%}{%- endif -%}
     {%- if link.links.size > 0 -%}
       {%- liquid
         assign dept_key = link.title | downcase | strip
@@ -133,6 +135,7 @@
           <a class="od-sm__viewAll" href="{{ link.url }}">{{ 'header.view_all' | t: name: link.title }}</a>
           {%- comment -%} Round 9: every sub-group is the same closed accordion row (title, plus, "View all" inside) {%- endcomment -%}
           {%- for sub in link.links -%}
+            {%- if settings.hide_empty_cats and sub.type == 'collection_link' and sub.object.all_products_count == 0 -%}{%- unless sub.active or sub.child_active -%}{%- continue -%}{%- endunless -%}{%- endif -%}
             <div class="_accordion_container_ve0fr_30 od-sm__acc" data-accordion>
               <div>
                 <button type="button" class="_menu_button_ve0fr_36 od-sm__accBtn " data-accordion-toggle><span>{{ sub.title | downcase }}</span><span class="_icon_ve0fr_59 "><div class="_globalImg_1tf1q_38 _icon__img_ve0fr_59"><img width="16" height="16" alt="" src="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-plus="{{ 'icons_light_plus.svg' | asset_url }}" data-icon-minus="{{ 'icons_light_minus.svg' | asset_url }}"></div></span></button>
@@ -141,6 +144,7 @@
                     {%- assign sub_name = sub.title | downcase -%}
                     <li class="od-sm__viewAllSub"><a href="{{ sub.url }}">{{ 'header.view_all' | t: name: sub_name }}</a></li>
                     {%- for cat in sub.links -%}
+                      {%- if settings.hide_empty_cats and cat.type == 'collection_link' and cat.object.all_products_count == 0 -%}{%- unless cat.active or cat.child_active -%}{%- continue -%}{%- endunless -%}{%- endif -%}
                       <li><a href="{{ cat.url }}">{{ cat.title }}</a></li>
                     {%- endfor -%}
                   </ul>

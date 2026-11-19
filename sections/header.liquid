@@ -127,6 +127,7 @@
         <ul>
           {%- if extras_pos == 'first' -%}{%- render 'header-extras', blocks: section.blocks, hsettings: section.settings, newin_block: newin_block, has_designers: has_designers, dark: dark, rtl: rtl -%}{%- endif -%}
           {%- for link in linklists[menu].links -%}
+            {%- if settings.hide_empty_cats and link.type == 'collection_link' and link.object.all_products_count == 0 -%}{%- unless link.active or link.child_active -%}{%- continue -%}{%- endunless -%}{%- endif -%}
             <li class="_ItemList_10uue_67 _item_10uue_77 {% if dark %}_darkItem_10uue_184{% endif %}" data-nav-item>
               <a class="_navLink_10uue_168" href="{{ link.url }}">{{ link.title }}{% if link.links.size > 0 %}<div class="_globalImg_1tf1q_38 _dropdownIcon_10uue_174 " data-dropdown-icon><img fetchpriority="auto" alt="" src="{{ 'icons_light_arrow_down.svg' | asset_url }}"></div>{% endif %}</a>
               {%- if link.links.size > 0 -%}
@@ -154,10 +155,12 @@
                     <div class="od-mm{% if has_banners %} od-mm--banners{% endif %}">
                       <div class="_columns_5jgb7_67">
                         {%- for sub in link.links -%}
+                          {%- if settings.hide_empty_cats and sub.type == 'collection_link' and sub.object.all_products_count == 0 -%}{%- unless sub.active or sub.child_active -%}{%- continue -%}{%- endunless -%}{%- endif -%}
                           <div class="_lists_5jgb7_79">
                             <h4><a class="_sdClass_5jgb7_107" href="{{ sub.url }}" style="text-decoration: none; color: inherit;">{{ sub.title }}</a></h4>
                             <ul>
                               {%- for cat in sub.links -%}
+                                {%- if settings.hide_empty_cats and cat.type == 'collection_link' and cat.object.all_products_count == 0 -%}{%- unless cat.active or cat.child_active -%}{%- continue -%}{%- endunless -%}{%- endif -%}
                                 <li class="_item_5jgb7_112" style="cursor: default;"><a href="{{ cat.url }}">{{ cat.title }}</a></li>
                               {%- endfor -%}
                             </ul>

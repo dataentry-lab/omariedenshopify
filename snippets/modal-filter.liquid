@@ -358,6 +358,7 @@
               {%- assign di = 0 -%}
               {%- for dept in linklists[menu_handle].links -%}
                 {%- assign di = di | plus: 1 -%}
+                {%- if settings.hide_empty_cats and dept.type == 'collection_link' and dept.object.all_products_count == 0 -%}{%- unless dept.active or dept.child_active -%}{%- continue -%}{%- endunless -%}{%- endif -%}
                 {%- if dept.links.size > 0 -%}
                   <button type="button" class="od-ft__row od-ft__row--drill" data-ft-go="d{{ di }}"><span>{{ dept.title }}</span><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                 {%- else -%}
@@ -368,6 +369,7 @@
             {%- assign di = 0 -%}
             {%- for dept in linklists[menu_handle].links -%}
               {%- assign di = di | plus: 1 -%}
+              {%- if settings.hide_empty_cats and dept.type == 'collection_link' and dept.object.all_products_count == 0 -%}{%- unless dept.active or dept.child_active -%}{%- continue -%}{%- endunless -%}{%- endif -%}
               {%- if dept.links.size > 0 -%}
                 <div class="od-ft__panel" data-ft-panel="d{{ di }}" data-ft-label="{{ dept.title | escape }}" hidden>
                   <button type="button" class="od-ft__back" data-ft-go="root"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{{ 'collections.filter.all_departments' | t }}</span></button>
@@ -376,6 +378,7 @@
                   {%- assign si = 0 -%}
                   {%- for sub in dept.links -%}
                     {%- assign si = si | plus: 1 -%}
+                    {%- if settings.hide_empty_cats and sub.type == 'collection_link' and sub.object.all_products_count == 0 -%}{%- unless sub.active or sub.child_active -%}{%- continue -%}{%- endunless -%}{%- endif -%}
                     {%- if sub.links.size > 0 -%}
                       <button type="button" class="od-ft__row od-ft__row--drill{% if sub.active or sub.child_active %} is-current{% endif %}" data-ft-go="d{{ di }}s{{ si }}"><span>{{ sub.title }}</span><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                     {%- else -%}
@@ -386,12 +389,14 @@
                 {%- assign si = 0 -%}
                 {%- for sub in dept.links -%}
                   {%- assign si = si | plus: 1 -%}
+                  {%- if settings.hide_empty_cats and sub.type == 'collection_link' and sub.object.all_products_count == 0 -%}{%- unless sub.active or sub.child_active -%}{%- continue -%}{%- endunless -%}{%- endif -%}
                   {%- if sub.links.size > 0 -%}
                     <div class="od-ft__panel" data-ft-panel="d{{ di }}s{{ si }}" data-ft-label="{{ sub.title | escape }}" hidden>
                       <button type="button" class="od-ft__back" data-ft-go="d{{ di }}"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{{ dept.title }}</span></button>
                       <p class="od-fp__eye">{{ dept.title }} &rsaquo; {{ sub.title }}</p>
                       <a class="od-ft__row od-ft__row--all{% if sub.active %} is-current{% endif %}" href="{{ sub.url }}"><span>{{ 'collections.filter.all_in' | t: name: sub.title }}</span>{% if sub.type == 'collection_link' and sub.object %}<small class="od-ft__count">{{ sub.object.all_products_count }}</small>{% endif %}</a>
                       {%- for cat in sub.links -%}
+                        {%- if settings.hide_empty_cats and cat.type == 'collection_link' and cat.object.all_products_count == 0 -%}{%- unless cat.active or cat.child_active -%}{%- continue -%}{%- endunless -%}{%- endif -%}
                         {%- if cat.active and types_in_tree -%}
                           <button type="button" class="od-ft__row od-ft__row--drill is-current" data-ft-go="types"><span>{{ cat.title }}</span><small class="od-ft__count">{{ all_count }}</small><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                         {%- else -%}
