@@ -21,7 +21,7 @@
     "care_metafield": "custom.care",
     "badge_1_match": "new, new-in",
     "badge_1_label": "New",
-    "badge_2_type": "new",
+    "badge_2_type": "none",
     "badge_2_label": "",
     "products_per_page": 24,
     "circle_text": "A new way to belong is on its way. The OMARIEDEN Circle, arriving soon.",
@@ -81,6 +81,8 @@
         "disabled": true,
         "settings": {}
       }
-    }
+    },
+    "badge_1_type": "none",
+    "badge_3_type": "none"
   }
 }
