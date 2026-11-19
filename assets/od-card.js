@@ -568,6 +568,15 @@
     if (!OD.preorder || !p || !Array.isArray(p.tags)) return false;
     return p.tags.some((t) => /^pre-?order$/i.test(String(t).trim())) && (p.available !== false);
   }
+  /* 19 Nov 2026: sale prices are rounded to whole riyals (18 / 59 = 69.5% for a 70% discount). The percentage snaps
+     to the nearest step of 10, else of 5, when the gap is no more than that rounding can cause. price / compare in cents. */
+  function salePct(price, compare) {
+    price = +price || 0; compare = +compare || 0; if (!(compare > 0)) return 0;
+    const f = (compare - price) * 100 / compare, tol = 5000 / compare + 0.5;
+    for (const step of [10, 5]) { const m = Math.round(f / step) * step; if (Math.abs(f - m) <= tol && m > 0 && m < 100) return m; }
+    return Math.round(f);
+  }
+  OD.salePct = salePct;
   OD.badgesFor = function (p, limit) {
     const cfg = OD.badges; limit = limit || 2;
     if (!cfg || !p) return [];
@@ -583,7 +592,7 @@
       let hit = false, label = r.label;
       if (r.type === 'tags') hit = String(r.match || '').toLowerCase().split(',').map((x) => x.trim()).filter(Boolean).some((x) => hay.indexOf('|' + x + '|') > -1);
       else if (r.type === 'new' && p.published_at) hit = (Date.now() - new Date(p.published_at).getTime()) / 864e5 <= (cfg.newDays || 30);
-      else if (r.type === 'sale' && cmp > price) { hit = true; if (cfg.saleStyle === 'percent') label = '-' + Math.round((cmp - price) * 100 / cmp) + '%'; }
+      else if (r.type === 'sale' && cmp > price) { hit = true; if (cfg.saleStyle === 'percent') label = '-' + salePct(cents(p.price), cents(p.compare_at_price)) + '%'; }
       if (hit && label) out.push(r.type === 'sale' ? { label, bg: r.bg, text: r.text, sale: true } : { label, bg: r.bg, text: r.text });
     });
     return out;
@@ -594,7 +603,7 @@
   /* 18 Nov 2026: the Sale badge follows the price pair on screen (card colour / selected size), not the product.
      One product can hold sizes at -50%, -60% and full price, so a product-level badge was wrong on some cards. */
   function saleRule() { const cfg = OD.badges; return cfg && (cfg.rules || []).find((r) => r && r.type === 'sale') || null; }
-  function saleLabel(r, price, compare) { return OD.badges.saleStyle === 'percent' ? '-' + Math.round((compare - price) * 100 / compare) + '%' : r.label; }
+  function saleLabel(r, price, compare) { return OD.badges.saleStyle === 'percent' ? '-' + salePct(price, compare) + '%' : r.label; }
   const num = (x) => (typeof x === 'number' ? x : parseFloat(x) || 0);
   OD.saleBadgeList = function (list, price, compare) {
     list = (list || []).slice(); price = num(price); compare = num(compare);
