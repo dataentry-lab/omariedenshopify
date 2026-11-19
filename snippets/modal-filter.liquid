@@ -337,7 +337,7 @@
             {%- if stay != '' -%}
             {%- comment -%} 19 Nov 2026: stay inside the collection (snippets/stay-nav). One panel = the level on screen; every row is a link
                 to a tag path of this same collection, so the listing behind and this panel reload together and nothing leaves the collection. {%- endcomment -%}
-            <div class="od-ft__panel" data-ft-panel="stay" data-ft-label="{% if sn0[5] == 'root' %}{{ 'collections.filter.category' | t | escape }}{% else %}{{ snv[6] | escape }}{% endif %}" hidden>
+            <div class="od-ft__panel" data-ft-panel="stay" data-stay data-stay-all="{{ sal[1] }}" data-stay-exact="{{ sn0[7] | default: '0' }}" data-ft-label="{% if sn0[5] == 'root' %}{{ 'collections.filter.category' | t | escape }}{% else %}{{ snv[6] | escape }}{% endif %}" hidden>
               {%- if sbk.size > 1 -%}
                 <a class="od-ft__back" href="{{ sbk[1] }}" data-fp-drill><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{% if sn0[5] == 'dept' %}{{ 'collections.filter.all_in' | t: name: sbk[0] }}{% else %}{{ sbk[0] }}{% endif %}</span></a>
               {%- endif -%}
@@ -347,9 +347,9 @@
                 {%- assign rf = r | split: '~~' -%}
                 {%- if rf.size < 5 -%}{%- continue -%}{%- endif -%}
                 {%- if rf[3] == '1' and rf[4] == 'cat' and types_in_tree -%}
-                  <button type="button" class="od-ft__row od-ft__row--drill is-current" data-ft-go="types"><span>{{ rf[0] }}</span><small class="od-ft__count">{{ result_count }}</small><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  <button type="button" class="od-ft__row od-ft__row--drill is-current" data-ft-go="types" data-stay-row="{{ rf[1] }}"><span>{{ rf[0] }}</span><small class="od-ft__count">{{ result_count }}</small><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                 {%- else -%}
-                  <a class="od-ft__row{% if rf[4] == 'drill' %} od-ft__row--drill{% endif %}{% if rf[3] == '1' %} is-current{% endif %}" href="{{ rf[1] }}"{% if rf[4] == 'cat' %} data-fp-cat{% else %} data-fp-drill{% endif %}><span>{{ rf[0] }}</span>{% if rf[2] != '-' %}<small class="od-ft__count">{{ rf[2] }}</small>{% endif %}{% if rf[4] == 'drill' %}<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>{% endif %}</a>
+                  <a class="od-ft__row{% if rf[4] == 'drill' %} od-ft__row--drill{% endif %}{% if rf[3] == '1' %} is-current{% endif %}" href="{{ rf[1] }}" data-stay-row="{{ rf[1] }}"{% if rf[4] == 'cat' %} data-fp-cat{% else %} data-fp-drill{% endif %}><span>{{ rf[0] }}</span>{% if rf[2] != '-' %}<small class="od-ft__count">{{ rf[2] }}</small>{% endif %}{% if rf[4] == 'drill' %}<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>{% endif %}</a>
                 {%- endif -%}
               {%- endfor -%}
             </div>

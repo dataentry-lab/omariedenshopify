@@ -38,7 +38,13 @@
     <link rel="canonical" href="{{ canonical_url }}">
     <title>
       {{- page_title -}}
-      {%- if current_tags %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{% endif -%}
+      {%- comment -%} 19 Nov 2026: tag paths of a "stay inside" collection (snippets/stay-nav) read "Cyber Sale: Dresses", not "Tagged ..." {%- endcomment -%}
+      {%- assign stay_t = '' -%}
+      {%- if current_tags and request.page_type == 'collection' -%}{%- capture stay_t -%}{%- render 'stay-nav' -%}{%- endcapture -%}{%- assign stay_t = stay_t | strip -%}{%- endif -%}
+      {%- if stay_t != '' -%}
+        {%- assign stay_t0 = stay_t | split: '@@' | first | split: '~~' -%}
+        {%- if stay_t0[4] != blank and stay_t0[4] != '-' -%}: {{ stay_t0[4] }}{%- endif -%}
+      {%- elsif current_tags %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{% endif -%}
       {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>

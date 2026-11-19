@@ -6,6 +6,8 @@
   The tags of each menu collection come from snippets/stay-map.liquid (collection handle = its rule tags).
   Output: empty when the switch is off or the collection is not listed, otherwise one line of data, parts split by @@ :
     0  1 ~~ base url ~~ current url ~~ level (0 to 3) ~~ current title ~~ panel (root / dept / sub) ~~ cat when the current row is a category
+       ~~ 1 when the rows are exact (they are the direct children of the page on screen), 0 when they are the siblings of the current
+       category (then od-listing.js staySync trims them with what it saw one level up)
     1  breadcrumb parents     title ~~ url ;; ...
     2  back link              title ~~ url
     3  "All ..." row          title ~~ url ~~ 1 when current
@@ -317,5 +319,5 @@
     assign cur_kind = 'cat'
   endif
 -%}
-1~~{{ base }}~~{{ here }}~~{{ m_level }}~~{{ cur_title }}~~{{ panel }}~~{{ cur_kind }}@@{{ crumbs }}@@{{ back }}@@{{ allrow }}@@{{ rows }}@@{{ eye }}@@{{ label }}
+1~~{{ base }}~~{{ here }}~~{{ m_level }}~~{{ cur_title }}~~{{ panel }}~~{{ cur_kind }}~~{% if exact %}1{% else %}0{% endif %}@@{{ crumbs }}@@{{ back }}@@{{ allrow }}@@{{ rows }}@@{{ eye }}@@{{ label }}
 {%- endif -%}

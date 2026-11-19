@@ -206,7 +206,45 @@
     if (t) t.classList.toggle('is-updating', !!on);
     listing.setAttribute('aria-busy', on ? 'true' : 'false');
   }
+  /* stay inside a collection (19 Nov 2026, snippets/stay-nav): on a category page the boxes / popup rows are the SIBLINGS of that category,
+     which Liquid cannot check one by one (it only sees the current category's products). The level above is exact, so what was shown
+     there is remembered for the visit (sessionStorage) and used here: siblings that were not there are removed, counts are added. */
+  var STAY_KEY = 'od_stay_rows';
+  function stayMem() { try { return JSON.parse(sessionStorage.getItem(STAY_KEY) || '{}') || {}; } catch (e) { return {}; } }
+  function staySync() {
+    var scopes = $$('[data-stay]');
+    if (!scopes.length) return;
+    var mem = stayMem(), changed = false;
+    var filtered = /[?&]filter\./.test(window.location.search);
+    scopes.forEach(function (sc) {
+      var all = sc.getAttribute('data-stay-all') || '';
+      var rows = $$('[data-stay-row]', sc);
+      var inPopup = sc.hasAttribute('data-ft-panel');
+      if (sc.getAttribute('data-stay-exact') === '1') {
+        if (filtered) return;
+        var m = {};
+        rows.forEach(function (r) { var c = $('.od-cat__n, .od-ft__count', r); m[r.getAttribute('data-stay-row')] = c ? c.textContent.trim() : ''; });
+        mem[all] = m; changed = true;
+        return;
+      }
+      var known = mem[all];
+      if (!known) return;
+      rows.forEach(function (r) {
+        var href = r.getAttribute('data-stay-row');
+        var cur = r.classList.contains('is-active') || r.classList.contains('is-current');
+        if (!Object.prototype.hasOwnProperty.call(known, href)) { if (!cur) r.remove(); return; }
+        if (filtered || cur || !known[href] || $('.od-cat__n, .od-ft__count', r)) return;
+        var el = document.createElement(inPopup ? 'small' : 'span');
+        el.className = inPopup ? 'od-ft__count' : 'od-cat__n';
+        el.textContent = known[href];
+        var first = inPopup ? $('span', r) : null;
+        if (first && first.nextSibling) r.insertBefore(el, first.nextSibling); else r.appendChild(el);
+      });
+    });
+    if (changed) { try { sessionStorage.setItem(STAY_KEY, JSON.stringify(mem)); } catch (e) {} }
+  }
   function reinit(root) {
+    staySync();
     OD.initCards && OD.initCards(root);
     OD.wlPaint && OD.wlPaint(root);
     var saved = savedCols();
@@ -526,7 +564,8 @@
     box.hidden = false;
   }
   fpSaleSync();
-  document.addEventListener('DOMContentLoaded', function () { fpSaleSync(); });
+  document.addEventListener('DOMContentLoaded', function () { fpSaleSync(); staySync(); initCats(); });
+  staySync();
   document.addEventListener('od:modal:open', function (e) {
     if (!e.detail || e.detail.name !== 'filter') return;
     var fp = fpEl();

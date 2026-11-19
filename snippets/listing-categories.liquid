@@ -23,14 +23,14 @@
       assign rtl = true
     endif
   -%}
-  <nav class="od-listing__cats od-listing__cats--stay" aria-label="{{ 'listing.categories' | t }}" data-listing-cats data-t-more="{{ 'listing.more' | t: count: '__N__' | escape }}" data-t-less="{{ 'listing.less' | t | escape }}">
+  <nav class="od-listing__cats od-listing__cats--stay" data-stay data-stay-all="{{ sal[1] }}" data-stay-exact="{{ sn0[7] | default: '0' }}" aria-label="{{ 'listing.categories' | t }}" data-listing-cats data-t-more="{{ 'listing.more' | t: count: '__N__' | escape }}" data-t-less="{{ 'listing.less' | t | escape }}">
     {%- if sbk.size > 1 -%}
       <a class="od-cat od-cat--back" href="{{ sbk[1] }}" data-cat><span class="od-cat__chev" aria-hidden="true">{% if rtl %}&rsaquo;{% else %}&lsaquo;{% endif %}</span>{% if sn0[5] == 'dept' %}{{ 'collections.filter.all_in' | t: name: sbk[0] }}{% else %}{{ sbk[0] }}{% endif %}</a>
     {%- endif -%}
     {%- for r in srows -%}
       {%- assign rf = r | split: '~~' -%}
       {%- if rf.size < 5 -%}{%- continue -%}{%- endif -%}
-      <a class="od-cat{% if rf[3] == '1' %} is-active{% endif %}" href="{% if rf[3] == '1' %}{{ sal[1] }}{% else %}{{ rf[1] }}{% endif %}"{% if rf[3] == '1' %} aria-current="page"{% endif %} data-cat>{{ rf[0] }}{% if rf[2] != '-' %}<span class="od-cat__n">{{ rf[2] }}</span>{% endif %}</a>
+      <a class="od-cat{% if rf[3] == '1' %} is-active{% endif %}" href="{% if rf[3] == '1' %}{{ sal[1] }}{% else %}{{ rf[1] }}{% endif %}"{% if rf[3] == '1' %} aria-current="page"{% endif %} data-cat data-stay-row="{{ rf[1] }}">{{ rf[0] }}{% if rf[2] != '-' %}<span class="od-cat__n">{{ rf[2] }}</span>{% endif %}</a>
     {%- endfor -%}
     <button type="button" class="od-cat od-cat--more" data-cats-more aria-expanded="false" hidden></button>
   </nav>
