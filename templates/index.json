@@ -15,13 +15,13 @@
         "slide1": {
           "type": "slide",
           "settings": {
-            "image": "shopify:\/\/shop_images\/White_friday_2560_x_720.png",
-            "mobile_image": "shopify:\/\/shop_images\/White_friday_590_x_890-1.png",
+            "image": "shopify://shop_images/White_friday_2560_x_720_3.png",
+            "mobile_image": "shopify://shop_images/White_friday_590_x_890-1.png",
             "top_subtitle": "",
             "title": "",
             "subtitle": "",
             "button_label": "Explore",
-            "button_url": "shopify:\/\/collections\/white-friday"
+            "button_url": "shopify://collections/white-friday"
           }
         }
       },
@@ -113,7 +113,7 @@
           "type": "category",
           "settings": {
             "collection": "women",
-            "image": "shopify:\/\/shop_images\/oHeknmSyCj1a7cdNi0XIdlQXEFh95Dz1XjBSUOPT_85977509-678b-4665-ba4c-b6473459a84e.webp",
+            "image": "shopify://shop_images/oHeknmSyCj1a7cdNi0XIdlQXEFh95Dz1XjBSUOPT_85977509-678b-4665-ba4c-b6473459a84e.webp",
             "subtitle": "",
             "title": "Women",
             "url": ""
@@ -123,7 +123,7 @@
           "type": "category",
           "settings": {
             "collection": "men",
-            "image": "shopify:\/\/shop_images\/Men_09f2745d-f8dc-42a4-9c2f-c581a68d72e3.jpg",
+            "image": "shopify://shop_images/Men_09f2745d-f8dc-42a4-9c2f-c581a68d72e3.jpg",
             "subtitle": "",
             "title": "Men",
             "url": ""
@@ -133,7 +133,7 @@
           "type": "category",
           "settings": {
             "collection": "kids-girls-3-16-years",
-            "image": "shopify:\/\/shop_images\/Kids_Girls_83ae6887-0b1a-4c9e-bec9-ceca00bbcf24.jpg",
+            "image": "shopify://shop_images/Kids_Girls_83ae6887-0b1a-4c9e-bec9-ceca00bbcf24.jpg",
             "subtitle": "Kids 3-16 Years",
             "title": "Girls",
             "url": ""
@@ -143,7 +143,7 @@
           "type": "category",
           "settings": {
             "collection": "kids-boys-3-16-years",
-            "image": "shopify:\/\/shop_images\/Kids_Boys_4096ae82-716b-4522-9eb8-ac105bd4cb1e.jpg",
+            "image": "shopify://shop_images/Kids_Boys_4096ae82-716b-4522-9eb8-ac105bd4cb1e.jpg",
             "subtitle": "Kids 3-16 Years",
             "title": "Boys",
             "url": ""
@@ -153,7 +153,7 @@
           "type": "category",
           "settings": {
             "collection": "jewellery",
-            "image": "shopify:\/\/shop_images\/Jewelry_4bd9a584-10cb-4748-a9f9-c21fdd0a4415.jpg",
+            "image": "shopify://shop_images/Jewelry_4bd9a584-10cb-4748-a9f9-c21fdd0a4415.jpg",
             "subtitle": "",
             "title": "Jewellery",
             "url": ""
@@ -205,7 +205,7 @@
         "reel_9kxpX6": {
           "type": "reel",
           "settings": {
-            "video": "shopify:\/\/files\/videos\/instagram_reel_Dc8Qp5eMgQ5_2.mp4",
+            "video": "shopify://files/videos/instagram_reel_Dc8Qp5eMgQ5_2.mp4",
             "caption": "",
             "product": "alemais-astro-star-print-gown-7681d",
             "products": [],
@@ -217,7 +217,7 @@
         "reel_dXMa4K": {
           "type": "reel",
           "settings": {
-            "video": "shopify:\/\/files\/videos\/instagram_reel_Dc3X8_MsqIs.mp4",
+            "video": "shopify://files/videos/instagram_reel_Dc3X8_MsqIs.mp4",
             "caption": "",
             "product": "veja-draped-eco-conscious-dark-sneakers-ns0221612a",
             "products": [],
@@ -229,7 +229,7 @@
         "reel_znQVkr": {
           "type": "reel",
           "settings": {
-            "video": "shopify:\/\/files\/videos\/op2.mov",
+            "video": "shopify://files/videos/op2.mov",
             "caption": "",
             "product": "",
             "products": [],
@@ -241,7 +241,7 @@
         "reel_cXGYx6": {
           "type": "reel",
           "settings": {
-            "video": "shopify:\/\/files\/videos\/WhatsApp Video 2026-09-10 at 5.55.58 PM.mp4",
+            "video": "shopify://files/videos/WhatsApp Video 2026-09-10 at 5.55.58 PM.mp4",
             "caption": "",
             "product": "",
             "products": [],
@@ -283,7 +283,7 @@
           "type": "brand",
           "settings": {
             "name": "MKI MIYUKI ZOKU",
-            "image": "shopify:\/\/shop_images\/5X8h5wySI2WjrgV1eOwpb2atE4gNM3qGx3Vjycb9.webp",
+            "image": "shopify://shop_images/5X8h5wySI2WjrgV1eOwpb2atE4gNM3qGx3Vjycb9.webp",
             "collection": "",
             "url": "",
             "products": []
@@ -293,7 +293,7 @@
           "type": "brand",
           "settings": {
             "name": "IRO",
-            "image": "shopify:\/\/shop_images\/ROABtPEY1QCi9oa1rIwZ3LZMgnKpeqZjH3OwOdvZ.webp",
+            "image": "shopify://shop_images/ROABtPEY1QCi9oa1rIwZ3LZMgnKpeqZjH3OwOdvZ.webp",
             "collection": "",
             "url": "",
             "products": []
@@ -303,7 +303,7 @@
           "type": "brand",
           "settings": {
             "name": "Oilily",
-            "image": "shopify:\/\/shop_images\/01JDiAXEUjVlZe8e9yJ8ER5bNFIdFNzjKxYtwzZv.webp",
+            "image": "shopify://shop_images/01JDiAXEUjVlZe8e9yJ8ER5bNFIdFNzjKxYtwzZv.webp",
             "collection": "",
             "url": "",
             "products": []
@@ -313,7 +313,7 @@
           "type": "brand",
           "settings": {
             "name": "VEJA",
-            "image": "shopify:\/\/shop_images\/4grBciZjLQRW04Q0Jbgmth0OQGn4S7mLp2gmcXOS.webp",
+            "image": "shopify://shop_images/4grBciZjLQRW04Q0Jbgmth0OQGn4S7mLp2gmcXOS.webp",
             "collection": "",
             "url": "",
             "products": []
@@ -329,7 +329,7 @@
       "settings": {
         "title": "Featured Brands",
         "button_label": "Discover all",
-        "button_url": "\/pages\/discover-all-brands"
+        "button_url": "/pages/discover-all-brands"
       }
     },
     "new_in_trend": {
@@ -346,7 +346,7 @@
     "banner": {
       "type": "image-banner",
       "settings": {
-        "image": "shopify:\/\/shop_images\/I0mjH9Ddj27lVgve3lW1lOcPj07MSjD3t1NQyhHE_1.webp",
+        "image": "shopify://shop_images/I0mjH9Ddj27lVgve3lW1lOcPj07MSjD3t1NQyhHE_1.webp",
         "height": 720,
         "top_subtitle": "NOW AT OMARIEDEN",
         "title": "MARY KATRANTZOU",
@@ -362,7 +362,7 @@
           "type": "look",
           "settings": {
             "name": "Floral Poise",
-            "image": "shopify:\/\/shop_images\/hf_20260914_122844_02fe7a6c-f31b-44db-958d-e149247bd75e.png",
+            "image": "shopify://shop_images/hf_20260914_122844_02fe7a6c-f31b-44db-958d-e149247bd75e.png",
             "products": [
               "mary-katrantzou-mk-ss2026-d60-verba-capelet-maxi-dress"
             ]
@@ -372,7 +372,7 @@
           "type": "look",
           "settings": {
             "name": "The Natural Edit",
-            "image": "shopify:\/\/shop_images\/ChatGPT_Image_Sep_14_2026_at_09_44_27_AM_25b80765-05f1-45ae-bba3-c8f6b5edc16e.jpg",
+            "image": "shopify://shop_images/ChatGPT_Image_Sep_14_2026_at_09_44_27_AM_25b80765-05f1-45ae-bba3-c8f6b5edc16e.jpg",
             "products": []
           }
         },
@@ -380,7 +380,7 @@
           "type": "look",
           "settings": {
             "name": "Bloom in Pink",
-            "image": "shopify:\/\/shop_images\/hf_20260914_111127_c89e507e-4210-4c41-a063-4cef9af94c12.png",
+            "image": "shopify://shop_images/hf_20260914_111127_c89e507e-4210-4c41-a063-4cef9af94c12.png",
             "products": [
               "mary-katrantzou-mk-ss2026-d54-alma-halter-open-back-maxi-dress"
             ]
@@ -390,7 +390,7 @@
           "type": "look",
           "settings": {
             "name": "Urban Ease",
-            "image": "shopify:\/\/shop_images\/hf_20260913_133358_cff4cd0d-5a54-46d9-9c42-bf50a6b07b7f.jpg",
+            "image": "shopify://shop_images/hf_20260913_133358_cff4cd0d-5a54-46d9-9c42-bf50a6b07b7f.jpg",
             "products": []
           }
         },
@@ -398,7 +398,7 @@
           "type": "look",
           "settings": {
             "name": "Junior Classic",
-            "image": "shopify:\/\/shop_images\/hf_20260914_090103_8bf07d77-24e0-4917-9420-b956ff1a6605.png",
+            "image": "shopify://shop_images/hf_20260914_090103_8bf07d77-24e0-4917-9420-b956ff1a6605.png",
             "products": []
           }
         },
@@ -406,7 +406,7 @@
           "type": "look",
           "settings": {
             "name": "Little Soleil",
-            "image": "shopify:\/\/shop_images\/hf_20260914_085034_c3a531b0-1078-4107-906b-255d2413806e.png",
+            "image": "shopify://shop_images/hf_20260914_085034_c3a531b0-1078-4107-906b-255d2413806e.png",
             "products": []
           }
         }
@@ -436,7 +436,7 @@
         "eyebrow": "STEP INTO THE",
         "title": "World Of Omarieden",
         "text": "Discover the latest collections from the most esteemed fashion houses, designed for the upcoming season. Join the Omarieden Circle loyalty program to enjoy exclusive benefits and be the first to access these stunning arrivals!",
-        "image": "shopify:\/\/shop_images\/g4ZPtlohqKqlDtB7BOejnZngyG1VFlW9CcljuCs2.png",
+        "image": "shopify://shop_images/g4ZPtlohqKqlDtB7BOejnZngyG1VFlW9CcljuCs2.png",
         "button_label": "Explore",
         "button_url": ""
       }
@@ -448,36 +448,36 @@
           "type": "card",
           "settings": {
             "article": "",
-            "image": "shopify:\/\/shop_images\/ALEMAIS_7668D_MULTICOLOR_2_copy.webp",
+            "image": "shopify://shop_images/ALEMAIS_7668D_MULTICOLOR_2_copy.webp",
             "label": "ALÉMAIS",
             "title": "Wearable Art from Sydney",
             "text": "Silk twill sets, painterly sundresses, lace and beading, and two gowns from the Sydney label that treats every dress as a canvas.",
             "link_label": "Shop the edit",
-            "link": "https:\/\/bpsv5j-2w.myshopify.com\/blogs\/curated-edits\/a-closer-look-at-alemais-wearable-art-from-sydney"
+            "link": "https://bpsv5j-2w.myshopify.com/blogs/curated-edits/a-closer-look-at-alemais-wearable-art-from-sydney"
           }
         },
         "c2": {
           "type": "card",
           "settings": {
-            "article": "curated-edits\/a-closer-look-at-lelet-ny-jewellery-for-the-hair",
-            "image": "shopify:\/\/shop_images\/Lelet_NY_LELHR25-2491G_RAINBOW-MULTI_4.webp",
+            "article": "curated-edits/a-closer-look-at-lelet-ny-jewellery-for-the-hair",
+            "image": "shopify://shop_images/Lelet_NY_LELHR25-2491G_RAINBOW-MULTI_4.webp",
             "label": "LELEY NY",
             "title": "Jewellery for the Hair",
             "text": "Your hair deserves jewellery too.",
             "link_label": "Shop the edit",
-            "link": "https:\/\/bpsv5j-2w.myshopify.com\/blogs\/curated-edits\/a-closer-look-at-lelet-ny-jewellery-for-the-hair"
+            "link": "https://bpsv5j-2w.myshopify.com/blogs/curated-edits/a-closer-look-at-lelet-ny-jewellery-for-the-hair"
           }
         },
         "c3": {
           "type": "card",
           "settings": {
-            "article": "curated-edits\/a-closer-look-at-oilily-colour-print-and-play",
-            "image": "shopify:\/\/shop_images\/OILILY_studio_SS26_53_1024x1024_77949aad-f654-4ade-b4cb-97d57510c274.webp",
+            "article": "curated-edits/a-closer-look-at-oilily-colour-print-and-play",
+            "image": "shopify://shop_images/OILILY_studio_SS26_53_1024x1024_77949aad-f654-4ade-b4cb-97d57510c274.webp",
             "label": "OILILY",
             "title": "A Closer Look at Oilily, Colour, Print and Play",
             "text": "Colour as a way of life",
             "link_label": "Shop The Edit",
-            "link": "https:\/\/bpsv5j-2w.myshopify.com\/blogs\/curated-edits\/a-closer-look-at-oilily-colour-print-and-play"
+            "link": "https://bpsv5j-2w.myshopify.com/blogs/curated-edits/a-closer-look-at-oilily-colour-print-and-play"
           }
         }
       },
@@ -506,7 +506,7 @@
     "new_brand": {
       "type": "new-brand",
       "settings": {
-        "image": "shopify:\/\/shop_images\/6q0zlqerNcCk8OtZWKs86wKuZF7sGRhJhoBgHFMc.jpg",
+        "image": "shopify://shop_images/6q0zlqerNcCk8OtZWKs86wKuZF7sGRhJhoBgHFMc.jpg",
         "eyebrow": "NEW BRAND",
         "title": "IRO",
         "text": "Born in Paris and defined by effortless sophistication, IRO embodies modern confidence through refined tailoring and understated elegance. The brand combines contemporary design with impeccable craftsmanship, creating versatile pieces that balance timeless style with a distinctly urban spirit.",
