@@ -156,3 +156,17 @@
 .od-dm__promoImg { flex: 1 1 0; min-height: 0; aspect-ratio: auto; }
 .od-dm__promoTitle { margin-top: 14px; font-size: 19px; }
 .od-dm__promo .od-dm__promoBtn { align-self: flex-start; }
+
+/* Highlighted tab (19 Nov 2026, header block "nav_highlight"): solid box, first tab on desktop and first row of the side menu.
+   The link keeps the row height of the other tabs (box 7px + link 9px = their 16px). */
+._item_10uue_77.od-nav--hl > a { padding: 9px 0; }
+._item_10uue_77.od-nav--hl > a:before { display: none; }
+.od-nav__hlbox { display: inline-block; padding: 7px 14px; background: var(--od-hl-bg, #551c25); color: var(--od-hl-fg, #fcf8f2); font-weight: 500; letter-spacing: .04em; white-space: nowrap; transition: background-color .2s ease; }
+:dir(rtl) .od-nav__hlbox { letter-spacing: 0; }
+._item_10uue_77.od-nav--hl > a:hover .od-nav__hlbox,
+._item_10uue_77.od-nav--hl > a:focus-visible .od-nav__hlbox { background: #3f141b; }
+.od-sm__item--hl { margin: 0 -24px; }
+.od-sm__item--hl .od-sm__row { padding: 14px 24px; background: var(--od-hl-bg, #551c25); }
+.od-sm__item--hl .od-sm__rowTitle { color: var(--od-hl-fg, #fcf8f2); }
+.od-sm__hlTag { font-family: Bricolage, sans-serif; font-size: 13px; line-height: 1.4; color: var(--od-hl-fg, #fcf8f2); opacity: .8; white-space: nowrap; }
+:dir(rtl) .od-sm__hlTag { font-family: Arabic-Regular; }

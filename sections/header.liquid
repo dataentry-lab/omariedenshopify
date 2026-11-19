@@ -51,6 +51,25 @@
     endif
   endfor
   assign extras_pos = section.settings.extras_position | default: 'first'
+  assign hl_block = nil
+  for block in section.blocks
+    if block.type == 'nav_highlight' and block.settings.show
+      assign hl_block = block
+      break
+    endif
+  endfor
+  if hl_block
+    assign hl_label = hl_block.settings.label | default: 'Cyber Sale'
+    assign hl_tag = hl_block.settings.tag
+    if rtl
+      assign hl_label = hl_block.settings.label_ar | default: hl_label
+      assign hl_tag = hl_block.settings.tag_ar | default: hl_tag
+    endif
+    assign hl_default = routes.root_url | append: '/collections/white-friday' | replace: '//', '/'
+    assign hl_link = hl_block.settings.link | default: hl_default
+    assign hl_bg = hl_block.settings.bg | default: '#551c25'
+    assign hl_fg = hl_block.settings.fg | default: '#fcf8f2'
+  endif
 -%}
 <section class="_mainheader_kqzl1_1 {% unless dark %}_pChange_kqzl1_10{% endunless %}" data-header data-dark="{{ dark }}">
   <div class="_container_1kxnl_30 ">
@@ -125,6 +144,12 @@
     <div class="_nav__content_10uue_61">
       <div class="_lists_10uue_71">
         <ul>
+          {%- comment -%} Highlighted tab (19 Nov 2026, block "nav_highlight"): solid box, always the first tab {%- endcomment -%}
+          {%- if hl_block -%}
+            <li class="_ItemList_10uue_67 _item_10uue_77 od-nav--hl {% if dark %}_darkItem_10uue_184{% endif %}" data-nav-item {{ hl_block.shopify_attributes }}>
+              <a class="_navLink_10uue_168" href="{{ hl_link }}"><span class="od-nav__hlbox" style="--od-hl-bg: {{ hl_bg }}; --od-hl-fg: {{ hl_fg }};">{{ hl_label | escape }}</span></a>
+            </li>
+          {%- endif -%}
           {%- if extras_pos == 'first' -%}{%- render 'header-extras', blocks: section.blocks, hsettings: section.settings, newin_block: newin_block, has_designers: has_designers, dark: dark, rtl: rtl -%}{%- endif -%}
           {%- for link in linklists[menu].links -%}
             {%- if settings.hide_empty_cats and link.type == 'collection_link' and link.object.all_products_count == 0 -%}{%- unless link.active or link.child_active -%}{%- continue -%}{%- endunless -%}{%- endif -%}
@@ -206,7 +231,7 @@
   </header>
 
   {%- comment -%} Side menu drawer (mobile + desktop), replaces the old mobile nav {%- endcomment -%}
-  {%- render 'side-menu', blocks: section.blocks, hsettings: section.settings, menu: menu, rtl: rtl, newin_block: newin_block, has_designers: has_designers, extras_pos: extras_pos -%}
+  {%- render 'side-menu', blocks: section.blocks, hsettings: section.settings, menu: menu, rtl: rtl, newin_block: newin_block, has_designers: has_designers, extras_pos: extras_pos, hl_block: hl_block, hl_label: hl_label, hl_tag: hl_tag, hl_link: hl_link, hl_bg: hl_bg, hl_fg: hl_fg -%}
 </section>
 
 {% schema %}
@@ -228,8 +253,24 @@
     { "type": "text", "id": "designers_all_label_ar", "label": "\"All designers\" link label (Arabic)", "default": "كل المصممين" },
     { "type": "url", "id": "designers_all_link", "label": "\"All designers\" link", "info": "Default: the Brands page /pages/discover-all-brands" }
   ],
-  "max_blocks": 16,
+  "max_blocks": 20,
   "blocks": [
+    {
+      "type": "nav_highlight",
+      "name": "Highlighted tab",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "A highlighted tab shown first in the menu (desktop) and as the first row of the side menu (mobile), for a sale or a campaign. Untick to hide it without deleting it." },
+        { "type": "checkbox", "id": "show", "label": "Show this tab", "default": true },
+        { "type": "text", "id": "label", "label": "Label", "default": "Cyber Sale" },
+        { "type": "text", "id": "label_ar", "label": "Label (Arabic)", "default": "تخفيضات سايبر" },
+        { "type": "url", "id": "link", "label": "Link", "info": "Default: the Cyber Sale collection (/collections/white-friday)" },
+        { "type": "text", "id": "tag", "label": "Small text in the mobile menu", "default": "Up to 70% off", "info": "Optional. Shown at the end of the row in the side menu only." },
+        { "type": "text", "id": "tag_ar", "label": "Small text in the mobile menu (Arabic)", "default": "خصم حتى 70%" },
+        { "type": "color", "id": "bg", "label": "Box colour", "default": "#551c25" },
+        { "type": "color", "id": "fg", "label": "Text colour", "default": "#fcf8f2" }
+      ]
+    },
     {
       "type": "nav_newin",
       "name": "New In link",

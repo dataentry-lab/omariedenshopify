@@ -2,6 +2,7 @@
   Side menu drawer (mobile + desktop). Rendered from sections/header.liquid.
   Params: blocks (section.blocks, for "menu_banners" / "designers_col" / "designers_promo"), hsettings (section.settings), menu (linklist handle), rtl (boolean),
           newin_block, has_designers, extras_pos ('first' | 'last') -- the New In + Designers rows (26 Oct 2026)
+          hl_block, hl_label, hl_tag, hl_link, hl_bg, hl_fg -- the highlighted first row (19 Nov 2026, header block "nav_highlight")
   Level 1: department list + My account + Language & Region.
   Level 2: one panel per department, slides in over level 1 inside the same drawer.
   Opened through the modal system: OD.openModal('menu') / data-open-modal="menu" (od-menu.js also
@@ -55,6 +56,12 @@
     </div>
     <div class="_content_9316i_45 od-sm__body">
       <ul class="od-sm__list">
+        {%- comment -%} Highlighted row (19 Nov 2026, header block "nav_highlight"), always first {%- endcomment -%}
+        {%- if hl_block -%}
+          <li class="od-sm__item od-sm__item--hl" style="--od-hl-bg: {{ hl_bg }}; --od-hl-fg: {{ hl_fg }};">
+            <a class="od-sm__row" href="{{ hl_link }}"><span class="od-sm__rowTitle">{{ hl_label | escape }}</span>{%- if hl_tag != blank -%}<span class="od-sm__hlTag">{{ hl_tag | escape }}</span>{%- endif -%}</a>
+          </li>
+        {%- endif -%}
         {%- if extras_pos == 'first' -%}{{ extras_rows }}{%- endif -%}
         {%- for link in linklists[menu].links -%}
           {%- if settings.hide_empty_cats and link.type == 'collection_link' and link.object.all_products_count == 0 -%}{%- unless link.active or link.child_active -%}{%- continue -%}{%- endunless -%}{%- endif -%}
