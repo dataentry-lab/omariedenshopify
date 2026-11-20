@@ -349,13 +349,51 @@
     }
     return poCache[handle];
   }
-  async function poFix(data) {
+  /* ---------- barcode on the order line (20 Nov 2026) ----------
+     Every bag line carries the hidden line item property "_Barcode" = the variant barcode, so the team sees it under the SKU
+     on the order page in Shopify admin. The leading underscore keeps it out of the checkout; the bag, the emails and the
+     packing slip do not print it. The barcode comes from the product data already in the page (product page json, card json);
+     when the variant is not known there (Shop the Look, some JS cards) the product is read once after the add and the line is updated.
+     Switch: Theme settings > Order details. */
+  const BC_KEY = '_Barcode';
+  const bcMap = {};     // variant id -> barcode ('' = the variant has none)
+  const bcFetch = {};   // handle -> promise
+  function bcLearn(p) {
+    ((p && p.variants) || []).forEach((v) => { if (v && v.id != null && 'barcode' in v) bcMap[String(v.id)] = v.barcode ? String(v.barcode).trim() : ''; });
+  }
+  function bcKnown(variantId) {
+    const k = String(variantId);
+    if (!(k in bcMap)) { // card json blobs that were never opened (bag "Trending now", sliders)
+      $$('script[data-card-json]:not([data-bc]), script[data-product-json]:not([data-bc])').forEach((n) => { n.setAttribute('data-bc', ''); try { bcLearn(JSON.parse(n.textContent)); } catch (e) { /* skip */ } });
+    }
+    return k in bcMap ? bcMap[k] : null;
+  }
+  function bcLookup(variantId, handle) {
+    const known = bcKnown(variantId);
+    if (known !== null || !handle) return Promise.resolve(known || '');
+    if (!(handle in bcFetch)) {
+      const root = String(OD.rootUrl || '/').replace(/\/?$/, '/');
+      bcFetch[handle] = fetch(root + 'products/' + encodeURIComponent(handle) + '.js', { headers: { Accept: 'application/json' } })
+        .then((r) => (r.ok ? r.json() : null)).then((p) => { bcLearn(p); }).catch(() => {});
+    }
+    return bcFetch[handle].then(() => bcMap[String(variantId)] || '');
+  }
+  OD.bcLearn = bcLearn; OD.bcKey = BC_KEY;
+  /* after an add: lines that still miss the pre-order note (unknown product) or the barcode get them in ONE change request */
+  async function lineFix(data, needPo) {
     const items = (data && data.items) || [];
     for (const it of items) {
-      if (it.properties && it.properties[PO_KEY]) continue;
-      const info = await poLookup(it.handle);
-      if (!info || !info.on || info.closed) continue;
-      const props = Object.assign({}, it.properties || {}, { [PO_KEY]: info.text });
+      const props = Object.assign({}, it.properties || {});
+      let changed = false;
+      if (needPo && OD.preorder && !props[PO_KEY]) {
+        const info = await poLookup(it.handle);
+        if (info && info.on && !info.closed) { props[PO_KEY] = info.text; changed = true; }
+      }
+      if (OD.barcodeLine && !props[BC_KEY]) {
+        const bc = await bcLookup(it.variant_id || it.id, it.handle);
+        if (bc) { props[BC_KEY] = bc; changed = true; }
+      }
+      if (!changed) continue;
       await cartRequest(OD.cartChangeUrl + '.js', { id: it.key, quantity: it.quantity, properties: props });
       it.properties = props;
     }
@@ -363,9 +401,12 @@
   OD.poLookup = poLookup; OD.poKey = PO_KEY;
   async function addToCart(variantId, quantity, po) {
     const line = { id: variantId, quantity: quantity || 1 };
-    if (po && po.on && po.text) line.properties = { [PO_KEY]: po.text };
+    const props = {};
+    if (po && po.on && po.text) props[PO_KEY] = po.text;
+    if (OD.barcodeLine) { const bc = bcKnown(variantId); if (bc) props[BC_KEY] = bc; }
+    if (Object.keys(props).length) line.properties = props;
     const data = await cartRequest(OD.cartAddUrl + '.js', { items: [line] });
-    if (po === undefined && OD.preorder) { try { await poFix(data); } catch (e) { /* the line stays without the note */ } }
+    if ((po === undefined && OD.preorder) || OD.barcodeLine) { try { await lineFix(data, po === undefined); } catch (e) { /* the line stays without the note */ } }
     toast(OD.t.addedToCart);
     setCartCount((OD.cartCount || 0) + (quantity || 1));
     // open the cart drawer right away; it re-renders itself and corrects the count
@@ -628,6 +669,7 @@
     const root = $('[data-product-root]');
     if (!root) return;
     const product = JSON.parse($('[data-product-json]', root).textContent);
+    bcLearn(product);
     const colorName = root.getAttribute('data-color-option');
     const sizeName = root.getAttribute('data-size-option');
     const optName = (o) => (typeof o === 'string' ? o : o.name);

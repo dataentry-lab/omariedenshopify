@@ -30,6 +30,7 @@
     let data = { options: [], color: '', single: true, images: [], variants: [] };
     const json = $('[data-card-json]', card);
     if (json) { try { data = Object.assign(data, JSON.parse(json.textContent)); } catch (e) { /* keep defaults */ } }
+    if (OD.bcLearn) OD.bcLearn(data); // variant barcodes for the hidden order line (theme.js)
     data.images = (data.images || []).map((i) => (typeof i === 'string' ? { src: i, alt: '' } : i));
     const img = $('[data-card-image]', card);
     if (!data.images.length && img) data.images = [{ src: img.getAttribute('src'), alt: img.getAttribute('alt') || '' }];
@@ -540,7 +541,7 @@
       options: opts, color: colorName, colour: colour || null, colour_variant: colourVariant || null,
       images: (p.images && p.images.length ? p.images : media.map((m) => m.src)).slice(0, 6).map((src) => ({ src: typeof src === 'string' ? src : (src.src || ''), alt: p.title })),
       media,
-      variants: p.variants.map((v) => ({ id: v.id, title: v.title, option1: variantOpt(v, 0), option2: variantOpt(v, 1), option3: variantOpt(v, 2), available: !!v.available, price: cents(v.price), compare_at_price: cents(v.compare_at_price), image: v.featured_image ? (v.featured_image.src || v.featured_image) : null, media_id: v.featured_media ? v.featured_media.id : (v.featured_image && v.featured_image.id ? v.featured_image.id : null), qty: 0, tracked: false })),
+      variants: p.variants.map((v) => ({ id: v.id, title: v.title, option1: variantOpt(v, 0), option2: variantOpt(v, 1), option3: variantOpt(v, 2), available: !!v.available, price: cents(v.price), compare_at_price: cents(v.compare_at_price), image: v.featured_image ? (v.featured_image.src || v.featured_image) : null, media_id: v.featured_media ? v.featured_media.id : (v.featured_image && v.featured_image.id ? v.featured_image.id : null), qty: 0, tracked: false, barcode: v.barcode || '' })),
       description: String(p.description || p.body || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 300),
       material: null,
       badges: OD.badgesFor ? OD.badgesFor(p, 2) : [],

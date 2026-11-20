@@ -657,6 +657,21 @@
     ]
   },
   {
+    "name": "Order details",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "For the team, not the shopper. Each piece added to the bag carries its barcode as a hidden line, so the order page in Shopify admin shows it under the SKU (as _Barcode). It is not shown in the bag, at checkout or in emails. It applies to orders placed after it is switched on."
+      },
+      {
+        "type": "checkbox",
+        "id": "order_barcode_line",
+        "label": "Add the barcode to order lines",
+        "default": true
+      }
+    ]
+  },
+  {
     "name": "Collections",
     "settings": [
       {
