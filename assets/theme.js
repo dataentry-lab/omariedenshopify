@@ -382,6 +382,7 @@
   /* after an add: lines that still miss the pre-order note (unknown product) or the barcode get them in ONE change request */
   async function lineFix(data, needPo) {
     const items = (data && data.items) || [];
+    let done = 0;
     for (const it of items) {
       const props = Object.assign({}, it.properties || {});
       let changed = false;
@@ -394,10 +395,36 @@
         if (bc) { props[BC_KEY] = bc; changed = true; }
       }
       if (!changed) continue;
-      await cartRequest(OD.cartChangeUrl + '.js', { id: it.key, quantity: it.quantity, properties: props });
-      it.properties = props;
+      try {
+        await cartRequest(OD.cartChangeUrl + '.js', { id: it.key, quantity: it.quantity, properties: props });
+        it.properties = props;
+        done++;
+      } catch (e) { /* this line stays as it is, the others go on */ }
     }
+    return done;
   }
+  /* 21 Nov 2026: the WHOLE bag. A line that was put in the bag before the barcode build went live (20 Nov), or that came from
+     a page left open or another device, has no barcode, and the add above only completes the line it just added. So every page
+     load checks the bag once and completes the lines that miss it (one change request per line, in the background).
+     Event od:cart:healed tells the bag drawer and the bag page to draw the lines again (their keys change with the property). */
+  let bagHealing = null;
+  function bagHeal() {
+    if (!OD.barcodeLine || !OD.cartUrl) return Promise.resolve(0);
+    if (bagHealing) return bagHealing;
+    bagHealing = (async () => {
+      let n = 0;
+      try {
+        const cart = await fetch(OD.cartUrl + '.js', { cache: 'no-store', headers: { Accept: 'application/json' } }).then((r) => r.json());
+        const miss = ((cart && cart.items) || []).filter((it) => !it.gift_card && !(it.properties && it.properties[BC_KEY]));
+        if (miss.length) n = await lineFix({ items: miss }, false);
+      } catch (e) { /* the bag stays as it is */ }
+      bagHealing = null;
+      if (n) document.dispatchEvent(new CustomEvent('od:cart:healed', { detail: { lines: n } }));
+      return n;
+    })();
+    return bagHealing;
+  }
+  OD.bagHeal = bagHeal;
   OD.poLookup = poLookup; OD.poKey = PO_KEY;
   async function addToCart(variantId, quantity, po) {
     const line = { id: variantId, quantity: quantity || 1 };
@@ -853,6 +880,7 @@
       const cart = await fetch(OD.cartUrl + '.js').then((r) => r.json());
       setCartCount(cart.item_count);
     };
+    on(document, 'od:cart:healed', () => { refresh().catch(() => {}); });
     on(page, 'click', async (e) => {
       const change = e.target.closest('[data-line-change]');
       if (change) {
@@ -1025,6 +1053,8 @@
     initMisc();
     wlPaint(document);
     setCartCount(OD.cartCount || 0);
+    // bag lines without the hidden barcode (older bags) are completed in the background
+    if (OD.barcodeLine && (OD.cartCount || 0) > 0) setTimeout(bagHeal, 600);
     fadeImages(document);
     if ('MutationObserver' in window) {
       let queued = false;

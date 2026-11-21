@@ -239,6 +239,9 @@
     sync(true);
   });
 
+  /* bag lines were completed with their barcode (theme.js bagHeal): their keys changed, draw them again */
+  on(document, 'od:cart:healed', () => { if (drawer()) sync(false); });
+
   /* ---------- line item actions ---------- */
   function collapse(item) {
     if (!item) return;
