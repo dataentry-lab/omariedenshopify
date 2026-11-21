@@ -24,8 +24,24 @@
     when 'title-ascending'
       assign sort_label = 'collections.sort.brand' | t
   endcase
+  assign lim_on = false
+  if settings.lim_listing != false and is_search != true and collection.handle != blank
+    assign lim_hs = settings.lim_listing_collections | newline_to_br | split: '<br />'
+    for h in lim_hs
+      assign hh = h | strip | downcase
+      if hh != '' and hh == collection.handle or hh == 'all'
+        assign lim_on = true
+      endif
+    endfor
+  endif
 -%}
-<div class="od-listing__toolbar{% if is_search %} od-listing__toolbar--search{% endif %}" data-listing-toolbar>
+{%- comment -%}
+  21 Nov 2026: "Limited availability" note under Filter / Sort by, with a short one-line strip while the row is pinned.
+  Theme settings > Limited availability note: lim_listing (on / off) + lim_listing_collections (handles, one per line; "all" = every collection).
+  Printed twice: --m inside the pinned Filter row (phones), --d as a row of the pinned toolbar (tablet + desktop).
+{%- endcomment -%}
+{%- capture lim_inner -%}{% render 'icon-clock' %}<span><b>{{ 'cart.limited.title' | t }}</b> <span class="od-listing__lim-full">{{ 'cart.limited.text' | t }}</span><span class="od-listing__lim-short">{{ 'cart.limited.short' | t }}</span></span>{%- endcapture -%}
+<div class="od-listing__toolbar{% if is_search %} od-listing__toolbar--search{% endif %}{% if lim_on %} od-listing__toolbar--lim{% endif %}" data-listing-toolbar>
   {%- render 'listing-categories', is_search: is_search, stay: stay -%}
   <div class="od-listing__sentinel" data-listing-sentinel aria-hidden="true"></div>
   <div class="od-listing__controls" data-listing-controls>
@@ -55,7 +71,9 @@
       <button type="button" data-grid-cols="5" aria-pressed="false" aria-label="{{ 'listing.grid_5' | t }}"><svg viewBox="0 0 46 6" width="46" height="6" aria-hidden="true"><g fill="currentColor"><circle cx="3" cy="3" r="3"/><circle cx="13" cy="3" r="3"/><circle cx="23" cy="3" r="3"/><circle cx="33" cy="3" r="3"/><circle cx="43" cy="3" r="3"/></g></svg></button>
     </div>
     <span class="od-listing__updating" aria-live="polite"><i aria-hidden="true"></i>{{ 'listing.updating' | t }}</span>
+    {%- if lim_on -%}<div class="od-po-note od-lim-note od-listing__lim od-listing__lim--m">{{ lim_inner }}</div>{%- endif -%}
   </div>
+  {%- if lim_on -%}<div class="od-po-note od-lim-note od-listing__lim od-listing__lim--d" aria-hidden="true">{{ lim_inner }}</div>{%- endif -%}
 </div>
 
 {%- comment -%} round 10: active filter chips (one per applied value + price range) with x to remove, and Clear all {%- endcomment -%}

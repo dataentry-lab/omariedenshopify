@@ -24,6 +24,30 @@
   assign color_name = settings.color_option_name | default: 'Color'
   assign size_name = settings.size_option_name | default: 'Size'
 -%}
+{%- liquid
+  assign ship_bottom = true
+  if settings.bag_shipping_pos == 'top'
+    assign ship_bottom = false
+  endif
+  assign lim_on = true
+  if settings.bag_limited_note == false
+    assign lim_on = false
+  endif
+-%}
+{%- capture ship_block -%}
+          <div class="_bag__shippingBar_1bfe0_323 od-cartd__shipping{% if ship_bottom %} od-cartd__shipping--foot{% endif %}" data-cartd-shipping>
+            {%- if remaining <= 0 -%}
+              <p data-cartd-shipping-text>{{ 'cart.shipping.unlocked' | t }}</p>
+            {%- else -%}
+              {%- assign remaining_amount = remaining | money_without_currency -%}
+              <p data-cartd-shipping-text>{{ 'cart.shipping.remaining_html' | t: amount: remaining_amount }}</p>
+            {%- endif -%}
+            <div class="_bag__shippingBar__bar_1bfe0_327"><div class="_bag__shippingBar__bar__progress_1bfe0_334 {% if rtl %}_progressBarRtl_1bfe0_30{% endif %}" style="width: {{ progress | at_most: 100 }}%;" data-cartd-shipping-bar></div></div>
+          </div>
+{%- endcapture -%}
+{%- capture lim_block -%}
+          <div class="od-po-note od-po-note--bag od-lim-note{% if ship_bottom %} od-lim-note--top{% endif %}">{% render 'icon-clock' %}<span><b>{{ 'cart.limited.title' | t }}</b> {{ 'cart.limited.text' | t }}</span></div>
+{%- endcapture -%}
 <div class="_backdrop_9316i_30 undefined" data-modal-backdrop="cart" data-show-class="_backdropShow_1bfe0_295"></div>
 <div class="_modal_9316i_132 undefined od-cartd {% if rtl %}_modalAddClsRtl_1bfe0_251 od-cartd--rtl{% else %}_modalAddCls_1bfe0_251{% endif %}" data-modal="cart" data-show-class="_show_1bfe0_289" data-cart-drawer data-section-id="{{ section.id }}" role="dialog" aria-modal="true" aria-label="{{ 'cart.title' | t }}"
   data-threshold="{{ threshold }}"
@@ -51,15 +75,12 @@
 
     <div class="_content_9316i_45 od-cartd__body">
         <div class="_bag_1bfe0_63 od-cartd__bag" data-cartd-bag{% if cart.item_count == 0 %} hidden{% endif %}>
-          <div class="_bag__shippingBar_1bfe0_323 od-cartd__shipping" data-cartd-shipping>
-            {%- if remaining <= 0 -%}
-              <p data-cartd-shipping-text>{{ 'cart.shipping.unlocked' | t }}</p>
-            {%- else -%}
-              {%- assign remaining_amount = remaining | money_without_currency -%}
-              <p data-cartd-shipping-text>{{ 'cart.shipping.remaining_html' | t: amount: remaining_amount }}</p>
-            {%- endif -%}
-            <div class="_bag__shippingBar__bar_1bfe0_327"><div class="_bag__shippingBar__bar__progress_1bfe0_334 {% if rtl %}_progressBarRtl_1bfe0_30{% endif %}" style="width: {{ progress | at_most: 100 }}%;" data-cartd-shipping-bar></div></div>
-          </div>
+          {%- comment -%} 21 Nov 2026: free shipping line next to Checkout, limited availability note on top (Theme settings > Limited availability note > bag_shipping_pos; "top" = the layout before) {%- endcomment -%}
+          {%- if ship_bottom -%}
+            {%- if lim_on -%}{{ lim_block }}{%- endif -%}
+          {%- else -%}
+            {{ ship_block }}
+          {%- endif -%}
 
           <div class="_bag__cards_1bfe0_359 od-cartd__items" data-cartd-items>
             {%- for item in cart.items -%}
@@ -195,8 +216,10 @@
         {%- if settings.cur_enabled != false and settings.cur_bag_note != false -%}
           <div class="od-po-note od-po-note--bag od-cur-note" data-cur-only hidden>{% render 'icon-info' %}<span>{{ 'currency.note' | t: currency: '[[cur]]' | replace: '[[cur]]', '<span data-cur-code></span>' }}</span></div>
         {%- endif -%}
-        {%- if settings.bag_limited_note != false -%}
-          <div class="od-po-note od-po-note--bag od-lim-note">{% render 'icon-clock' %}<span><b>{{ 'cart.limited.title' | t }}</b> {{ 'cart.limited.text' | t }}</span></div>
+        {%- if ship_bottom -%}
+          {{ ship_block }}
+        {%- elsif lim_on -%}
+          {{ lim_block }}
         {%- endif -%}
         <form action="{{ routes.cart_url }}" method="post" class="od-cartd__checkout-form">
           <button type="submit" name="checkout" class="_btn_lnddl_30 _checkout_1bfe0_199 od-cartd__checkout">{{ 'cart.drawer.checkout' | t }}{% unless settings.cur_enabled == false %}<span class="od-cur-btn" data-cur-only hidden> · <span data-cur-sar-of="[data-cur-total]"></span></span>{% endunless %}</button>

@@ -248,7 +248,8 @@
     },
     "limited": {
       "title": "Limited availability.",
-      "text": "Complete your purchase before your selected items sell out."
+      "text": "Complete your purchase before your selected items sell out.",
+      "short": "Selling out fast."
     }
   },
   "customer": {

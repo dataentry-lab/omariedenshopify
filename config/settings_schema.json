@@ -672,14 +672,82 @@
     ]
   },
   {
-    "name": "Bag notes",
+    "name": "Limited availability note",
     "settings": [
+      {
+        "type": "paragraph",
+        "content": "A small sandstone note: Limited availability. Complete your purchase before your selected items sell out. The words are in the theme content: Cart > Limited (Title, Text, Short)."
+      },
+      {
+        "type": "header",
+        "content": "Bag"
+      },
       {
         "type": "checkbox",
         "id": "bag_limited_note",
-        "label": "Show the limited availability note",
+        "label": "Show the note in the bag",
         "default": true,
-        "info": "A note above the Checkout button in the bag drawer and on the bag page. The words are in the theme content: Cart > Limited."
+        "info": "Bag drawer and bag page."
+      },
+      {
+        "type": "select",
+        "id": "bag_shipping_pos",
+        "label": "Free shipping line in the bag",
+        "options": [
+          {
+            "value": "bottom",
+            "label": "Next to Checkout, note on top"
+          },
+          {
+            "value": "top",
+            "label": "On top, note above Checkout"
+          }
+        ],
+        "default": "bottom",
+        "info": "The second choice is the layout used before 21 Nov 2026."
+      },
+      {
+        "type": "header",
+        "content": "Collection pages"
+      },
+      {
+        "type": "checkbox",
+        "id": "lim_listing",
+        "label": "Show the note under Filter and Sort by",
+        "default": true,
+        "info": "While the Filter row is pinned at the top, a short one-line version stays under it."
+      },
+      {
+        "type": "textarea",
+        "id": "lim_listing_collections",
+        "label": "Collections (one handle per line)",
+        "default": "white-friday",
+        "info": "The handle is the last part of the collection address, for example white-friday. Write all on a line to show the note on every collection."
+      },
+      {
+        "type": "header",
+        "content": "Product pages"
+      },
+      {
+        "type": "select",
+        "id": "lim_product",
+        "label": "Show the note above Add to cart",
+        "options": [
+          {
+            "value": "off",
+            "label": "Off"
+          },
+          {
+            "value": "sale",
+            "label": "Sale products only"
+          },
+          {
+            "value": "all",
+            "label": "All products"
+          }
+        ],
+        "default": "sale",
+        "info": "Sale products are the ones with the tag sale. Not shown on pre-order pieces or on a size that is sold out."
       }
     ]
   },

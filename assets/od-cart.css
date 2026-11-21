@@ -164,3 +164,11 @@
 .od-cartd-fade { animation: od-cartd-fade .3s ease both; }
 .od-cartd__items { transition: opacity .2s ease; }
 .od-cartd__inner.is-refreshing .od-cartd__items { opacity: 1; }
+
+/* 21 Nov 2026: free shipping line + bar next to the Checkout button (drawer footer, bag page summary card);
+   the limited availability note took its place at the top of the bag. Setting bag_shipping_pos. */
+.od-cartd__shipping.od-cartd__shipping--foot { margin: 0 0 16px !important; }
+.od-cartd__shipping.od-cartd__shipping--foot > p { font-size: 13px !important; margin-bottom: 8px !important; }
+.od-cartd__footer:has(.od-cartd__shipping--foot) ._subtotalinfo_1bfe0_235 { margin-bottom: 16px !important; }
+._bag__shippingBar_179js_78.od-cart__shipping--sum { margin: 0 0 16px; text-align: center; }
+._summary_1vg2n_70 .od-cart__shipping--sum ._bag__shippingBar__bar_179js_81 { background-color: #fcf8f2; }

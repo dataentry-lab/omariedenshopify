@@ -561,3 +561,23 @@
 .od-cat__chev { font-size: 15px; line-height: 1; margin-top: -2px; }
 a.od-ft__back { width: fit-content; }
 .od-fp a.od-ft__row--drill svg { flex: 0 0 auto; }
+
+/* 21 Nov 2026: "Limited availability" note under Filter / Sort by (snippets/listing-toolbar.liquid, settings lim_listing + lim_listing_collections).
+   Top of the page: the full sentence. While the row is pinned (.is-stuck): the short one-line text.
+   --m sits inside the pinned Filter row on phones, --d is a full-width row of the pinned toolbar on tablet + desktop. */
+.od-listing__lim { margin: 0; }
+.od-listing__lim-short { display: none; }
+.od-listing__lim.od-listing__lim--m { display: none; }
+.od-listing__toolbar--lim { flex-wrap: wrap; }
+.od-listing__lim.od-listing__lim--d { order: 3; flex: 0 0 100%; justify-content: center; align-items: center; text-align: center; }
+.od-listing__toolbar.is-stuck .od-listing__lim-full, .od-listing__controls.is-stuck .od-listing__lim-full { display: none; }
+.od-listing__toolbar.is-stuck .od-listing__lim-short, .od-listing__controls.is-stuck .od-listing__lim-short { display: inline; }
+@media (min-width: 1025px) {
+  .od-listing__toolbar--lim { row-gap: 8px; }
+  .od-listing__toolbar--lim .od-listing__cats { flex: 1 1 0; min-width: 0; }
+}
+@media (max-width: 767px) {
+  .od-listing__lim.od-listing__lim--d { display: none; }
+  .od-listing__lim.od-listing__lim--m { display: flex; grid-column: 1 / -1; }
+  .od-listing__controls.is-stuck .od-listing__lim--m { justify-content: center; align-items: center; padding: 5px 10px; white-space: nowrap; }
+}

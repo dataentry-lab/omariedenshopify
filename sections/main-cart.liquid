@@ -14,14 +14,18 @@
   assign color_name = settings.color_option_name | default: 'Color'
   assign size_name = settings.size_option_name | default: 'Size'
 -%}
-<div class="_container_1kxnl_30 " data-cart-page data-section-id="{{ section.id }}">
-  <div class="_content_7ogbc_30">
-    <div class="_bag_179js_45">
-      <h2 class="_title_1m4vh_30 undefined _bag__title_179js_62">{{ 'cart.title' | t }} <span>({{ cart.item_count }})</span></h2>
-
-      {%- if cart.item_count > 0 -%}
-        <div class="_bag__cards_179js_134">
-          <div class="undefined _bag__shippingBar_179js_78">
+{%- liquid
+  assign ship_bottom = true
+  if settings.bag_shipping_pos == 'top'
+    assign ship_bottom = false
+  endif
+  assign lim_on = true
+  if settings.bag_limited_note == false
+    assign lim_on = false
+  endif
+-%}
+{%- capture ship_block -%}
+          <div class="undefined _bag__shippingBar_179js_78{% if ship_bottom %} od-cart__shipping--sum{% endif %}">
             {%- if remaining <= 0 -%}
               <p>{{ 'cart.shipping.unlocked' | t }}</p>
             {%- else -%}
@@ -30,6 +34,23 @@
             {%- endif -%}
             <div class="_bag__shippingBar__bar_179js_81"><div class="_bag__shippingBar__bar__progress_179js_100 {% if rtl %}_progressBarRtl_1bfe0_30{% endif %}" style="width: {{ progress | at_most: 100 }}%;"></div></div>
           </div>
+{%- endcapture -%}
+{%- capture lim_block -%}
+          <div class="od-po-note od-po-note--bag od-lim-note{% if ship_bottom %} od-lim-note--top{% endif %}">{% render 'icon-clock' %}<span><b>{{ 'cart.limited.title' | t }}</b> {{ 'cart.limited.text' | t }}</span></div>
+{%- endcapture -%}
+<div class="_container_1kxnl_30 " data-cart-page data-section-id="{{ section.id }}">
+  <div class="_content_7ogbc_30">
+    <div class="_bag_179js_45">
+      <h2 class="_title_1m4vh_30 undefined _bag__title_179js_62">{{ 'cart.title' | t }} <span>({{ cart.item_count }})</span></h2>
+
+      {%- if cart.item_count > 0 -%}
+        <div class="_bag__cards_179js_134">
+          {%- comment -%} 21 Nov 2026: free shipping line in the summary card next to Checkout, limited availability note on top (bag_shipping_pos) {%- endcomment -%}
+          {%- if ship_bottom -%}
+            {%- if lim_on -%}{{ lim_block }}{%- endif -%}
+          {%- else -%}
+            {{ ship_block }}
+          {%- endif -%}
 
           {%- for item in cart.items -%}
             <div class="_checkoutCard_1jlsq_60" data-line="{{ forloop.index }}">
@@ -168,8 +189,10 @@
         {%- if settings.cur_enabled != false and settings.cur_bag_note != false -%}
           <div class="od-po-note od-po-note--bag od-cur-note" data-cur-only hidden>{% render 'icon-info' %}<span>{{ 'currency.note' | t: currency: '[[cur]]' | replace: '[[cur]]', '<span data-cur-code></span>' }}</span></div>
         {%- endif -%}
-        {%- if settings.bag_limited_note != false -%}
-          <div class="od-po-note od-po-note--bag od-lim-note">{% render 'icon-clock' %}<span><b>{{ 'cart.limited.title' | t }}</b> {{ 'cart.limited.text' | t }}</span></div>
+        {%- if ship_bottom -%}
+          {{ ship_block }}
+        {%- elsif lim_on -%}
+          {{ lim_block }}
         {%- endif -%}
         <form action="{{ routes.cart_url }}" method="post" style="display:contents">
           <button type="submit" name="checkout" class="_btn_lnddl_30 _summary__checkoutBtn_1vg2n_120">{{ 'cart.summary.checkout' | t }}{% unless settings.cur_enabled == false %}<span class="od-cur-btn" data-cur-only hidden> · <span data-cur-sar-of="[data-cur-total]"></span></span>{% endunless %}</button>

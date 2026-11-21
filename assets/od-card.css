@@ -380,3 +380,12 @@
 /* 21 Nov 2026: "Limited availability" note in the bag (cart-drawer.liquid, main-cart.liquid), setting bag_limited_note */
 .od-lim-note b { font-weight: 500; }
 ._summary_1vg2n_70 .od-lim-note { background: #fcf8f2; }
+
+/* 21 Nov 2026 (later): the limited availability note in its small size, used in the bag (now at the TOP of the bag,
+   the free shipping line moved next to Checkout), under Filter / Sort by on collection pages (od-listing.css)
+   and above the button row on the product page. Settings: Theme settings > Limited availability note. */
+.od-lim-note { font-size: 12px; line-height: 1.35; padding: 6px 10px; gap: 7px; }
+.od-lim-note .od-po-icon { width: 14px; height: 14px; margin-top: 1px; }
+.od-lim-note--top { margin: 0 0 16px; }
+.od-lim-note--pdp { margin: 0 0 16px; }
+@media (max-width: 767px) { .od-lim-note { font-size: 11px; } }

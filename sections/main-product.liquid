@@ -214,6 +214,22 @@
               <input type="hidden" name="properties[Pre-order]" value="{{ po_text | escape }}">
               <div class="od-po-note" data-po-note>{% render 'icon-clock' %}<span>{{ po_note }}</span></div>
             {%- endif -%}
+            {%- comment -%} 21 Nov 2026: "Limited availability" note above the button row (Theme settings > Limited availability note > lim_product: off / sale / all). Hidden by theme.js paint() when the selected size cannot be bought; never on pre-order pieces. {%- endcomment -%}
+            {%- liquid
+              assign lim_pdp = false
+              assign lim_mode = settings.lim_product | default: 'sale'
+              if lim_mode == 'all'
+                assign lim_pdp = true
+              elsif lim_mode == 'sale' and product.tags contains 'sale'
+                assign lim_pdp = true
+              endif
+              if po_on
+                assign lim_pdp = false
+              endif
+            -%}
+            {%- if lim_pdp -%}
+              <div class="od-po-note od-lim-note od-lim-note--pdp" data-lim-note{% unless can_buy %} hidden{% endunless %}>{% render 'icon-clock' %}<span><b>{{ 'cart.limited.title' | t }}</b> {{ 'cart.limited.text' | t }}</span></div>
+            {%- endif -%}
             {%- if nm_any -%}{%- render 'notify-box' -%}{%- endif -%}
             <div class="_CartSection_1fx6h_74{% if po_on %} od-po-cart{% endif %}">
               <div class="_WishlsitAndCart_1fx6h_74">

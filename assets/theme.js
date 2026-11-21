@@ -737,6 +737,7 @@
         if (OD.saleBadgePaint && v.available) OD.saleBadgePaint(root, v.price, v.compare_at_price); // Sale badge follows the selected size (18 Nov 2026)
         const canBuy = v.available && root.getAttribute('data-po') !== 'closed'; // pre-order cap reached = sold out
         if (addBtn) { addBtn.disabled = !canBuy; addBtn.textContent = canBuy ? addBtn.getAttribute('data-label-add') : addBtn.getAttribute('data-label-sold'); }
+        { const lim = $('[data-lim-note]', root); if (lim) lim.hidden = !canBuy; } // 21 Nov 2026: limited availability note only on a size that can be bought
         // 16 Nov 2026: Notify me on a sold-out size (assets/od-notify.js); data-nm = on when the product offers it
         OD.nmPaint && OD.nmPaint(root, !v.available && root.getAttribute('data-nm') === 'on', { variantId: v.id, handle: product.handle, size: sizeIdx > -1 ? (OD.sizeEU ? OD.sizeEU(root, v.options[sizeIdx]) : v.options[sizeIdx]) : '', soon: root.getAttribute('data-cs') === 'on' });
         if (styleCode && v.sku && !styleCode.getAttribute('data-fixed')) styleCode.textContent = v.sku;
@@ -745,6 +746,7 @@
       } else {
         if (addBtn) { addBtn.disabled = true; addBtn.textContent = addBtn.getAttribute('data-label-unavailable'); }
         OD.nmPaint && OD.nmPaint(root, false);
+        { const lim = $('[data-lim-note]', root); if (lim) lim.hidden = true; }
       }
       root.__wlPaint && root.__wlPaint();
       // 18 Nov 2026: size guide (assets/od-size.js): EU on the size boxes + "On the label" line
