@@ -171,4 +171,4 @@
 .od-cartd__shipping.od-cartd__shipping--foot > p { font-size: 13px !important; margin-bottom: 8px !important; }
 .od-cartd__footer:has(.od-cartd__shipping--foot) ._subtotalinfo_1bfe0_235 { margin-bottom: 16px !important; }
 ._bag__shippingBar_179js_78.od-cart__shipping--sum { margin: 0 0 16px; text-align: center; }
-._summary_1vg2n_70 .od-cart__shipping--sum ._bag__shippingBar__bar_179js_81 { background-color: #fcf8f2; }
+._summary_1vg2n_70 .od-cart__shipping--sum ._bag__shippingBar__bar_179js_81 { background-color: #fcf8f2; width: 100%; }

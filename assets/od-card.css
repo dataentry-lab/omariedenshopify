@@ -387,5 +387,5 @@
 .od-lim-note { font-size: 12px; line-height: 1.35; padding: 6px 10px; gap: 7px; }
 .od-lim-note .od-po-icon { width: 14px; height: 14px; margin-top: 1px; }
 .od-lim-note--top { margin: 0 0 16px; }
-.od-lim-note--pdp { margin: 0 0 16px; }
+.od-lim-note--pdp { margin: 0; }
 @media (max-width: 767px) { .od-lim-note { font-size: 11px; } }
