@@ -672,6 +672,18 @@
     ]
   },
   {
+    "name": "Bag notes",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "bag_limited_note",
+        "label": "Show the limited availability note",
+        "default": true,
+        "info": "A note above the Checkout button in the bag drawer and on the bag page. The words are in the theme content: Cart > Limited."
+      }
+    ]
+  },
+  {
     "name": "Collections",
     "settings": [
       {

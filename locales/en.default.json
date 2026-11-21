@@ -245,6 +245,10 @@
     },
     "preorder": {
       "mixed": "Your bag has a pre-order item. In-stock pieces ship now, pre-order pieces ship as soon as they are ready."
+    },
+    "limited": {
+      "title": "Limited availability.",
+      "text": "Complete your purchase before your selected items sell out."
     }
   },
   "customer": {

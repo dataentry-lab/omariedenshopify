@@ -376,3 +376,7 @@
 
 /* 18 Nov 2026: a Sale badge hidden by JS (the selected colour / size is at full price) */
 .od-card__badge[hidden] { display: none !important; }
+
+/* 21 Nov 2026: "Limited availability" note in the bag (cart-drawer.liquid, main-cart.liquid), setting bag_limited_note */
+.od-lim-note b { font-weight: 500; }
+._summary_1vg2n_70 .od-lim-note { background: #fcf8f2; }

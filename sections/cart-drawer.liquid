@@ -195,6 +195,9 @@
         {%- if settings.cur_enabled != false and settings.cur_bag_note != false -%}
           <div class="od-po-note od-po-note--bag od-cur-note" data-cur-only hidden>{% render 'icon-info' %}<span>{{ 'currency.note' | t: currency: '[[cur]]' | replace: '[[cur]]', '<span data-cur-code></span>' }}</span></div>
         {%- endif -%}
+        {%- if settings.bag_limited_note != false -%}
+          <div class="od-po-note od-po-note--bag od-lim-note">{% render 'icon-clock' %}<span><b>{{ 'cart.limited.title' | t }}</b> {{ 'cart.limited.text' | t }}</span></div>
+        {%- endif -%}
         <form action="{{ routes.cart_url }}" method="post" class="od-cartd__checkout-form">
           <button type="submit" name="checkout" class="_btn_lnddl_30 _checkout_1bfe0_199 od-cartd__checkout">{{ 'cart.drawer.checkout' | t }}{% unless settings.cur_enabled == false %}<span class="od-cur-btn" data-cur-only hidden> · <span data-cur-sar-of="[data-cur-total]"></span></span>{% endunless %}</button>
         </form>
