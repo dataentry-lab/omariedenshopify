@@ -8,6 +8,20 @@
     "theme_support_url": "https://omarieden.com/contact-us"
   },
   {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "The small icon in the browser tab. Shopify also uses this picture on the checkout pages. Use a square PNG, 512 x 512 px or larger."
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image"
+      }
+    ]
+  },
+  {
     "name": "Navigation",
     "settings": [
       {
