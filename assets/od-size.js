@@ -151,10 +151,16 @@
   function fact(title, value, main) {
     return '<div class="od-szg__fact"><span class="od-szg__eyebrow">' + esc(title) + '</span><span class="' + (main ? 'od-szg__big' : 'od-szg__fv') + '">' + esc(value) + '</span></div>';
   }
+  /* Big size in the card: prefix the first column title ("EU 42") only when the value is a bare number.
+     A value that already names its system ("US 10", "UK 14", "S") is shown as it is, never "EU US 10". */
+  function bigSize(col, v) {
+    v = String(v == null ? '' : v).replace(/\s+/g, ' ').trim();
+    return col && /^\d/.test(v) ? col + ' ' + v : v;
+  }
   /* "Your size" card: the picked row in large type, with every other column of that row as a small fact */
   function card(ch, r) {
     var same = norm(r.eu) === norm(r.label);
-    var h = '<div class="od-szg__facts">' + fact(cur.sel === cur.own ? (T.your_size || '') : (T.size_one || ''), (ch.cols[0] ? ch.cols[0] + ' ' : '') + r.eu, true);
+    var h = '<div class="od-szg__facts">' + fact(cur.sel === cur.own ? (T.your_size || '') : (T.size_one || ''), bigSize(ch.cols[0], r.eu), true);
     for (var i = 1; i < ch.cols.length; i++) {
       var v = r.cells[i];
       if (v == null || v === '' || (i === 1 && same)) continue;
