@@ -778,6 +778,13 @@
         "default": true
       },
       {
+        "type": "checkbox",
+        "id": "soldout_colours_last",
+        "label": "Show sold-out colours at the end",
+        "info": "On: when one colour of a product is sold out but another colour is still in stock, the sold-out colour card moves to the very end of the collection or search page (it appears when the shopper reaches the end). Off: it stays next to the other colours.",
+        "default": true
+      },
+      {
         "type": "header",
         "content": "Stay inside a collection (sale pages)"
       },

@@ -581,3 +581,7 @@ a.od-ft__back { width: fit-content; }
   .od-listing__lim.od-listing__lim--m { display: flex; grid-column: 1 / -1; }
   .od-listing__controls.is-stuck .od-listing__lim--m { justify-content: center; align-items: center; padding: 5px 10px; white-space: nowrap; }
 }
+
+/* sold-out colours at the end (22 Nov 2026): hidden in their place, od-listing.js moves them to the end of the
+   listing after the last page (class is-late-shown). Without JavaScript they stay where they are. */
+html.js .od-listing__grid > .od-card--late:not(.is-late-shown) { display: none !important; }

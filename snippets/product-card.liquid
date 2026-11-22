@@ -17,6 +17,9 @@
     active_colours  - string "|Red|Blue|" (lowercase) of the active colour filter values: only those colour cards are rendered
     wrap_class      - optional class: every card is wrapped in <div class="wrap_class"> (e.g. "swiper-slide")
     badge           - legacy, ignored (badges come from the product now)
+    late_colours    - boolean (listing pages): a sold-out colour card of a product that still has another colour in stock
+                      gets the class od-card--late; it is hidden in its place and od-listing.js shows it at the end of the
+                      collection once the last page is loaded (22 Nov 2026, theme setting soldout_colours_last)
 {%- endcomment -%}
 {%- liquid
   assign rtl = false
@@ -77,6 +80,7 @@
     assign price = base_variant.price
     assign compare = base_variant.compare_at_price
   endif
+  assign late = false
   assign sold_out = false
   if product.available == false
     assign sold_out = true
@@ -130,6 +134,9 @@
     endif
     if c_avail == nil or po_flag == 'closed'
       assign sold_out = true
+    endif
+    if late_colours and settings.soldout_colours_last != false and c_avail == nil and product.available and po_flag != 'closed'
+      assign late = true
     endif
     if vmedia
       assign img = vmedia
@@ -190,7 +197,7 @@
   endif
 -%}
 {%- if wrap_class != blank -%}<div class="{{ wrap_class }}">{%- endif -%}
-<div class="_new_in_trend_card_13l1w_130 od-card{% if rtl %} od-card--rtl{% endif %}{% if sold_out %} is-sold-out{% endif %}" data-product-card data-od-card data-product-id="{{ product.id }}" data-handle="{{ product.handle }}" data-color-index="{{ color_index }}" data-color-value="{{ card_colour_value | escape }}"{% if colour %} data-card-colour="{{ colour | escape }}"{% endif %}>
+<div class="_new_in_trend_card_13l1w_130 od-card{% if rtl %} od-card--rtl{% endif %}{% if sold_out %} is-sold-out{% endif %}{% if late %} od-card--late{% endif %}" data-product-card data-od-card data-product-id="{{ product.id }}" data-handle="{{ product.handle }}" data-color-index="{{ color_index }}" data-color-value="{{ card_colour_value | escape }}"{% if colour %} data-card-colour="{{ colour | escape }}"{% endif %}>
   <div class="od-card__media">
     <a href="{{ card_url }}" class="od-card__link" data-card-image-link data-card-url="{{ product.url }}" aria-label="{{ product.title | escape }}">
       {%- if img -%}

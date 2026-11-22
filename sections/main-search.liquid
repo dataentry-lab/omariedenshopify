@@ -28,7 +28,7 @@
     <div class="_SearchProductList_1cn7p_30 od-listing__grid" data-product-grid data-cols="4">
       {%- for item in search.results -%}
         {%- if item.object_type == 'product' -%}
-          {%- render 'product-card', product: item, per_colour: true, active_colours: active_colours -%}
+          {%- render 'product-card', product: item, per_colour: true, active_colours: active_colours, late_colours: true -%}
         {%- endif -%}
       {%- else -%}
         <div style="grid-column: 1 / -1;">

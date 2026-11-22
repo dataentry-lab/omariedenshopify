@@ -739,10 +739,23 @@
   /* ===================== infinite scroll with skeleton cards ===================== */
   var lmIo = null;
   var lmLoading = false;
+  /* sold-out colours at the end (22 Nov 2026): a sold-out colour card of a product that still has another colour in
+     stock is printed with the class od-card--late and hidden in its place (od-listing.css). Once the last page of the
+     listing is in the grid, every such card is moved to the very end and shown. A filter / sort / category reload
+     replaces the grid, so it starts again by itself. */
+  function lateFlush() {
+    var g = grid();
+    if (!g) return;
+    var late = $$('.od-card--late:not(.is-late-shown)', g);
+    if (!late.length) return;
+    var frag = document.createDocumentFragment();
+    late.forEach(function (c) { c.classList.add('is-late-shown'); c.classList.add('od-fade-in'); frag.appendChild(c); });
+    g.appendChild(frag);
+  }
   function observeLoadMore() {
     if (lmIo) { lmIo.disconnect(); lmIo = null; }
     var s = $('[data-load-more]', listing);
-    if (!s || !s.getAttribute('data-next-url') || !('IntersectionObserver' in window)) return;
+    if (!s || !s.getAttribute('data-next-url') || !('IntersectionObserver' in window)) { lateFlush(); return; }
     lmIo = new IntersectionObserver(function (entries) {
       if (!entries[0].isIntersecting || lmLoading) return;
       var next = s.getAttribute('data-next-url');
@@ -769,7 +782,7 @@
             OD.wlPaint && OD.wlPaint(g);
           }
           s.setAttribute('data-next-url', newSentinel ? (newSentinel.getAttribute('data-next-url') || '') : '');
-          if (!s.getAttribute('data-next-url')) lmIo.disconnect();
+          if (!s.getAttribute('data-next-url')) { lmIo.disconnect(); lateFlush(); }
           lmLoading = false;
         })
         .catch(function () { $$('[data-skel-page]', g).forEach(function (c) { c.remove(); }); lmLoading = false; });

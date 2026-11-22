@@ -46,7 +46,7 @@
   {%- paginate collection.products by per_page -%}
     <div class="_ProductCollection_1ajxu_41 od-listing__grid" data-product-grid data-cols="4">
       {%- for product in collection.products -%}
-        {%- render 'product-card', product: product, per_colour: true, active_colours: active_colours -%}
+        {%- render 'product-card', product: product, per_colour: true, active_colours: active_colours, late_colours: true -%}
       {%- else -%}
         <div style="grid-column: 1 / -1;">
           <div class="_noProducts_1f8fu_34" style="text-align:center;padding:60px 0;">
