@@ -472,9 +472,8 @@ html.od-cur-wait :has(> ._sar_1ef42_1) { opacity: 0; }
 .od-cur .od-cur__item p { display: flex; align-items: baseline; gap: 10px; margin: 0; }
 .od-cur .od-cur__code { font-weight: 500; font-size: 14px; letter-spacing: .04em; min-width: 40px; }
 .od-cur .od-cur__item p span { margin: 0 !important; text-transform: none; }
-.od-cur__hint { margin: 8px 16px 16px; font-family: Bricolage, sans-serif; font-size: 12px; line-height: 1.5; color: #551c25; opacity: .75; }
-.od-cur__save { display: flex; align-items: center; justify-content: center; width: calc(100% - 32px); margin: 0 16px 24px; background: #595b33 !important; border-color: #595b33 !important; color: #fff !important; }
-.od-cur__save:hover { background: #4a4c2a !important; }
+.od-cur__hint { margin: 8px 16px 24px; font-family: Bricolage, sans-serif; font-size: 12px; line-height: 1.5; color: #551c25; opacity: .75; }
+[data-localization-form][data-cur-busy] { pointer-events: none; opacity: .6; transition: opacity .2s; }
 [dir=rtl] .od-cur-charged, [dir=rtl] .od-cur-pdp, [dir=rtl] .od-cur__hint { font-family: Arabic-Regular, Bricolage, sans-serif; }
 [dir=rtl] .od-cur .od-cur__code { font-family: Bricolage, sans-serif; }
 

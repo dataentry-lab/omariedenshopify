@@ -3,7 +3,7 @@
    every price in the theme is "<span class="_sar_1ef42_1">symbol</span>1,325.00"; when the
    display currency is not SAR the symbol is hidden and the number becomes "BHD 132.900".
    The SAR text is kept on the symbol span (data-od-sar) so it can be put back.
-   Also: Ship to + Currency lists in the language drawer (Save button), first-visit country
+   Also: Ship to + Currency lists in the language drawer (a tap applies at once, no Save button), first-visit country
    detection, and the "charged in SAR" lines in the bag. Settings: Theme settings > Currency display. */
 (function () {
   'use strict';
@@ -166,28 +166,29 @@
     form = doc.querySelector('[data-localization-form]');
     if (!form || !form.querySelector('[data-currency-option]')) { form = null; return; }
     resetLists();
+    /* no Save button (23 Nov 2026): a tap applies at once.
+       Country: its currency is stored, then the localization form reloads the page (or, same country, the prices change in place).
+       Currency: prices change in place and the drawer closes. */
     form.addEventListener('click', function (e) {
       var c = e.target.closest('[data-country-option]');
       var k = e.target.closest('[data-currency-option]');
-      var s = e.target.closest('[data-cur-save]');
+      if (!c && !k) return;
+      if (form.getAttribute('data-cur-busy')) return;
       if (c) {
         pendCountry = c.getAttribute('data-country-option');
         pendCur = forCountry(pendCountry);
-        paintLists();
-      } else if (k) {
+      } else {
         pendCur = k.getAttribute('data-currency-option');
-        paintLists();
-      } else if (s) {
-        e.preventDefault();
-        ls('od_currency', pendCur);
-        ls('od_geo', '1');
-        if (pendCountry && pendCountry !== C.country) {
-          var inp = form.querySelector('[data-country-input]');
-          if (inp) { inp.value = pendCountry; form.submit(); return; }
-        }
-        set(pendCur, true);
-        if (OD.closeModal) OD.closeModal('language');
       }
+      paintLists();
+      ls('od_currency', pendCur);
+      ls('od_geo', '1');
+      if (c && pendCountry && pendCountry !== C.country) {
+        var inp = form.querySelector('[data-country-input]');
+        if (inp) { form.setAttribute('data-cur-busy', '1'); inp.value = pendCountry; form.submit(); return; }
+      }
+      set(pendCur, true);
+      window.setTimeout(function () { if (OD.closeModal) OD.closeModal('language'); }, 220);
     });
     doc.addEventListener('od:modal:open', function (e) { if (e.detail && e.detail.name === 'language') resetLists(); });
   }

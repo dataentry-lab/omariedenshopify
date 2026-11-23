@@ -66,7 +66,7 @@
           <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}" data-country-input>
         </div>
         {%- unless settings.cur_enabled == false -%}
-          {%- comment -%} Currency list (display only, the store charges in SAR). Ticks, Save and the first-visit detection live in assets/od-currency.js {%- endcomment -%}
+          {%- comment -%} Currency list (display only, the store charges in SAR). Ticks, apply-on-tap and the first-visit detection live in assets/od-currency.js (no Save button since 23 Nov 2026) {%- endcomment -%}
           <div class="_flagLists_pdb61_82 od-cur">
             <h4>{{ 'currency.title' | t }}</h4>
             <ul>
@@ -104,7 +104,6 @@
               {%- endfor -%}
             </ul>
             <p class="od-cur__hint">{{ 'currency.hint' | t }}</p>
-            <button type="button" class="_btn_lnddl_30 od-cur__save" data-cur-save>{{ 'currency.save' | t }}</button>
           </div>
         {%- endunless -%}
       </div>
