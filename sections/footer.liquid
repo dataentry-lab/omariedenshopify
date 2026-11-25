@@ -80,6 +80,9 @@
               {%- else -%}
                 <div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="tiktok" src="{{ 'icons_tiktok.svg' | asset_url }}"></div>
               {%- endif -%}
+              {%- if section.settings.snapchat != blank -%}
+                <a href="{{ section.settings.snapchat }}" target="_blank" rel="noopener" aria-label="Snapchat"><div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="snapchat" src="{{ 'icons_snapchat.svg' | asset_url }}"></div></a>
+              {%- endif -%}
               {%- if section.settings.linkedin != blank -%}
                 <a href="{{ section.settings.linkedin }}" target="_blank" rel="noopener" aria-label="LinkedIn"><div class="_globalImg_1tf1q_38 _imgContainer_n0o7o_170"><img fetchpriority="auto" alt="linkedin" src="{{ 'icons_linkedin.svg' | asset_url }}"></div></a>
               {%- else -%}
@@ -118,6 +121,7 @@
     { "type": "url", "id": "facebook", "label": "Facebook URL" },
     { "type": "url", "id": "instagram", "label": "Instagram URL" },
     { "type": "url", "id": "tiktok", "label": "TikTok URL" },
+    { "type": "url", "id": "snapchat", "label": "Snapchat URL" },
     { "type": "url", "id": "linkedin", "label": "LinkedIn URL" }
   ],
   "blocks": [
