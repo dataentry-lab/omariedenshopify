@@ -799,6 +799,13 @@
         "default": true
       },
       {
+        "type": "checkbox",
+        "id": "sale_filter_cards",
+        "label": "Sale filter: show only matching colour cards",
+        "info": "On: when a shopper picks a Sale filter value (for example 50% off), a colour card whose own discount is different is hidden. Off: every colour card of a matching product shows.",
+        "default": true
+      },
+      {
         "type": "header",
         "content": "Stay inside a collection (sale pages)"
       },

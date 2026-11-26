@@ -280,6 +280,7 @@
       }
       if (push) history.pushState({ odListing: true }, '', url);
       fpSaleSync(url);
+      saleCardsSync(url);
       reinit(listing);
       setUpdating(false);
       loading = null;
@@ -564,6 +565,25 @@
     });
     box.hidden = false;
   }
+  /* Sale filter and colour cards (26 Nov 2026). The Sale filter works on product tags (sale:NN), cards are one per
+     colour with their own price pair. A product with two sale tags showed every colour card under both filters.
+     While sale values are in the URL, cards whose own percent (data-sale-pct, product-card.liquid) is not one of
+     them are hidden by one style element. CSS only, so infinite scroll pages need no extra step.
+     The same code runs inline in snippets/listing-toolbar.liquid before the first paint. */
+  function saleCardsSync(url) {
+    var u;
+    try { u = new URL(url || window.location.href, window.location.href); } catch (e) { return; }
+    var not = '';
+    u.searchParams.getAll('filter.p.tag').forEach(function (v) {
+      var m = /^sale:(\d{1,3})$/.exec(v);
+      if (m) not += ':not([data-sale-pct="' + m[1] + '"])';
+    });
+    var st = document.getElementById('od-sale-cards');
+    if (!st) { st = document.createElement('style'); st.id = 'od-sale-cards'; document.head.appendChild(st); }
+    st.textContent = not ? '[data-product-grid] [data-od-card][data-sale-pct]' + not + '{display:none!important}' : '';
+  }
+  saleCardsSync();
+  window.addEventListener('popstate', function () { setTimeout(saleCardsSync, 0); });
   fpSaleSync();
   document.addEventListener('DOMContentLoaded', function () { fpSaleSync(); staySync(); initCats(); });
   staySync();
