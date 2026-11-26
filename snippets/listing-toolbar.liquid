@@ -137,6 +137,8 @@
         {%- if f.param_name == 'filter.p.tag' and vhead == 'sale:' -%}
           {%- assign pn = v.value | downcase | remove: 'sale:' -%}
           {%- assign vl = 'collections.filter.percent_off' | t: n: pn -%}
+        {%- elsif f.param_name == 'filter.p.tag' and v.value == 'extra-20' -%}
+          {%- assign vl = 'collections.filter.extra_20' | t -%}
         {%- elsif vl.size <= 3 -%}{%- assign vl = f.label | append: ' ' | append: v.label -%}{%- endif -%}
         <a class="od-chipx" href="{{ v.url_to_remove }}" aria-label="{{ 'listing.remove_filter' | t: name: v.label }}"><span class="od-chipx__t">{{ vl }}</span><span class="od-chipx__x" aria-hidden="true">&times;</span></a>
       {%- endfor -%}

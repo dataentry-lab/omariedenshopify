@@ -169,11 +169,15 @@
       assign sale_filter = filter
       for value in filter.values reversed
         assign vhead = value.value | downcase | slice: 0, 5
-        if vhead == 'sale:'
+        assign v_low = value.value | downcase
+        if vhead == 'sale:' or v_low == 'extra-20'
           assign sale_n = sale_n | plus: 1
           if value.active
             assign pn = value.value | downcase | remove: 'sale:'
             assign part = 'collections.filter.percent_off' | t: n: pn
+            if v_low == 'extra-20'
+              assign part = 'collections.filter.extra_20' | t
+            endif
             if sale_sum == ''
               assign sale_sum = part
             else
@@ -199,6 +203,9 @@
         assign sale_tiers = sale_tiers | append: tn | append: ','
       endif
     endfor
+    if collection.all_tags contains 'extra-20'
+      assign sale_tiers = sale_tiers | append: 'extra-20,'
+    endif
     if sale_tiers != ''
       assign sale_manual = true
       assign sale_n = 1
@@ -451,8 +458,10 @@
         <div class="od-fp__pane" data-fp-pane="sale" data-fp-label="{{ t_sale | escape }}" data-fp-sale-manual>
           {%- for tn in sale_tier_list -%}
             {%- assign plabel = 'collections.filter.percent_off' | t: n: tn -%}
+            {%- assign pval = 'sale:' | append: tn -%}
+            {%- if tn == 'extra-20' -%}{%- assign plabel = 'collections.filter.extra_20' | t -%}{%- assign pval = 'extra-20' -%}{%- endif -%}
             <div class="_CheckboxButton_8c7of_30 od-fp__row">
-              <label><div><input type="checkbox" value="sale:{{ tn | escape }}" name="filter.p.tag" data-sale-label="{{ plabel | escape }}"><span class="_CustomCheck_8c7of_52"></span></div><p><span class="od-fp__vl">{{ plabel }}</span></p></label>
+              <label><div><input type="checkbox" value="{{ pval | escape }}" name="filter.p.tag" data-sale-label="{{ plabel | escape }}"><span class="_CustomCheck_8c7of_52"></span></div><p><span class="od-fp__vl">{{ plabel }}</span></p></label>
             </div>
           {%- endfor -%}
         </div>
@@ -460,10 +469,13 @@
         <div class="od-fp__pane" data-fp-pane="sale" data-fp-label="{{ t_sale | escape }}">
           {%- for value in sale_filter.values reversed -%}
             {%- assign vhead = value.value | downcase | slice: 0, 5 -%}
-            {%- if vhead == 'sale:' -%}
+            {%- assign v_low = value.value | downcase -%}
+            {%- if vhead == 'sale:' or v_low == 'extra-20' -%}
               {%- assign pn = value.value | downcase | remove: 'sale:' -%}
+              {%- assign vlabel = 'collections.filter.percent_off' | t: n: pn -%}
+              {%- if v_low == 'extra-20' -%}{%- assign vlabel = 'collections.filter.extra_20' | t -%}{%- endif -%}
               <div class="_CheckboxButton_8c7of_30 od-fp__row">
-                <label><div><input type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}><span class="_CustomCheck_8c7of_52"></span></div><p><span class="od-fp__vl">{{ 'collections.filter.percent_off' | t: n: pn }}</span><span class="od-fp__vc">{{ value.count }}</span></p></label>
+                <label><div><input type="checkbox" value="{{ value.value | escape }}" name="{{ value.param_name }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}><span class="_CustomCheck_8c7of_52"></span></div><p><span class="od-fp__vl">{{ vlabel }}</span><span class="od-fp__vc">{{ value.count }}</span></p></label>
               </div>
             {%- endif -%}
           {%- endfor -%}

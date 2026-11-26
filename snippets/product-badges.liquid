@@ -173,6 +173,17 @@
     endif
   endfor
 
+  comment
+    27 Nov 2026: products carrying the tag extra-20 get a second badge "Extra 20% off" (sandstone) after the Sale badge.
+    The price on the product already includes the extra 20%. Added past the limit on purpose (Sale + Extra).
+  endcomment
+  if haystack contains '|extra-20|'
+    assign x20_label = 'collections.filter.extra_20' | t | upcase
+    assign labels = labels | append: x20_label | append: '||'
+    assign bgs = bgs | append: '#e5d9c7' | append: '||'
+    assign texts = texts | append: '#551c25' | append: '||'
+  endif
+
   assign label_arr = labels | split: '||'
   assign bg_arr = bgs | split: '||'
   assign text_arr = texts | split: '||'

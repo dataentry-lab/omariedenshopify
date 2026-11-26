@@ -142,6 +142,9 @@
                 <span data-product-price>{% render 'sar' %}{{ current.price | money_without_currency }}</span>
                 <span data-product-compare class="_strikeThrough_1tn6c_30" style="text-decoration:line-through;opacity:.6;margin-inline-start:8px;{% unless current.compare_at_price > current.price %}display:none;{% endunless %}">{% render 'sar' %}{{ current.compare_at_price | money_without_currency }}</span>
               </p>
+              {%- if product.tags contains 'extra-20' -%}
+                <p class="od-pdp__extra20">{{ 'products.product.extra_20_included' | t }}</p>
+              {%- endif -%}
               {%- unless settings.cur_enabled == false -%}
                 <p class="od-cur-pdp" data-cur-only hidden>{{ 'currency.pdp' | t: amount: '[[amt]]' | replace: '[[amt]]', '<span data-cur-sar-of="[data-product-price]"></span>' }}</p>
               {%- endunless -%}
