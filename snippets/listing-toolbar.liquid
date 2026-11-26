@@ -45,7 +45,7 @@
   cards whose own percent (data-sale-pct) is not NN are hidden. Same code as saleCardsSync() in assets/od-listing.js.
 {%- endcomment -%}
 {%- if settings.sale_filter_cards != false -%}
-<script>(function(){try{var n='';new URLSearchParams(location.search).getAll('filter.p.tag').forEach(function(v){var m=/^sale:(\d{1,3})$/.exec(v);if(m)n+=':not([data-sale-pct="'+m[1]+'"])';});var s=document.getElementById('od-sale-cards');if(!s){s=document.createElement('style');s.id='od-sale-cards';document.head.appendChild(s);}s.textContent=n?'[data-product-grid] [data-od-card][data-sale-pct]'+n+'{display:none!important}':'';}catch(e){}})();</script>
+<script>(function(){try{var n='';new URLSearchParams(location.search).getAll('filter.p.tag').forEach(function(v){var m=/^sale:(\d{1,3})$/.exec(v);if(m)n+=':not([data-sale-tier="'+m[1]+'"])';});var s=document.getElementById('od-sale-cards');if(!s){s=document.createElement('style');s.id='od-sale-cards';document.head.appendChild(s);}s.textContent=n?'[data-product-grid] [data-od-card][data-sale-pct]'+n+'{display:none!important}':'';}catch(e){}})();</script>
 {%- endif -%}
 {%- capture lim_inner -%}{% render 'icon-clock' %}<span><b>{{ 'cart.limited.title' | t }}</b> <span class="od-listing__lim-full">{{ 'cart.limited.text' | t }}</span><span class="od-listing__lim-short">{{ 'cart.limited.short' | t }}</span></span>{%- endcapture -%}
 <div class="od-listing__toolbar{% if is_search %} od-listing__toolbar--search{% endif %}{% if lim_on %} od-listing__toolbar--lim{% endif %}" data-listing-toolbar>

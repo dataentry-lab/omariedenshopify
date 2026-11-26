@@ -213,6 +213,11 @@
       assign card_pct = cp_5
     endif
   endif
+  comment
+    27 Nov 2026: the Sale filter lists whole tens only (sale:30 / 40 / 50 ...). A card at 44% belongs to the 40% tier, 52% to 50%.
+    data-sale-tier = the percent rounded to the nearest 10, used only to match the Sale filter. The badge keeps the exact percent.
+  endcomment
+  assign card_tier = card_pct | divided_by: 10.0 | round | times: 10
 -%}
 {%- comment -%}
   26 Nov 2026: data-sale-pct = the discount percent of THIS card's own price pair, same snap rule as the Sale badge in
@@ -221,7 +226,7 @@
   Theme setting sale_filter_cards (Collections), off = the attribute is not printed and nothing is hidden.
 {%- endcomment -%}
 {%- if wrap_class != blank -%}<div class="{{ wrap_class }}">{%- endif -%}
-<div class="_new_in_trend_card_13l1w_130 od-card{% if rtl %} od-card--rtl{% endif %}{% if sold_out %} is-sold-out{% endif %}{% if late %} od-card--late{% endif %}" data-product-card data-od-card data-product-id="{{ product.id }}" data-handle="{{ product.handle }}" data-color-index="{{ color_index }}" data-color-value="{{ card_colour_value | escape }}"{% if colour %} data-card-colour="{{ colour | escape }}"{% endif %}{% if settings.sale_filter_cards != false %} data-sale-pct="{{ card_pct }}"{% endif %}>
+<div class="_new_in_trend_card_13l1w_130 od-card{% if rtl %} od-card--rtl{% endif %}{% if sold_out %} is-sold-out{% endif %}{% if late %} od-card--late{% endif %}" data-product-card data-od-card data-product-id="{{ product.id }}" data-handle="{{ product.handle }}" data-color-index="{{ color_index }}" data-color-value="{{ card_colour_value | escape }}"{% if colour %} data-card-colour="{{ colour | escape }}"{% endif %}{% if settings.sale_filter_cards != false %} data-sale-pct="{{ card_pct }}" data-sale-tier="{{ card_tier }}"{% endif %}>
   <div class="od-card__media">
     <a href="{{ card_url }}" class="od-card__link" data-card-image-link data-card-url="{{ product.url }}" aria-label="{{ product.title | escape }}">
       {%- if img -%}

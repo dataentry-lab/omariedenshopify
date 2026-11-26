@@ -576,7 +576,7 @@
     var not = '';
     u.searchParams.getAll('filter.p.tag').forEach(function (v) {
       var m = /^sale:(\d{1,3})$/.exec(v);
-      if (m) not += ':not([data-sale-pct="' + m[1] + '"])';
+      if (m) not += ':not([data-sale-tier="' + m[1] + '"])';
     });
     var st = document.getElementById('od-sale-cards');
     if (!st) { st = document.createElement('style'); st.id = 'od-sale-cards'; document.head.appendChild(st); }
