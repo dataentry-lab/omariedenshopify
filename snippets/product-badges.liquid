@@ -42,6 +42,7 @@
     assign s_compare = compare | default: 0
   endif
   assign sale_idx = -1
+  assign x20_idx = -1
 
   assign labels = ''
   assign bgs = ''
@@ -133,7 +134,13 @@
           assign pct_5 = pct_f | divided_by: 5.0 | round | times: 5
           assign dev_10 = pct_f | minus: pct_10 | abs
           assign dev_5 = pct_f | minus: pct_5 | abs
-          if dev_10 <= pct_tol and pct_10 > 0 and pct_10 < 100
+          assign pct_x = pct_f | minus: pct | abs
+          comment
+            27 Nov 2026: prices with cents (Extra 20%) give an exact whole percent, so no snapping then (44.24 / 79 was snapped to 45).
+          endcomment
+          if pct_x <= 0.1
+            assign pct = pct
+          elsif dev_10 <= pct_tol and pct_10 > 0 and pct_10 < 100
             assign pct = pct_10
           elsif dev_5 <= pct_tol and pct_5 > 0 and pct_5 < 100
             assign pct = pct_5
@@ -178,6 +185,7 @@
     The price on the product already includes the extra 20%. Added past the limit on purpose (Sale + Extra).
   endcomment
   if haystack contains '|extra-20|'
+    assign x20_idx = count
     assign x20_label = 'collections.filter.extra_20' | t | upcase
     assign labels = labels | append: x20_label | append: '||'
     assign bgs = bgs | append: '#e5d9c7' | append: '||'
@@ -189,10 +197,10 @@
   assign text_arr = texts | split: '||'
 -%}
 {%- if format == 'json' -%}
-  [{%- for l in label_arr -%}{%- if l == blank -%}{%- continue -%}{%- endif -%}{%- unless forloop.first -%},{%- endunless -%}{"label":{{ l | json }},{%- if forloop.index0 == sale_idx -%}"sale":true,{%- endif -%}"bg":{{ bg_arr[forloop.index0] | default: '#551c25' | json }},"text":{{ text_arr[forloop.index0] | default: '#ffffff' | json }}}{%- endfor -%}]
+  [{%- for l in label_arr -%}{%- if l == blank -%}{%- continue -%}{%- endif -%}{%- unless forloop.first -%},{%- endunless -%}{"label":{{ l | json }},{%- if forloop.index0 == sale_idx -%}"sale":true,{%- endif -%}{%- if forloop.index0 == x20_idx -%}"extra":true,{%- endif -%}"bg":{{ bg_arr[forloop.index0] | default: '#551c25' | json }},"text":{{ text_arr[forloop.index0] | default: '#ffffff' | json }}}{%- endfor -%}]
 {%- else -%}
   {%- for l in label_arr -%}
     {%- if l == blank -%}{%- continue -%}{%- endif -%}
-    <span class="od-card__badge"{% if forloop.index0 == sale_idx %} data-badge-sale{% endif %} style="background-color: {{ bg_arr[forloop.index0] | default: '#551c25' }}; color: {{ text_arr[forloop.index0] | default: '#ffffff' }};">{{ l }}</span>
+    <span class="od-card__badge"{% if forloop.index0 == sale_idx %} data-badge-sale{% endif %}{% if forloop.index0 == x20_idx %} data-badge-extra{% endif %} style="background-color: {{ bg_arr[forloop.index0] | default: '#551c25' }}; color: {{ text_arr[forloop.index0] | default: '#ffffff' }};">{{ l }}</span>
   {%- endfor -%}
 {%- endif -%}

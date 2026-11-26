@@ -51,7 +51,7 @@
 .od-card__badge--limited, .od-card__badge--sand { background: var(--od-sand); color: var(--od-maroon); }
 .od-card__badge--prive { background: #e5d9c7; color: #551c25; }
 .od-card__top {
-  position: absolute; top: 12px; left: 12px; right: 12px;
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 12px; box-sizing: border-box;
   display: flex; justify-content: space-between; align-items: flex-start;
   pointer-events: none; z-index: 2;
 }
@@ -389,3 +389,7 @@
 .od-lim-note--top { margin: 0 0 16px; }
 .od-lim-note--pdp { margin: 0; }
 @media (max-width: 767px) { .od-lim-note { font-size: 11px; } }
+
+/* 27 Nov 2026: "Extra 20% off" tag sits in the bottom-left corner of the card image (tag extra-20) */
+.od-card [data-badge-extra] { position: absolute; bottom: 12px; inset-inline-start: 12px; z-index: 3; font-size: 11px; font-weight: 500; letter-spacing: .04em; padding: 3px 8px; }
+@media (max-width: 767px) { .od-card [data-badge-extra] { bottom: 8px; inset-inline-start: 8px; } }

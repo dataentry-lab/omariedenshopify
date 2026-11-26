@@ -204,7 +204,10 @@
     assign cp_5 = cp_f | divided_by: 5.0 | round | times: 5
     assign cp_d10 = cp_f | minus: cp_10 | abs
     assign cp_d5 = cp_f | minus: cp_5 | abs
-    if cp_d10 <= cp_tol and cp_10 > 0 and cp_10 < 100
+    assign cp_x = cp_f | minus: card_pct | abs
+    if cp_x <= 0.1
+      assign card_pct = card_pct
+    elsif cp_d10 <= cp_tol and cp_10 > 0 and cp_10 < 100
       assign card_pct = cp_10
     elsif cp_d5 <= cp_tol and cp_5 > 0 and cp_5 < 100
       assign card_pct = cp_5

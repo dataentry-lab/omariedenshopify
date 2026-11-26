@@ -574,6 +574,7 @@
   function salePct(price, compare) {
     price = +price || 0; compare = +compare || 0; if (!(compare > 0)) return 0;
     const f = (compare - price) * 100 / compare, tol = 5000 / compare + 0.5;
+    if (Math.abs(f - Math.round(f)) <= 0.1) return Math.round(f);
     for (const step of [10, 5]) { const m = Math.round(f / step) * step; if (Math.abs(f - m) <= tol && m > 0 && m < 100) return m; }
     return Math.round(f);
   }
@@ -599,7 +600,7 @@
     return out;
   };
   OD.badgeHTML = function (list) {
-    return (list || []).map((b) => '<span class="od-card__badge"' + (b.sale ? ' data-badge-sale' : '') + (b.hidden ? ' hidden' : '') + ' style="background-color:' + esc(b.bg || '#551c25') + ';color:' + esc(b.text || '#fff') + ';">' + esc(b.label) + '</span>').join('');
+    return (list || []).map((b) => '<span class="od-card__badge"' + (b.sale ? ' data-badge-sale' : '') + (b.extra ? ' data-badge-extra' : '') + (b.hidden ? ' hidden' : '') + ' style="background-color:' + esc(b.bg || '#551c25') + ';color:' + esc(b.text || '#fff') + ';">' + esc(b.label) + '</span>').join('');
   };
   /* 18 Nov 2026: the Sale badge follows the price pair on screen (card colour / selected size), not the product.
      One product can hold sizes at -50%, -60% and full price, so a product-level badge was wrong on some cards. */
